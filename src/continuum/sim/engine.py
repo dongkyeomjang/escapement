@@ -24,6 +24,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import itertools
 
+from ..policy.lookahead import Lookahead, PeerView
 from ..policy.online import ReturnPolicy, ReturnState
 from ..substrate.descriptor import SubstrateDescriptor
 from ..workload.agentic import Session
@@ -50,6 +51,12 @@ class SimConfig:
     the immediate-return behaviour every earlier task measured, bit for bit."""
 
     return_budget_s: float = 0.0
+    peer_clock: object | None = None
+    """Supplies the predicted tool-gap durations a lookahead policy is told.
+
+    Set only for the information-value probe: it hands the policy knowledge no
+    client has. ``None`` -- the default and the only setting used by anything
+    measured -- means peers are invisible, exactly as on hardware."""
     """Latency budget the policy is bounded by. Ignored when no policy is set."""
 
     cache_granularity: str = "outer"
@@ -201,6 +208,9 @@ class _Pending:
     prompt_tokens: int
     generation_tokens: int
     gap_after_s: float
+    gap_start_s: float
+    """When this return's tool gap began. With the gap duration it gives the
+    ready time, which is what a duration predictor would be estimating."""
     arrival_s: float
     """When the return is actually handed to the server."""
     ready_s: float
@@ -247,7 +257,7 @@ def simulate(
             session=s.session_id, session_index=idx, turn=0,
             prompt_tokens=_prompt_tokens(s, 0),
             generation_tokens=t0.generation_tokens,
-            gap_after_s=t0.gap_after_s, arrival_s=0.0, ready_s=0.0,
+            gap_after_s=t0.gap_after_s, gap_start_s=0.0, arrival_s=0.0, ready_s=0.0,
             seq=next(counter),
         ))
 
@@ -284,6 +294,7 @@ def simulate(
                 prompt_tokens=_prompt_tokens(sess, nxt),
                 generation_tokens=sess.turns[nxt].generation_tokens,
                 gap_after_s=sess.turns[nxt].gap_after_s,
+                gap_start_s=at,
                 arrival_s=at + r["gap_after_s"] + config.client_overhead_s,
                 ready_s=at + r["gap_after_s"] + config.client_overhead_s,
                 seq=next(counter),
@@ -291,6 +302,27 @@ def simulate(
 
     policy = config.return_policy
     budget = config.return_budget_s
+    clock = config.peer_clock
+
+    def _peer_view(now: float, me: _Pending) -> PeerView:
+        """When the other sessions' tool gaps are predicted to finish.
+
+        A running request has not started its gap yet, so its return time is
+        not predictable from the gap alone and it is left out. What the policy
+        sees is the cohort that is already counting down.
+        """
+        offsets = []
+        for q in pending:
+            if q is me or q.turn == 0:
+                continue
+            true_remaining = q.ready_s - now
+            if clock is None:
+                offsets.append(true_remaining)
+            else:
+                gap = q.ready_s - q.gap_start_s
+                predicted = clock.perturb(gap)
+                offsets.append(q.gap_start_s + predicted - now)
+        return PeerView(offsets_s=tuple(offsets))
 
     def _release_ready(now: float) -> None:
         """Move returns whose hold has ended into the server's queue.
@@ -315,7 +347,10 @@ def simulate(
                     continue
                 st = ReturnState(now_s=now, in_flight=in_flight, held=held,
                                  waited_s=waited, budget_s=budget)
-                if policy.release(st):
+                if isinstance(policy, Lookahead):
+                    if policy.release_with_view(st, _peer_view(now, p)):
+                        release.append(p)
+                elif policy.release(st):
                     release.append(p)
         for p in release:
             pending.remove(p)
@@ -340,7 +375,8 @@ def simulate(
                     candidates.append(p.ready_s + budget)
                     st = ReturnState(now_s=now, in_flight=len(running) + len(waiting),
                                      held=1, waited_s=now - p.ready_s, budget_s=budget)
-                    nxt = policy.next_check_s(st)
+                    nxt = (policy.next_check_with_view(st, _peer_view(now, p))
+                           if isinstance(policy, Lookahead) else policy.next_check_s(st))
                     if nxt is not None and nxt > now + 1e-12:
                         candidates.append(nxt)
         if not candidates:
