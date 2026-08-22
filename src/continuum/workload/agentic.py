@@ -18,6 +18,7 @@ plan exactly.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 import math
 import random
@@ -122,12 +123,18 @@ def generate_sessions(
     gap_seconds: Distribution,
     base_seed: int,
     block_id: str,
+    gap_sampler: Callable[[random.Random], float] | None = None,
 ) -> list[Session]:
     """Build ``session_count`` independent session plans.
 
     ``first_segment`` sizes the opening context (usually much larger than the
     follow-ups, as a system prompt plus a task description would be), while
     ``later_segment`` sizes each tool result fed back in.
+
+    ``gap_sampler`` replaces ``gap_seconds`` when the gap comes from a measured
+    tool population rather than a closed-form law. It draws from the session's
+    own generator, so the plan stays reproducible from ``(base_seed, block_id)``
+    exactly as before.
     """
     if session_count <= 0:
         raise ValueError("session_count must be positive")
@@ -142,7 +149,12 @@ def generate_sessions(
         for k in range(turns_per_session):
             seg = (first_segment if k == 0 else later_segment).draw(rng)
             gen = generation.draw(rng)
-            gap = 0.0 if k == turns_per_session - 1 else float(gap_seconds.draw(rng))
+            if k == turns_per_session - 1:
+                gap = 0.0
+            elif gap_sampler is not None:
+                gap = float(gap_sampler(rng))
+            else:
+                gap = float(gap_seconds.draw(rng))
             turns.append(
                 Turn(
                     index=k,

@@ -30,6 +30,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src"))
 from continuum.policy import ReturnState, build as build_policy  # noqa: E402
+from continuum.workload.tools import load_mix  # noqa: E402
 from continuum.workload.agentic import (  # noqa: E402
     Distribution,
     generate_sessions,
@@ -183,7 +184,9 @@ def main() -> int:
                    help="fixed:N | uniform:LO:HI | ladder:START:STEP")
     p.add_argument("--later-segment", required=True)
     p.add_argument("--generation", required=True)
-    p.add_argument("--gap", required=True)
+    p.add_argument("--gap", required=True,
+                   help="fixed:N | uniform:LO:HI | lognormal:MED:SPREAD | "
+                        "toolmix:<summary.json>:<cap_s>")
     p.add_argument("--sync-gaps", action="store_true",
                    help="replace every gap by their mean, preserving the total, "
                         "so only the dispersion of resume arrivals changes")
@@ -225,13 +228,24 @@ def main() -> int:
     else:
         gen_dist = parse_dist(args.generation, "generation")
 
+    gap_sampler = None
+    tool_mix = None
+    if args.gap.startswith("toolmix:"):
+        _, mix_path, cap = args.gap.split(":", 2)
+        tool_mix = load_mix(mix_path, cap_s=float(cap))
+        gap_sampler = lambda rng: tool_mix.draw(rng)[1]  # noqa: E731
+        gap_dist = Distribution("fixed", value=0)
+    else:
+        gap_dist = parse_dist(args.gap, "gap")
+
     sessions = generate_sessions(
+        gap_sampler=gap_sampler,
         session_count=args.sessions,
         turns_per_session=args.turns,
         first_segment=first_dist,
         later_segment=parse_dist(args.later_segment, "later-segment"),
         generation=gen_dist,
-        gap_seconds=parse_dist(args.gap, "gap"),
+        gap_seconds=gap_dist,
         base_seed=args.base_seed,
         block_id=args.block_id,
     )
@@ -342,6 +356,10 @@ def main() -> int:
         "plan": plan_summary(sessions),
         "zero_gaps": args.zero_gaps,
         "sync_gaps": args.sync_gaps,
+        "gap_spec": args.gap,
+        "tool_mix": (None if tool_mix is None else
+                     {"tools": len(tool_mix.tools), "calls": tool_mix.total_calls,
+                      "cap_s": tool_mix.cap_s, "band_mix": tool_mix.band_mix()}),
         "return_policy": args.return_policy,
         "return_budget_s": args.return_budget_s,
         "buckets": list(buckets),

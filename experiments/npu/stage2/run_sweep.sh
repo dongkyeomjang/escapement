@@ -22,6 +22,9 @@ BLOCK_PREFIX="${SWEEP_BLOCK_PREFIX:-n${N}b}"
 POLICY="${SWEEP_POLICY:-immediate}"
 BUDGET="${SWEEP_BUDGET:-0}"
 BUCKETS="${SWEEP_BUCKETS:-1,2,4,8}"
+# Tool-gap law. The default is the synthetic gap every task before TASK31 used,
+# so those runs stay reproducible byte for byte.
+GAP="${SWEEP_GAP:-uniform:1:5}"
 TAG="${ARM}.n${N}.b${BLOCK}"
 BLOCK_ID="${BLOCK_PREFIX}${BLOCK}"
 DONE_MARK="$RUN/done.${TAG}"
@@ -60,7 +63,7 @@ env -u PYTHONPATH "$REPO/experiments/npu/launch/run_isolated_python.sh" \
   --tokenizer-dir "$ARTIFACT" \
   --arm "$ARM" --sessions "$N" --turns 2 \
   --first-segment uniform:800:1600 --later-segment fixed:8 \
-  --generation uniform:32:256 --gap uniform:1:5 $EXTRA \
+  --generation uniform:32:256 --gap "$GAP" $EXTRA \
   --base-seed "$BASE_SEED" --block-id "$BLOCK_ID" --sampling-seed 20260819 \
   --return-policy "$POLICY" --return-budget-s "$BUDGET" --buckets "$BUCKETS" \
   --output-dir "$REPO/$RUN/probe" > "$RUN/probe-${TAG}.log" 2>&1
