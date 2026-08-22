@@ -39,17 +39,36 @@ from continuum.workload.agentic import (  # noqa: E402
     Distribution,
     generate_sessions,
 )
+from continuum.workload.tools import load_mix  # noqa: E402
 
 FIRST = Distribution("uniform", low=800, high=1600)
 LATER = Distribution("fixed", value=8)
 GEN = Distribution("uniform", low=32, high=256)
 GAP = Distribution("uniform", low=1, high=5)
 
+#: Set by --gap to swap the synthetic gap law for a measured tool population.
+_SAMPLER = None
+
+
+def set_gap(spec: str) -> str:
+    """Install the gap law. ``uniform:1:5`` keeps every earlier task's plans."""
+    global _SAMPLER
+    if spec.startswith("toolmix:"):
+        _, path, cap = spec.split(":", 2)
+        mix = load_mix(path, cap_s=float(cap))
+        _SAMPLER = lambda rng: mix.draw(rng)[1]  # noqa: E731
+        return f"toolmix({len(mix.tools)} tools, cap {cap}s)"
+    _SAMPLER = None
+    return spec
+
 
 def plan(n: int, block: int, seed: int):
     return generate_sessions(session_count=n, turns_per_session=2,
                              first_segment=FIRST, later_segment=LATER,
-                             generation=GEN, gap_seconds=GAP,
+                             generation=GEN,
+                             gap_seconds=(Distribution("fixed", value=0)
+                                          if _SAMPLER else GAP),
+                             gap_sampler=_SAMPLER,
                              base_seed=seed, block_id=f"n{n}b{block}")
 
 
@@ -70,9 +89,12 @@ def main() -> int:
                    help="noise std as a multiple of the gap distribution's std")
     p.add_argument("--min-gains", default="1,2,3")
     p.add_argument("--noise-seed", type=int, default=20260901)
+    p.add_argument("--gap", default="uniform:1:5",
+                   help="uniform:1:5 (default) or toolmix:<summary.json>:<cap_s>")
     p.add_argument("--output", type=Path)
     args = p.parse_args()
 
+    print(f"gap 법칙: {set_gap(args.gap)}")
     from rbln_ca25_vllm_rbln_0111 import RBLN_CA25_VLLM_RBLN_0111 as D
 
     explore = [int(x) for x in args.explore_seeds.split(",")]
