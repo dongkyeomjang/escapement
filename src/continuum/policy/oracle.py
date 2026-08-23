@@ -236,6 +236,61 @@ def search(
                         evaluations=evaluations, levels=levels, objective=objective)
 
 
+
+def search_independent(
+    descriptor: SubstrateDescriptor,
+    sessions: list[Session],
+    config: SimConfig,
+    *,
+    budget_s: float,
+    levels_per_session: int = 6,
+    objective: str = "busy_s",
+) -> SearchResult:
+    """The bound with joint optimisation removed.
+
+    Each session picks the hold that would be best *if it were the only one
+    holding*, and then every choice is applied together. Full knowledge of the
+    resulting schedule is kept -- what is taken away is the ability to agree.
+
+    The gap between this and ``search`` is therefore the price of coordination
+    alone, which is the one part of the headroom no per-session policy can
+    reach no matter what it knows.
+    """
+    if objective not in OBJECTIVES:
+        raise ValueError(f"unknown objective {objective!r}; expected {OBJECTIVES}")
+    n = len(sessions)
+    zero = tuple(0.0 for _ in range(n))
+    baseline = evaluate(descriptor, sessions, config, zero)
+    if budget_s == 0:
+        return SearchResult(baseline=baseline, best=baseline, delays=zero,
+                            evaluations=1, levels=(0.0,), objective=objective)
+    levels = tuple(budget_s * i / (levels_per_session - 1)
+                   for i in range(levels_per_session))
+    cost = lambda o: getattr(o, objective)  # noqa: E731
+    evaluations = 1
+    chosen = []
+    for i in range(n):
+        best_lv, best_c = 0.0, cost(baseline)
+        for lv in levels:
+            if lv == 0.0:
+                continue
+            d = zero[:i] + (lv,) + zero[i + 1:]
+            out = evaluate(descriptor, sessions, config, d)
+            evaluations += 1
+            if cost(out) < best_c - 1e-12:
+                best_lv, best_c = lv, cost(out)
+        chosen.append(best_lv)
+    delays = tuple(chosen)
+    best = evaluate(descriptor, sessions, config, delays)
+    evaluations += 1
+    if cost(best) > cost(baseline):
+        # Applying independently chosen holds together can be worse than
+        # holding nothing. That is the result, not a failure: report it.
+        pass
+    return SearchResult(baseline=baseline, best=best, delays=delays,
+                        evaluations=evaluations, levels=levels, objective=objective)
+
+
 def decompose(result: SearchResult) -> dict[str, float]:
     """Attribute the device-time change to the channels it can come through.
 

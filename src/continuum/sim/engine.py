@@ -24,7 +24,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import itertools
 
-from ..policy.lookahead import Lookahead, PeerView
+from ..policy.lookahead import Context, Informed, Lookahead, PeerView
 from ..policy.online import ReturnPolicy, ReturnState
 from ..substrate.descriptor import SubstrateDescriptor
 from ..workload.agentic import Session
@@ -51,6 +51,14 @@ class SimConfig:
     the immediate-return behaviour every earlier task measured, bit for bit."""
 
     return_budget_s: float = 0.0
+    reveal_peers: bool = False
+    """Hand the policy exact peer ready times even with no noisy clock set.
+    An information probe, like ``peer_clock``; never used by anything measured."""
+
+    reveal_generation: bool = False
+    """Hand the policy how long each running request will still decode for.
+    The other half of the information decomposition, and equally undeployable."""
+
     peer_clock: object | None = None
     """Supplies the predicted tool-gap durations a lookahead policy is told.
 
@@ -304,6 +312,23 @@ def simulate(
     budget = config.return_budget_s
     clock = config.peer_clock
 
+    def _context(now: float, me: _Pending) -> Context:
+        """Both information channels, each supplied only if switched on.
+
+        ``running_remaining_s`` is estimated at the current concurrency: the
+        step cost changes as the batch drains, so this is what a policy could
+        work out for itself, not a privileged exact answer.
+        """
+        peers = _peer_view(now, me).offsets_s if config.peer_clock is not None \
+            or config.reveal_peers else None
+        remaining = None
+        if config.reveal_generation:
+            step = descriptor.step_time_s(len(running)) if running else 0.0
+            remaining = tuple(r["remaining"] * step for r in running)
+        return Context(peer_offsets_s=peers, running_remaining_s=remaining,
+                       prefill_s=prefill_model.prefill_s(me.prompt_tokens),
+                       generation_tokens=me.generation_tokens)
+
     def _peer_view(now: float, me: _Pending) -> PeerView:
         """When the other sessions' tool gaps are predicted to finish.
 
@@ -347,7 +372,10 @@ def simulate(
                     continue
                 st = ReturnState(now_s=now, in_flight=in_flight, held=held,
                                  waited_s=waited, budget_s=budget)
-                if isinstance(policy, Lookahead):
+                if isinstance(policy, Informed):
+                    if policy.release_with_context(st, _context(now, p)):
+                        release.append(p)
+                elif isinstance(policy, Lookahead):
                     if policy.release_with_view(st, _peer_view(now, p)):
                         release.append(p)
                 elif policy.release(st):
@@ -375,8 +403,12 @@ def simulate(
                     candidates.append(p.ready_s + budget)
                     st = ReturnState(now_s=now, in_flight=len(running) + len(waiting),
                                      held=1, waited_s=now - p.ready_s, budget_s=budget)
-                    nxt = (policy.next_check_with_view(st, _peer_view(now, p))
-                           if isinstance(policy, Lookahead) else policy.next_check_s(st))
+                    if isinstance(policy, Informed):
+                        nxt = policy.next_check_with_context(st, _context(now, p))
+                    elif isinstance(policy, Lookahead):
+                        nxt = policy.next_check_with_view(st, _peer_view(now, p))
+                    else:
+                        nxt = policy.next_check_s(st)
                     if nxt is not None and nxt > now + 1e-12:
                         candidates.append(nxt)
         if not candidates:

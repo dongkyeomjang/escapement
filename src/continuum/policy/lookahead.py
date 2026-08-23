@@ -162,3 +162,132 @@ def sigma_log_for_relative_error(gaps: list[float], target_ratio: float, *,
         if hi - lo < tol:
             break
     return (lo + hi) / 2
+
+
+@dataclass(frozen=True)
+class Context:
+    """What a policy is told about the rest of the system.
+
+    ``None`` means the channel is switched off -- not that it is empty. That
+    distinction is the whole point: a decomposition asks what each channel is
+    worth, so a policy denied one must behave as if it never existed rather
+    than as if it reported nothing.
+    """
+
+    peer_offsets_s: tuple[float, ...] | None
+    """Seconds until each peer's tool gap ends. ``None`` = channel off."""
+
+    running_remaining_s: tuple[float, ...] | None
+    """Seconds until each running request stops decoding. ``None`` = channel off."""
+
+    prefill_s: float
+    """What this return's own prefill will cost. The client knows its own
+    prompt, so this is not privileged information."""
+
+    generation_tokens: int
+    """How long this return will decode for. Also the client's own."""
+
+
+class Informed(ReturnPolicy):
+    """Release at the moment that minimises this return's predicted cost.
+
+    The cost has exactly the two terms the substrate charges. Arriving stops
+    every session that is decoding, for the length of the prefill (TASK22), and
+    then the return decodes at a per-token rate set by how wide the batch is
+    (TASK13). Waiting trades one against the other: peers finish, so the stall
+    gets cheaper, and the batch gets narrower, so decoding gets dearer.
+
+        cost(tau) = prefill_s * running(tau)
+                  + generation_tokens * step_cost(k(tau)) / k(tau)
+
+    Which of the two terms the policy can actually see is set by ``Context``.
+    With only peer arrivals it cannot tell that the running batch is draining;
+    with only generation lengths it cannot tell that a cohort is coming. The
+    difference between those runs is what each channel is worth.
+    """
+
+    def __init__(self, *, bucket_sizes: tuple[int, ...],
+                 fixed_s_by_bucket: dict[int, float],
+                 use_peers: bool = True, use_generation: bool = True,
+                 min_saving_s: float = 0.0, prefill_scale: float = 1.0) -> None:
+        if not bucket_sizes:
+            raise ValueError("bucket_sizes must not be empty")
+        if min_saving_s < 0:
+            raise ValueError("min_saving_s must be non-negative")
+        if prefill_scale < 0:
+            raise ValueError("prefill_scale must be non-negative")
+        self.bucket_sizes = tuple(bucket_sizes)
+        self.fixed = dict(fixed_s_by_bucket)
+        self.use_peers = use_peers
+        self.use_generation = use_generation
+        self.min_saving_s = min_saving_s
+        # A client cannot know whether its prefix will still be cached, so the
+        # prefill it is told to expect is the whole prompt. That over-states
+        # the stall for a return that does hit, which tilts the policy toward
+        # waiting. Rather than pick a correction, the scale is a knob tuned on
+        # exploration seeds -- so a negative result cannot be blamed on it.
+        self.prefill_scale = prefill_scale
+        chans = "+".join(
+            c for c, on in (("peers", use_peers), ("gen", use_generation)) if on) or "none"
+        self.name = (f"INFORMED({chans}, min_saving={min_saving_s:g}, "
+                     f"prefill_scale={prefill_scale:g})")
+
+    def _bucket_for(self, n: int) -> int:
+        for b in self.bucket_sizes:
+            if b >= n:
+                return b
+        return self.bucket_sizes[-1]
+
+    def _per_token_s(self, k: int) -> float:
+        k = max(1, k)
+        return self.fixed[self._bucket_for(k)] / k
+
+    def _cost(self, state: ReturnState, ctx: Context, off: float) -> float:
+        if self.use_generation and ctx.running_remaining_s is not None:
+            running = sum(1 for r in ctx.running_remaining_s if r > off)
+        else:
+            running = state.in_flight
+        arrivals = 0
+        if self.use_peers and ctx.peer_offsets_s is not None:
+            arrivals = sum(1 for o in ctx.peer_offsets_s if 0.0 < o <= off)
+        k = running + arrivals + 1
+        return (self.prefill_scale * ctx.prefill_s * running
+                + ctx.generation_tokens * self._per_token_s(k))
+
+    def _candidates(self, state: ReturnState, ctx: Context) -> list[float]:
+        """Moments where the predicted cost can change: nothing between two
+        events can beat the later of them."""
+        remaining = state.budget_s - state.waited_s
+        out = {0.0}
+        if self.use_peers and ctx.peer_offsets_s is not None:
+            out |= {o for o in ctx.peer_offsets_s if 0.0 < o <= remaining}
+        if self.use_generation and ctx.running_remaining_s is not None:
+            out |= {r + 1e-9 for r in ctx.running_remaining_s if 0.0 < r <= remaining}
+        return sorted(out)
+
+    def _best(self, state: ReturnState, ctx: Context) -> tuple[float, float, float]:
+        cands = self._candidates(state, ctx)
+        now_cost = self._cost(state, ctx, 0.0)
+        best_off, best_cost = 0.0, now_cost
+        for off in cands:
+            c = self._cost(state, ctx, off)
+            if c < best_cost - 1e-15:
+                best_off, best_cost = off, c
+        return best_off, best_cost, now_cost
+
+    def release_with_context(self, state: ReturnState, ctx: Context) -> bool:
+        off, cost, now_cost = self._best(state, ctx)
+        if off <= 0.0:
+            return True
+        # A guard against acting on differences smaller than the model's own
+        # resolution. Without it the policy churns on rounding.
+        return (now_cost - cost) < self.min_saving_s
+
+    def next_check_with_context(self, state: ReturnState, ctx: Context) -> float | None:
+        off, cost, now_cost = self._best(state, ctx)
+        if off <= 0.0 or (now_cost - cost) < self.min_saving_s:
+            return None
+        return state.now_s + off
+
+    def release(self, state: ReturnState) -> bool:
+        return True
