@@ -4,17 +4,15 @@
 
 ## 현재 상태
 
-현재 연구 단계: Stage 0, Stage 1a, Stage 1b가 모두 `PASS`했고, [TASK11](TASK11.md)에서 prefix cache hit 단위를 **inner block 128 token**으로 확정했다. [TASK12](TASK12.md)에서 결정 3을 집행해 per-step decoder bucket 관측 patch를 적용·검증했고, [TASK13](TASK13.md)에서 decode step 비용을 `f(bucket) + g(actual)`로 분해했다. [TASK14](TASK14.md)에서 prefix-cache 생존 문턱을 실측하고 [TASK15](TASK15.md)에서 12/12 trial로 재현해 실제 재계산까지 확정했다. [TASK16](TASK16.md)에서 substrate descriptor와 층 태깅 규칙으로 "질문은 클래스, 상수는 인스턴스"를 코드·기록 체계에 구조화했고, [TASK17](TASK17.md)에서 agentic workload generator로 bucket 전이를 처음 관측했다. [TASK18](TASK18.md)에서 per-request 귀속 게이트를 통과하고 [TASK19](TASK19.md)에서 첫 짝 비교를, [TASK20](TASK20.md)에서 44 조합 N/slots sweep을 수행했다. **agentic gap의 utilization 효과는 부호가 바뀐다** — N이 compiled bucket 사이에 끼면(N=6) 오히려 15 % 높고, N=10–12에서 9 % 낮다. [TASK21](TASK21.md)에서 총 gap 시간을 고정하고 분산만 바꿔 재사용률이 움직임을 관측했다(DISPERSED 11/24 vs SYNC 7/24, 반대 방향 0블록이나 동률 1블록으로 `INCONCLUSIVE`). [TASK22](TASK22.md)에서 prefill 배타 실행을 직접 관측해 비용 모형 v2를 세웠고, [TASK23](TASK23.md)에서 **bucket 격자를 재compile로 바꾸는 개입으로 부호 역전의 원인을 확정했다** — bucket 6을 추가하자 N=6의 역전(pooled 1.1504)이 소멸했다(0.9717). [TASK24](TASK24.md)에서 **step 수준 시뮬레이터**를 세워 보정 파라미터 없이 기존 80조합을 재현했고(utilization 평균절대오차 0.0066, pooled ratio 방향 11/11), 닫힌 식이 설명하지 못하던 N=4·N=5 이상치의 기전을 감쇠 경로로 밝혔다. [TASK25](TASK25.md)에서 그 시뮬레이터의 **out-of-sample 예측력이 선등록 게이트를 통과했다** — 측정 전에 commit한 pooled ratio 3개가 최대 오차 0.0040으로 맞았다(허용치 ±0.05). [TASK26](TASK26.md)에서 그 위에 offline oracle을 올려 **반환 시점 재배치에 실질적 headroom이 있음**(ε=0.5 s에 1.2–4.4 %, ε=5 s에 9.7–27.2 %)을 계산했고, 동시에 **utilization이 비용 지표가 아니라는 것**을 확인했다. [TASK27](TASK27.md)에서 그 headroom이 **단순 causal 정책으로는 회수되지 않음**을 계산으로 확정했고, [TASK28](TASK28.md)에서 그 계산이 **실기기에서 재현됐다** — 측정 전 commit한 device time ratio가 확증 구간 2/2에서 허용치 안이며(오차 +0.018·+0.021), 회수율 X는 N=6 −105 %, N=8 −70 %다. headroom은 조정이 아니라 **예지**에서 나온다. [TASK34](TASK34.md)에서 워크로드 통계만으로 고른 compile 구성(`batch_size` 8→16)이 device time을 회수함을 관측했고(확증은 채널 정의 결함으로 보류), **[TASK35](TASK35.md)가 채널을 고쳐 다시 재 N=8에서 확증했다 — X = +9.72 % / +10.07 %(두 채널 합치), 지배 인자가 `batch_size`라는 것도 device 절제로 확인**됐다. **이로써 이 연구 프로그램의 측정 단계는 종료됐다.** [TASK33](TASK33.md)에서 남은 headroom을 정보 축으로 분해해 **절반 이상(중앙 60 %)이 지식으로 살 수 없는 *조율*의 몫**임을 확인하고, 사전 정의된 분기에 따라 **compile-time이 유일 회수 경로**로 확정했다. [TASK32](TASK32.md)에서 arXiv:2511.02230 §4.2의 예측기를 차용해 그 오차가 **문턱을 5.6–9.7배 초과**하고 **표본을 4자릿수 늘려도 줄지 않음**(줄일 수 없는 분산)을 확인했다. [TASK31](TASK31.md)에서 **합성 gap을 실측 tool latency 분포로 교체**해 시뮬레이터가 워크로드 전환을 넘어 전이됨을 확인했고(연속성 `PASS` 3/3), headroom은 남지만(ε=2 s에서 5.0–6.9 %) **반환 시각 정보의 값은 사라짐**을 계산했다. [TASK30](TASK30.md)에서 **예지의 가치를 곡선으로 재** 반환 시각만 알아도 ε ≥ 2 s에서 headroom의 86–88 %(N=6·8)가 회수되고 정확도 문턱 σ*가 gap 표준편차와 같은 자릿수(1.0–1.8 s)임을 계산했다. [TASK29](TASK29.md)에서 기전 3개를 절제해 귀속을 확인했다 — 격자 법칙은 연속 격자에서 1.0000으로 소멸하지만 **GPU cudagraph 격자에서는 소멸하지 않고**, 재사용 절벽의 "개수 문턱"은 시퀀스 단위 FIFO의 산물이며, chunked prefill은 정지를 없애면서 device time을 3–10 % **늘린다**.
+현재 연구 단계: Stage 0, Stage 1a, Stage 1b가 모두 `PASS`했고, [TASK11](TASK11.md)에서 prefix cache hit 단위를 **inner block 128 token**으로 확정했다. [TASK12](TASK12.md)에서 결정 3을 집행해 per-step decoder bucket 관측 patch를 적용·검증했고, [TASK13](TASK13.md)에서 decode step 비용을 `f(bucket) + g(actual)`로 분해했다. [TASK14](TASK14.md)에서 prefix-cache 생존 문턱을 실측하고 [TASK15](TASK15.md)에서 12/12 trial로 재현해 실제 재계산까지 확정했다. [TASK16](TASK16.md)에서 substrate descriptor와 층 태깅 규칙으로 "질문은 클래스, 상수는 인스턴스"를 코드·기록 체계에 구조화했고, [TASK17](TASK17.md)에서 agentic workload generator로 bucket 전이를 처음 관측했다. [TASK18](TASK18.md)에서 per-request 귀속 게이트를 통과하고 [TASK19](TASK19.md)에서 첫 짝 비교를, [TASK20](TASK20.md)에서 44 조합 N/slots sweep을 수행했다. **agentic gap의 utilization 효과는 부호가 바뀐다** — N이 compiled bucket 사이에 끼면(N=6) 오히려 15 % 높고, N=10–12에서 9 % 낮다. [TASK21](TASK21.md)에서 총 gap 시간을 고정하고 분산만 바꿔 재사용률이 움직임을 관측했다(DISPERSED 11/24 vs SYNC 7/24, 반대 방향 0블록이나 동률 1블록으로 `INCONCLUSIVE`). [TASK22](TASK22.md)에서 prefill 배타 실행을 직접 관측해 비용 모형 v2를 세웠고, [TASK23](TASK23.md)에서 **bucket 격자를 재compile로 바꾸는 개입으로 부호 역전의 원인을 확정했다** — bucket 6을 추가하자 N=6의 역전(pooled 1.1504)이 소멸했다(0.9717). [TASK24](TASK24.md)에서 **step 수준 시뮬레이터**를 세워 보정 파라미터 없이 기존 80조합을 재현했고(utilization 평균절대오차 0.0066, pooled ratio 방향 11/11), 닫힌 식이 설명하지 못하던 N=4·N=5 이상치의 기전을 감쇠 경로로 밝혔다. [TASK25](TASK25.md)에서 그 시뮬레이터의 **out-of-sample 예측력이 선등록 게이트를 통과했다** — 측정 전에 commit한 pooled ratio 3개가 최대 오차 0.0040으로 맞았다(허용치 ±0.05). [TASK26](TASK26.md)에서 그 위에 offline oracle을 올려 **반환 시점 재배치에 실질적 headroom이 있음**(ε=0.5 s에 1.2–4.4 %, ε=5 s에 9.7–27.2 %)을 계산했고, 동시에 **utilization이 비용 지표가 아니라는 것**을 확인했다. [TASK27](TASK27.md)에서 그 headroom이 **단순 causal 정책으로는 회수되지 않음**을 계산으로 확정했고, [TASK28](TASK28.md)에서 그 계산이 **실기기에서 재현됐다** — 측정 전 commit한 device time ratio가 확증 구간 2/2에서 허용치 안이며(오차 +0.018·+0.021), 회수율 X는 N=6 −105 %, N=8 −70 %다. headroom은 조정이 아니라 **예지**에서 나온다. [TASK34](TASK34.md)에서 워크로드 통계만으로 고른 compile 구성(`batch_size` 8→16)이 device time을 회수함을 관측했고(확증은 채널 정의 결함으로 보류), **[TASK35](TASK35.md)가 채널을 고쳐 다시 재 N=8에서 확증했다 — X = +9.72 % / +10.07 %(두 채널 합치), 지배 인자가 `batch_size`라는 것도 device 절제로 확인**됐다. **이로써 이 연구 프로그램의 측정 단계는 종료됐다.** [TASK36](TASK36.md)이 그 마지막 미해결 항목 — [TASK35](TASK35.md)의 N=6 채널 보류 — 을 닫았다: 채널 허용차를 절대 잔차까지 담도록 교정해 선등록하고 **전부 신규 seed**로 다시 재 **확증 2/2 `PASS`**를 얻었으며, **원 기준 0.02로도 통과**해 완화에 기대지 않았다. **X의 적용 범위가 N ∈ {6, 8}로 확장**되되 값은 단일 값이 아니라 **+2.1 % ~ +10.1 % 구간**이다. [TASK37](TASK37.md)에서 논문 조립 산출물 7종(서사·주장 매핑·그림 8종·related work·한계·초록·타깃)을 만들었다. [TASK33](TASK33.md)에서 남은 headroom을 정보 축으로 분해해 **절반 이상(중앙 60 %)이 지식으로 살 수 없는 *조율*의 몫**임을 확인하고, 사전 정의된 분기에 따라 **compile-time이 유일 회수 경로**로 확정했다. [TASK32](TASK32.md)에서 arXiv:2511.02230 §4.2의 예측기를 차용해 그 오차가 **문턱을 5.6–9.7배 초과**하고 **표본을 4자릿수 늘려도 줄지 않음**(줄일 수 없는 분산)을 확인했다. [TASK31](TASK31.md)에서 **합성 gap을 실측 tool latency 분포로 교체**해 시뮬레이터가 워크로드 전환을 넘어 전이됨을 확인했고(연속성 `PASS` 3/3), headroom은 남지만(ε=2 s에서 5.0–6.9 %) **반환 시각 정보의 값은 사라짐**을 계산했다. [TASK30](TASK30.md)에서 **예지의 가치를 곡선으로 재** 반환 시각만 알아도 ε ≥ 2 s에서 headroom의 86–88 %(N=6·8)가 회수되고 정확도 문턱 σ*가 gap 표준편차와 같은 자릿수(1.0–1.8 s)임을 계산했다. [TASK29](TASK29.md)에서 기전 3개를 절제해 귀속을 확인했다 — 격자 법칙은 연속 격자에서 1.0000으로 소멸하지만 **GPU cudagraph 격자에서는 소멸하지 않고**, 재사용 절벽의 "개수 문턱"은 시퀀스 단위 FIFO의 산물이며, chunked prefill은 정지를 없애면서 device time을 3–10 % **늘린다**.
 
-가장 최근 TASK: [TASK35](TASK35.md) — compile-time 구성 이득의 최종 확증 측정 (`PARTIAL` — N=8 확증 `PASS`, N=6 채널 보류)
+가장 최근 TASK: [TASK37](TASK37.md) — 논문 조립: 서사·주장 매핑·그림·related work·초록 (`DONE`)
 
-최근 완료 TASK: [TASK33](TASK33.md) — 현실 headroom의 정보 분해 (`DONE`)
-
-**측정 단계 종료.** [TASK35](TASK35.md)가 이 프로그램의 마지막 측정이며, 다음 단계는 **논문 조립**이다([결정 5](#결정-5--시스템-명칭-충돌)의 명칭 변경 포함). 미해결 항목은 아래 [후속 연구](#후속-연구) 절에 정리했다.
+**측정 단계 종료.** [TASK35](TASK35.md)가 이 프로그램의 마지막 본 측정이고 [TASK36](TASK36.md)이 그 미해결 확증 1건을 닫는 후속 측정이었다. **논문 조립은 [TASK37](TASK37.md)에서 뼈대까지 완료**됐고, 남은 것은 본문 집필과 **사용자 판정 1건**([결정 5](#결정-5--시스템-명칭-충돌)의 시스템 명칭)이다. 미해결 항목은 아래 [후속 연구](#후속-연구) 절에 정리했다.
 
 "가장 최근 TASK"는 번호가 가장 큰 TASK다. 그 TASK의 상태가 `BLOCKED`, `PARTIAL`, `FAILED`, `INVALID` 중 하나여서 최근 진척을 대표하지 못할 때만 아래에 "최근 완료 TASK"(가장 번호가 큰 `DONE` TASK)를 별도로 한 줄 추가한다. 두 줄이 같은 TASK를 가리키면 한 줄만 남긴다.
 
-현재 주요 blocker: 없다. 미해결 사용자 결정도 없다. Stage 2와 Track A는 blocker가 아니라 아직 실행하지 않은 상태다.
+현재 주요 blocker: 없다. **미해결 사용자 결정은 1건이다 — [결정 5](#결정-5--시스템-명칭-충돌)의 시스템 명칭 판정.** Stage 2와 Track A는 blocker가 아니라 아직 실행하지 않은 상태다.
 
 **substrate 상태 주의**: 이 host의 `vllm-rbln 0.11.1`은 [TASK12](TASK12.md)의 observation-only patch가 **적용된 상태**다 (`model_base.py` SHA256 `70942d16…`). Git이 추적하지 않으므로 모든 측정 run은 `bash patches/vllm_rbln-0.11.1/apply.sh status` 출력을 artifact에 provenance로 남긴다.
 
@@ -31,6 +29,7 @@ Stage 1 이후 설계에 제약이 되는 관측 (근거 [TASK06](TASK06.md), [T
 - **격자 정렬 법칙은 GPU에서도 소멸하지 않을 것으로 계산된다** ([TASK29](TASK29.md), **모형 진술**). vLLM의 cudagraph capture size 기본 목록은 `max_num_seqs=8`에서 `[1,2,4,8,16]`(`vllm/config/compilation.py:676–690`)이고 유효 구간이 NPU 격자와 같아 pooled ratio가 동일하다. 연속 격자에서만 1.0000으로 소멸한다. **GPU 대비에서 재야 할 축은 accelerator가 아니라 `max_num_seqs`다.**
 - **prefill 배타 실행은 순수 비용이 아니라 일부는 batching 보조금이다** ([TASK29](TASK29.md), **모형 진술**). chunked로 바꾸면 정지 항이 0이 되지만 device time이 3–10 % **늘어난다** — 배타 실행이 decoder를 멈춰 세워 강제 동기화시키고 재개 시 더 넓은 batch를 만들고 있었다.
 - **compile 구성 선택이 device time을 9.7–10.1 % 회수하며(N=8 확증, 두 채널 합치), 지배 인자는 bucket 격자가 아니라 `batch_size`(= KV pool 크기)다** ([TASK35](TASK35.md), 선등록 채널로 확증·device 절제로 확인). arm 절제에서 `batch_size`만 바꾼 구성이 +8.25 %를 내고 bucket 격자 정합이 +1.5 %p를 더한다. **두 arm의 prefill비가 실측에서도 동일**해(0.678/0.678) 차이를 decode 항 하나로 귀속할 수 있다. `batch_size`가 `kvcache_num_blocks`를 정하고([TASK08](TASK08.md)) 그것이 캐시 생존을, 캐시 생존이 prefill 재계산을 정한다. sim 귀속에서 batch만 +7.21 %, bucket 정제만 +0.71 %다. **구성 선택은 gap 분포에 둔감하고 동시 세션 수 상한에만 반응하므로, 재구성 판단에 다시 재야 할 통계는 그것 하나다.**
+- **`batch_size` 지배는 무조건이 아니라 조건부다** ([TASK36](TASK36.md), 신규 seed N=6). 이득의 크기는 **`BASE`가 잃는 캐시의 양**에 비례한다. `BASE`가 이미 17/18을 재사용하는 plan에서는 `batch_size`만 바꾼 arm의 이득이 **+0.59 %로 동치 밴드 안**이고, 이득의 거의 전부(+1.52 %p)가 bucket 격자에서 온다. **[TASK35](TASK35.md)의 "지배 인자는 `batch_size`"는 "지배 인자는 회수 가능한 캐시 손실이며 그것을 사는 레버가 `batch_size`"로 읽는다.** 시뮬레이터가 이 역전을 측정 전에 예측했다. 또한 격자 정합은 교환이다 — `TUNED`는 `5,6 → 6`으로 padding을 줄이면서 `2 → 4`로 늘린다.
 - **현실 headroom의 절반 이상은 지식이 아니라 조율의 몫이다** ([TASK33](TASK33.md), 계산). 전지적 지식으로 세션별 독립 결정을 내리면 headroom의 27–51 %만 회수되고 나머지 49–73 %가 사라진다. **per-session client 정책은 원리적으로 그 부분에 닿을 수 없으며**, 조율이 가능한 위치는 전 세션을 보는 server 측 scheduler이거나 조율을 설계 시점에 굳히는 **compile-time 구성**이다.
 - **tool 지속시간의 예측 오차는 줄일 수 없는 분산이 지배한다** ([TASK32](TASK32.md)). 도구별 표본을 10 → 100,000으로 늘려도 오차 std가 8.4 → 10.5 s로 개선되지 않는다. `Bash`가 27 ms일지 300 s일지는 명령이 정하고 **도구 이름은 그것을 담지 않는다.** 평균의 상한(`B(δ)`)과 점추정(`μ̂`)의 오차 std가 같으므로(10.196 대 10.185) 더 나은 추정자가 아니라 **더 나은 조건화**가 필요하다.
 - **예지의 가치는 워크로드에 종속이며 이식되지 않는다** ([TASK31](TASK31.md), 계산). 실측 tool latency 분포에서는 반환 시각을 정확히 알아도 이득이 −1.20 %~+0.99 %이고 σ\*가 정의되지 않는다. 동료 도착 기회는 두 워크로드가 비슷하므로(ε=2 s에서 73.6 대 81.9 %) **기회가 아니라 그 기회의 값이 없다.** headroom 자체는 남는다(ε=2 s에서 5.0–6.9 %).
@@ -54,7 +53,7 @@ Stage 1 이후 설계에 제약이 되는 관측 (근거 [TASK06](TASK06.md), [T
 
 환경 provenance `UNKNOWN` (`PARTIAL` 해소): 환경 문서 [NPU_ENVIRONMENT.md](../environment/NPU_ENVIRONMENT.md)의 hostname은 `rebel-pcie-0123`이지만 현재 관찰 hostname은 `atom-max8`이다. 두 이름이 같은 host인지, 재설치·rename·다른 장비인지는 여전히 `UNKNOWN`이다. [TASK05](TASK05.md)의 read-only 재-inventory에서 hostname을 제외한 모든 대조 항목(visible ID 수 32, card grouping 4×8, device memory 15.7 GiB, NUMA 분할, topology distance 4/8/12, RSD group 0)이 일치했으므로 해당 문서의 hardware 기술은 현재 host에서 실무상 사용할 수 있다. 다만 값 일치는 장비 동일성의 증거가 아니므로 provenance `UNKNOWN`은 유지한다.
 
-다음 권장 작업: **논문 조립**. [TASK35](TASK35.md)로 이 연구 프로그램의 **측정 단계가 종료**됐다. 논문 조립은 [결정 5](#결정-5--시스템-명칭-충돌)의 시스템 명칭 변경을 포함한다. 남은 미해결 항목은 [후속 연구](#후속-연구) 절에 9개로 정리했으며 **사용자 지시 없이 착수하지 않는다.** GPU 실측은 [결정 4](#결정-4--gpua6000-교차검증-착수-시점) 개정에 따라 **조건부 이연** 상태이고 Advisor의 최소 범위 지시문 발행 전까지 GPU 서버 관련 작업을 시작하지 않는다. 측정이 포함되는 후속 작업은 선등록 후 진행한다.
+다음 권장 작업: **논문 본문 집필**. 뼈대는 [TASK37](TASK37.md)이 만들었고([paper/](../../paper/)), 집필 착수 전에 **[결정 5](#결정-5--시스템-명칭-충돌)의 시스템 명칭 판정**이 필요하다. 남은 미해결 항목은 [후속 연구](#후속-연구) 절에 9개로 정리했으며 **사용자 지시 없이 착수하지 않는다.** GPU 실측은 [결정 4](#결정-4--gpua6000-교차검증-착수-시점) 개정에 따라 **조건부 이연** 상태이고 Advisor의 최소 범위 지시문 발행 전까지 GPU 서버 관련 작업을 시작하지 않는다. 측정이 포함되는 후속 작업은 선등록 후 진행한다.
 
 ## Task Index
 
@@ -81,6 +80,8 @@ Stage 1 이후 설계에 제약이 되는 관측 (근거 [TASK06](TASK06.md), [T
 | [TASK20](TASK20.md) | DONE | N/slots sweep 본 측정 | 44 조합 전부 `VALID`(`INVALID` 0). **저하 확정은 N=10·12뿐**(pooled 0.910·0.919). N=6은 3블록 전부 **반대 방향**(pooled 1.150) — gap이 batch를 padding 0인 크기로 쪼개 utilization을 올린다. N=8은 5블록 중 4블록만 저하 방향이라 선등록 기준 미달. 재사용률은 N 증가에 단조 감소해 N≥12에서 0. **TASK13 비용 모델이 다중 세션으로 전이되지 않는다**(예측/실측 0.86→0.57). |
 | [TASK21](TASK21.md) | DONE | gap 분산 → 재사용 메커니즘 검증 | 총 gap 시간을 소수점까지 고정하고(P2) 분산만 조작했다. DISPERSED 11/24 vs SYNC 7/24이고 **반대 방향 블록은 0**이나 동률 1블록 때문에 선등록 기준상 `INCONCLUSIVE`다. 도착 순서 서명이 6개 arm-block 중 5개에서 확인됐고 **DISPERSED는 3/3 블록에서 가장 이른 두 도착이 성공**했다. eviction OB 열의 중간 8개가 전 조합에서 FIFO였다. |
 | [TASK35](TASK35.md) | PARTIAL | compile-time 구성 이득의 최종 확증 측정 | 채널 A′(`[BUCKET]` × [TASK13](TASK13.md) decode + 계산 token × [TASK22](TASK22.md) prefill)를 **측정 전에 고정**하고 신규 seed·3 arm·27조합으로 다시 쟀다. **N=8 확증 `PASS`** — 선등록 0.9101/0.8971 대 실측 0.9175/0.9028(오차 +0.0074/+0.0058), **X = +8.25 %(batch-only) / +9.72 %(tuned)**, 채널 B와 0.0008–0.0035 합치. **N=6은 채널 차 0.021–0.024로 보류**(원인: A′가 빠뜨리는 고정 오버헤드 1.2–1.7 s가 N=6에서 전체의 6.1 %). **부속 절제 `PASS` 2/2** — `③<②<1`이고 ③−②가 예측 +1.45/+1.30 %p 대 실측 +1.34/+1.47 %p로 맞아 **"지배 인자는 `batch_size`"가 device에서 확인**됐다. 두 arm의 prefill비가 실측에서도 동일(0.898/0.898, 0.678/0.678). compile 5번째 점 −0.7 %/+0.6 %, 사상표 4/4. 27/27 `VALID`. |
+| [TASK36](TASK36.md) | DONE | N=6 확증 재측정: 교정된 채널 요건으로 보류 해소 | 채널 허용차를 `τ(N) = max(0.02, r_BASE/B_BASE)`로 교정해 **측정 전에** 선등록하고(상한 유도 포함, [TASK35](TASK35.md) 자료 소급 검증 완료), 전부 신규 seed `20261100`으로 N=6 × 3 arm × 3블록을 다시 쟀다. **확증 `PASS` 2/2** — 선등록 0.9874/0.9713 대 실측 0.9941/0.9789(오차 +0.0067/+0.0076). **채널 차 0.0001/0.0063으로 원 기준 0.02까지 통과해 완화에 기대지 않았다.** **X = +0.59 %(batch-only) / +2.11 %(tuned)**, 채널 B로도 +0.60/+2.74 %. **적용 범위가 N ∈ {6, 8}로 확장되되 X는 +2.1 %~+10.1 % 구간**이다. 부속 절제 `PASS`(③<②<1, ③−② 실측 +1.52 %p 대 예측 +1.61 %p)이나 **두 항의 상대 크기가 뒤집혀** `batch_size` 지배가 **조건부**임이 드러났다 — 이 seed의 `BASE`는 이미 17/18을 재사용한다. 시뮬레이터가 그 역전을 미리 예측했다. 재compile 0회, 9/9 `VALID`. |
+| [TASK37](TASK37.md) | DONE | 논문 조립: 서사·주장 매핑·그림·related work·초록 | 측정 없이 [paper/](../../paper/) 산출물 7종을 만들었다. 3막 서사([OUTLINE.md](../../paper/OUTLINE.md)), 주장 41개의 근거 TASK·층 태그·그림 매핑과 **`stack`→`class` 오독 전수 점검(위험 10건 식별·처리 지정)** ([CLAIMS.md](../../paper/CLAIMS.md)), **그림 8종 SVG**와 출처 경로([figures/](../../paper/figures/)), 문제 분류학 기반 related work([RELATED.md](../../paper/RELATED.md)), 한계 9항, 국·영문 초록([ABSTRACT.md](../../paper/ABSTRACT.md)), 투고 타깃 3개([VENUES.md](../../paper/VENUES.md)). **arXiv:2511.02230의 이름이 v4에서 CacheTTL로 바뀌었다가 v6에서 다시 Continuum으로 돌아와 명칭 충돌은 여전히 살아 있다.** 2026 인접 결과 7건을 재확인했고 그중 ConServe만이 같은 방향의 독립 증거다. 명칭 후보 5개는 [결정 5](#결정-5--시스템-명칭-충돌)에 기입, **판정은 사용자**. |
 | [TASK34](TASK34.md) | SUPERSEDED | 워크로드 통계 기반 compile 구성의 실기기 검증 | 구성 공간 2,077개를 sim으로 탐색해 `(1,4,6,8,10,16)`·`batch_size=16`을 고르고 재compile 후 18조합 짝 비교했다. **X = device time 7.4 % 회수**(확증 구간 N ∈ {6,8}, 모형 무의존 채널), N=10에서 12.6 %. 회수의 지배 인자는 bucket 격자가 아니라 **`batch_size`, 곧 KV pool 크기**다(sim 귀속 +7.21 % 대 +0.71 %). 실측 기전도 예측대로 prefill이다(prefill비 0.71–0.88, decode비 0.94–0.99). **다만 선등록한 채널 A가 decode만 세어 이 개입의 주효과를 볼 수 없었고, 채널 일치 요건에 걸려 확증 판정을 보류했다.** compile 비용은 [TASK10](TASK10.md) 모형과 +1.7 % / +0.7 %로 맞았고 사상표 5/5 일치. 구성 선택은 gap 분포에 둔감하고 **부하 상한에만 반응**한다. |
 | [TASK33](TASK33.md) | DONE | 현실 headroom의 정보 분해 | oracle 지식을 5수준(전지 / 반환 시각 / 생성 길이 / 둘 다 / **전지·독립**)으로 제한해 각 축의 도달 이득을 계산했다. **조율의 몫 `(a)−(e)`가 headroom의 중앙 60 %(49–73 %)** — 전지적 지식을 줘도 세션별로 따로 결정하면 잃는 부분이며 **per-session runtime 정책은 원리적으로 닿을 수 없다.** 남은 40 %도 실제 채널로는 안 닿는다(`(b)(c)(d)` 최대 +1.16 %, `(e)` 0.54–4.54 %). 사전 정의 분기에 따라 **compile-time이 유일 회수 경로**(9칸 중 1칸만 절반 초과). 정책 파라미터를 채널에 유리하게 전수 튜닝하고도 그렇다 — 탐색 seed 4.32 %가 평가 seed −0.14 %가 됐다. |
 | [TASK32](TASK32.md) | DONE | CacheTTL 예측기 차용과 정확도 실측 | arXiv:2511.02230 §4.2의 online 예측기(전역·도구별 mean/std + empirical Bernstein 상한, 3단 fallback)를 재현해 200,000 호출 열에 돌렸다. **최종 Gate `FAIL`** — 수렴 후 오차 std 10.19 s로 σ\*(1.06–1.82 s)를 **5.6–9.7배 초과**한다. **오차가 관측 수와 함께 줄지 않는다**(표본 10 → 100,000에서 std 8.4 → 10.5 s) — 줄일 수 없는 분산이며 더 나은 추정자로 풀리지 않는다. 논문의 `B(δ)`와 점추정 `μ̂`가 실질적으로 같다(10.196 대 10.185) — **평균을 아무리 잘 추정해도 개별 draw는 못 맞힌다.** 도구별로는 `Read` 0.46 s·`apply_patch` 1.50 s가 문턱 안이나 `Bash`·`write_stdin`(호출의 31 %)이 16–18 s다. |
@@ -98,15 +99,32 @@ Stage 1 이후 설계에 제약이 되는 관측 (근거 [TASK06](TASK06.md), [T
 
 ## 사용자 결정 대기
 
-이 절은 agent가 임의로 진행할 수 없고 사용자 판정이 필요한 결정의 단일 출처다. 현재 미해결 항목은 없다. 각 항목은 결정 ID, 질문, 선택지, 선택지별 근거·비용·미지수, 권고안, 관련 TASK를 갖는다. 권고안은 제안일 뿐이며 판정은 사용자가 한다. 결정이 내려지면 항목을 "해소됨"으로 표시하고 근거 TASK를 링크한다.
+이 절은 agent가 임의로 진행할 수 없고 사용자 판정이 필요한 결정의 단일 출처다. **현재 미해결 항목은 1건이다 — [결정 5](#결정-5--시스템-명칭-충돌)의 시스템 명칭 판정.** 각 항목은 결정 ID, 질문, 선택지, 선택지별 근거·비용·미지수, 권고안, 관련 TASK를 갖는다. 권고안은 제안일 뿐이며 판정은 사용자가 한다. 결정이 내려지면 항목을 "해소됨"으로 표시하고 근거 TASK를 링크한다.
 
 ### 결정 5 — 시스템 명칭 충돌
 
-- 상태: `해소됨` — **논문 조립 단계에서 시스템 명칭을 변경한다. repo 개명은 지금 하지 않는다** (2026-08-22)
-- 사유: Berkeley의 동명 시스템 **Continuum**(arXiv 2511.02230)이 존재한다. 이름이 겹친 채로 투고하면 선행 시스템과 혼동되고, 검색·인용에서 이 연구가 그쪽에 묻힌다
+- 상태: **`사용자 결정 대기`** — 방침(개명한다)은 2026-08-22에 해소됐고, **어느 이름으로 갈지가 미해결**이다. [TASK37](TASK37.md)이 후보 5개와 충돌 검색 결과를 아래에 제시한다. **판정은 사용자가 한다.**
+- 사유: Berkeley의 동명 시스템 **Continuum**(arXiv:2511.02230)이 존재한다. 이름이 겹친 채로 투고하면 선행 시스템과 혼동되고, 검색·인용에서 이 연구가 그쪽에 묻힌다
+- **충돌 재확인 ([TASK37](TASK37.md), 2026-08-24)**: 그 논문의 시스템 이름은 v1–v3 `Continuum` → **v4 `CacheTTL`** → v5·**v6(현재, 2026-05-25) `Continuum`** 으로 되돌아왔다. ICLR 2026 *Lifelong Agents* workshop 등재 제목도 `Continuum`이다. **따라서 충돌은 해소되지 않았고 개명 방침은 유효하다.**
 - 적용 범위: **논문 본문·시스템 이름·figure 라벨.** 저장소 경로(`/home/rebel/continuum-npu`), Python package 이름(`src/continuum/`), 기존 TASK 문서의 서술은 **그대로 둔다** — 지금 개명하면 [TASK01](TASK01.md) 이래의 artifact path와 재현 정보가 전부 어긋난다
-- 시점: 논문 조립을 시작할 때. **그 전까지 이 항목은 기록으로만 유지한다**
-- 후속: 명칭 확정 시 이 절에 새 이름과 확정 날짜를 추가한다
+- 시점: **지금.** 논문 본문 집필 착수 전에 확정해야 초록·그림 라벨·arXiv 제출 제목이 한 번에 정해진다
+- 후속: 명칭 확정 시 이 절에 새 이름과 확정 날짜를 추가하고, [paper/ABSTRACT.md](../../paper/ABSTRACT.md)의 `<SYSTEM>` 자리를 채운다
+
+**후보와 충돌 검색 결과** (검색 시각 2026-08-24. `Continuum` 계열은 배제했다)
+
+| # | 후보 | 이름의 근거 | 충돌 검색 결과 | 위험 |
+|---|---|---|---|---|
+| **1 (권고)** | **Escapement** | 시계의 탈진기 — **연속적인 도착 과정을 이산 tick으로 바꾸는 기구**다. 이 연구의 중심이 반환 도착 과정과 이산 batch 격자의 정렬이므로 은유가 기전과 정확히 맞는다 | LLM serving·ML systems·데이터 인프라 어디에서도 동명 시스템을 찾지 못했다 | **낮음** |
+| 2 | **Formwork** | 거푸집 — **붓기 전에 형태를 정한다.** compile 시점에 조율을 굳힌다는 처방의 은유 | ML/LLM 분야 충돌 없음. 다만 인접 SW에 동명 제품이 있다(의료기기 eQMS `Formwork`, 건설 formwork 설계 SW 다수) | 중간 |
+| 3 | **Slipform** | 미끄럼 거푸집 — 위와 같은 은유이고 이름이 더 희소하다 | 충돌을 찾지 못했다 | **낮음** |
+| 4 | **Quench** | 담금질 — **구조를 한순간에 굳힌다.** compile-time 고정의 은유 | LLM serving 충돌 없음. 다만 일반 영단어라 검색 변별력이 낮고, ML에서 annealing 계열 용어와 혼동될 수 있다 | 중간 |
+| 5 | ~~**Girder**~~ | 거더 — 하중을 한 곳에서 받는 구조재 | **충돌 확인** — Kitware의 데이터 관리 플랫폼 `Girder`(github.com/girder/girder, PyPI `girder`)가 널리 쓰인다 | **높음 · 비권고** |
+
+**검색에서 배제한 이름과 이유**: `Trellis`(Microsoft TRELLIS 3D 생성 모델, Trellis Data, Trellis AI(YC), interlocklabs/trellis LLM DAG — 충돌 다수), `Kiln`(Kiln AI(kiln.tech, github.com/Kiln-AI/Kiln) LLM 툴링, 그리고 `gahingwoo/kiln`은 **NPU에서 LLM을 돌리는 프로젝트**라 이중으로 위험), `Cadence`(Cadence Design Systems), `Bedrock`(Amazon Bedrock), `Lattice`(과포화), `Anneal`(ML 용어와 충돌).
+
+**권고: 1. Escapement.** 충돌이 없고, 이름이 기전을 직접 가리키며(연속 도착 → 이산 격자), 검색에서 이 연구가 유일하게 잡힌다. 다만 발음·철자가 길다는 단점이 있으며 그 점이 걸리면 **3. Slipform**이 같은 위험도의 짧은 대안이다.
+
+권고는 제안일 뿐이며 판정은 사용자가 한다.
 
 ### 결정 4 — GPU(A6000) 교차검증 착수 시점
 
@@ -276,6 +294,8 @@ Track A를 진행할 의사가 있다면 승인을 권고한다. 변경 규모�
 - TASK29에서 기전 3개를 절제해 각 결과의 귀속을 확인했다 — 개별 관측에서 **substrate 성질과 결과의 인과 사슬**로 넘어간 결과이며, GPU 실측의 최소 범위를 생존 곡선 1건으로 좁혔다.
 - TASK06에서 [STAGE0_PREREG.md](STAGE0_PREREG.md)로 판정 기준을 선등록한 뒤 Stage 0를 실행해 `PASS` 판정했다. `Qwen/Qwen3-4B` revision `1cfa9a72…`를 download(7.507 GiB / 66.8 s)하고 `--batch_size 1 --max_seq_len 8192 --num_devices 4`로 compile(165 s / 9.083 GiB)한 뒤 단일 inference(input 12 token, output 64 token, e2e 0.702 s)를 수행했다.
 - TASK07에서 모든 작업 종료 시 GitHub push 여부를 사용자에게 확인하는 workflow를 도입했다.
+- TASK36에서 판정 기준을 교정해 선등록하고 신규 seed로 다시 재 마지막 미해결 확증을 닫았다 — **교정된 기준에 기대지 않고 원 기준으로도 통과**했고, 동시에 `batch_size` 지배가 조건부임을 드러낸 결과다.
+- TASK37에서 36개 TASK를 논문 뼈대로 조립했다 — 모든 주장을 근거 TASK·층 태그·그림으로 잇고 인스턴스 상수가 클래스 사실로 새어 나갈 지점 10곳을 사전에 식별한 결과다.
 
 ## 진행 중 또는 BLOCKED인 작업
 
@@ -289,7 +309,7 @@ Track A를 진행할 의사가 있다면 승인을 권고한다. 변경 규모�
 
 ## 핵심 연구 흐름
 
-Clean-room migration 및 환경 감사 → TASK01 연구 기록 체계 → TASK02 Stage 0 사전 검증(`BLOCKED`) → TASK03 작업 종료 commit workflow → TASK04 workflow 문서 개정 → TASK05 후보 model 조사·환경 재-inventory → TASK06 Stage 0 single inference(`PASS`) → TASK07 작업 종료 push 확인 workflow → TASK08 compile 파라미터·KV accounting source 조사 → TASK09 Stage 1a serving bring-up(`PASS`) → TASK10 Stage 1b multi-bucket compile·동시성(`PASS`) → TASK11 prefix cache hit 경계 확정 → TASK12 decoder bucket 관측 patch 적용·검증 → TASK13 decode step 비용 모형 분해 → TASK14 prefix-cache 생존 문턱 실측 → TASK15 절벽 재현·재계산 attribution 확정 → TASK16 substrate descriptor·층 태깅 → TASK17 agentic workload generator·bucket 전이 관측 → TASK18 per-request 귀속 게이트 통과 → TASK19 AGENTIC vs CONVENTIONAL 짝 비교 파일럿 → TASK20 N/slots sweep 본 측정 → TASK21 gap 분산 메커니즘 검증 → TASK22 prefill 배타 실행 검증·비용 모델 v2 → TASK23 bucket 격자 정렬 법칙 개입 검증 → TASK24 step 수준 시뮬레이터 구축 → TASK25 시뮬레이터 out-of-sample 검증(`PASS`) → TASK26 offline oracle bound → TASK27 causal 정책 평가 → TASK28 정책 실기기 검증(`PASS`) → TASK29 기전 절제 분석 → TASK30 예지 가치 곡선 → TASK31 현실 워크로드 전환 → TASK32 예측기 차용(`FAIL`) → TASK33 headroom 정보 분해 → TASK34 compile 구성 정책 → TASK35 최종 확증(N=8 `PASS`) → **측정 단계 종료** → 논문 조립
+Clean-room migration 및 환경 감사 → TASK01 연구 기록 체계 → TASK02 Stage 0 사전 검증(`BLOCKED`) → TASK03 작업 종료 commit workflow → TASK04 workflow 문서 개정 → TASK05 후보 model 조사·환경 재-inventory → TASK06 Stage 0 single inference(`PASS`) → TASK07 작업 종료 push 확인 workflow → TASK08 compile 파라미터·KV accounting source 조사 → TASK09 Stage 1a serving bring-up(`PASS`) → TASK10 Stage 1b multi-bucket compile·동시성(`PASS`) → TASK11 prefix cache hit 경계 확정 → TASK12 decoder bucket 관측 patch 적용·검증 → TASK13 decode step 비용 모형 분해 → TASK14 prefix-cache 생존 문턱 실측 → TASK15 절벽 재현·재계산 attribution 확정 → TASK16 substrate descriptor·층 태깅 → TASK17 agentic workload generator·bucket 전이 관측 → TASK18 per-request 귀속 게이트 통과 → TASK19 AGENTIC vs CONVENTIONAL 짝 비교 파일럿 → TASK20 N/slots sweep 본 측정 → TASK21 gap 분산 메커니즘 검증 → TASK22 prefill 배타 실행 검증·비용 모델 v2 → TASK23 bucket 격자 정렬 법칙 개입 검증 → TASK24 step 수준 시뮬레이터 구축 → TASK25 시뮬레이터 out-of-sample 검증(`PASS`) → TASK26 offline oracle bound → TASK27 causal 정책 평가 → TASK28 정책 실기기 검증(`PASS`) → TASK29 기전 절제 분석 → TASK30 예지 가치 곡선 → TASK31 현실 워크로드 전환 → TASK32 예측기 차용(`FAIL`) → TASK33 headroom 정보 분해 → TASK34 compile 구성 정책 → TASK35 최종 확증(N=8 `PASS`) → **측정 단계 종료** → TASK36 N=6 재확증(`PASS`) → TASK37 논문 조립 → **논문 본문 집필** (명칭 판정 대기)
 
 Stage 0–2 observation baseline 전에는 scheduler policy, KEEP/OFFLOAD/RECOMPUTE 또는 host/peer KV parking을 구현하지 않는다.
 
@@ -314,18 +334,19 @@ Legacy GPU 연구 문서는 `docs/legacy/TASK25.md`, `TASK27.md`, `TASK29.md`, `
 
 ## 후속 연구
 
-**이 연구 프로그램의 측정 단계는 [TASK35](TASK35.md)로 종료됐다.** 아래는 남은 미해결 항목이며 **사용자 지시 없이 착수하지 않는다.**
+**이 연구 프로그램의 측정 단계는 [TASK35](TASK35.md)로 종료됐고, [TASK36](TASK36.md)이 그 미해결 확증 1건을 닫는 후속 측정이었다.** 아래는 남은 미해결 항목이며 **사용자 지시 없이 착수하지 않는다.**
 
 | # | 항목 | 근거 TASK | 새 측정 필요 | 재compile 필요 |
 |---|---|---|---|---|
-| 1 | **N=6 확증의 재측정** — 채널 허용차를 비만이 아니라 **절대 잔차**까지 포함해 재정의한다. [TASK35](TASK35.md)에서 N=6이 예측 오차·방향 요건을 만족하고도 채널 차 0.021–0.024로 보류됐다 | [TASK35](TASK35.md) | 예 | 아니오 |
+| 1 | ~~**N=6 확증의 재측정**~~ → **[TASK36](TASK36.md)에서 완료. `PASS` 2/2.** 대신 새 항목이 열렸다: **`BASE` 캐시 손실량 대 X의 함수 형태**. 관측점 3개(N=8 재사용 9/24 → X +9.72 %, N=6 seed `20261000` 15/18 → +3.40 %, N=6 seed `20261100` 17/18 → +2.11 %)가 단조 정렬되나 함수 형태를 말할 표본이 없다 | [TASK36](TASK36.md) | 예 | 아니오 |
 | 2 | **bucket 6·10·16의 step 비용 통제 측정** — 시뮬레이터가 쓰는 선형 보간을 실측으로 대체한다. [TASK34](TASK34.md)의 최소자승 적합은 측정된 bucket에서도 **±11 % 산포**가 있어 [TASK13](TASK13.md) 수준이 아니다. bucket 16은 N ≤ 10에서 한 번도 쓰이지 않아 값이 없다 | [TASK34](TASK34.md), [TASK35](TASK35.md) | 예 | 아니오 |
 | 3 | **`batch_size > 16`의 이득과 KV 한계** — 지배 인자를 더 밀었을 때의 포화점. token당 KV 144 KiB × 8192 × B / 4 device가 15.7 GiB에 언제 닿는지 | [TASK35](TASK35.md) | 예 | 예 |
 | 4 | **N > 10 구간** — 시뮬레이터 예측력이 [TASK24](TASK24.md)에서 5–6배 나빠지고 [TASK25](TASK25.md)의 검증 격자에도 없다. [TASK35](TASK35.md)의 탐색 구간 오차도 +0.034/+0.036이었다 | [TASK24](TASK24.md), [TASK35](TASK35.md) | 예 | 아마도 |
 | 5 | **server 측 scheduler 정책** — [TASK33](TASK33.md)이 headroom의 60 %가 *조율*의 몫이고 per-session client 정책은 원리적으로 닿을 수 없다고 확정했다. 조율이 가능한 유일한 runtime 위치이나 **patch 정책 대상**이다 | [TASK33](TASK33.md) | 예 | 아니오 |
 | 6 | **GPU 교차검증** — [결정 4](#결정-4--gpua6000-교차검증-착수-시점)에 따라 **조건부 이연**. 재개 시 최소 범위는 생존 곡선 1실험이며, [TASK29](TASK29.md) 계산에 따르면 재야 할 축은 accelerator가 아니라 `max_num_seqs`다 | [TASK29](TASK29.md), 결정 4 | 예 | 예 |
 | 7 | **도구 인자를 조건으로 삼는 예측 가능성** — [TASK32](TASK32.md)가 도구 *이름*만으로는 지속시간 예측 오차가 줄일 수 없는 분산에 지배됨을 보였다. 현재 trace 산출물에 인자가 없어 **새 자료가 필요하다** | [TASK32](TASK32.md) | 예 (새 trace) | 아니오 |
-| 8 | **[TASK28](TASK28.md) 계통 편향의 원인** — 시뮬레이터가 보류의 손해를 계통적으로 과소평가한다(블록 6/6 동방향). client overhead인지 큐 직렬화인지 가르지 못했다 | [TASK28](TASK28.md) | 아니오 | 아니오 |
+| 8 | **계통적 양의 예측 오차의 원인** — 시뮬레이터가 개입의 이득을 계통적으로 과대평가한다. [TASK28](TASK28.md)(+0.018·+0.021), [TASK35](TASK35.md)(+0.0074·+0.0058, N=6 +0.0183·+0.0194), [TASK36](TASK36.md)(+0.0067·+0.0076) — **네 TASK에서 같은 부호**다. 정책 개입과 compile 구성 개입 양쪽에서 나타나므로 개입 종류에 무관하다. client overhead인지 큐 직렬화인지 재사용 귀속 오차인지 가르지 못했다 | [TASK28](TASK28.md), [TASK35](TASK35.md), [TASK36](TASK36.md) | 아니오 | 아니오 |
+| 10 | **서지 미특정 2건** — 작업 지시문이 지목한 `LENS`와 `KV-RM`을 web 검색으로 특정하지 못했다. `KV-RM`은 **CacheScout**(arXiv:2608.14624)로 잠정 배치했다. **Advisor 확인 필요** | [TASK37](TASK37.md) | 아니오 | 아니오 |
 | 9 | **[TASK23](TASK23.md)의 남은 `INCONCLUSIVE`** — N=7(6블록에서도 4/6이 동치 밴드 안), 개입 후 N=6. 효과 크기가 밴드 폭과 비슷해 블록 증가로 닫힌다는 보장이 없다 | [TASK23](TASK23.md), [TASK25](TASK25.md) | 예 | 아니오 |
 
 ## 보류 중인 항목
