@@ -2,7 +2,17 @@
 
 생성: `env -u PYTHONPATH python3 paper/figures/make_figures.py` ([make_figures.py](make_figures.py), [svgplot.py](svgplot.py)).
 
-matplotlib이 이 host에 없고 설치는 승인 대상([CLAUDE.md](../../CLAUDE.md) 원칙 11)이라 SVG를 직접 생성한다. 값은 전부 `make_figures.py`의 상수 표에 있고, 아래가 그 표의 출처다. **모형에서 나온 값은 그림 안에 "모형"·"절제"로 표시한다.**
+matplotlib이 이 host에 없고 cairo도 없어 SVG·PDF를 직접 생성한다([TASK38](../../docs/research/TASK38.md), [TASK39](../../docs/research/TASK39.md)). 값은 전부 `make_figures.py`의 상수 표에 있고, 아래가 그 표의 출처다. **모형에서 나온 값은 그림 안에 "모형"·"절제"로 표시한다.**
+
+## 산출물 3종
+
+| 경로 | 언어 | 형식 | 용도 |
+|---|---|---|---|
+| `paper/figures/*.svg` | 국문 | SVG | 이 저장소의 국문 연구 문서와 함께 보는 **검토용** |
+| `paper/figures/en/*.svg` | 영문 | SVG | 논문용 그림의 브라우저 확인 |
+| `paper/figures/pdf/*.pdf` | 영문 | PDF | **LaTeX 원고에 넣는 것.** DejaVuSans 임베딩 |
+
+영문 라벨은 [labels_en.py](labels_en.py)에 있다. **번역표에 없는 비-ASCII 라벨이 있으면 생성이 실패**하므로 국문 문자열이 영문 그림에 남을 수 없다. 검수 결과는 [INSPECTION.md](INSPECTION.md)에 있다.
 
 | 그림 | 파일 | 값의 출처 | raw artifact 경로 |
 |---|---|---|---|
@@ -19,7 +29,8 @@ matplotlib이 이 host에 없고 설치는 승인 대상([CLAUDE.md](../../CLAUD
 
 ```bash
 cd /home/rebel/continuum-npu
-env -u PYTHONPATH python3 paper/figures/make_figures.py
+env -u PYTHONPATH python3 paper/figures/make_figures.py   # 국문 SVG 8 + 영문 SVG 8 + PDF 8
+env -u PYTHONPATH python3 paper/figures/verify_figures.py # 수치 대조·넘침·PDF 검사
 ```
 
 `results/`는 gitignore 대상이므로 clean checkout에서는 ④·⑧의 [TASK36](../../docs/research/TASK36.md) 점이 문서 기록값으로 대체된다. 그 경로는 `make_figures.py`의 `_task36_pairs()`에 명시돼 있다.

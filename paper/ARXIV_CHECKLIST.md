@@ -49,15 +49,17 @@ arXiv 초록 필드는 **plain text**다. 다음이 제약이고, 오른쪽이 [
 
 | 제약 | 현재 초록 |
 |---|---|
-| **마크다운 강조(`**`)가 렌더되지 않는다** | ⚠️ 국·영문 초록 모두 `**...**`를 다수 쓴다. **제출용 초록에서 전부 제거해야 한다** |
-| **수식은 `$...$` TeX만 지원**(제한적) | ✅ 초록에 수식 없음. `ε=2 s`, `N=8` 같은 표기는 평문으로 읽힌다. **`σ*`는 `sigma*`로 풀어 쓸 것을 권고** — 유니코드가 검색 색인에서 불리하다 |
+| **마크다운 강조(`**`)가 렌더되지 않는다** | ✅ **해소됨** — 압축본에는 마크다운이 없다 |
+| **수식은 `$...$` TeX만 지원**(제한적) | ✅ 초록에 수식 없음. `ε=2 s`, `N=8` 같은 표기는 평문으로 읽힌다. 압축본에는 그리스 문자가 남지 않았다 |
 | **줄바꿈이 보존되지 않는다**(단락은 빈 줄로) | ⚠️ 현재 3문단 구조. arXiv는 단락 구분을 유지하므로 **문단 3개 그대로 제출 가능**하되, 일부 시스템이 한 문단으로 합치므로 **문단 첫 문장이 독립적으로 읽히는지** 확인했다 — 세 문단 모두 통과 |
-| **유니코드**: 대부분 통과하나 일부 문자가 깨진다 | ⚠️ 점검 대상: `×`(곱), `→`, `−`(U+2212 minus), `≈`, `%p`, `①②③`. **`−`를 ASCII `-`로, `→`를 `->`로 바꿀 것을 권고.** `×`는 통상 안전하다 |
-| **길이 제한 1,920자**(공백 포함, 하드 캡) | ⚠️ **영문 초록이 현재 3,029자로 1,109자 초과한다**(마크다운 제거 후 실측). **약 37 %를 덜어내야 한다** — 문장 몇 개 다듬는 수준이 아니라 재작성에 가깝다. 압축 우선순위: (1) 3문단의 절제 세부(+8.25 % / +1.52 pp)를 한 절로 축약, (2) 2문단의 세 벽 중 (b)·(c) 수치 생략, (3) 1문단의 기전 (i)–(iii) 증거 수치(1.1504 → 0.9717, 12/12) 중 하나만 남김. **[CLAIMS.md](CLAIMS.md)의 조건 병기 규칙은 압축 후에도 지킨다** — 압축의 첫 희생자가 조건이 되면 안 된다. 참고로 국문 초록은 1,511자다 |
+| **유니코드**: 대부분 통과하나 일부 문자가 깨진다 | ✅ **해소됨** — 압축본은 **전부 ASCII**다(자동 확인). `−`·`→`·`×`·`①②③`이 남아 있지 않다 |
+| **길이 제한 1,920자**(공백 포함, 하드 캡) | ✅ **해소됨** — [ABSTRACT.md](ABSTRACT.md) §1의 압축본이 **1,876자**로 44자 여유가 있다. 평문 파일은 [`abstract_arxiv.txt`](abstract_arxiv.txt)다. 전체판(3,029자)은 논문 본문용으로 §3에 남겼다 |
 | **제목 형식** | 제안: `Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs`. 콜론 형식은 arXiv에서 통상적이다. **`stack` 조건(NPU)을 제목에 넣은 것은 의도적이다** — [CLAIMS.md](CLAIMS.md) 전수 점검의 오독 방지 규칙을 제목에도 적용한다 |
 | **국문 초록** | arXiv 초록 필드는 **영문 하나만** 받는다. 국문 초록은 본문 부록이나 별도 배포용으로 남긴다 |
 
-**제출 전에 만들어야 할 것**: [ABSTRACT.md](ABSTRACT.md)의 영문 초록을 **1,920자 이하 · 마크다운 없음 · ASCII 기호**로 압축한 `paper/abstract_arxiv.txt`. **아직 만들지 않았다** — 1,109자를 덜어내는 것은 내용 판단이 들어가는 작업이고, 본문 집필로 무엇이 본문에 남는지가 정해진 뒤에 하는 편이 낫다. 길이는 다음으로 확인한다:
+**압축에서 본문으로 이관한 것**: 격자 개입 전후 pooled ratio, 재사용 절벽의 12/12, 예측기 오차의 문턱 초과 배수, N=6 확증 수치, 자유 파라미터 함정 수치, 절제의 항별 크기. **남은 수치의 조건 병기는 유지했다** — `60 %`에 "median", `9.7-10.1 %`에 "at N=8 concurrent sessions"와 "on two channels registered before measurement". 상세는 [ABSTRACT.md](ABSTRACT.md) 머리의 판본 표에 있다.
+
+길이는 다음으로 확인한다:
 
 ```bash
 python3 -c "import sys; t=open('paper/abstract_arxiv.txt').read(); \
@@ -73,18 +75,45 @@ print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
 | 지금 만들 것인가 | **아니다.** 본문이 아직 없다. 지금 골격만 만들면 서사([OUTLINE.md](OUTLINE.md))가 바뀔 때마다 두 곳을 고쳐야 한다 |
 | **권고 순서** | (1) [OUTLINE.md](OUTLINE.md)를 따라 **마크다운으로 본문 초고**를 쓴다 → (2) 그림 8종을 SVG → PDF로 변환한다 → (3) MLSys 2027 템플릿(또는 ACM `sigconf`)으로 옮긴다 → (4) arXiv에 TeX source로 제출 |
 
-**그림 형식 주의**: 현재 그림은 SVG다. **LaTeX는 SVG를 직접 넣지 못한다.** `pdflatex`는 PDF/PNG/JPG를 받으므로 SVG → PDF 변환이 필요하고, **이 host에는 변환기(rsvg-convert·inkscape·cairosvg)가 없다.** 설치는 [CLAUDE.md](../CLAUDE.md) 원칙 11의 승인 대상이다. 대안은 [make_figures.py](figures/make_figures.py)에 PDF 백엔드를 추가하는 것이며, **어느 쪽이든 사용자 판정이 필요하다.**
+**그림 형식**: ✅ **해소됨** ([TASK39](../docs/research/TASK39.md)). `paper/figures/pdf/`에 **영문 PDF 8종**이 있고 `\includegraphics`로 바로 들어간다. 변환기를 설치하지 않고 [svgplot.py](figures/svgplot.py)에 PDF 백엔드를 직접 넣었다 — 이 host에 cairo가 없어 `cairosvg`는 apt 없이는 설치되지 않고, **CJK 폰트가 하나도 없어** 국문 라벨은 애초에 PDF에 넣을 수 없었기 때문이다. 그래서 논문용 그림은 [labels_en.py](figures/labels_en.py)의 번역표로 **영문 라벨**을 쓴다(영문 논문에는 어차피 필요하다). 폰트는 이미 있는 DejaVuSans를 임베딩하고 글자 폭은 이미 설치된 Pillow에서 읽는다. **새로 설치한 것은 없다.**
 
-## 6. 제출 전 최종 확인 목록 (사람이 한다)
+**남은 LaTeX 작업**: 본문 초고 → 템플릿 이식. 그림은 준비돼 있다.
 
-- [ ] 저자 목록·순서·소속·교신저자 확정
-- [ ] 소속 기관의 preprint 라이선스 규정 확인 → 라이선스 선택
-- [ ] AI 도구 사용 고지 문구 확정
-- [ ] `paper/abstract_arxiv.txt` 생성 (1,920자 이하, 마크다운 제거, ASCII 기호)
-- [ ] 제목 확정
-- [ ] primary `cs.DC` / cross-list `cs.PF`·`cs.LG` 확정
-- [ ] 본문 초고 → LaTeX 변환 → 그림 PDF 변환
-- [ ] **선행 연구 재확인** — [RELATED.md §7](RELATED.md#7-서지-확인-상태)의 버전 정보는 2026-08-24~25 기준이다. arXiv:2511.02230은 **버전마다 시스템 이름이 바뀐 전례**가 있으므로 제출 직전에 다시 본다
-- [ ] KV-RM(arXiv:2605.09735)이 **철회 상태**임을 인용문에 명시했는지 확인
-- [ ] 재현 정보(선등록 commit hash, artifact 경로, substrate patch hash)가 본문 또는 부록에 있는지 확인
-- [ ] 제출은 **사용자 계정으로 사용자가** 한다
+## 6. 제출 전 최종 확인 목록
+
+### 해소된 항목 ([TASK39](../docs/research/TASK39.md))
+
+- [x] **초록 길이** — 압축본 1,876자 / 상한 1,920자. [`abstract_arxiv.txt`](abstract_arxiv.txt)
+- [x] **초록 형식** — 마크다운 없음, 전부 ASCII, 3문단
+- [x] **그림 PDF 변환** — `paper/figures/pdf/` 8종. 구조 검사 8/8, 변환 손실 0, 캔버스 넘침 0
+- [x] **primary/cross-list 제안** — `cs.DC` / `cs.PF`·`cs.LG` (§1)
+- [x] **제목 제안** — `Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs`
+
+### 남은 사용자 항목
+
+- [ ] **저자 목록·순서·소속·교신저자 확정** — 제출 후 수정이 번거롭다
+- [ ] **라이선스 선택** — 권고 CC BY 4.0. **소속 기관의 preprint 규정이 있으면 그것이 우선한다**
+- [ ] **AI 사용 고지 문구 확정** — 초안은 아래 §7
+- [ ] **그림 육안 검수** — `paper/figures/en/*.svg`를 브라우저로 열어 [INSPECTION.md](figures/INSPECTION.md)와 대조. **글자 겹침은 자동 검사가 잡지 못한다**
+- [ ] **본문 초고 → LaTeX 이식**
+- [ ] **선행 연구 재확인** — [RELATED.md §7](RELATED.md#7-서지-확인-상태)의 버전 정보는 2026-08-24~25 기준이다. arXiv:2511.02230은 **버전마다 시스템 이름이 바뀐 전례**가 있다
+- [ ] **KV-RM(arXiv:2605.09735)이 철회 상태임을 인용문에 명시했는지 확인**
+- [ ] **재현 정보**(선등록 commit hash, artifact 경로, substrate patch hash)가 본문 또는 부록에 있는지 확인
+- [ ] **제출은 사용자 계정으로 사용자가 한다**
+
+## 7. AI 사용 고지 — 초안 (판정은 사용자)
+
+arXiv는 AI 도구 사용 시 본문에 밝히기를 권고한다. 이 연구는 실험 실행·분석·문서화 전반에 coding agent를 썼으므로 고지 대상이라고 본다. **아래는 초안이며, 어떤 범위로 어떻게 쓸지는 사용자가 정한다.**
+
+> **Use of AI tools.** The experiments, analyses, figures and research records in this
+> work were carried out by an AI coding agent (Claude Code) operating on the authors'
+> hardware under a written protocol: every measurement task registers its decision
+> criteria, predictions and experimental grid in a commit before measurement begins,
+> and each task is recorded with its raw artefacts, invariant checks and the layer
+> (silicon / stack / class / universal) at which each finding is claimed to hold. The
+> research direction, the choice of questions, the preregistration criteria and every
+> judgement reported here are the authors'. The agent did not select which results to
+> report, and no criterion was relaxed after measurement; where one was corrected, the
+> original criterion's failure is reported alongside it.
+
+**이 초안이 주장하는 것과 주장하지 않는 것**을 분명히 해 둔다. 주장하는 것: 실행·분석·기록의 수행 주체와, 그것을 통제한 프로토콜(선등록·층 태깅·불변식). 주장하지 않는 것: agent가 연구 방향이나 판정을 정했다는 것. **저장소의 [CLAUDE.md](../CLAUDE.md)와 `docs/research/`의 TASK 39건이 이 진술의 근거이며, 필요하면 그 자체를 공개 자료로 제시할 수 있다.**

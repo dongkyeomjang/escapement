@@ -19,10 +19,23 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import svgplot
 from svgplot import Axes, PALETTE  # noqa: E402
 
 REPO = HERE.parents[1]
 C = PALETTE
+
+#: Set by main(); where _save() puts the SVG, and whether it also writes a PDF.
+_OUTDIR = HERE
+_PDFDIR: Path | None = None
+
+
+def _save(ax: Axes, name: str) -> None:
+    _OUTDIR.mkdir(parents=True, exist_ok=True)
+    ax.save(_OUTDIR / f"{name}.svg")
+    if _PDFDIR is not None:
+        _PDFDIR.mkdir(parents=True, exist_ok=True)
+        ax.save_pdf(_PDFDIR / f"{name}.pdf")
 
 
 # --------------------------------------------------------------------------
@@ -34,8 +47,8 @@ def fig1() -> None:
     ax.hspan(-0.18, 1.35, color=C["bad"], opacity=0.0)
     # false-positive region: layer 1 still reports hits while layer 2 is gone
     left, right = ax.px(7), ax.px(33)
-    ax.add(f'<rect x="{left:.1f}" y="{ax.py(1.02):.1f}" width="{right - left:.1f}" '
-           f'height="{ax.py(0.0) - ax.py(1.02):.1f}" fill="{C["bad"]}" fill-opacity="0.10"/>')
+    ax.rect_px(left, ax.py(1.02), right - left, ax.py(0.0) - ax.py(1.02),
+               fill=C["bad"], opacity=0.10)
     ax.text((7 + 33) / 2, 0.52, "metric은 hit이라 하고", size=11.5, fill=C["bad"])
     ax.text((7 + 33) / 2, 0.40, "device는 재계산한다", size=11.5, fill=C["bad"], weight="bold")
 
@@ -61,7 +74,7 @@ def fig1() -> None:
                ("`prefix_cache_hits_total` (층 1, LRU 512)", C["muted"], "line"),
                ("절제(모형): LRU·block 단위 회수 (요청 크기별)", C["arm2"], "line")],
               x=ax.x0 + 4, y=ax.y0 + 44)
-    ax.save(HERE / "fig1_survival_cliff.svg")
+    _save(ax, "fig1_survival_cliff")
 
 
 # --------------------------------------------------------------------------
@@ -100,7 +113,7 @@ def fig2() -> None:
                ("개입 격자 (1,2,4,6,8)", C["arm3"], "s"),
                ("동치 밴드 [0.98, 1.02]", C["muted"], "box")],
               x=ax.x0 + 14, y=ax.y1 + 24)
-    ax.save(HERE / "fig2_grid_alignment.svg")
+    _save(ax, "fig2_grid_alignment")
 
 
 # --------------------------------------------------------------------------
@@ -142,7 +155,7 @@ def fig3() -> None:
     ax.legend([("AGENTIC", C["arm3"], "o"), ("CONVENTIONAL", C["arm2"], "^"),
                ("속 빈 표식 = v1, 채운 표식 = v2", C["muted"], "line")],
               x=ax.x0 + 300, y=ax.y1 + 24)
-    ax.save(HERE / "fig3_prefill_tax.svg")
+    _save(ax, "fig3_prefill_tax")
 
 
 # --------------------------------------------------------------------------
@@ -170,11 +183,11 @@ SIM_CONFIG = [(0.9610, 0.9793), (0.9466, 0.9660), (0.9101, 0.9175), (0.8971, 0.9
 def fig4() -> None:
     ax = Axes(width=900, height=500, left=78, right=316, xlim=(0.86, 1.18), ylim=(0.86, 1.18))
     lo, hi = 0.86, 1.18
-    for d, op in ((0.03, 0.16), (0.01, 0.0)):
-        ax.add(f'<polygon points="{ax.px(lo):.1f},{ax.py(lo + d):.1f} '
-               f'{ax.px(hi - d):.1f},{ax.py(hi):.1f} {ax.px(hi):.1f},{ax.py(hi):.1f} '
-               f'{ax.px(hi):.1f},{ax.py(hi - d):.1f} {ax.px(lo + d):.1f},{ax.py(lo):.1f} '
-               f'{ax.px(lo):.1f},{ax.py(lo):.1f}" fill="{C["ok"]}" fill-opacity="{op}"/>')
+    for d, op in ((0.03, 0.16),):
+        ax.add({"k": "poly", "sw": 0, "fill": C["ok"], "stroke": C["ok"], "op": op,
+                "pts": [(ax.px(lo), ax.py(lo + d)), (ax.px(hi - d), ax.py(hi)),
+                        (ax.px(hi), ax.py(hi)), (ax.px(hi), ax.py(hi - d)),
+                        (ax.px(lo + d), ax.py(lo)), (ax.px(lo), ax.py(lo))]})
     ax.line([(lo, lo), (hi, hi)], color=C["ink"], width=1.4, dash="4 3")
     for pts, color, shape, _lab in (
             (SIM_INSAMPLE, C["muted"], "o", "in-sample"),
@@ -198,7 +211,7 @@ def fig4() -> None:
                ("device + compile 구성 (TASK35, 4점)", C["arm3"], "o"),
                ("N=6 재확증 (TASK36, 2점)", C["bad"], "s")],
               x=ax.x1 + 22, y=ax.y1 + 150)
-    ax.save(HERE / "fig4_simulator_validation.svg")
+    _save(ax, "fig4_simulator_validation")
 
 
 # --------------------------------------------------------------------------
@@ -238,7 +251,7 @@ def fig5() -> None:
             size=11, anchor="start", fill=C["bad"], data=False)
     ax.text(ax.x0 + 232, ax.y0 + 2, "자유 파라미터 2개·20조합 탐색이 만든 허구 이득",
             size=11, anchor="start", fill=C["bad"], data=False, weight="bold")
-    ax.save(HERE / "fig5_headroom_decomposition.svg")
+    _save(ax, "fig5_headroom_decomposition")
 
 
 # --------------------------------------------------------------------------
@@ -278,7 +291,7 @@ def fig6() -> None:
     ax.text(ax.x0 + 8, ax.y0 + 74,
             "『Bash』가 27 ms일지 300 s일지는 명령이 정하고, 도구 이름은 그것을 담지 않는다",
             size=11.5, anchor="start", fill=C["muted"], data=False)
-    ax.save(HERE / "fig6_predictor_error.svg")
+    _save(ax, "fig6_predictor_error")
 
 
 # --------------------------------------------------------------------------
@@ -313,7 +326,7 @@ def fig7() -> None:
     ax.legend([("모형을 세운 관측점 (TASK06·TASK10)", C["base"], "s"),
                ("모형을 시험한 관측점 (TASK23·TASK34·TASK35)", C["arm3"], "o")],
               x=ax.x0 + 14, y=ax.y1 + 24)
-    ax.save(HERE / "fig7_compile_cost.svg")
+    _save(ax, "fig7_compile_cost")
 
 
 # --------------------------------------------------------------------------
@@ -365,13 +378,32 @@ def fig8() -> None:
     ax.text(ax.x0 + 8, ax.y0 + 75,
             "N=6(신규 seed)에서는 BASE가 이미 17/18을 재사용해 batch_size 레버에 살 것이 남아 있지 않다.",
             size=11, anchor="start", fill=C["muted"], data=False)
-    ax.save(HERE / "fig8_final_result.svg")
+    _save(ax, "fig8_final_result")
 
 
 def main() -> int:
-    for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8):
+    global _OUTDIR, _PDFDIR
+    figs = (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8)
+
+    # Korean: SVG only, for review alongside the Korean research documents.
+    svgplot.set_language("ko")
+    _OUTDIR, _PDFDIR = HERE, None
+    for f in figs:
         f()
-        print(f"wrote {f.__name__}")
+    print(f"ko: {len(figs)} svg -> {HERE}")
+
+    # English: SVG plus PDF, for the paper. set_language raises on any label
+    # the table does not cover, so nothing survives untranslated.
+    from labels_en import PATTERNS, TABLE
+    svgplot.set_language("en", TABLE, PATTERNS)
+    _OUTDIR, _PDFDIR = HERE / "en", HERE / "pdf"
+    for f in figs:
+        f()
+    unused = set(TABLE) - svgplot.used_translations()
+    print(f"en: {len(figs)} svg -> {_OUTDIR}, {len(figs)} pdf -> {_PDFDIR}")
+    if unused:
+        print(f"  WARNING {len(unused)} unused translations: {sorted(unused)[:3]} ...")
+    svgplot.set_language("ko")
     return 0
 
 

@@ -6,7 +6,44 @@
 
 ---
 
-## 국문 초록
+## 용도별 판본
+
+| 판본 | 용도 | 길이 | 위치 |
+|---|---|---|---|
+| **영문 압축본** | **arXiv 초록 필드** (하드 캡 1,920자) | **1,876자** | 아래 §1, 그리고 평문 파일 [`abstract_arxiv.txt`](abstract_arxiv.txt) |
+| 영문 전체판 | **논문 본문**(학회 원고)의 초록 | 3,029자 | 아래 §3 |
+| 국문 초록 | 국문 배포·발표 자료 | 1,511자 | 아래 §2. **자수 제약이 없으므로 압축하지 않는다** |
+
+압축본에서 **본문으로 이관한 것**: 격자 개입 전후 pooled ratio(1.1504 → 0.9717), 재사용 절벽의 12/12 재현, 예측기 오차의 문턱 초과 배수(5.6–9.7배), N=6 확증 수치, 자유 파라미터 함정의 수치(+4.32 % → −0.14 %), 절제의 항별 크기(+8.25 % / +1.52 %p).
+
+압축본에서 **지킨 것**: 세 기전의 명명과 인과 확정 방식, 무보정 시뮬레이터와 선등록 out-of-sample 게이트, "headroom의 중앙 60 %는 조율의 몫이며 per-session runtime 정책은 원리적으로 닿을 수 없다", compile-time 처방과 N=8 확증(두 채널), 그리고 폐지 문장.
+
+**조건 병기는 남은 수치에만 적용했다** — `60 %`에는 "median"을, `9.7–10.1 %`에는 "at N=8 concurrent sessions"와 "on two channels registered before measurement"를 붙였다. **압축의 첫 희생자가 조건이 되지 않게 하는 것이 이 판본의 제약이었다.**
+
+---
+
+## 1. 영문 압축본 — arXiv 초록 필드용 (1,876자)
+
+평문·ASCII·마크다운 없음. 그대로 복사해 붙일 수 있다. 원본 파일은 [`abstract_arxiv.txt`](abstract_arxiv.txt)다.
+
+```text
+Agentic workloads interleave LLM calls with tool execution, and when a session returns from a tool call sets its serving cost. On an RBLN CA25 NPU running vLLM, we decompose that return-arrival process on real hardware into three independent mechanisms: alignment between the concurrent request count and the compiled decode-batch grid, the reuse cliff of a sequence-granular FIFO slot pool, and the serialisation tax of exclusively executed prefill. None responds to a property of an individual request; all three respond to a collective property of arrivals. We establish the first causally, with a recompile intervention that changes only the grid. A step-level simulator carrying all three, with zero fitted parameters, passes a preregistered out-of-sample gate.
+
+On that model we obtain a negative result. Rescheduling returns leaves real offline headroom, but a median 60% of it is coordination: hand every session omniscient knowledge and let it decide independently, and that share disappears. No per-session runtime policy can reach it, in principle. Nor is the remainder reachable: the value of return-time information is workload-specific and vanishes under measured tool latencies, and a published duration estimator, borrowed verbatim, misses the accuracy threshold by a margin four more orders of sample magnitude do not close.
+
+That leaves one reachable lever: a compile-time configuration, which is coordination decided once, in advance, for everybody. Escapement chooses one from workload distribution statistics and the uncalibrated simulator alone, with no device measurement in the selection loop, applies it with a seven-minute recompile, and confirms a 9.7-10.1% device-time recovery at N=8 concurrent sessions, on two channels registered before measurement. Some levers can be bought with a distribution even when no one can predict the individual draw.
+```
+
+길이 확인:
+
+```bash
+python3 -c "t=open('paper/abstract_arxiv.txt').read().strip(); \
+print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
+```
+
+---
+
+## 2. 국문 초록
 
 Agentic 워크로드는 LLM 호출 사이에 도구 실행 구간을 끼워 넣고, 그 구간이 끝난 뒤 세션이 **언제 돌아오는가**가 서빙 비용을 정한다. 우리는 RBLN CA25 NPU 위의 vLLM 스택에서 그 반환 도착 과정을 실기기로 분해해, 서로 독립인 세 기전이 device time을 만든다는 것을 보인다: (i) 동시 요청 수와 compiled decode batch 격자의 **정렬**, (ii) 시퀀스 단위 FIFO slot pool의 **재사용 절벽**, (iii) 배타 실행 prefill의 **직렬화 세금**. 셋 모두 개별 요청의 속성이 아니라 도착의 집합적 성질에 반응한다. (i)의 인과는 격자만 바꾸는 재compile 개입으로 확정했고(pooled ratio 1.1504 → 0.9717), (ii)의 문턱이 token 총량이 아니라 요청 개수의 함수임을 12/12 결정적 재현으로, (iii)이 실행 중인 모든 세션을 정지시킴을 시간 단위로 관측했다. 세 기전을 담은 보정 파라미터 0개의 step 수준 시뮬레이터는 선등록된 out-of-sample 예측 게이트를 통과한다(최대 오차 0.0040, 허용치 ±0.05).
 
@@ -16,7 +53,9 @@ Agentic 워크로드는 LLM 호출 사이에 도구 실행 구간을 끼워 넣�
 
 ---
 
-## English abstract
+## 3. 영문 전체판 — 논문 본문용 (3,029자)
+
+**arXiv 초록 필드에는 들어가지 않는다** — 상한을 1,109자 초과한다. 학회 원고의 초록으로 쓴다.
 
 Agentic workloads interleave LLM calls with tool execution, and *when* a session comes back after a tool call is what sets its serving cost. On an RBLN CA25 NPU running the vLLM stack, we decompose that return-arrival process on real hardware and show that three independent mechanisms produce device time: (i) the **alignment** between the number of concurrent requests and the compiled decode-batch grid, (ii) the **reuse cliff** of a sequence-granular FIFO slot pool, and (iii) the **serialisation tax** of exclusively executed prefill. None of the three responds to a property of an individual request; all three respond to a collective property of arrivals. We establish (i) causally through a recompile intervention that changes only the grid (pooled ratio 1.1504 → 0.9717), show that the threshold in (ii) is a function of request *count* rather than total tokens and reproduces 12/12 deterministically, and observe (iii) stalling every concurrent session for the full prefill duration. A step-level simulator carrying all three, with zero fitted parameters, passes a preregistered out-of-sample prediction gate (worst error 0.0040 against a ±0.05 tolerance).
 
@@ -26,9 +65,9 @@ That leaves exactly one reachable lever — a **compile-time configuration**, wh
 
 ---
 
-## 초록 작성 시 지킨 조건 병기 (오독 방지)
+## 4. 조건 병기 점검 (오독 방지)
 
-[CLAIMS.md](CLAIMS.md)의 전수 점검 표를 초록에도 적용했다.
+[CLAIMS.md](CLAIMS.md)의 전수 점검 표를 **세 판본 모두**에 적용했다. 아래는 전체판 기준이며, 압축본에 남은 수치(`60 %`, `9.7–10.1 %`)의 병기는 위 §용도별 판본에 적었다.
 
 | 수치 | 병기한 조건 |
 |---|---|

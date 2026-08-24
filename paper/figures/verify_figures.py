@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import re
 import sys
+import zlib
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -27,6 +28,7 @@ REPO = HERE.parents[1]
 RESEARCH = REPO / "docs/research"
 sys.path.insert(0, str(HERE))
 import make_figures as F  # noqa: E402
+import svgplot as SP  # noqa: E402
 
 TOL = 1e-9
 
@@ -187,14 +189,104 @@ def check_fig8() -> None:
 
 # -- svg text extraction -----------------------------------------------------
 def svg_text(path: Path) -> tuple[int, int, list[tuple[float, float, float, str]]]:
+    import html
     s = path.read_text()
     w = int(re.search(r'width="(\d+)"', s).group(1))
     h = int(re.search(r'height="(\d+)"', s).group(1))
     items = []
-    for m in re.finditer(r'<text x="([-\d.]+)" y="([-\d.]+)" font-size="([\d.]+)"[^>]*>([^<]*)</text>', s):
-        items.append((float(m.group(1)), float(m.group(2)), float(m.group(3)), m.group(4)))
+    for m in re.finditer(r'<text ([^>]*)>([^<]*)</text>', s):
+        attrs, body = m.group(1), html.unescape(m.group(2))
+        g = dict(re.findall(r'([a-z-]+)="([^"]*)"', attrs))
+        items.append((float(g["x"]), float(g["y"]), float(g["font-size"]), body,
+                      g.get("text-anchor", "start"), g.get("font-weight", "normal"),
+                      "rotate(" in attrs))
     items.sort(key=lambda t: (round(t[1] / 6), t[0]))
     return w, h, items
+
+
+# -- pdf reading -------------------------------------------------------------
+def pdf_check(path: Path) -> tuple[list[str], list[str]]:
+    """Structural check plus the text a viewer would draw, in drawing order.
+
+    No PDF library is installed, so this walks the file directly: it verifies
+    the header, every xref offset, and the trailer, then inflates the content
+    stream and pulls the operands of each ``Tj``. That is exactly the string
+    the viewer renders, which is what makes it comparable to the SVG.
+    """
+    raw = path.read_bytes()
+    problems = []
+    if not raw.startswith(b"%PDF-"):
+        problems.append("no %PDF header")
+    if b"%%EOF" not in raw[-32:]:
+        problems.append("no trailing %%EOF")
+    m = re.search(rb"startxref\s+(\d+)", raw)
+    if not m:
+        problems.append("no startxref")
+    else:
+        xref = int(m.group(1))
+        if raw[xref:xref + 4] != b"xref":
+            problems.append(f"startxref {xref} does not point at an xref table")
+        else:
+            head = raw[xref:xref + 4096].split(b"\n")
+            count = int(head[1].split()[1])
+            for i in range(1, count):
+                off = int(head[1 + i + 1].split()[0])
+                if not re.match(rb"%d 0 obj" % i, raw[off:off + 24]):
+                    problems.append(f"object {i} not at xref offset {off}")
+    fonts = set(re.findall(rb"/BaseFont /([A-Za-z-]+)", raw))
+    if not fonts:
+        problems.append("no font embedded")
+    if b"/FontFile2" not in raw:
+        problems.append("font is referenced but not embedded")
+
+    texts: list[str] = []
+    for m in re.finditer(rb"/Filter /FlateDecode >>\nstream\n", raw):
+        start = m.end()
+        end = raw.find(b"\nendstream", start)
+        try:
+            data = zlib.decompress(raw[start:end])
+        except zlib.error:
+            continue
+        # A font programme can contain b" Tj" by coincidence, so the content
+        # stream is the one that actually yields text operands -- not the
+        # first one that happens to hold those two bytes.
+        found = []
+        for t in re.finditer(rb"\(((?:\\.|[^\\()])*)\) Tj", data):
+            body = (t.group(1).replace(rb"\(", b"(").replace(rb"\)", b")")
+                    .replace(rb"\\", b"\\"))
+            found.append(body.decode("latin-1"))
+        if found:
+            texts.extend(found)
+            # Count on whitespace-split tokens: a regex with a leading \s
+            # consumes the separator and miscounts adjacent q/Q pairs.
+            toks = data.split()
+            depth = 0
+            worst = 0
+            for t in toks:
+                if t == b"q":
+                    depth += 1
+                elif t == b"Q":
+                    depth -= 1
+                    worst = min(worst, depth)
+            if depth != 0 or worst < 0:
+                problems.append(f"unbalanced graphics state: ends at depth {depth}, "
+                                f"minimum {worst}")
+            mb = re.search(rb"/MediaBox \[0 0 (\d+) (\d+)\]", raw)
+            if mb:
+                w, h = int(mb.group(1)), int(mb.group(2))
+                for tm in re.finditer(rb"Tm", data):
+                    seg = data[max(0, tm.start() - 48):tm.start()].split()
+                    try:
+                        x, y = float(seg[-2]), float(seg[-1])
+                    except (ValueError, IndexError):
+                        continue
+                    if not (-2 <= x <= w + 2 and -2 <= y <= h + 2):
+                        problems.append(f"text origin ({x:.0f},{y:.0f}) outside MediaBox")
+                        break
+            break
+    if not texts:
+        problems.append("no text found in the content stream")
+    return problems, texts
 
 
 FIGS = [("①", "fig1_survival_cliff.svg"), ("②", "fig2_grid_alignment.svg"),
@@ -250,17 +342,78 @@ def main() -> int:
 
     for sym, fname in FIGS:
         w, h, items = svg_text(HERE / fname)
+        _, _, en = svg_text(HERE / "en" / fname)
         out += [f"### {sym} `{fname}` — {w} × {h} px", "",
-                "| y | x | 크기 | 텍스트 |", "|---|---|---|---|"]
-        for x, y, size, t in items:
-            safe = t.replace("|", "\\|")
-            out.append(f"| {y:.0f} | {x:.0f} | {size:g} | {safe} |")
+                "| y | x | 크기 | 국문 (검토용 SVG) | 영문 (논문용 SVG·PDF) |",
+                "|---|---|---|---|---|"]
+        en_by_pos = {(round(it[0]), round(it[1])): it[3] for it in en}
+        for x, y, size, t, _a, _w, _r in items:
+            e = en_by_pos.get((round(x), round(y)), "")
+            out.append(f"| {y:.0f} | {x:.0f} | {size:g} | "
+                       f"{t.replace('|', chr(92) + '|')} | {e.replace('|', chr(92) + '|')} |")
         out.append("")
 
+    # -- English overflow check ----------------------------------------
+    over = []
+    for sym, fname in FIGS:
+        w, h, items = svg_text(HERE / "en" / fname)
+        for x, y, size, t, anchor, weight, rotated in items:
+            if rotated:      # a rotated label runs along y; the x extent is one line height
+                continue
+            tw = SP.text_width(t, size, weight)
+            x0 = x if anchor == "start" else (x - tw if anchor == "end" else x - tw / 2)
+            if x0 < -2 or x0 + tw > w + 2:
+                over.append((sym, t, x0, x0 + tw, w))
+    out += ["---", "", "## 4. 영문 그림 넘침 검사", "",
+            "영문 라벨은 국문보다 길어지는 경우가 많아 캔버스를 넘칠 수 있다. "
+            "각 문자열의 폭을 PDF와 같은 폰트 폭 표로 계산해 캔버스 안에 드는지 확인한다.", ""]
+    if over:
+        out += [f"**{len(over)}건 넘침.**", "", "| 그림 | 텍스트 | x0 | x1 | 캔버스 |",
+                "|---|---|---|---|---|"]
+        for sym, t, a, b_, w in over:
+            out.append(f"| {sym} | {t[:60]} | {a:.0f} | {b_:.0f} | {w} |")
+        out.append("")
+    else:
+        out += ["**넘침 0건.** 8개 영문 그림의 모든 문자열이 캔버스 안에 든다.", ""]
+
+    # -- PDF conversion check ------------------------------------------
+    out += ["---", "", "## 3. PDF 변환 검사 — 영문판", "",
+            "LaTeX는 SVG를 직접 넣지 못하므로 영문 그림을 PDF로도 낸다. 아래는 각 PDF의 "
+            "**구조 검사**(header·xref offset 전건·trailer·font 임베딩)와, 그 PDF가 그리는 "
+            "텍스트를 SVG가 그리는 텍스트와 대조한 **변환 손실 검사**다.", "",
+            "| 그림 | PDF 크기 | 구조 | SVG 문자열 | PDF 문자열 | 일치 |",
+            "|---|---|---|---|---|---|"]
+    pdf_bad = []
+    for sym, fname in FIGS:
+        pdf = HERE / "pdf" / fname.replace(".svg", ".pdf")
+        ensvg = HERE / "en" / fname
+        problems, ptexts = pdf_check(pdf)
+        _, _, sitems = svg_text(ensvg)
+        stexts = [it[3] for it in sitems]
+        same = sorted(stexts) == sorted(ptexts)
+        if problems or not same:
+            pdf_bad.append((sym, problems, sorted(set(stexts) ^ set(ptexts))))
+        out.append(f"| {sym} | {pdf.stat().st_size / 1024:.0f} KB | "
+                   f"{'OK' if not problems else '⚠️ ' + '; '.join(problems)} | "
+                   f"{len(stexts)} | {len(ptexts)} | {'OK' if same else '⚠️ 불일치'} |")
+    out.append("")
+    if pdf_bad:
+        out.append("### ⚠️ PDF 문제")
+        for sym, problems, diff in pdf_bad:
+            out.append(f"- {sym}: {problems or ''} {diff[:5]}")
+        out.append("")
+    else:
+        out += ["**8/8 구조 정상, 문자열 전건 일치.** 변환 손실 없음.", "",
+                "**여전히 확인되지 않는 것**: 글자 위치·겹침·잘림. PDF와 SVG는 같은 좌표와 같은 "
+                "폰트 폭 표를 쓰지만, 그것이 보기 좋다는 뜻은 아니다.", ""]
+
     (HERE / "INSPECTION.md").write_text("\n".join(out).rstrip("\n") + "\n")
-    print(f"{len(CHECKS)} checks, {len(bad)} mismatches -> paper/figures/INSPECTION.md")
+    print(f"{len(CHECKS)} checks, {len(bad)} mismatches; "
+          f"pdf {len(FIGS) - len(pdf_bad)}/{len(FIGS)} clean -> paper/figures/INSPECTION.md")
     for fig, what, src, e, a, _ in bad:
         print(f"  MISMATCH {fig} {what}: TASK={e} FIG={a}  ({src})")
+    for sym, problems, diff in pdf_bad:
+        print(f"  PDF {sym}: {problems} diff={diff[:4]}")
     return 0
 
 
