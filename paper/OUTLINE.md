@@ -1,5 +1,7 @@
 # 논문 서사 — 최종 3막 구조
 
+시스템 명칭: **`Escapement`** ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 본문·figure 라벨·arXiv 제목에 이 이름을 쓰고 저장소 경로와 package 이름은 그대로 둔다.
+
 이 문서는 논문 본문의 **서사 설계**다. 각 절이 무엇을 주장하고 어느 TASK가 그것을 지지하는지는 [CLAIMS.md](CLAIMS.md)가, 그림은 [figures/](figures/)가, 선행 연구 배치는 [RELATED.md](RELATED.md)가 맡는다. 측정은 [TASK35](../docs/research/TASK35.md)로 종료됐고 [TASK36](../docs/research/TASK36.md)이 N=6 확증을 더했다.
 
 ## 한 문장
@@ -21,6 +23,7 @@
 - 동시 요청 수 `N`이 compiled decode batch 격자의 어디에 떨어지는가가 gap의 효과 **부호**를 바꾼다. `N`이 bucket 사이에 끼면 gap이 오히려 이롭다 ([TASK20](../docs/research/TASK20.md): N=6에서 pooled 1.15, N=10–12에서 0.91).
 - **상관이 아니라 인과다.** 워크로드·seed·모델·slot 수를 고정하고 **격자에 bucket 6만 추가하는 재compile 개입**으로 N=6의 역전이 1.1504 → 0.9717로 소멸했다 ([TASK23](../docs/research/TASK23.md)).
 - 절제: 연속 격자에서 법칙이 정확히 1.0000으로 소멸한다 ([TASK29](../docs/research/TASK29.md)).
+- **선행 대비 (상보)**: LENS([RELATED.md §4](RELATED.md#lens-arxiv260618042--상보-배치))는 같은 bucket 구조가 **한 요청의 지연**에 만드는 비선형성을 예측 가능하게 만들었다. 이 절이 묻는 것은 그 구조가 **여러 세션의 도착 과정과 만날 때**의 시스템 거동이며, 두 결과는 어느 쪽도 다른 쪽을 함의하지 않는다.
 - **그림 ②**.
 
 ### 1.2 기전 ② — FIFO slot 생존 (cache survival cliff)
@@ -28,6 +31,7 @@
 - 완료된 prefix의 실제 재사용은 배경 요청 6개까지 살고 **7개째에 절벽처럼 사라진다** ([TASK14](../docs/research/TASK14.md), [TASK15](../docs/research/TASK15.md)에서 12/12 결정적 재현).
 - **문턱은 token 총량이 아니라 요청 개수다.** 8,192 token 이하 요청은 길이와 무관하게 outer slot 1개를 쓴다(149/149).
 - 절제로 귀속을 확인했다: LRU로 바꾸면 "개수 문턱"이 사라지고 문턱이 크기에 반비례한다(61/31/16) ([TASK29](../docs/research/TASK29.md)).
+- **선행 대비**: GPU agentic KV 관리 계열(KVFlow·CacheScout·MORI·Leyline, [RELATED.md §2](RELATED.md#2-gpu-agentic-kv-관리-계열--도구-유휴-구간을-자원-문제로-다룬다))은 **회수 정책을 바꿀 수 있다**고 전제한다. 이 substrate의 층 2 회수는 시퀀스 단위 FIFO로 하드코딩돼 있어 **그 전제가 성립하지 않으며**, 그것이 이 연구를 정책 축에서 구성 축으로 민 제약이다.
 - 부수 결과이지만 실무적으로 큰 것: **`prefix_cache_hits_total`이 실제 재사용을 100 % 과대보고**한다 (층 1과 층 2의 장부 분리, [TASK14](../docs/research/TASK14.md)·[TASK15](../docs/research/TASK15.md)).
 - **그림 ①**.
 
@@ -83,7 +87,7 @@
 
 ---
 
-## 막 3 — 처방: 분포 통계만으로 고른 구성이 실기기에서 +10 %를 낸다
+## 막 3 — 처방(`Escapement`): 분포 통계만으로 고른 구성이 실기기에서 +10 %를 낸다
 
 **주장**: 개별 draw를 못 맞혀도, **분포**만 알면 compile 시점에 조율을 굳혀 device time을 회수할 수 있다. 그리고 그 회수는 선등록된 채널에서 실기기로 확증된다.
 

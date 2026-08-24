@@ -1,6 +1,8 @@
 # 초록 (국문·영문)
 
-시스템 명칭은 미확정이다 — [결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌)의 후보 중 사용자가 판정한다. 아래에서는 `<SYSTEM>`으로 둔다.
+시스템 명칭은 **`Escapement`** 로 확정됐다 ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 논문 본문·figure 라벨·arXiv 제목에 이 이름을 쓰고, 저장소 경로와 Python package 이름(`src/continuum/`)은 재현 정보 보존을 위해 그대로 둔다.
+
+**이름의 근거**: escapement(탈진기)는 시계에서 **연속적인 구동력을 이산적인 tick으로 바꾸는 기구**다. 이 논문의 중심이 연속적인 반환 도착 과정과 이산적인 compiled batch 격자의 정렬이므로 은유가 기전과 직접 맞는다.
 
 ---
 
@@ -10,7 +12,7 @@ Agentic 워크로드는 LLM 호출 사이에 도구 실행 구간을 끼워 넣�
 
 그 모형 위에서 우리는 **부정적 결과**를 얻는다. 반환 시점을 재배치하면 offline headroom이 실재하지만(현실 tool latency 분포에서 ε=2 s에 5.0–6.9 %), 그 headroom의 중앙 **60 %(49–73 %)** 는 *조율*의 몫이어서 전지적 지식을 주고도 세션별로 독립 결정을 내리면 사라진다. 즉 **per-session runtime 정책은 그 부분에 원리적으로 닿을 수 없다.** 남은 부분도 닿지 않는다: 반환 시각 정보의 값은 워크로드에 종속이라 실측 도구 지연 분포에서 −1.20 % ~ +0.99 %로 소멸하고, 선행 연구의 지속시간 추정자를 그대로 차용해 재면 오차가 정확도 문턱을 5.6–9.7배 초과하며 표본을 네 자릿수 늘려도 줄지 않는다. 이 음성 결과들은 방법론적 함정과 짝을 이룬다 — 자유 파라미터 2개와 20조합 탐색만으로 탐색 seed에서 +4.32 %의 이득이 보이고 평가 seed에서 −0.14 %가 된다.
 
-닿을 수 있는 지점은 **조율을 설계 시점에 굳히는 compile-time 구성** 하나로 남는다. 우리는 device 실측을 전혀 쓰지 않고 워크로드 **분포 통계**와 무보정 시뮬레이터만으로 구성을 고르고, 7분의 재compile로 실기기에 적용해, 측정 전에 등록한 두 개의 독립 채널에서 device time 회수를 확증한다: N=8에서 **+9.72 % / +10.07 %**, 신규 seed의 N=6에서 **+2.11 % / +2.74 %**. Device 절제는 이득의 출처가 조건부임을 보인다 — 기준 구성이 캐시를 많이 잃을 때는 KV pool 크기(`batch_size`)가 이득의 대부분을 내고(+8.25 %), 이미 대부분 재사용하고 있을 때는 남는 것이 bucket 격자 정합뿐이다(+1.52 %p). 개별 draw를 못 맞혀도 분포만 알면 살 수 있는 레버가 있다는 것이 이 논문의 답이다.
+닿을 수 있는 지점은 **조율을 설계 시점에 굳히는 compile-time 구성** 하나로 남는다. `Escapement`는 그 하나를 집행한다 — device 실측을 전혀 쓰지 않고 워크로드 **분포 통계**와 무보정 시뮬레이터만으로 구성을 고르고, 7분의 재compile로 실기기에 적용해, 측정 전에 등록한 두 개의 독립 채널에서 device time 회수를 확증한다: N=8에서 **+9.72 % / +10.07 %**, 신규 seed의 N=6에서 **+2.11 % / +2.74 %**. Device 절제는 이득의 출처가 조건부임을 보인다 — 기준 구성이 캐시를 많이 잃을 때는 KV pool 크기(`batch_size`)가 이득의 대부분을 내고(+8.25 %), 이미 대부분 재사용하고 있을 때는 남는 것이 bucket 격자 정합뿐이다(+1.52 %p). 개별 draw를 못 맞혀도 분포만 알면 살 수 있는 레버가 있다는 것이 이 논문의 답이다.
 
 ---
 
@@ -20,7 +22,7 @@ Agentic workloads interleave LLM calls with tool execution, and *when* a session
 
 On top of that model we obtain a **negative result**. Rescheduling return times leaves real offline headroom (5.0–6.9 % at a 2 s budget under a measured tool-latency distribution), but a median **60 % (49–73 %)** of that headroom is *coordination*: hand every session omniscient knowledge and let it decide independently, and that share disappears. **No per-session runtime policy can reach it, in principle.** The remainder is not reachable either: the value of return-time information is workload-specific and vanishes (−1.20 % to +0.99 %) under measured tool latencies, and borrowing a published duration estimator verbatim yields errors 5.6–9.7× above the accuracy threshold that do not shrink when per-tool samples grow by four orders of magnitude. These negatives come paired with a methodological trap: two free parameters and a 20-configuration search manufacture a +4.32 % gain on exploration seeds that becomes −0.14 % on held-out seeds.
 
-That leaves exactly one reachable lever — a **compile-time configuration**, which is coordination decided once, in advance, for everybody. Using only workload *distribution* statistics and the uncalibrated simulator, with no device measurement in the selection loop, we choose a configuration, apply it with a seven-minute recompile, and confirm the device-time recovery on two independent channels registered before measurement: **+9.72 % / +10.07 %** at N=8 and **+2.11 % / +2.74 %** at N=6 on a fresh seed. A device-side ablation shows the gain's source is conditional: when the baseline loses much of its cache, KV pool size (`batch_size`) supplies most of the gain (+8.25 %); when the baseline already reuses nearly everything, all that remains is bucket-grid alignment (+1.52 pp). The answer this paper offers is that some levers can be bought with a distribution even when no one can predict the individual draw.
+That leaves exactly one reachable lever — a **compile-time configuration**, which is coordination decided once, in advance, for everybody. `Escapement` exercises exactly that lever. Using only workload *distribution* statistics and the uncalibrated simulator, with no device measurement in the selection loop, we choose a configuration, apply it with a seven-minute recompile, and confirm the device-time recovery on two independent channels registered before measurement: **+9.72 % / +10.07 %** at N=8 and **+2.11 % / +2.74 %** at N=6 on a fresh seed. A device-side ablation shows the gain's source is conditional: when the baseline loses much of its cache, KV pool size (`batch_size`) supplies most of the gain (+8.25 %); when the baseline already reuses nearly everything, all that remains is bucket-grid alignment (+1.52 pp). The answer this paper offers is that some levers can be bought with a distribution even when no one can predict the individual draw.
 
 ---
 
