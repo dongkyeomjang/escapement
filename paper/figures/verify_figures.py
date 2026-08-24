@@ -176,6 +176,23 @@ def check_fig7() -> None:
         chk("⑦", f"{task} artifact GiB", "TASK35 관측 1", e[3] if e else None, gib, tol=5e-4)
 
 
+def check_fig9() -> None:
+    """fig9's sim line is the preregistration; the device line is TASK40."""
+    for n, row in F.BSAT_SIM.items():
+        for b, v in row.items():
+            if b == 8:
+                continue
+            r = [x for x in rows("BATCH_SATURATION_PREREG") if len(x) == 5 and x[0] == str(n)]
+            e = num(r[0][{16: 2, 24: 3, 32: 4}[b]]) if r else None
+            chk("⑨", f"sim N={n} B={b}", "선등록 예측표", e, v)
+    dev = F._bsat_measured()
+    for n, row in dev.items():
+        for b, v in row.items():
+            if b == 8:
+                continue
+            chk("⑨", f"실측 N={n} B={b}", "TASK40 B-곡선", F.BSAT_DEV[n][b], v, tol=2e-3)
+
+
 def check_fig8() -> None:
     """fig8's N=8 column is hard-coded; re-read it from TASK35's X table."""
     for arm, sym, a_exp, b_exp in (("BATCHONLY", "②", 0.9175, 0.9183),
@@ -292,12 +309,13 @@ def pdf_check(path: Path) -> tuple[list[str], list[str]]:
 FIGS = [("①", "fig1_survival_cliff.svg"), ("②", "fig2_grid_alignment.svg"),
         ("③", "fig3_prefill_tax.svg"), ("④", "fig4_simulator_validation.svg"),
         ("⑤", "fig5_headroom_decomposition.svg"), ("⑥", "fig6_predictor_error.svg"),
-        ("⑦", "fig7_compile_cost.svg"), ("⑧", "fig8_final_result.svg")]
+        ("⑦", "fig7_compile_cost.svg"), ("⑧", "fig8_final_result.svg"),
+        ("⑨", "fig9_batch_saturation.svg")]
 
 
 def main() -> int:
     for f in (check_fig1, check_fig2, check_fig3, check_fig4,
-              check_fig5, check_fig6, check_fig7, check_fig8):
+              check_fig5, check_fig6, check_fig7, check_fig8, check_fig9):
         f()
     bad = [c for c in CHECKS if not c[5]]
 

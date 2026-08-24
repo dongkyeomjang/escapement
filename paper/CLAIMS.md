@@ -64,6 +64,10 @@
 | 3.6 | **지배 인자는 bucket 격자가 아니라 `batch_size`(= KV pool 크기)** — batch만 +8.25 %, 격자 정합이 +1.3–1.5 %p | [TASK35](../docs/research/TASK35.md) | **`stack`** | ⑧ | device 절제. 순서 `③ < ② < 1`과 크기 예측(±3 %p) 둘 다 통과 |
 | 3.7 | 두 arm의 **prefill비가 실측에서도 동일**(0.678/0.678)해 차이를 decode 항 하나로 귀속할 수 있다 | [TASK35](../docs/research/TASK35.md) | **`stack`** | ⑧ | 절제 설계가 실제로 한 축만 바꿨다는 **결과에 의한 확인** |
 | 3.8 | 인과 사슬: `batch_size` → `kvcache_num_blocks` → 캐시 생존 → prefill 재계산 | [TASK08](../docs/research/TASK08.md), [TASK14](../docs/research/TASK14.md), [TASK35](../docs/research/TASK35.md) | **`stack`** | ⑧ | `attn_impl=eager`에서 `kvcache_num_blocks = batch_size`. **다른 attention 구현에서는 성립을 확인해야 한다** |
+| 3.10 | **`batch_size`의 이득은 포화한다 — 이 워크로드·N ≤ 10에서 B=16 이후 평평하다** (통제된 인접쌍 2/2, 중앙 ratio 0.9999·1.0002) | [TASK40](../docs/research/TASK40.md) | **`stack`**(위치) | ⑨ | 눈금을 `(1,4,6,8,10,B)`로 고정하고 최상위만 바꾼 통제 비교. N ≤ 10 |
+| 3.11 | 포화의 기전은 **생존율 포화 + 최상위 눈금 미사용**이다 — 살릴 캐시가 없으면 이득이 없고, 폭이 눈금에 닿지 않으면 그 비용이 부과되지도 않는다 | [TASK40](../docs/research/TASK40.md) | **`class`** (형태) | ⑨ | — (수치 금지) |
+| 3.12 | 따라서 **최적 `batch_size`는 하드웨어 상한이 아니라 워크로드 분포가 정한다** — KV 한계는 B ≈ 46인데 이득은 B=16에서 멈춘다 | [TASK40](../docs/research/TASK40.md) | **`stack`** | ⑨ | B ≈ 46은 `2.1 + 0.28125 × B` GiB/device의 **외삽**이며 실측이 아니다 |
+| 3.13 | 포화는 조건부로 새어 나온다 — N=10의 2블록에서만 B16 → B24가 2 % 더 준다(그곳만 생존율이 28/30) | [TASK40](../docs/research/TASK40.md) | **`stack`** | ⑨ | [TASK36](../docs/research/TASK36.md)의 잔량 법칙이 세 번째로 재현된 지점 |
 | 3.9 | 구성 선택은 **gap 분포에 둔감하고 동시 세션 수 상한에만 반응**한다 — 재구성 판단에 다시 잴 통계는 그것 하나다 | [TASK34](../docs/research/TASK34.md) | **`stack`** | ⑦ | 민감도 분석 범위 안에서 |
 
 ## 일반성 절
@@ -93,6 +97,8 @@
 | 3.4 X = +10 % | **가장 높음.** 논문의 헤드라인 숫자다 | 초록·서론·결론 **전부**에서 `N=8`, `이 substrate`, `이 워크로드`를 붙인다. [TASK36](../docs/research/TASK36.md)의 N=6 값과 함께 **구간**으로 제시하고 단일 값으로 쓰지 않는다 |
 | 3.6 `batch_size` 지배 | **높음.** "batch를 키워라"로 읽히기 쉽다 | `attn_impl=eager`에서 `kvcache_num_blocks = batch_size`라는 이 stack의 회계를 조건으로 명시한다. 다른 stack에서는 KV pool과 batch가 분리될 수 있음을 같은 문단에 쓴다 |
 | 3.1 compile-time 유일 경로 | **높음.** "runtime 정책은 쓸모없다"로 읽히기 쉽다 | "**이 substrate에서, 사전 정의된 분기에 따라**"를 조건으로 고정하고, server-side scheduler는 **닫히지 않은 경로**임을 명시한다([TASK33](../docs/research/TASK33.md)이 조율 가능한 위치로 지목했으나 patch 정책 대상이라 실행하지 않았다) |
+| 1.14–1.16 시뮬레이터 | **높음.** "시뮬레이터를 만들었다"로 읽히면 선행([AgentServeSim](RELATED.md#agentservesim--arxiv260609613) 등)과 구별되지 않고, 기여가 도구의 존재로 오해된다 | **신규성은 "존재"가 아니라 "무보정 device 예측력"에 있다.** 본문에서 이 모형을 소개할 때마다 (i) 보정 파라미터 **0개**, (ii) 예측을 **측정 전에 commit**, (iii) **아직 존재하지 않는 구성**의 device time을 맞혔다는 세 조건을 함께 적는다. 보정 파라미터가 있는 모형은 관측을 재현할 수 있어도 미지의 구성을 미리 말할 수 없고, **이 논문의 처방 절 전체가 그 차이 위에 서 있다** |
+| 3.10 포화 | **높음.** "batch를 키워도 소용없다"로 일반화되기 쉽다 | **N ≤ 10**과 **이 워크로드**를 항상 병기하고, 반전 구간(N > 16)을 **재지 않았다**고 같은 문단에 쓴다. 포화의 *형태*는 `class`, *위치*(B=16)는 `stack`임을 분리한다 |
 | 4.1 GPU 소멸 안 함 | **높음.** source-read 기반 **모형 진술**인데 실측처럼 읽히기 쉽다 | 절 제목에 "계산"을 넣고, 인용 줄 번호를 본문에 노출하며, 승격 조건(GPU 실측 1건)을 같은 문단에 쓴다 |
 
 `class` 항목(1.1, 1.5, 1.7, 1.8, 1.13, 2.1, 2.4, 2.5, 2.6, 4.1, 4.2)은 전부 **수치를 붙이지 않은 형태 진술**로만 본문에 등장시키고, 대응하는 값은 별도 `stack` 항목에서 조건과 함께 낸다.
@@ -106,7 +112,7 @@
 3. **단일 모델.** Qwen3-4B, `max_seq_len=8192`, `num_devices=4`, 36 layer 전부 full attention. hybrid·sliding-window·MLA 계열에서 KV 회계가 다르다.
 4. **trace 1종.** 실측 tool latency는 코드 agent류 trace 하나(43 도구)에서 왔다. [TASK31](../docs/research/TASK31.md)이 보인 대로 **워크로드가 바뀌면 예지의 가치가 뒤집힌다** — 이 한계는 이 연구가 스스로 실증한 것이다.
 5. **N > 10 미검증.** 시뮬레이터 재현 품질이 `max_num_seqs`에서 꺾이고([TASK24](../docs/research/TASK24.md)) N=10은 탐색 구간으로만 다뤘다.
-6. **batch > 16 미검증.** `batch_size` 지배가 어디서 포화하는지, KV 한계가 어디인지 `UNKNOWN`이다.
+6. ~~**batch > 16 미검증.**~~ → [TASK40](../docs/research/TASK40.md)에서 B ∈ {8,16,24,32}를 쟀고 **B=16 포화**를 확인했다. 남은 미검증: **B > 32**, 그리고 **최상위 눈금이 실제로 선택되는 구간(N > 16)의 반전 여부** — 이 격자는 그 구간을 재지 않았다.
 7. **GPU 실측 이연.** 일반성 절의 세 축 중 ①(생존 곡선의 문턱이 개수인가 크기인가)만 실측 없이 값을 말할 수 없다. 최소 범위는 생존 곡선 1건으로 좁혀져 있다.
 8. **server-side scheduler 경로 미실행.** [TASK33](../docs/research/TASK33.md)이 조율 가능한 유일한 runtime 위치로 지목했으나 이 연구의 patch 정책 밖이라 열지 않았다. **"runtime은 불가능"이 아니라 "per-session runtime은 불가능하고 server-side는 미검증"이다.**
 9. **bucket 6·10·16의 step 비용이 `PARTIAL`.** 채널 A′는 그 구간을 선형 보간하며, 알려진 편향(bucket 10에서 −10.9 %)을 선등록에 명시했다.

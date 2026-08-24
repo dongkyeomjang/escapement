@@ -139,6 +139,21 @@ TABLE: dict[str, str] = {
     "N=6(신규 seed)에서는 BASE가 이미 17/18을 재사용해 batch_size 레버에 살 것이 남아 있지 않다.":
         "At N=6 (fresh seed) BASE already reuses 17/18, so the batch_size lever has nothing "
         "left to buy.",
+
+    # -- (9) batch_size saturation ----------------------------------------
+    "통제된 구간 — 눈금은 (1,4,6,8,10,B), 최상위만 B":
+        "controlled range - grid (1,4,6,8,10,B), only the top rung changes",
+    "B8→B16: 계속 이득": "B8->B16: still gaining",
+    "B16 이후 평평": "flat beyond B16",
+    "batch_size B  (= outer KV slot 수 = max_num_seqs)":
+        "batch_size B  (= outer KV slots = max_num_seqs)",
+    "device time ratio (B8 대비) — 작을수록 개선":
+        "device time ratio vs B8 - lower is better",
+    "⑨ batch_size의 이득은 B=16에서 포화한다":
+        "The batch_size gain saturates at B=16",
+    "실선 = 실측 채널 A′, 점선 = 선등록 sim. 최상위 눈금 16·24·32는 N ≤ 10에서 한 번도 선택되지 않는다 (TASK40)":
+        "Solid = measured (channel A'), dashed = preregistered sim. Top rungs are never selected at N <= 10",
+    "점선 = 측정 전 commit된 sim 예측": "dashed = sim, committed before measurement",
 }
 
 #: Labels built with an f-string: fixed text, variable number.

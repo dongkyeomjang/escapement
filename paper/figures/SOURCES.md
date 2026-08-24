@@ -23,6 +23,7 @@ matplotlib이 이 host에 없고 cairo도 없어 SVG·PDF를 직접 생성한다
 | ⑤ headroom 분해 (조율 60 %) | `fig5_headroom_decomposition.svg` | 9칸 × 5축 [TASK33](../../docs/research/TASK33.md) "축별 분해" 표. 허구 이득 +4.32 % → −0.14 %도 같은 TASK | 계산 전용 (측정 없음). 입력 워크로드는 `toolmix:/home/rebel/vllm-continuum/results/tracelab/summary.json:60` |
 | ⑥ 예측기 오차 vs σ* | `fig6_predictor_error.svg` | 도구별 오차 std와 `B(δ)`·`μ̂` 집계는 [TASK32](../../docs/research/TASK32.md). σ* = 1.056–1.823 s는 [TASK30](../../docs/research/TASK30.md) | 계산 전용. 도구 population은 위 tracelab summary |
 | ⑦ compile 비용 모형 5점 | `fig7_compile_cost.svg` | [TASK06](../../docs/research/TASK06.md) 165.0 s/9.083 GiB · [TASK10](../../docs/research/TASK10.md) 349.0/11.501 · [TASK23](../../docs/research/TASK23.md) 416.0/12.306 · [TASK34](../../docs/research/TASK34.md) 480.0/13.202 · [TASK35](../../docs/research/TASK35.md) 407.0/12.378. 모형 `42.3 + 61.33 × models`는 [TASK10](../../docs/research/TASK10.md) | 각 run의 `compile/compile.log` |
+| ⑨ batch_size 포화 곡선 | `fig9_batch_saturation.svg` | sim 점선은 [BATCH_SATURATION_PREREG.md](../../docs/research/BATCH_SATURATION_PREREG.md)의 선등록 예측표, 실선은 [TASK40](../../docs/research/TASK40.md) B-곡선. **실측은 `batch_curve.json`을 직접 읽고, 없으면 TASK40 기록값으로 대체** | `20260824-222453-batch-saturation/batch_curve.json` |
 | ⑧ 최종 3-arm 결과 + 절제 | `fig8_final_result.svg` | N=8 열은 [TASK35](../../docs/research/TASK35.md) 확증 표와 X 표, N=6 열은 [TASK36](../../docs/research/TASK36.md). 채널 B와 선등록 예측도 같은 표 | `20260823-183505-final-confirm/`, `20260824-160028-n6-reconfirm/config_device.n6.json` |
 
 ## 재현

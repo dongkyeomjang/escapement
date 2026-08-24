@@ -12,7 +12,7 @@
 
 ## 1. 수치 대조 — 그림의 상수 대 원 TASK 값
 
-**138개 항목 중 138개 일치, 0개 불일치.**
+**156개 항목 중 156개 일치, 0개 불일치.**
 
 **불일치 없음.** 8개 그림의 데이터 상수가 전부 원 TASK 문서의 표·문장과 일치한다.
 
@@ -28,6 +28,7 @@
 | ⑥ | 8 | 8 | TASK32 |
 | ⑦ | 20 | 20 | TASK35 |
 | ⑧ | 3 | 3 | TASK35 |
+| ⑨ | 18 | 18 | TASK40, 선등록 |
 
 **대조하지 못한 것**: 그림 ①의 문턱은 TASK 문서에서 표가 아니라 문장으로 기술돼 있어 문장 일치로 확인했다(값 자체가 아니라 그 값을 말하는 문장의 존재를 확인한다). 그림 ⑧의 N=6 열은 [TASK36](../../docs/research/TASK36.md)의 측정 산출물 JSON을 직접 읽으므로 대조 대상이 아니라 원본이다.
 
@@ -285,6 +286,33 @@
 | 416 | 82 | 11 | N=8에서는 batch_size가 이득의 대부분(+8.25 %)을 낸다. | At N=8, batch_size supplies most of the gain (+8.25 %). |
 | 431 | 82 | 11 | N=6(신규 seed)에서는 BASE가 이미 17/18을 재사용해 batch_size 레버에 살 것이 남아 있지 않다. | At N=6 (fresh seed) BASE already reuses 17/18, so the batch_size lever has nothing left to buy. |
 
+### ⑨ `fig9_batch_saturation.svg` — 700 × 430 px
+
+| y | x | 크기 | 국문 (검토용 SVG) | 영문 (논문용 SVG·PDF) |
+|---|---|---|---|---|
+| 20 | 74 | 15 | ⑨ batch_size의 이득은 B=16에서 포화한다 | The batch_size gain saturates at B=16 |
+| 36 | 74 | 11.5 | 실선 = 실측 채널 A′, 점선 = 선등록 sim. 최상위 눈금 16·24·32는 N ≤ 10에서 한 번도 선택되지 않는다 (TASK40) | Solid = measured (channel A'), dashed = preregistered sim. Top rungs are never selected at N <= 10 |
+| 63 | 462 | 11 | 통제된 구간 — 눈금은 (1,4,6,8,10,B), 최상위만 B | controlled range - grid (1,4,6,8,10,B), only the top rung changes |
+| 80 | 65 | 12 | 1.00 | 1.00 |
+| 137 | 665 | 12 | N=6 | N=6 |
+| 161 | 65 | 12 | 0.95 | 0.95 |
+| 205 | 18 | 13 | device time ratio (B8 대비) — 작을수록 개선 | device time ratio vs B8 - lower is better |
+| 210 | 462 | 11.5 | B16 이후 평평 | flat beyond B16 |
+| 218 | 665 | 12 | N=8 | N=8 |
+| 241 | 65 | 12 | 0.90 | 0.90 |
+| 278 | 353 | 12 | N=6 | N=6 |
+| 295 | 353 | 12 | N=8 | N=8 |
+| 312 | 353 | 12 | N=10 | N=10 |
+| 322 | 65 | 12 | 0.85 | 0.85 |
+| 326 | 126 | 11 | B8→B16: 계속 이득 | B8->B16: still gaining |
+| 327 | 665 | 12 | N=10 | N=10 |
+| 329 | 353 | 12 | 점선 = 측정 전 commit된 sim 예측 | dashed = sim, committed before measurement |
+| 385 | 117 | 12 | 8 | 8 |
+| 385 | 290 | 12 | 16 | 16 |
+| 385 | 462 | 12 | 24 | 24 |
+| 385 | 635 | 12 | 32 | 32 |
+| 416 | 376 | 13 | batch_size B  (= outer KV slot 수 = max_num_seqs) | batch_size B  (= outer KV slots = max_num_seqs) |
+
 ---
 
 ## 4. 영문 그림 넘침 검사
@@ -309,6 +337,7 @@ LaTeX는 SVG를 직접 넣지 못하므로 영문 그림을 PDF로도 낸다. �
 | ⑥ | 717 KB | OK | 26 | 26 | OK |
 | ⑦ | 717 KB | OK | 27 | 27 | OK |
 | ⑧ | 718 KB | OK | 26 | 26 | OK |
+| ⑨ | 718 KB | OK | 22 | 22 | OK |
 
 **8/8 구조 정상, 문자열 전건 일치.** 변환 손실 없음.
 

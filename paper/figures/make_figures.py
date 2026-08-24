@@ -381,9 +381,64 @@ def fig8() -> None:
     _save(ax, "fig8_final_result")
 
 
+# --------------------------------------------------------------------------
+# ⑨ batch_size saturation curve
+# --------------------------------------------------------------------------
+#: Preregistered sim predictions (BATCH_SATURATION_PREREG.md), ratio vs B8.
+BSAT_SIM = {6: {8: 1.0, 16: 0.9666, 24: 0.9666, 32: 0.9666},
+            8: {8: 1.0, 16: 0.9177, 24: 0.9177, 32: 0.9177},
+            10: {8: 1.0, 16: 0.8412, 24: 0.8379, 32: 0.8379}}
+#: Fallback measurements, as recorded in TASK40.
+BSAT_DEV = {6: {8: 1.0, 16: 0.9659, 24: 0.9660, 32: 0.9663},
+            8: {8: 1.0, 16: 0.9151, 24: 0.9151, 32: 0.9161},
+            10: {8: 1.0, 16: 0.8601, 24: 0.8480, 32: 0.8482}}
+BSAT_B = {"B8": 8, "B16": 16, "B24": 24, "B32": 32}
+
+
+def _bsat_measured():
+    runs = sorted((REPO / "results/npu/stage2").glob("*-batch-saturation/batch_curve.json"))
+    if not runs:
+        return BSAT_DEV
+    out = {}
+    for row in json.loads(runs[-1].read_text())["per_n"]:
+        out[row["N"]] = {BSAT_B[a]: v["a_prime_ratio"] for a, v in row["arms"].items()}
+    return out
+
+
+def fig9() -> None:
+    dev = _bsat_measured()
+    ax = Axes(width=700, height=430, xlim=(6, 34), ylim=(0.82, 1.02), bottom=64)
+    ax.hline(1.0, color=C["ink"], dash="4 3")
+    # the two controlled steps: only the top rung and the pool size change
+    left, right = ax.px(16), ax.px(32)
+    ax.rect_px(left, ax.y1, right - left, ax.y0 - ax.y1, fill=C["ok"], opacity=0.08)
+    ax.text((16 + 32) / 2, 1.008, "통제된 구간 — 눈금은 (1,4,6,8,10,B), 최상위만 B",
+            size=11, fill=C["ok"])
+    for n, color, shape in ((6, C["base"], "o"), (8, C["arm2"], "s"), (10, C["arm3"], "^")):
+        sim = [(b, BSAT_SIM[n][b]) for b in (8, 16, 24, 32)]
+        mea = [(b, dev[n][b]) for b in (8, 16, 24, 32)]
+        ax.line(sim, color=color, width=1.6, dash="5 3", opacity=0.6)
+        ax.line(mea, color=color, width=2.6)
+        for x, y in mea:
+            ax.marker(x, y, color=color, r=5, shape=shape)
+        ax.text(33.4, dev[n][32] - 0.004, f"N={n}", size=12, fill=color, anchor="end")
+    ax.text(8.4, 0.845, "B8→B16: 계속 이득", size=11, fill=C["muted"], anchor="start")
+    ax.text(24, 0.917, "B16 이후 평평", size=11.5, fill=C["ok"], weight="bold")
+    ax.frame(xticks=[8, 16, 24, 32], yticks=[0.85, 0.90, 0.95, 1.00],
+             yfmt=lambda v: f"{v:.2f}",
+             xlabel="batch_size B  (= outer KV slot 수 = max_num_seqs)",
+             ylabel="device time ratio (B8 대비) — 작을수록 개선",
+             title="⑨ batch_size의 이득은 B=16에서 포화한다",
+             subtitle="실선 = 실측 채널 A′, 점선 = 선등록 sim. 최상위 눈금 16·24·32는 N ≤ 10에서 한 번도 선택되지 않는다 (TASK40)")
+    ax.legend([("N=6", C["base"], "o"), ("N=8", C["arm2"], "s"), ("N=10", C["arm3"], "^"),
+               ("점선 = 측정 전 commit된 sim 예측", C["muted"], "line")],
+              x=ax.x0 + 250, y=ax.y0 - 92)
+    _save(ax, "fig9_batch_saturation")
+
+
 def main() -> int:
     global _OUTDIR, _PDFDIR
-    figs = (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8)
+    figs = (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9)
 
     # Korean: SVG only, for review alongside the Korean research documents.
     svgplot.set_language("ko")
