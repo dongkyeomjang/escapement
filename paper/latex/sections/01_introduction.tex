@@ -24,7 +24,6 @@ Second, completed prefixes live in a pool of \textbf{sequence-granular slots}, a
 Third, prefill runs \textbf{exclusively}: while one session recomputes a prefix, every other session's decode is stalled for the full duration. The cost of a cache miss is therefore not that session's latency but recomputation time multiplied by the number of concurrent decoders. This is where the first two mechanisms multiply: the grid decides how wide the batch is, the slot pool decides who has to recompute, and exclusive prefill charges the recomputation to everyone.
 % CLAIMS 1.8
 
-% 편집 주석: 여기까지가 진단. 아래는 INTRO.md §4 완고를 그대로 통합한 포지셔닝 문단.
 
 \subsection{Position with respect to prior work}
 
@@ -56,7 +55,7 @@ Finally we ask where the lever stops. Pushing \texttt{batch\_size} from 8 to 32 
   \item A device-level decomposition of the return-arrival process into three mechanisms, with the first established \textbf{causally by a recompile intervention}.
   % CLAIMS 1.5, 1.6
   \item A step-level substrate model with \textbf{zero fitted parameters} that passes preregistered out-of-sample, intervention and workload-transfer gates.
-  % CLAIMS 1.14–1.17
+  % CLAIMS 1.14-1.17
   \item An information decomposition showing that most of the available headroom is \textbf{coordination}, which per-session runtime policy cannot reach even with omniscient knowledge.
   % CLAIMS 2.5, 2.6
   \item A compile-time configuration selected from distribution statistics alone and \textbf{confirmed on device} against preregistered predictions, together with the saturation curve that bounds it.

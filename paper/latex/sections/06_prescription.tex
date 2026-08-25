@@ -52,8 +52,6 @@ The ablation's ordering held on a fresh seed but the \textbf{magnitudes reversed
 
 \subsection{Where the lever stops}
 
-% 편집 주석: [SWEEP-PENDING] 자리. TASK40으로 채움.
-
 If a larger pool recovers cache, the obvious rebuttal is to make it much larger. We tested it directly: \texttt{batch\_size} $\in$ \{8, 16, 24, 32\}, with the grid held at \texttt{(1,4,6,8,10,B)} so that \textbf{only the top rung changes} between adjacent configurations, over three concurrency levels and three blocks.
 
 The gain \textbf{saturates at 16}. Judged by the bootstrap CI of the median per-cell ratio, both controlled steps are equivalence: 16 $\rightarrow$ 24 gives 0.9999 (CI [0.9808, 1.0000]) and 24 $\rightarrow$ 32 gives 1.0002 (CI [0.9999, 1.0015], width 0.0016) --- at N $\leq$ 10 under this workload.

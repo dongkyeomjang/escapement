@@ -83,6 +83,17 @@ FIGCAP = {
 }
 
 
+def _ascii(t: str) -> str:
+    """Fold a comment to ASCII.
+
+    A published TeX source is read as well as compiled, so a stray en dash in a
+    comment is internal text leaking into a reader-facing package.
+    """
+    for a, b in (("\u2013", "-"), ("\u2014", "-"), ("\u00b7", ","), ("\u2019", "'")):
+        t = t.replace(a, b)
+    return "".join(c if ord(c) < 128 else "?" for c in t)
+
+
 def esc(t: str) -> str:
     """Escape TeX specials in running text. Order matters: backslash first."""
     t = t.replace("\\", "\\textbackslash{}")
@@ -164,6 +175,9 @@ def convert(path: Path) -> str:
 
         if s.startswith("<!--") and s.endswith("-->"):
             note = s[4:-3].strip()
+            if note.startswith(("편집 주석", "NEEDS-EVIDENCE")):
+                i += 1          # working aid: never reaches the manuscript
+                continue
             if note.startswith("TABLECOLS:"):
                 tablecols.append(note[10:].strip())
             elif note.startswith("TABLENOTE:"):
@@ -183,7 +197,6 @@ def convert(path: Path) -> str:
             # appendix file's heading levels shift by one.
             if path.stem.endswith("appendices"):
                 if level == 1:
-                    out.append("% " + title)
                     i += 1
                     continue
                 title = re.sub(r"^Appendix [A-Z]:\s*", "", title)
@@ -249,10 +262,11 @@ def convert(path: Path) -> str:
                 if not mm:
                     break
                 raw = mm.group(2)
-                notes = [x.strip() for x in re.findall(r"<!--(.*?)-->", raw)]
+                notes = [" ".join(x.split()) for x in re.findall(r"<!--(.*?)-->", raw)]
                 out.append("  \\item " + inline(re.sub(r"\s*<!--.*?-->", "", raw).strip()))
                 for note in notes:
-                    out.append("  % " + " ".join(note.split()))
+                    if note.startswith("CLAIMS"):
+                        out.append("  % " + _ascii(note))
                 i += 1
             out += [f"\\end{{{env}}}", ""]
             continue
@@ -266,7 +280,9 @@ def convert(path: Path) -> str:
         if body:
             out.append(inline(body))
         for note in notes:
-            out.append("% " + " ".join(note.split()))
+            note = " ".join(note.split())
+            if note.startswith("CLAIMS"):
+                out.append("% " + _ascii(note))
         i += 1
     return "\n".join(out).replace("\n\n\n", "\n\n").rstrip("\n") + "\n"
 

@@ -25,9 +25,9 @@ TABLE: dict[str, str] = {
     "gap 중 도착한 배경 요청 수 B": "background requests arriving during the gap, B",
     "① 재사용 절벽 — 문턱은 token 총량이 아니라 요청 개수다":
         "Reuse cliff: the threshold counts requests, not tokens",
-    "층 2 = outer 8 slot × 8,192 token, FIFO. 2,000 token 요청, 12/12 재현 (TASK14·TASK15)":
+    "층 2 = outer 8 slot × 8,192 token, FIFO. 2,000 token 요청, 12/12 재현 (실측)":
         "Layer 2 = 8 outer slots x 8,192 tokens, FIFO. 2,000-token requests, "
-        "12/12 reproduced (TASK14, TASK15)",
+        "12/12 reproduced (measured)",
     "실측 · 층 2 실제 재사용 (FIFO 8 slot)":
         "measured - layer 2 actual reuse (FIFO, 8 slots)",
     "`prefix_cache_hits_total` (층 1, LRU 512)":
@@ -43,8 +43,8 @@ TABLE: dict[str, str] = {
     "동시 세션 수 N   (max_num_seqs = 8)": "concurrent sessions N   (max_num_seqs = 8)",
     "② 격자 정렬이 gap 효과의 부호를 정한다 — 개입으로 확정":
         "Grid alignment sets the sign of the gap effect",
-    "워크로드·seed·모델·slot 수를 고정하고 격자만 바꿨다 (TASK20·23·24·29)":
-        "Workload, seed, model and slot count fixed; only the grid changed (TASK20, 23, 24, 29)",
+    "워크로드·seed·모델·slot 수를 고정하고 격자만 바꿨다 (개입)":
+        "Workload, seed, model and slot count fixed; only the grid changed (intervention)",
     "측정 격자 (1,2,4,8)": "measured grid (1,2,4,8)",
     "개입 격자 (1,2,4,6,8)": "intervened grid (1,2,4,6,8)",
     "동치 밴드 [0.98, 1.02]": "equivalence band [0.98, 1.02]",
@@ -56,8 +56,8 @@ TABLE: dict[str, str] = {
     "예측 ITL 합 / 실측 ITL 합": "predicted ITL sum / measured ITL sum",
     "③ prefill은 시스템 비용이다 — 그 항을 넣으면 N 의존 편향이 사라진다":
         "Prefill is a system cost - adding its term removes the N-dependent bias",
-    "스파이크/prefill = 1.012–1.140 (9/9 run). v1 0.565–0.855 → v2 0.973–1.039 (TASK22)":
-        "spike/prefill = 1.012-1.140 (9/9 runs). v1 0.565-0.855 -> v2 0.973-1.039 (TASK22)",
+    "스파이크/prefill = 1.012–1.140 (9/9 run). v1 0.565–0.855 → v2 0.973–1.039 (실측)":
+        "spike/prefill = 1.012-1.140 (9/9 runs). v1 0.565-0.855 -> v2 0.973-1.039 (measured)",
     "속 빈 표식 = v1, 채운 표식 = v2": "hollow marker = v1, filled marker = v2",
 
     # -- (4) simulator validation -----------------------------------------
@@ -68,19 +68,18 @@ TABLE: dict[str, str] = {
     "④ 무보정 시뮬레이터의 예측력": "Predictive power of the uncalibrated simulator",
     "선등록된 점(파랑·주황·빨강)은 전부 측정 전에 commit됐다":
         "Every preregistered point (blue, orange, red) was committed before measurement",
-    "in-sample 재현 (TASK24, 11점)": "in-sample (TASK24, 11 pts)",
-    "out-of-sample 선등록 (TASK25, 3점)": "out-of-sample prereg. (TASK25, 3 pts)",
-    "device + 정책 개입 (TASK28, 2점)": "device + policy (TASK28, 2 pts)",
-    "device + compile 구성 (TASK35, 4점)":
-        "device + compile cfg (TASK35, 4 pts)",
-    "N=6 재확증 (TASK36, 2점)": "N=6 reconfirm (TASK36, 2 pts)",
+    "in-sample 재현 (11점)": "in-sample reproduction (11 points)",
+    "out-of-sample 선등록 (3점)": "out-of-sample, preregistered (3 points)",
+    "device + 정책 개입 (2점)": "device + policy intervention (2 points)",
+    "device + compile 구성 (4점)": "device + compile configuration (4 points)",
+    "N=6 재확증 (2점)": "N=6 reconfirmation (2 points)",
 
     # -- (5) headroom decomposition ---------------------------------------
     "device time 절감 (%)": "device time saved (%)",
     "⑤ headroom의 절반 이상은 조율의 몫이고 지식으로 살 수 없다":
         "Most of the headroom is coordination, and knowledge cannot buy it",
-    "막대 위 숫자 = 조율의 비중 (a−e)/a. 중앙 60 %, 범위 49–73 %. 현실 tool latency 워크로드 (TASK33)":
-        "Bar label = coordination share (a-e)/a; median 60 %, range 49-73 % (TASK33)",
+    "막대 위 숫자 = 조율의 비중 (a−e)/a. 중앙 60 %, 범위 49–73 %. 현실 tool latency 워크로드에서 계산":
+        "Bar label = coordination share (a-e)/a; median 60 %, range 49-73 %",
     "(e) 전지적 지식 · 세션별 독립 결정":
         "(e) omniscient, per-session decisions",
     "(a)−(e) 조율의 몫 — 어떤 per-session 정책도 닿을 수 없다":
@@ -101,8 +100,8 @@ TABLE: dict[str, str] = {
         "converged prediction error std (s, log axis)",
     "⑥ 예측기는 문턱을 5.6–9.7배 초과하고, 표본을 늘려도 줄지 않는다":
         "The predictor misses the threshold by 5.6-9.7x",
-    "표본 10 → 100,000에서 std 8.4 → 10.5 s. 상한도 점추정도 같은 벽에 부딪힌다 (TASK32)":
-        "Samples 10 -> 100,000: std 8.4 -> 10.5 s; bound and point estimate hit one wall (TASK32)",
+    "표본 10 → 100,000에서 std 8.4 → 10.5 s. 상한도 점추정도 같은 벽에 부딪힌다 (실측)":
+        "Samples 10 -> 100,000: std 8.4 -> 10.5 s; bound and point estimate hit one wall",
     "『Bash』가 27 ms일지 300 s일지는 명령이 정하고, 도구 이름은 그것을 담지 않는다":
         "Whether 'Bash' takes 27 ms or 300 s is set by the command; the tool name does not "
         "carry it",
@@ -117,17 +116,16 @@ TABLE: dict[str, str] = {
         "A recompile costs seven minutes",
     "Qwen3-4B, max_seq_len 8192, num_devices 4. 마지막 점 오차 시간 −0.7 %, 크기 +0.6 %":
         "Qwen3-4B, max_seq_len 8192, num_devices 4. Last point: -0.7 % time, +0.6 % size",
-    "모형을 세운 관측점 (TASK06·TASK10)": "points the model was built on (TASK06, TASK10)",
-    "모형을 시험한 관측점 (TASK23·TASK34·TASK35)":
-        "points that tested the model (TASK23, TASK34, TASK35)",
+    "모형을 세운 관측점": "points the model was fitted to",
+    "모형을 시험한 관측점": "points that tested the model",
 
     # -- (8) final result --------------------------------------------------
     "device time ratio (arm / BASE) — 1보다 작으면 개선":
         "device time ratio (arm / BASE) - below 1 is an improvement",
     "⑧ compile 구성이 device time을 회수한다 — 그리고 그 출처는 조건부다":
         "Compile configuration recovers device time",
-    "채널 A′(막대) · 채널 B(속 빈 원) · 선등록 예측(×). 두 N 모두 확증 PASS (TASK35·TASK36)":
-        "Channel A' (bars), B (hollow), prereg. prediction (x). Both N: PASS (TASK35, 36)",
+    "채널 A′(막대) · 채널 B(속 빈 원) · 선등록 예측(×). 두 N 모두 확증 PASS (실측)":
+        "Channel A' (bars), B (hollow), prereg. prediction (x). Both N: PASS (measured)",
     "② BATCHONLY — batch_size만 (KV pool 8 → 16)":
         "(2) BATCHONLY - batch_size only (8 -> 16)",
     "③ TUNED — batch_size + bucket 격자": "(3) TUNED - batch_size + bucket grid",

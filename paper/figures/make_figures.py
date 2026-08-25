@@ -69,7 +69,7 @@ def fig1() -> None:
              yfmt=lambda v: "생존" if v else "소멸",
              xlabel="gap 중 도착한 배경 요청 수 B",
              title="① 재사용 절벽 — 문턱은 token 총량이 아니라 요청 개수다",
-             subtitle="층 2 = outer 8 slot × 8,192 token, FIFO. 2,000 token 요청, 12/12 재현 (TASK14·TASK15)")
+             subtitle="층 2 = outer 8 slot × 8,192 token, FIFO. 2,000 token 요청, 12/12 재현 (실측)")
     ax.legend([("실측 · 층 2 실제 재사용 (FIFO 8 slot)", C["base"], "line"),
                ("`prefix_cache_hits_total` (층 1, LRU 512)", C["muted"], "line"),
                ("절제(모형): LRU·block 단위 회수 (요청 크기별)", C["arm2"], "line")],
@@ -108,7 +108,7 @@ def fig2() -> None:
              xlabel="동시 세션 수 N   (max_num_seqs = 8)",
              ylabel="pooled utilization ratio (AGENTIC / CONVENTIONAL)",
              title="② 격자 정렬이 gap 효과의 부호를 정한다 — 개입으로 확정",
-             subtitle="워크로드·seed·모델·slot 수를 고정하고 격자만 바꿨다 (TASK20·23·24·29)")
+             subtitle="워크로드·seed·모델·slot 수를 고정하고 격자만 바꿨다 (개입)")
     ax.legend([("측정 격자 (1,2,4,8)", C["base"], "o"),
                ("개입 격자 (1,2,4,6,8)", C["arm3"], "s"),
                ("동치 밴드 [0.98, 1.02]", C["muted"], "box")],
@@ -151,7 +151,7 @@ def fig3() -> None:
              xlabel="동시 세션 수 N",
              ylabel="예측 ITL 합 / 실측 ITL 합",
              title="③ prefill은 시스템 비용이다 — 그 항을 넣으면 N 의존 편향이 사라진다",
-             subtitle="스파이크/prefill = 1.012–1.140 (9/9 run). v1 0.565–0.855 → v2 0.973–1.039 (TASK22)")
+             subtitle="스파이크/prefill = 1.012–1.140 (9/9 run). v1 0.565–0.855 → v2 0.973–1.039 (실측)")
     ax.legend([("AGENTIC", C["arm3"], "o"), ("CONVENTIONAL", C["arm2"], "^"),
                ("속 빈 표식 = v1, 채운 표식 = v2", C["muted"], "line")],
               x=ax.x0 + 300, y=ax.y1 + 24)
@@ -194,7 +194,7 @@ def fig4() -> None:
             (SIM_OOS, C["arm2"], "s", "out-of-sample"),
             (SIM_DEVICE, C["accent"], "^", "device + 정책 개입"),
             (SIM_CONFIG, C["arm3"], "o", "device + compile 구성"),
-            (_task36_pairs(), C["bad"], "s", "TASK36 (N=6 재확증)")):
+            (_task36_pairs(), C["bad"], "s", "N=6 reconfirmation")):
         for x, y in pts:
             ax.marker(x, y, color=color, r=5, shape=shape)
     ax.text(1.155, 0.878, "±0.03 밴드", size=11, fill=C["ok"], anchor="end")
@@ -205,11 +205,11 @@ def fig4() -> None:
              ylabel="실측 ratio",
              title="④ 무보정 시뮬레이터의 예측력",
              subtitle="선등록된 점(파랑·주황·빨강)은 전부 측정 전에 commit됐다")
-    ax.legend([("in-sample 재현 (TASK24, 11점)", C["muted"], "o"),
-               ("out-of-sample 선등록 (TASK25, 3점)", C["arm2"], "s"),
-               ("device + 정책 개입 (TASK28, 2점)", C["accent"], "^"),
-               ("device + compile 구성 (TASK35, 4점)", C["arm3"], "o"),
-               ("N=6 재확증 (TASK36, 2점)", C["bad"], "s")],
+    ax.legend([("in-sample 재현 (11점)", C["muted"], "o"),
+               ("out-of-sample 선등록 (3점)", C["arm2"], "s"),
+               ("device + 정책 개입 (2점)", C["accent"], "^"),
+               ("device + compile 구성 (4점)", C["arm3"], "o"),
+               ("N=6 재확증 (2점)", C["bad"], "s")],
               x=ax.x1 + 22, y=ax.y1 + 150)
     _save(ax, "fig4_simulator_validation")
 
@@ -240,7 +240,7 @@ def fig5() -> None:
              yfmt=lambda v: f"{v:g} %",
              ylabel="device time 절감 (%)",
              title="⑤ headroom의 절반 이상은 조율의 몫이고 지식으로 살 수 없다",
-             subtitle="막대 위 숫자 = 조율의 비중 (a−e)/a. 중앙 60 %, 범위 49–73 %. 현실 tool latency 워크로드 (TASK33)")
+             subtitle="막대 위 숫자 = 조율의 비중 (a−e)/a. 중앙 60 %, 범위 49–73 %. 현실 tool latency 워크로드에서 계산")
     ax.legend([("(e) 전지적 지식 · 세션별 독립 결정", C["arm2"], "box"),
                ("(a)−(e) 조율의 몫 — 어떤 per-session 정책도 닿을 수 없다", C["arm3"], "box"),
                ("(b) 반환 시각만", C["accent"], "o"),
@@ -287,7 +287,7 @@ def fig6() -> None:
              ylabel="수렴 후 예측 오차 std (s, 로그 축)",
              xtick_rotate=-30,
              title="⑥ 예측기는 문턱을 5.6–9.7배 초과하고, 표본을 늘려도 줄지 않는다",
-             subtitle="표본 10 → 100,000에서 std 8.4 → 10.5 s. 상한도 점추정도 같은 벽에 부딪힌다 (TASK32)")
+             subtitle="표본 10 → 100,000에서 std 8.4 → 10.5 s. 상한도 점추정도 같은 벽에 부딪힌다 (실측)")
     ax.text(ax.x0 + 8, ax.y0 + 74,
             "『Bash』가 27 ms일지 300 s일지는 명령이 정하고, 도구 이름은 그것을 담지 않는다",
             size=11.5, anchor="start", fill=C["muted"], data=False)
@@ -297,7 +297,10 @@ def fig6() -> None:
 # --------------------------------------------------------------------------
 # ⑦ compile cost model, five observations
 # --------------------------------------------------------------------------
-COMPILE = [  # buckets, compiled models, wall clock s, artifact GiB, TASK
+#: buckets, compiled models, wall clock s, artifact GiB, and the internal
+#: record key. The key is a cross-check handle for verify_figures.py and is
+#: never drawn -- reader-facing output carries no internal record names.
+COMPILE = [
     (1, 2, 165.0, 9.083, "TASK06"), (4, 5, 349.0, 11.501, "TASK10"),
     (5, 6, 416.0, 12.306, "TASK23"), (6, 7, 480.0, 13.202, "TASK34"),
     (5, 6, 407.0, 12.378, "TASK35"),
@@ -314,7 +317,6 @@ def fig7() -> None:
         first = task in ("TASK06", "TASK10")
         ax.marker(models, t, color=C["base"] if first else C["arm3"], r=5.5,
                   shape="s" if first else "o")
-        ax.text(models, t + 22, f"{task}", size=10, fill=C["muted"])
         ax.text(models, t - 30, f"{gib:.2f} GiB", size=10, fill=C["ink"])
     ax.text(6.05, 470, "같은 bucket 수의 두 점 → 재현 오차 시간 2.2 %, 크기 0.6 %",
             size=11, fill=C["arm3"], anchor="end")
@@ -323,8 +325,8 @@ def fig7() -> None:
              ylabel="compile wall-clock (s)",
              title="⑦ 재compile은 7분이다 — 두 점으로 세운 모형이 다섯 번째 점에서도 맞는다",
              subtitle="Qwen3-4B, max_seq_len 8192, num_devices 4. 마지막 점 오차 시간 −0.7 %, 크기 +0.6 %")
-    ax.legend([("모형을 세운 관측점 (TASK06·TASK10)", C["base"], "s"),
-               ("모형을 시험한 관측점 (TASK23·TASK34·TASK35)", C["arm3"], "o")],
+    ax.legend([("모형을 세운 관측점", C["base"], "s"),
+               ("모형을 시험한 관측점", C["arm3"], "o")],
               x=ax.x0 + 14, y=ax.y1 + 24)
     _save(ax, "fig7_compile_cost")
 
@@ -335,9 +337,9 @@ def fig7() -> None:
 def fig8() -> None:
     t36 = {a: (p, m) for (p, m), a in zip(_task36_pairs(), ("BATCHONLY", "TUNED"))}
     cells = [
-        ("N=6\nseed 20261100\n(TASK36)", t36["BATCHONLY"][1], t36["TUNED"][1],
+        ("N=6\nseed 20261100", t36["BATCHONLY"][1], t36["TUNED"][1],
          t36["BATCHONLY"][0], t36["TUNED"][0], 0.9940, 0.9726),
-        ("N=8\nseed 20261000\n(TASK35)", 0.9175, 0.9028, 0.9101, 0.8971, 0.9183, 0.8993),
+        ("N=8\nseed 20261000", 0.9175, 0.9028, 0.9101, 0.8971, 0.9183, 0.8993),
     ]
     ax = Axes(width=700, height=448, xlim=(-0.62, 1.62), ylim=(0.86, 1.035), bottom=92)
     ax.hline(1.0, color=C["ink"], dash="4 3")
@@ -365,7 +367,7 @@ def fig8() -> None:
              yfmt=lambda v: f"{v:.2f}",
              ylabel="device time ratio (arm / BASE) — 1보다 작으면 개선",
              title="⑧ compile 구성이 device time을 회수한다 — 그리고 그 출처는 조건부다",
-             subtitle="채널 A′(막대) · 채널 B(속 빈 원) · 선등록 예측(×). 두 N 모두 확증 PASS (TASK35·TASK36)")
+             subtitle="채널 A′(막대) · 채널 B(속 빈 원) · 선등록 예측(×). 두 N 모두 확증 PASS (실측)")
     ax.legend([("② BATCHONLY — batch_size만 (KV pool 8 → 16)", C["arm2"], "box"),
                ("③ TUNED — batch_size + bucket 격자", C["arm3"], "box"),
                ("격자가 더한 몫", C["accent"], "box"),
