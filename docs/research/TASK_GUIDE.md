@@ -1,4 +1,4 @@
-# Continuum-NPU 연구 TASK 작성 지침
+# Escapement 연구 TASK 작성 지침
 
 이 문서는 `docs/research/TASKNN.md`의 생성과 유지에 대한 source of truth다. 연구 진행 상황의 진입점은 [INDEX.md](INDEX.md)다.
 

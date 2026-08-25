@@ -1,4 +1,13 @@
-# Continuum NPU
+# Escapement
+
+> **이 저장소는 `continuum-npu`에서 `escapement`로 개명됐다** (2026-08-25).
+> 시스템·논문 명칭은 **Escapement**이며, arXiv:2511.02230의 **Continuum**(UC Berkeley 외)과는
+> **무관한 별개 연구**다. 개명 이유가 그 명칭 충돌이다 —
+> [결정 5](docs/research/INDEX.md#결정-5--시스템-명칭-충돌) 참조.
+>
+> 로컬 디렉터리 경로(`/home/rebel/continuum-npu`)와 Python package 이름(`src/continuum/`)은
+> **의도적으로 그대로 둔다.** 40여 개 TASK 문서의 재현 command와 artifact 경로가 그 이름에
+> 걸려 있어, 바꾸면 과거 측정의 재현 정보가 전부 어긋난다.
 
 ## 프로젝트 목적
 

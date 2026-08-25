@@ -1,6 +1,6 @@
 # 초록 (국문·영문)
 
-시스템 명칭은 **`Escapement`** 로 확정됐다 ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 논문 본문·figure 라벨·arXiv 제목에 이 이름을 쓰고, 저장소 경로와 Python package 이름(`src/continuum/`)은 재현 정보 보존을 위해 그대로 둔다.
+시스템 명칭은 **`Escapement`** 로 확정됐다 ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 논문 본문·figure 라벨·arXiv 제목에 이 이름을 쓴다. GitHub 저장소도 `escapement`로 개명됐으나, **로컬 디렉터리 경로와 Python package 이름(`src/continuum/`)은 재현 정보 보존을 위해 그대로 둔다.**
 
 **이름의 근거**: escapement(탈진기)는 시계에서 **연속적인 구동력을 이산적인 tick으로 바꾸는 기구**다. 이 논문의 중심이 연속적인 반환 도착 과정과 이산적인 compiled batch 격자의 정렬이므로 은유가 기전과 직접 맞는다.
 

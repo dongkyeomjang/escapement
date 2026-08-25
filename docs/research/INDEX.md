@@ -1,4 +1,6 @@
-# Continuum-NPU Research Task Index
+# Escapement Research Task Index
+
+<!-- 저장소가 continuum-npu → escapement로 개명됐다(2026-08-25). 표제만 바꾸고 과거 TASK 기록의 서술과 경로는 당시 사실 그대로 둔다. 결정 5 참조. -->
 
 이 문서는 모든 agent가 작업 전에 읽는 연구 진행 상황의 단일 진입점이다. 상세 작성 규칙은 [TASK_GUIDE.md](TASK_GUIDE.md)를 따른다.
 
@@ -104,12 +106,18 @@ Stage 1 이후 설계에 제약이 되는 관측 (근거 [TASK06](TASK06.md), [T
 
 ### 결정 5 — 시스템 명칭 충돌
 
-- 상태: **`해소됨` — 시스템 명칭은 `Escapement`다** (사용자 판정 2026-08-25). 방침(개명한다)은 2026-08-22에, 이름은 2026-08-25에 확정됐다. [TASK38](TASK38.md)에서 [paper/ABSTRACT.md](../../paper/ABSTRACT.md)·[OUTLINE.md](../../paper/OUTLINE.md)·[CLAIMS.md](../../paper/CLAIMS.md)에 반영했다. **repo 경로와 `src/continuum/` package 이름은 재현 정보 보존을 위해 그대로 둔다.**
+- 상태: **`해소됨` — 시스템 명칭은 `Escapement`이고 repo도 `escapement`로 개명됐다** (명칭 판정·repo 개명 모두 2026-08-25). 방침(개명한다)은 2026-08-22에, 이름은 2026-08-25에 확정됐다. [TASK38](TASK38.md)에서 [paper/ABSTRACT.md](../../paper/ABSTRACT.md)·[OUTLINE.md](../../paper/OUTLINE.md)·[CLAIMS.md](../../paper/CLAIMS.md)에 반영했다. **로컬 디렉터리 경로와 `src/continuum/` package 이름은 재현 정보 보존을 위해 그대로 둔다.**
 - 사유: Berkeley의 동명 시스템 **Continuum**(arXiv:2511.02230)이 존재한다. 이름이 겹친 채로 투고하면 선행 시스템과 혼동되고, 검색·인용에서 이 연구가 그쪽에 묻힌다
 - **충돌 재확인 ([TASK37](TASK37.md), 2026-08-24)**: 그 논문의 시스템 이름은 v1–v3 `Continuum` → **v4 `CacheTTL`** → v5·**v6(현재, 2026-05-25) `Continuum`** 으로 되돌아왔다. ICLR 2026 *Lifelong Agents* workshop 등재 제목도 `Continuum`이다. **따라서 충돌은 해소되지 않았고 개명 방침은 유효하다.**
 - 적용 범위: **논문 본문·시스템 이름·figure 라벨.** 저장소 경로(`/home/rebel/continuum-npu`), Python package 이름(`src/continuum/`), 기존 TASK 문서의 서술은 **그대로 둔다** — 지금 개명하면 [TASK01](TASK01.md) 이래의 artifact path와 재현 정보가 전부 어긋난다
 - 확정 이름의 근거: **escapement(탈진기)** 는 시계에서 **연속적인 구동력을 이산적인 tick으로 바꾸는 기구**다. 이 연구의 중심이 연속적인 반환 도착 과정과 이산적인 compiled batch 격자의 정렬이므로 은유가 기전과 직접 맞고, 충돌 검색에서 LLM serving·ML systems 어디에도 동명 시스템이 없었다
 - 후속: 논문 제목 제안은 `Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs` ([ARXIV_CHECKLIST.md](../../paper/ARXIV_CHECKLIST.md) §4). figure 라벨에는 아직 이름이 들어가지 않았고 본문 집필 때 반영한다
+- **repo 개명 실행 (2026-08-25, [TASK43](TASK43.md))**: GitHub 저장소를 `dongkyeomjang/continuum-npu` → **`dongkyeomjang/escapement`** 로 개명하고 local `origin`을 신 URL로 갱신했다. GitHub이 구 URL을 redirect하지만 redirect 의존을 없앴다. [README](../../README.md) 머리에 개명 사실과 **Continuum(arXiv:2511.02230)과 무관한 별개 연구**임을 명시해, 검색으로 유입되는 독자가 두 시스템을 혼동하지 않게 했다
+- **바꾸지 않는 것 — 세 가지와 각각의 이유**:
+  - **로컬 디렉터리 경로 `/home/rebel/continuum-npu`** — 40여 개 TASK 문서의 재현 command와 artifact 경로가 이 이름에 걸려 있다. 바꾸면 과거 측정의 재현 정보가 전부 어긋난다
+  - **Python package 이름 `src/continuum/`** — import 경로가 바뀌면 TASK 재현 command 수십 건이 깨진다. **패키지명은 역사적 명칭으로 유지한다**
+  - **`patches/vllm_rbln-0.11.1/decoder_bucket_observe.patch`의 주석 문자열** — patch 본문이 바뀌면 적용 후 SHA256(`70942d16…`)이 달라진다. 그 hash는 **모든 측정 run의 provenance에 기록돼 있으므로**, 문자열 하나를 고치면 과거 run 전체의 substrate 검증이 깨진다
+- 과거 TASK 기록의 서술과 경로는 **당시 사실 그대로 둔다.** 표제(README·INDEX·TASK_GUIDE)만 신 명칭으로 통일했다
 
 **후보와 충돌 검색 결과** (검색 시각 2026-08-24. `Continuum` 계열은 배제했다. **채택: 1번**)
 

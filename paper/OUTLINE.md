@@ -1,6 +1,6 @@
 # 논문 서사 — 최종 3막 구조
 
-시스템 명칭: **`Escapement`** ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 본문·figure 라벨·arXiv 제목에 이 이름을 쓰고 저장소 경로와 package 이름은 그대로 둔다.
+시스템 명칭: **`Escapement`** ([결정 5](../docs/research/INDEX.md#결정-5--시스템-명칭-충돌), 사용자 판정 2026-08-25). 본문·figure 라벨·arXiv 제목에 이 이름을 쓴다. GitHub 저장소도 `escapement`로 개명됐고, 로컬 경로와 package 이름은 그대로 둔다.
 
 이 문서는 논문 본문의 **서사 설계**다. 각 절이 무엇을 주장하고 어느 TASK가 그것을 지지하는지는 [CLAIMS.md](CLAIMS.md)가, 그림은 [figures/](figures/)가, 선행 연구 배치는 [RELATED.md](RELATED.md)가 맡는다. 측정은 [TASK35](../docs/research/TASK35.md)로 종료됐고 [TASK36](../docs/research/TASK36.md)이 N=6 확증을 더했다.
 
