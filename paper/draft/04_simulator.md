@@ -4,21 +4,24 @@
 
 A closed-form account of padding predicts the *sign* of the grid effect but not its size, and it breaks where the steady state is not the whole story: a session set that decays from N to 1 passes through widths the steady-state count never visits, so steady-state padding is a **lower bound** on real padding. <!-- CLAIMS 1.14 --> We therefore keep the three mechanisms as a state machine over decode steps rather than as an equation.
 
-The model carries only constants already measured for this substrate — per-width step cost, prefill cost, slot count, block sizes, eviction order, hit formula. **It has no fitted parameters**: nothing in it was tuned to make an output match. <!-- CLAIMS 1.14 -->
+The model carries only constants already measured for this substrate — per-width step cost, prefill cost, slot count, block sizes, eviction order, hit formula.
+
+**What "zero fitted parameters" means here.** Every constant is a *component property* measured upstream, independently of any simulator output: a step cost from timing decode steps at a fixed width, a slot count read from the runtime's own accounting, an eviction order read from the source. Each carries a provenance triple recording the layer at which it holds, the measurement that established it, and how (Appendix~A). **The count of parameters tuned to make a simulator output match an observation is zero** — there is no residual, no scale factor, no per-workload correction anywhere in the model. <!-- CLAIMS 1.19 --> The prefill cost expression is a regression, but a regression over a *dedicated injection experiment* that measured stall duration against computed tokens; it is fitted to that component's own measurements, not to the simulator's error. We classify it as a component-level measurement for that reason and state it so the reader can disagree with the classification if they wish. <!-- CLAIMS 1.9 -->
 
 ## 4.2 Four gates, each harder than the last
 
 <!-- TABLECOLS: p{1.55cm}p{3.35cm}p{2.6cm} -->
+<!-- TABLELABEL: gates -->
 <!-- TABLE: Four validation gates, in increasing order of what they rule out. Reproduction is compatible with overfitting; prediction committed in advance is not; predicting cells under a control tests the mechanism; and changing the gap law tests the substrate rather than the workload's shape. -->
 
 | Gate | What it tests | Result |
 |---|---|---|
-| Reproduction | 80 previously measured combinations | utilization MAE 0.0066, direction 11/11 <!-- CLAIMS 1.14 --> |
+| Reproduction | 80 previously measured combinations | utilization MAE 0.0066; sign of the arm effect matched in 11/11 grid-by-concurrency cells <!-- CLAIMS 1.14 --> |
 | Out-of-sample | 3 pooled ratios on fresh seeds, **committed before measurement** | worst error 0.0040 against a ±0.05 tolerance <!-- CLAIMS 1.15 --> |
 | Intervention | device cells with a control policy applied, committed before measurement | within tolerance 2/2 <!-- CLAIMS 1.16 --> |
 | Workload transfer | gap law replaced by a measured tool-latency population | utilization error −0.019 to 0.000 <!-- CLAIMS 1.17 --> |
 
-The progression matters more than any single number. Reproducing measurements one has already seen is compatible with overfitting; predicting cells committed in advance is not; predicting cells in which a *control* has been applied tests whether the model knows the mechanism rather than the workload; and surviving a change of the gap distribution tests whether it knows the substrate rather than the workload's shape.
+Table~[[tab:gates]] lists them. The progression matters more than any single number. Reproducing measurements one has already seen is compatible with overfitting; predicting cells committed in advance is not; predicting cells in which a *control* has been applied tests whether the model knows the mechanism rather than the workload; and surviving a change of the gap distribution tests whether it knows the substrate rather than the workload's shape [[fig:fig4]].
 
 **Figure ④.**
 
@@ -37,6 +40,8 @@ Because every use of the model in this paper rests on the gates above, it is wor
 One residual is regular enough to state rather than to leave implicit. In **every** device confirmation where the model predicted the effect of an intervention, the measured ratio came out **above** the prediction — five occasions, same sign, across two different kinds of intervention (a return-holding policy and a compile configuration). <!-- CLAIMS 1.18 -->
 
 Three things bound what this means. Each of those errors fell **inside the tolerance registered before measurement**, so no verdict in this paper turns on the residual. The errors concentrate at the higher concurrencies, in the same region where §4.3.1 already withholds confirmation. And the direction is interpretable: the model **overestimates the benefit** of an intervention, which is the conservative direction for a paper whose positive result is an intervention — the device delivered slightly less than predicted, never more.
+
+One more bound matters for how the model is used. **The residual is smaller than the gap between the candidate configurations the model was asked to rank**: the top candidates differ by percentage points of device time while the residual is one to two hundredths of a ratio, and the ranking of the leading candidates was confirmed on device by ablation rather than assumed from the model. <!-- CLAIMS 3.6 --> A systematic residual of this size shifts predicted magnitudes; it does not reorder the choice this paper made.
 
 What it does mean is that a term is missing. The model does not know something that makes interventions marginally less effective on hardware than in simulation, and this work did not isolate it; candidates include client-side overhead, queueing serialisation, and the model's known weakness at attributing reuse to particular sessions. **We report it as an open input to the next model revision rather than as noise.**
 

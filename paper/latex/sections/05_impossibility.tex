@@ -13,6 +13,31 @@ An offline bound over return schedules finds real room: with a budget of 2 s und
 Before using it we have to discard the metric this project had been judging by. Under a rescheduling that preserves total work, slot occupancy and device time move in \textbf{opposite} directions: the schedule that maximises utilization spends 11--37 \% more device time, and in measured arm comparisons the two disagree in direction in 5 of 11 cells. Utilization remains a valid observable; it is not a cost function.
 % CLAIMS 2.1
 
+\subsection{Four ways to try, and what closes each}
+
+The policies one might build differ along two axes: whether a single component decides for everyone (\textbf{centralised}) or each session decides for itself (\textbf{decentralised}), and whether the decision uses only the present (\textbf{causal}) or also the future (\textbf{omniscient}). That gives four combinations, and this paper closes three of them by different means.
+
+
+\begin{table}[t]
+  \centering
+  \caption{The four ways to reach the rescheduling headroom, and what closes each. Only the centralised-omniscient cell is not closed by a result in this paper; it is closed by the unpredictability established in Section V-D.}
+  \label{tab:twobytwo}
+  \footnotesize
+  \begin{tabular}{p{1.5cm}p{3.0cm}p{3.0cm}}
+    \toprule
+     & causal (present only) & omniscient (uses the future) \\
+    \midrule
+    \textbf{centralised} & \textbf{closed empirically} --- measured on device, recovery fraction $-$105 \% and $-$70 \% & \textbf{not closed by a result} --- this is the offline bound itself; unreachable because the future is not predictable \\
+    \textbf{decentralised} & \textbf{closed empirically} --- every candidate had a negative mean saving & \textbf{closed structurally} --- omniscient but independent decisions lose a median 60 \% of the bound \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{The centralised-causal cell was measured, not assumed.} The policy evaluated on device runs at the gateway that sits between the sessions and the engine, and that position \textbf{holds the right to release a return}: it decides when each returning turn is handed to the engine. A server-side scheduler decides the order in which already-submitted work runs, which is a subset of that authority --- it cannot hold a return that has already arrived any longer than the gateway chose to. So the device result bounds the centralised-causal family, and it bounds it at a \textbf{negative} recovery.
+% CLAIMS 2.11
+
+What remains is the top-right cell, and Section\textasciitilde{}Section~\ref{sec:05}-D closes it by showing that the information it would need does not exist to be had.
+
 \subsection{What a causal policy does with it}
 
 The offline optimum does not hold sessions back evenly. It releases most of them immediately and detains a few --- and \emph{which} few depends on when the others will return. Every causal policy we evaluated, seeing only the present state, produced a negative mean saving; the best was $-$0.44 \%. On device this reproduced: the recovery fraction was $-$105 \% and $-$70 \% in the two confirmation cells --- the policy increased device time rather than reducing it. \textbf{The intuition "wait a moment and go together" is not merely unhelpful here; it costs about as much as the headroom is worth.}
@@ -21,10 +46,13 @@ The offline optimum does not hold sessions back evenly. It releases most of them
 
 \subsection{Most of the headroom is coordination, and knowledge cannot buy it}
 
-We decompose the headroom by information rather than by policy. If every session is given \textbf{omniscient} knowledge of the future but each is required to decide \textbf{independently}, 27--51 \% of the bound is recovered, and the remaining \textbf{median 60 \% (range 49--73 \%) disappears}.
+We decompose the headroom by information rather than by policy. If every session is given \textbf{omniscient} knowledge of the future but each is required to decide \textbf{independently}, 27--51 \% of the bound is recovered, and the remaining \textbf{median 60 \% (range 49--73 \%) disappears} Fig.~\ref{fig:fig5}.
 % CLAIMS 2.5
 
-That share is not lost to ignorance. It is lost to the decision structure: when the gain comes from several sessions riding the same batch, \emph{which} group forms cannot be decided by any one session from its own information. \textbf{No per-session runtime policy can reach it, in principle.} The only mechanisms that can achieve coordination are a scheduler that sees every session, or a configuration that freezes the coordination at build time for everybody.
+\textbf{A note on what this number is.} The 60 \% is computed from \textbf{aggregate device time} --- the total the schedule spends, summed over sessions. Section\textasciitilde{}Section~\ref{sec:04} disqualified this model's \emph{session-level attribution} (which session's prefix was the one that survived), and that disqualification does not reach here: the decomposition never asks which session recovered what, only how much total device time each information level buys. The two are different quantities, and the aggregate is the one the model reproduces most accurately.
+% CLAIMS 2.5
+
+That share is not lost to ignorance. It is lost to the decision structure: when the gain comes from several sessions riding the same batch, \emph{which} group forms cannot be decided by any one session from its own information. \textbf{No per-session runtime policy can reach it, in principle.} The only mechanisms that can achieve coordination are a centralised decision point or a configuration that freezes the coordination at build time for everybody --- and Table\textasciitilde{}Table~\ref{tab:twobytwo} has already closed the centralised one under causal information.
 % CLAIMS 2.6
 
 \begin{figure}[t]
@@ -42,7 +70,7 @@ Two independent reasons close it.
 \textbf{The value of return-time information is workload-specific.} Under a synthetic gap law, knowing exactly when peers return recovers 86--88 \% of the bound and defines an accuracy threshold of the same order as the gap standard deviation. Under the \emph{measured} tool-latency distribution the same information is worth $-$1.20 \% to +0.99 \%, and no threshold is definable. The opportunity to co-schedule is similar in both (73.6 \% vs 81.9 \% at a 2 s budget) --- \textbf{it is not the opportunity that is missing but its value.}
 % CLAIMS 2.7
 
-\textbf{And the prediction is not available anyway.} Borrowing the tool-duration estimator of \cite{continuum2025} verbatim, the converged error exceeds the accuracy threshold by 5.6--9.7$\times$, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s --- in the wrong direction. The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker \textbf{conditioning}. Whether \texttt{Bash} takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command.
+\textbf{And the prediction is not available anyway.} Borrowing the tool-duration estimator of \cite{continuum2025} verbatim, the converged error exceeds the accuracy threshold by 5.6--9.7$\times$, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s --- in the wrong direction Fig.~\ref{fig:fig6}. The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker \textbf{conditioning}. Whether \texttt{Bash} takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command.
 % CLAIMS 2.8
 % CLAIMS 2.9
 

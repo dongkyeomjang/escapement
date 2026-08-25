@@ -30,7 +30,14 @@ _OUTDIR = HERE
 _PDFDIR: Path | None = None
 
 
+#: Collisions found while generating, reported by main() rather than raised so
+#: that all figures are produced and the whole list is visible at once.
+COLLISIONS: list[tuple[str, str, str, float]] = []
+
+
 def _save(ax: Axes, name: str) -> None:
+    for a, b, area in ax.text_collisions():
+        COLLISIONS.append((name, a, b, area))
     _OUTDIR.mkdir(parents=True, exist_ok=True)
     ax.save(_OUTDIR / f"{name}.svg")
     if _PDFDIR is not None:
@@ -101,7 +108,7 @@ def fig2() -> None:
     ax.line([(6, 1.1504), (6, 0.9717)], color=C["arm3"], width=1.6, dash="3 3")
     ax.text(6.35, 1.065, "격자에 bucket 6만 추가", size=11, fill=C["arm3"], anchor="start")
     ax.text(6.35, 1.045, "(재compile 개입)", size=11, fill=C["arm3"], anchor="start")
-    ax.text(2.4, 1.17, "1 위 = gap이 오히려 이롭다 (역전)", size=11, fill=C["muted"], anchor="start")
+    ax.text(16.9, 1.17, "1 위 = gap이 오히려 이롭다 (역전)", size=11, fill=C["muted"], anchor="end")
     ax.frame(xticks=[3, 4, 5, 6, 7, 8, 10, 12, 16],
              yticks=[0.90, 0.95, 1.00, 1.05, 1.10, 1.15],
              yfmt=lambda v: f"{v:.2f}",
@@ -227,7 +234,7 @@ DECOMP = [  # eps, N, (a), (b), (c), (d), (e)
 
 
 def fig5() -> None:
-    ax = Axes(width=700, height=448, bottom=76, xlim=(-0.7, 8.7), ylim=(-2.4, 9.6))
+    ax = Axes(width=700, height=540, bottom=160, xlim=(-0.7, 8.7), ylim=(-2.4, 9.6))
     ax.hline(0.0, color=C["ink"], dash=None, width=1.2)
     for i, (eps, n, a, b, c, d, e) in enumerate(DECOMP):
         ax.bar(i, e, w=0.62, color=C["arm2"], y_base=0.0, opacity=0.9)
@@ -246,10 +253,10 @@ def fig5() -> None:
                ("(b) 반환 시각만", C["accent"], "o"),
                ("(c) 생성 길이만", C["ok"], "^"),
                ("(d) 둘 다", C["ink"], "o")],
-              x=ax.x0 + 232, y=ax.y1 + 22)
-    ax.text(ax.x0 + 232, ax.y0 - 12, "탐색 seed에서 +4.32 % → 평가 seed에서 −0.14 %:",
+              x=ax.x0 + 4, y=ax.y0 + 54)
+    ax.text(ax.x0 + 360, ax.y0 + 62, "탐색 seed에서 +4.32 % → 평가 seed에서 −0.14 %:",
             size=11, anchor="start", fill=C["bad"], data=False)
-    ax.text(ax.x0 + 232, ax.y0 + 2, "자유 파라미터 2개·20조합 탐색이 만든 허구 이득",
+    ax.text(ax.x0 + 360, ax.y0 + 78, "자유 파라미터 2개·20조합 탐색이 만든 허구 이득",
             size=11, anchor="start", fill=C["bad"], data=False, weight="bold")
     _save(ax, "fig5_headroom_decomposition")
 
@@ -311,14 +318,19 @@ def fig7() -> None:
     ax = Axes(width=680, height=400, xlim=(1.4, 7.7), ylim=(120, 540))
     ax.line([(1.4, 42.3 + 61.33 * 1.4), (7.7, 42.3 + 61.33 * 7.7)],
             color=C["muted"], width=2.2, dash="6 4")
-    ax.text(6.9, 42.3 + 61.33 * 6.9 - 34, "42.3 + 61.33 × compiled model 수",
-            size=11.5, fill=C["muted"], anchor="end")
+    ax.text(2.55, 42.3 + 61.33 * 2.55 + 46, "42.3 + 61.33 × compiled model 수",
+            size=11.5, fill=C["muted"], anchor="start")
+    seen: dict[int, int] = {}
     for buckets, models, t, gib, task in COMPILE:
         first = task in ("TASK06", "TASK10")
         ax.marker(models, t, color=C["base"] if first else C["arm3"], r=5.5,
                   shape="s" if first else "o")
-        ax.text(models, t - 30, f"{gib:.2f} GiB", size=10, fill=C["ink"])
-    ax.text(6.05, 470, "같은 bucket 수의 두 점 → 재현 오차 시간 2.2 %, 크기 0.6 %",
+        # two artifacts share a model count; put the second label on the other
+        # side of its marker so the two do not sit on top of each other
+        dy = -30 if seen.get(models, 0) == 0 else 26
+        seen[models] = seen.get(models, 0) + 1
+        ax.text(models, t + dy, f"{gib:.2f} GiB", size=10, fill=C["ink"])
+    ax.text(7.6, 182, "같은 bucket 수의 두 점 → 재현 오차 시간 2.2 %, 크기 0.6 %",
             size=11, fill=C["arm3"], anchor="end")
     ax.frame(xticks=[2, 5, 6, 7], yticks=[150, 250, 350, 450, 530],
              xlabel="compiled model 수 (decoder bucket 수 + prefill graph 1)",
@@ -494,6 +506,12 @@ def main() -> int:
     _OUTDIR, _PDFDIR = HERE / "en", HERE / "pdf"
     for f in figs:
         f()
+    if COLLISIONS:
+        print(f"  WARNING {len(COLLISIONS)} text collisions:")
+        for name, a, b, area in COLLISIONS[:12]:
+            print(f"    {name}: {a[:38]!r} x {b[:38]!r}  ({area:.0f} px2)")
+    else:
+        print("  no text collisions")
     unused = set(TABLE) - svgplot.used_translations()
     print(f"en: {len(figs)} svg -> {_OUTDIR}, {len(figs)} pdf -> {_PDFDIR}")
     if unused:

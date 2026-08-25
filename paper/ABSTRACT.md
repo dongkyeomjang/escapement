@@ -10,7 +10,7 @@
 
 | 판본 | 용도 | 길이 | 위치 |
 |---|---|---|---|
-| **영문 압축본** | **arXiv 초록 필드** (하드 캡 1,920자) | **1,887자** | 아래 §1, 그리고 평문 파일 [`abstract_arxiv.txt`](abstract_arxiv.txt) |
+| **영문 압축본** | **arXiv 초록 필드** (하드 캡 1,920자) | **248단어 / 1,706자** | 아래 §1, 그리고 평문 파일 [`abstract_arxiv.txt`](abstract_arxiv.txt) |
 | 영문 전체판 | **논문 본문**(학회 원고)의 초록 | 3,029자 | 아래 §3 |
 | 국문 초록 | 국문 배포·발표 자료 | 1,511자 | 아래 §2. **자수 제약이 없으므로 압축하지 않는다** |
 
@@ -22,16 +22,16 @@
 
 ---
 
-## 1. 영문 압축본 — arXiv 초록 필드용 (1,887자)
+## 1. 영문 압축본 — arXiv 초록 필드용 (248단어 / 1,706자)
 
 평문·ASCII·마크다운 없음. 그대로 복사해 붙일 수 있다. 원본 파일은 [`abstract_arxiv.txt`](abstract_arxiv.txt)다.
 
 ```text
-Agentic workloads interleave LLM calls with tool execution, and the timing of a session's return from a tool call sets its serving cost. On an RBLN CA25 NPU running vLLM, we decompose that return-arrival process into three independent mechanisms: alignment between concurrent request count and the compiled decode-batch grid, the reuse cliff of a sequence-granular FIFO slot pool, and the serialisation tax of exclusively executed prefill. None of these mechanisms responds to a property of an individual request; all three respond to a collective property of arrivals. We establish the first causally, with a recompile that changes only the grid. A step-level simulator carrying all three, with zero fitted parameters, passes a preregistered out-of-sample prediction gate.
+Agentic workloads interleave LLM calls with tool execution, and the timing of a session's return from a tool call sets its serving cost. On an RBLN CA25 NPU running vLLM, we decompose that return-arrival process into three independent mechanisms: alignment between concurrent request count and the compiled decode-batch grid, the reuse cliff of a sequence-granular FIFO slot pool, and the serialisation tax of exclusively executed prefill. None of these mechanisms responds to a property of an individual request; all three respond to a collective property of arrivals. We establish the first of these causally, with a recompile that changes only the grid. A step-level simulator carrying all three, with zero fitted parameters, passes a preregistered out-of-sample prediction gate.
 
-On that model we obtain a negative result. Rescheduling returns leaves real offline headroom, but a median 60% of it is coordination: if every session is given omniscient knowledge but decides independently, that share disappears. No per-session runtime policy can reach it, in principle. Nor is the remainder reachable: the value of return-time information is workload-specific and vanishes under measured tool latencies, and a published duration estimator, borrowed verbatim, misses the accuracy threshold by a margin that four additional orders of magnitude in sample size do not close.
+On that model we obtain a negative result. Rescheduling returns leaves real offline headroom, but a median 60% of it is coordination: if every session is given omniscient knowledge yet decides independently, that share disappears. No per-session runtime policy can reach it, in principle. Nor is the remainder reachable: the value of return-time information is workload-specific and vanishes under measured tool latencies, and a published duration estimator misses the accuracy threshold by a margin that four additional orders of magnitude in sample size do not close.
 
-That leaves one reachable lever: coordination decided once, in advance, for everybody. Escapement selects one compile-time configuration from workload distribution statistics and the uncalibrated simulator alone, with no device measurement in the selection loop, applies it with a seven-minute recompile, and confirms a 9.7-10.1% device-time recovery at N=8 concurrent sessions, on two channels registered before measurement. Some levers can be bought with a distribution even when no one can predict the individual draw.
+That leaves coordination decided once, in advance, for everybody. Escapement selects one compile-time configuration from workload distribution statistics and the uncalibrated simulator alone, applies it with an eight-minute recompile, and confirms a 9.7-10.1% device-time recovery at eight concurrent sessions on two independently registered channels.
 ```
 
 길이 확인:

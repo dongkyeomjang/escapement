@@ -9,7 +9,7 @@
 Comparing an agentic arm (turns separated by tool gaps) against a conventional arm (same work, no gaps) across concurrency levels does not give a single direction. At some concurrencies the gap makes utilization \emph{better}, at others worse. The distinguishing variable is not load but \textbf{where the offered concurrency falls on the compiled grid}: when it lands between two rungs, the gap breaks the running set into pieces that pad less, and the arm with gaps wins.
 % CLAIMS 1.5
 
-We establish this causally. Holding the workload, the seed, the model and the slot count fixed, we recompiled the artifact with one additional rung and measured again. On the grid \texttt{(1,2,4,8)} the pooled ratio at N=6 was 1.1504; adding rung 6 to make \texttt{(1,2,4,6,8)} moved it to 0.9717, and the reversal disappeared. An ablation completes the attribution: on a hypothetical continuous grid the law vanishes to exactly 1.0000, since with no padding there is no padding difference to explain (model).
+We establish this causally. Holding the workload, the seed, the model and the slot count fixed, we recompiled the artifact with one additional rung and measured again. On the grid \texttt{(1,2,4,8)} the pooled ratio at N=6 was 1.1504; adding rung 6 to make \texttt{(1,2,4,6,8)} moved it to 0.9717, and the reversal disappeared Fig.~\ref{fig:fig2}. An ablation completes the attribution: on a hypothetical continuous grid the law vanishes to exactly 1.0000, since with no padding there is no padding difference to explain (model).
 % CLAIMS 1.6
 % CLAIMS 1.7
 
@@ -23,7 +23,7 @@ We establish this causally. Holding the workload, the seed, the model and the sl
 
 \subsection{The reuse cliff counts requests, not tokens}
 
-A completed prefix either survives a gap intact or is gone; there is no partial survival, because a request of 8,192 tokens or fewer occupies exactly one outer slot regardless of its length. Survival is therefore decided by \textbf{how many other requests were admitted during the gap}, not by how many tokens they carried. On this artifact --- eight outer slots of 8,192 tokens under FIFO, with 2,000-token requests --- reuse survives six background requests and dies at the seventh, and that threshold reproduced identically in 12 of 12 trials.
+A completed prefix either survives a gap intact or is gone; there is no partial survival, because a request of 8,192 tokens or fewer occupies exactly one outer slot regardless of its length. Survival is therefore decided by \textbf{how many other requests were admitted during the gap}, not by how many tokens they carried. On this artifact --- eight outer slots of 8,192 tokens under FIFO, with 2,000-token requests --- reuse survives six background requests and dies at the seventh, and that threshold reproduced identically in 12 of 12 trials Fig.~\ref{fig:fig1}.
 % CLAIMS 1.1
 % CLAIMS 1.2
 
@@ -47,7 +47,7 @@ Injecting a prefill while several sessions decode produces a latency spike in \t
 % CLAIMS 1.8
 % CLAIMS 1.9
 
-Adding this term is what makes a cost model transfer across concurrency. A decode-only model's predicted/measured ratio ran from 0.565 to 0.855 with a monotone dependence on concurrency; adding the serialisation term moves it to 0.973--1.039 and removes the dependence, accounting for 87--120 \% of the earlier bias.
+Adding this term is what makes a cost model transfer across concurrency. A decode-only model's predicted/measured ratio ran from 0.565 to 0.855 with a monotone dependence on concurrency; adding the serialisation term moves it to 0.973--1.039 and removes the dependence, accounting for 87--120 \% of the earlier bias Fig.~\ref{fig:fig3}.
 % CLAIMS 1.10
 
 \begin{figure}[t]

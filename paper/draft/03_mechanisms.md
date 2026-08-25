@@ -4,13 +4,13 @@
 
 Comparing an agentic arm (turns separated by tool gaps) against a conventional arm (same work, no gaps) across concurrency levels does not give a single direction. At some concurrencies the gap makes utilization *better*, at others worse. The distinguishing variable is not load but **where the offered concurrency falls on the compiled grid**: when it lands between two rungs, the gap breaks the running set into pieces that pad less, and the arm with gaps wins. <!-- CLAIMS 1.5 -->
 
-We establish this causally. Holding the workload, the seed, the model and the slot count fixed, we recompiled the artifact with one additional rung and measured again. On the grid `(1,2,4,8)` the pooled ratio at N=6 was 1.1504; adding rung 6 to make `(1,2,4,6,8)` moved it to 0.9717, and the reversal disappeared. <!-- CLAIMS 1.6 --> An ablation completes the attribution: on a hypothetical continuous grid the law vanishes to exactly 1.0000, since with no padding there is no padding difference to explain (model). <!-- CLAIMS 1.7 -->
+We establish this causally. Holding the workload, the seed, the model and the slot count fixed, we recompiled the artifact with one additional rung and measured again. On the grid `(1,2,4,8)` the pooled ratio at N=6 was 1.1504; adding rung 6 to make `(1,2,4,6,8)` moved it to 0.9717, and the reversal disappeared [[fig:fig2]]. <!-- CLAIMS 1.6 --> An ablation completes the attribution: on a hypothetical continuous grid the law vanishes to exactly 1.0000, since with no padding there is no padding difference to explain (model). <!-- CLAIMS 1.7 -->
 
 **Figure ②.**
 
 ## 3.2 The reuse cliff counts requests, not tokens
 
-A completed prefix either survives a gap intact or is gone; there is no partial survival, because a request of 8,192 tokens or fewer occupies exactly one outer slot regardless of its length. Survival is therefore decided by **how many other requests were admitted during the gap**, not by how many tokens they carried. <!-- CLAIMS 1.1 --> On this artifact — eight outer slots of 8,192 tokens under FIFO, with 2,000-token requests — reuse survives six background requests and dies at the seventh, and that threshold reproduced identically in 12 of 12 trials. <!-- CLAIMS 1.2 -->
+A completed prefix either survives a gap intact or is gone; there is no partial survival, because a request of 8,192 tokens or fewer occupies exactly one outer slot regardless of its length. Survival is therefore decided by **how many other requests were admitted during the gap**, not by how many tokens they carried. <!-- CLAIMS 1.1 --> On this artifact — eight outer slots of 8,192 tokens under FIFO, with 2,000-token requests — reuse survives six background requests and dies at the seventh, and that threshold reproduced identically in 12 of 12 trials [[fig:fig1]]. <!-- CLAIMS 1.2 -->
 
 The eviction order is FIFO over *allocation*, not over last use, so the oldest allocation is the first victim and re-access does not protect it. An ablation replacing the policy with LRU over blocks removes the count threshold entirely and makes the threshold inversely proportional to request size instead (model). <!-- CLAIMS 1.3 -->
 
@@ -22,7 +22,7 @@ One asymmetry is worth stating because it makes gaps costlier than a naive accou
 
 Injecting a prefill while several sessions decode produces a latency spike in **all** of them, beginning within a millisecond of each other and lasting the prefill's duration; across nine runs the ratio of spike to prefill time stayed in 1.01–1.14. <!-- CLAIMS 1.8 --> The stall is predictable from the computed token count: on this hardware and model, `ceil(n/128) × (0.0212 + 6.4e-7·n)` seconds fits four injection sizes from 500 to 6,000 tokens with a worst residual of 2.4 ms. <!-- CLAIMS 1.9 -->
 
-Adding this term is what makes a cost model transfer across concurrency. A decode-only model's predicted/measured ratio ran from 0.565 to 0.855 with a monotone dependence on concurrency; adding the serialisation term moves it to 0.973–1.039 and removes the dependence, accounting for 87–120 % of the earlier bias. <!-- CLAIMS 1.10 -->
+Adding this term is what makes a cost model transfer across concurrency. A decode-only model's predicted/measured ratio ran from 0.565 to 0.855 with a monotone dependence on concurrency; adding the serialisation term moves it to 0.973–1.039 and removes the dependence, accounting for 87–120 % of the earlier bias [[fig:fig3]]. <!-- CLAIMS 1.10 -->
 
 **Figure ③.**
 

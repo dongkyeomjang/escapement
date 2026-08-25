@@ -55,4 +55,4 @@ The stack computes, per decode step, both the actual number of running requests 
 
 ## Appendix D: Simulator validation detail
 
-Section ④ summarises four gates. Per-cell predicted-versus-measured tables for each — including the block-level breakdown, the invariant checks that made each run valid, and the raw artifact paths — are recorded in the project's task history, which is released with the paper. <!-- NEEDS-EVIDENCE: 저장소 공개 방식(익명 릴리스 vs 공개 repo)이 정해지면 여기에 구체적 위치를 적는다. 2026-08-25 기준 repo 이름은 `dongkyeomjang/escapement`로 확정돼 URL은 안정적이다 — 남은 판정은 **공개 여부와 시점**이지 주소가 아니다. 공개로 정하면 이 문장에 URL과 commit hash를 함께 적는다 -->
+Section ④ summarises four gates. Per-cell predicted-versus-measured tables for each — including the block-level breakdown, the invariant checks that made each run valid, and the raw artifact paths — are recorded in the project's research history, released at `github.com/dongkyeomjang/escapement`. The preregistration commits of Appendix~B index into the same repository.

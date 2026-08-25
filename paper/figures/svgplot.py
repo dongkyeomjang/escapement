@@ -271,6 +271,42 @@ class Axes:
                               "fill": color, "stroke": color, "sw": 0})
             self.text(x + 29, yy + 4, label, size=12, anchor="start", data=False)
 
+    # -- layout check ---------------------------------------------------
+    def text_boxes(self) -> list[tuple[float, float, float, float, str]]:
+        """Bounding box of every unrotated text primitive, in canvas pixels.
+
+        Every glyph position in these figures is computed here rather than by a
+        layout engine, so collisions are decidable analytically: the same width
+        table that places the text can also ask whether two pieces overlap.
+        """
+        out = []
+        for p in self.prims:
+            if p["k"] != "text" or p.get("rotate"):
+                continue
+            w = text_width(p["s"], p["size"], p["weight"])
+            x = p["x"]
+            if p["anchor"] == "middle":
+                x -= w / 2
+            elif p["anchor"] == "end":
+                x -= w
+            # baseline-relative: ascent above, a little descent below
+            out.append((x, p["y"] - p["size"] * 0.80, x + w, p["y"] + p["size"] * 0.22, p["s"]))
+        return out
+
+    def text_collisions(self, pad: float = 0.5) -> list[tuple[str, str, float]]:
+        """Pairs of text primitives whose boxes overlap, with the overlap area."""
+        boxes = self.text_boxes()
+        hits = []
+        for i in range(len(boxes)):
+            ax0, ay0, ax1, ay1, at = boxes[i]
+            for j in range(i + 1, len(boxes)):
+                bx0, by0, bx1, by1, bt = boxes[j]
+                ox = min(ax1, bx1) - max(ax0, bx0) - pad
+                oy = min(ay1, by1) - max(ay0, by0) - pad
+                if ox > 0 and oy > 0:
+                    hits.append((at, bt, ox * oy))
+        return sorted(hits, key=lambda h: -h[2])
+
     # -- SVG ------------------------------------------------------------
     def render(self) -> str:
         out = []

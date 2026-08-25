@@ -74,7 +74,9 @@ FIGCAP = {
          "N=8 the pool dominates; at N=6 on a fresh seed the baseline already reuses 17 of 18, so "
          "almost nothing is left for the pool to buy.",
     "⑨": "The gain from a larger KV pool ends where the survival rate saturates, at one third of "
-         "what the device can physically hold. Upper panel is device time against "
+         "what the device can physically hold. The confirmation rests on the cells at six and "
+         "eight concurrent sessions; the ten-session cells are exploratory and are excluded from "
+         "it, following the validated envelope of Section~III. Upper panel is device time against "
          "batch\\_size with the grid held at $(1,4,6,8,10,B)$ so that only the top rung changes; "
          "lower panel is layer-2 survival on the same axis. The vertical dashed line is the KV "
          "ceiling extrapolated from a three-point fit of device memory, not a measurement. The "
@@ -119,18 +121,22 @@ def crossrefs(t: str) -> str:
     T1-encoded fonts have no circled numerals, and a section mark followed by a
     hand-written number would go stale the moment a section moves.
     """
-    t = re.sub(rf"(?:Section\s*|\u00a7)?([{CIRCLED}])",
+    t = re.sub(rf"(?:Sections?\s*|\u00a7)?([{CIRCLED}])",
                lambda m: "Section~\\ref{sec:" + SECREF[m.group(1)] + "}", t)
     t = re.sub(r"\u00a7(\d+)(?:\.\d+)*", lambda m: "Section~\\ref{sec:0" + m.group(1) + "}", t)
     return t
 
 
 CITEKEY = re.compile(r"\[@([A-Za-z0-9_,;@\s]+)\]")
+#: [[fig:fig2]] / [[tab:gates]] -> Fig.~\ref{...} / Table~\ref{...}
+XREF = re.compile(r"\[\[(fig|tab):([A-Za-z0-9_]+)\]\]")
 
 
 def inline(t: str) -> str:
     """Escape, then restore the markup spans that were written as markdown."""
     t = crossrefs(t)
+    t = XREF.sub(lambda m: "\x00XR" + ("F" if m.group(1) == "fig" else "T")
+                 + m.group(2) + "\x03", t)
     t = CITEKEY.sub(lambda m: "\x00CITE\x01"
                     + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "\x02", t)
     t = re.sub(r"Section~\\ref\{sec:(\d\d)\}", lambda m: "\x00REF\x01" + m.group(1) + "\x02", t)
@@ -147,6 +153,9 @@ def inline(t: str) -> str:
     t = esc(t)
     t = t.replace("\x00CODE\x01", "\\texttt{").replace("\x00BF\x01", "\\textbf{")
     t = re.sub(r"\x00SUP(.)\x03", lambda m: "$^{\\mathrm{" + m.group(1) + "}}$", t)
+    t = re.sub(r"\x00XR([FT])([A-Za-z0-9_]+)\x03",
+               lambda m: ("Fig.~\\ref{fig:" if m.group(1) == "F" else "Table~\\ref{tab:")
+               + m.group(2) + "}", t)
     t = t.replace("\x00IT\x01", "\\emph{").replace("\x00CITE\x01", "\\cite{").replace("\x02", "}")
     t = re.sub(r"\x00REF\x01(\d\d)\}", lambda m: "Section~\\ref{sec:" + m.group(1) + "}", t)
     t = t.replace("\x04", "\\allowbreak{}")
@@ -168,6 +177,7 @@ def convert(path: Path) -> str:
     tablecap: list[str] = []
     tablecols: list[str] = []
     tablenote: list[str] = []
+    tablelabel: list[str] = []
     i = 0
     while i < len(lines):
         ln = lines[i]
@@ -182,6 +192,8 @@ def convert(path: Path) -> str:
                 tablecols.append(note[10:].strip())
             elif note.startswith("TABLENOTE:"):
                 tablenote.append(note[10:].strip())
+            elif note.startswith("TABLELABEL:"):
+                tablelabel.append(note[11:].strip())
             elif note.startswith("TABLE:"):
                 tablecap.append(inline(note[6:].strip()))
             else:
@@ -219,6 +231,7 @@ def convert(path: Path) -> str:
             cap = tablecap.pop() if tablecap else "TODO caption"
             cols = tablecols.pop() if tablecols else None
             note_row = tablenote.pop() if tablenote else None
+            lab = tablelabel.pop() if tablelabel else None
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
                 cells = [re.sub(r"\s*<!--.*?-->", "", c).strip()
@@ -233,6 +246,8 @@ def convert(path: Path) -> str:
                 spec = cols or ("l" * n)
                 out += ["", "\\begin{table}[t]", "  \\centering",
                         f"  \\caption{{{cap}}}"]
+                if lab:
+                    out.append(f"  \\label{{tab:{lab}}}")
                 if cols:
                     out.append("  \\footnotesize")
                 out += [f"  \\begin{{tabular}}{{{spec}}}", "    \\toprule"]

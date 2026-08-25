@@ -38,6 +38,7 @@
 | 1.17 | 그 예측은 **gap 법칙 전환**을 넘어 전이된다 (중앙값 22배·std 7배 다른 분포에서 utilization 오차 −0.019~0.000) | [TASK31](../docs/research/TASK31.md) | **`universal`** (방법) | ④ | 합성 `uniform:1:5` → 실측 tool latency 혼합(43 도구, 60 s cap) |
 
 | 1.18 | **device 확증에서 실측 ratio가 예측을 계통적으로 상회한다** — 5회 전부 같은 부호. 모형이 개입의 이득을 약간 과대평가한다 | [TASK28](../docs/research/TASK28.md), [TASK35](../docs/research/TASK35.md), [TASK36](../docs/research/TASK36.md), [TASK40](../docs/research/TASK40.md) | **`stack`** (관측된 오차 구조) | ④ | **scope**: 5회 모두 **선등록 허용치 안**이라 어떤 판정도 이것에 걸려 뒤집히지 않는다. 오차는 **높은 동시성에 집중**되며 그 구간은 §4.3.1이 이미 확증에서 제외한다. 방향은 **보수적**(device가 예측보다 덜 준다). **누락 항은 특정되지 않았고 후속 모형 개정의 입력으로 보고한다** |
+| 1.19 | **"보정 파라미터 0개"의 정의**: 모형의 모든 상수는 **상류에서 독립 측정된 component 성질**이며(provenance triple 부착, 부록 A), **시뮬레이터 출력에 맞춰 조정된 파라미터가 0개**다 | [TASK16](../docs/research/TASK16.md), [TASK24](../docs/research/TASK24.md) | **`universal`** (방법 정의) | ④ | prefill 비용식은 **주입 실험의 회귀**이므로 component-level measurement로 분류한다 — 시뮬레이터 출력에 맞춘 적합이 아니다 |
 
 ## 막 2 — 불가능성
 
@@ -47,8 +48,9 @@
 | 2.2 | 반환 시점 재배치에 **실질적 headroom이 있다** (합성 gap: ε=0.5 s 1.2–4.4 %, ε=5 s 9.7–27.2 %) | [TASK26](../docs/research/TASK26.md) | **`stack`** | ⑤ | 국소 탐색 결과이므로 **하한**. 합성 `uniform:1:5` |
 | 2.3 | headroom은 현실 tool latency 분포에서도 같은 자릿수로 남는다 (ε=2 s에 5.0–6.9 %) | [TASK31](../docs/research/TASK31.md) | **`stack`** | ⑤ | 실측 trace 1종(코드 agent류), 43 도구, 60 s cap |
 | 2.4 | **이 headroom은 조정이 아니라 예지에서 나온다** — 현재 상태만 보는 causal 정책은 전부 평균 절감이 음수다 | [TASK27](../docs/research/TASK27.md), [TASK28](../docs/research/TASK28.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 X = −105 %·−70 %는 device 확증 구간 N ∈ {6,8} |
-| 2.5 | **headroom의 중앙 60 %(49–73 %)는 조율의 몫이며 지식으로 살 수 없다** — 전지적 지식을 주고도 세션별 독립 결정이면 그만큼 사라진다 | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 60 %는 현실 워크로드 9칸(N ∈ {6,8,10} × 3블록) |
-| 2.6 | 따라서 **per-session runtime 정책은 그 부분에 원리적으로 닿을 수 없고**, 조율 가능한 위치는 server scheduler이거나 compile-time 구성이다 | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) | ⑤ | — (수치 금지) |
+| 2.5 | **headroom의 중앙 60 %(49–73 %)는 조율의 몫이며 지식으로 살 수 없다** — 전지적 지식을 주고도 세션별 독립 결정이면 그만큼 사라진다 | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 60 %는 현실 워크로드 9칸(N ∈ {6,8,10} × 3블록) . **scope**: 60 %는 **집계 device time**에서 산출되며, [TASK25](../docs/research/TASK25.md)가 실격시킨 것은 **세션 단위 귀속**(어느 세션이 hit했는가)이지 집계량이 아니다 — 두 축이 다르므로 이 수치는 그 실격 범위 밖이다 |
+| 2.6 | 따라서 **per-session runtime 정책은 그 부분에 원리적으로 닿을 수 없다.** 조율이 가능한 위치는 중앙집중 지점이거나 compile-time 구성인데, **중앙집중 × causal은 [2.11](#막-2--불가능성)에서 실증적으로 닫혔다** | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) | ⑤ | — (수치 금지) |
+| 2.11 | **실기기에서 실패한 causal 정책은 gateway 위치에서 실행됐고, gateway는 반환 방출권을 쥐므로 server-side scheduler의 상위 집합이다** — 따라서 `중앙집중 × causal` 조합은 추측이 아니라 **실증적으로** 닫혔다 | [TASK27](../docs/research/TASK27.md), [TASK28](../docs/research/TASK28.md) | **`class`**(포함 관계) + **`stack`**(값) | ⑤ | 상위 집합 논증은 "반환을 언제 방출할지 정하는 주체"라는 위치 정의에서 따라 나온다. 값 X = −105 %·−70 %는 확증 구간 N ∈ {6,8}. **닫히지 않은 칸은 `중앙집중 × 전지`이고, 그것은 [2.8](#막-2--불가능성)의 예측 불가로 도달 불능이다** |
 | 2.7 | 예지의 가치는 **워크로드에 종속이며 이식되지 않는다** — 합성 gap에서 86–88 %를 회수하던 반환 시각 정보가 실측 분포에서는 −1.20 %~+0.99 %다 | [TASK30](../docs/research/TASK30.md), [TASK31](../docs/research/TASK31.md) | **`stack`** | ⑤, ⑥ | 두 워크로드 모두 명시. 동료 도착 **기회**는 비슷(73.6 대 81.9 %) |
 | 2.8 | tool 지속시간의 예측 오차는 **줄일 수 없는 분산이 지배**한다 — 표본을 4자릿수 늘려도 std가 8.4 → 10.5 s로 개선되지 않는다 | [TASK32](../docs/research/TASK32.md) | **`universal`** | ⑥ | 이 trace의 도구 population. **"어느 워크로드에서나"가 아니라 "도구 이름이 명령을 담지 않는 워크로드에서"** |
 | 2.9 | 상한 `B(δ)`와 점추정 `μ̂`의 오차 std가 같다(10.196 대 10.185) — **더 나은 추정자가 아니라 더 나은 조건화**가 필요하다 | [TASK32](../docs/research/TASK32.md) | **`universal`** | ⑥ | 차용 대상은 [Continuum](RELATED.md#continuum-arxiv-251102230) §4.2의 추정자 |
@@ -71,6 +73,7 @@
 | 3.12 | 포화를 무해하게 만드는 두 번째 기전은 **최상위 눈금 미사용**이다 — 동시 폭이 그 눈금에 닿지 않으면 큰 step 비용이 부과되지도 않는다 | [TASK40](../docs/research/TASK40.md) | **`class`** (형태) | ⑨ | — (수치 금지). 실측 0.0 %는 `stack` 값이며 사상표상 그 눈금은 동시성 11부터 관여한다 |
 | 3.13 | **따라서 최적 `batch_size`는 하드웨어 상한이 아니라 워크로드 분포의 함수다** — KV 한계는 B ≈ 46인데 이득은 그 3분의 1에서 끝난다 | [TASK40](../docs/research/TASK40.md) | **`stack`** | ⑨ | B ≈ 46은 `2.1 + 0.28125 × B` GiB/device의 **외삽**(3점 적합)이며 실측이 아니다 |
 | 3.14 | **무보정 시뮬레이터가 "효과 없음"을 미리, 정밀하게 맞혔다** (N ∈ {6,8} 6칸 오차 0.0003–0.0026) | [TASK40](../docs/research/TASK40.md) | **`universal`** (방법) | ⑨, ④ | 음성 예측은 **우연히 맞을 여지가 좁다** — 양성 예측의 확인과 다른 종류의 증거다. 예측은 측정 전 commit(`492abe2`) |
+| 3.15 | **선택된 구성은 device time뿐 아니라 요청 완료 시간의 꼬리도 줄인다** — p99가 p50보다 더 줄고, 그 격차가 동시성과 함께 벌어진다 | [TASK35](../docs/research/TASK35.md), [TASK36](../docs/research/TASK36.md), [TASK40](../docs/research/TASK40.md) | **`stack`** | — | **scope**: **선등록되지 않은 사후 관측**이며 기존 run의 per-request 기록 재분석이다. 값은 `TUNED`/`BASE` p50 0.89–0.95, p99 0.72–0.96(N ∈ {6,8,10}, 세 run). 재측정하지 않았다 |
 | 3.9 | 구성 선택은 **gap 분포에 둔감하고 동시 세션 수 상한에만 반응**한다 — 재구성 판단에 다시 잴 통계는 그것 하나다 | [TASK34](../docs/research/TASK34.md) | **`stack`** | ⑦ | 민감도 분석 범위 안에서 |
 
 ## 일반성 절

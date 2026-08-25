@@ -18,13 +18,17 @@ These two are the whole of what this paper later chooses. Both are frozen when t
 
 ## Two cache layers, counted differently
 
-The stack keeps two ledgers. The upper one is vLLM's block table — 128-token blocks under LRU. The lower one is the runtime's own pool of 8,192-token outer slots under **FIFO**, and it is the one that actually holds the tensors. The two disagree after the lower layer evicts: the upper layer keeps reporting hits for a prefix whose tensors are gone, so `prefix_cache_hits_total` can overstate real reuse by 100 %. Reuse in this paper always means the lower layer, read from `vllm:prompt_tokens_cached_total` or from the per-request `cached_tokens` field. <!-- CLAIMS 1.4 -->
+The stack keeps two ledgers. The upper one is vLLM's block table — 128-token blocks under LRU. The lower one is the runtime's own pool of 8,192-token outer slots under **FIFO**, and it is the one that actually holds the tensors. The two disagree after the lower layer evicts: the upper layer keeps reporting hits for a prefix whose tensors are gone, so `prefix_cache_hits_total` can overstate real reuse by 100 % [[fig:fig1]]. Reuse in this paper always means the lower layer, read from `vllm:prompt_tokens_cached_total` or from the per-request `cached_tokens` field. <!-- CLAIMS 1.4 -->
 
 A second property of the lower layer matters later: it holds only what **prefill** computed. Tokens produced by decode are not cached, so a session's turn *k* can reuse at most the prompt of turn *k−1*. <!-- CLAIMS 1.12 -->
 
 ## Workload
 
-Sessions alternate between an LLM turn and a tool gap. Gap durations are drawn from a measured tool-latency population (43 tools, capped at 60 s) taken from a code-agent trace, replacing the synthetic uniform gap used in this project's earlier measurements. <!-- CLAIMS 2.3 --> Prompts, generation lengths and gaps are generated from a seed plus a block id, so every arm of a comparison runs the **identical plan** and differs only in the compiled configuration.
+Sessions alternate between an LLM turn and a tool gap. Gap durations are drawn from a measured tool-latency population rather than a synthetic law. <!-- CLAIMS 2.3 -->
+
+**Where the tool latencies come from.** The population is a trace of coding-agent sessions collected by the authors from their own use of two agent front-ends, instrumented at the client so that each record carries the request's token counts and the wall-clock duration of the tool call that followed. It contains **665,453 records over 8,058 sessions**, from which the gap sampler keeps the **43 tools** that appear often enough to have a stable duration distribution, capped at 60 s. Latency is taken from the client's own wall clock where the front-end reports it and from the front-end's internal timing otherwise; the split is recorded with the trace.
+
+We release the **per-tool duration distributions** that the sampler consumes, which is what is needed to reproduce every gap draw in this paper. We do not release the raw records: they contain the prompts and outputs of the authors' working sessions, which cannot be published without disclosing unrelated third-party material. <!-- NEEDS-EVIDENCE: 배포 형식(별도 아카이브 vs repo 내 파일)이 정해지면 여기에 적는다 --> Prompts, generation lengths and gaps are generated from a seed plus a block id, so every arm of a comparison runs the **identical plan** and differs only in the compiled configuration.
 
 ## How device time is measured
 
