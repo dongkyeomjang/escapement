@@ -21,7 +21,8 @@ Every measurement in this paper registered its decision criteria, predictions an
 \begin{table}[t]
   \centering
   \caption{Preregistration record. Each commit fixed the decision criteria, predictions and experimental grid before the corresponding measurement began.}
-  \begin{tabular}{lll}
+  \footnotesize
+  \begin{tabular}{p{2.2cm}p{2.35cm}p{2.7cm}}
     \toprule
     Registration & Commit & Covers \\
     \midrule
@@ -34,9 +35,10 @@ Every measurement in this paper registered its decision criteria, predictions an
     Real-workload transfer & \texttt{f61bafe} & Section~\ref{sec:04}, Section~\ref{sec:05} workload change \\
     Compile configuration & \texttt{4e12b30}, \texttt{745317e} & Section~\ref{sec:06} confirmation \\
     N=6 reconfirmation & \texttt{3e55240} & Section~\ref{sec:06} corrected channel rule \\
-    \texttt{batch\_size} saturation & \texttt{492abe2} (+ \texttt{28dd252} for the judgement code) & Section~\ref{sec:06} \\
+    \texttt{batch\_size} saturation & \texttt{492abe2}, \texttt{28dd252}$^{\mathrm{a}}$ & Section~\ref{sec:06} \\
     \bottomrule
   \end{tabular}
+  \\[2pt]{\footnotesize $^{\mathrm{a}}$Commit \texttt{28dd252} registered the judgement code (bootstrap procedure, resample count, CI width bound) before measurement began.}
 \end{table}
 
 \textbf{No criterion was relaxed after measurement.} Where one was corrected --- the channel-agreement rule, whose ratio-only band was structurally unfair to light loads --- the original criterion's failure is reported alongside the corrected result, and the corrected run passed the original criterion as well.
@@ -46,9 +48,9 @@ Every measurement in this paper registered its decision criteria, predictions an
 
 The stack computes, per decode step, both the actual number of running requests and the padded batch width it will execute at, but exposes neither. Section~\ref{sec:03}'s attribution depends on that pair, so a patch was applied under a written policy whose seven requirements are answered here.
 
-\textbf{1. Target package and exact version.} \texttt{vllm-rbln} \texttt{0.11.1}, on the default execution path (\texttt{VLLM\_RBLN\_USE\_VLLM\_MODEL=False}). The apply script re-checks the version on every invocation and exits non-zero on a mismatch.
+\textbf{1. Target package and exact version.} \texttt{vllm-rbln} \texttt{0.11.1}, on the default execution path (\texttt{VLLM\_\allowbreak{}RBLN\_\allowbreak{}USE\_\allowbreak{}VLLM\_\allowbreak{}MODEL=False}). The apply script re-checks the version on every invocation and exits non-zero on a mismatch.
 
-\textbf{2. Upstream path and hashes.} \texttt{vllm\_rbln/model\_executor/models/optimum/model\_base.py}, function \texttt{RBLNOptimumDecoderMixin.preprocess\_for\_decoder}. SHA256 before \texttt{46ce1675\ldots{}}, after \texttt{70942d16\ldots{}}. The diff adds nine lines (five code, four comment); no existing line is modified or deleted.
+\textbf{2. Upstream path and hashes.} \texttt{vllm\_\allowbreak{}rbln/\allowbreak{}model\_\allowbreak{}executor/\allowbreak{}models/\allowbreak{}optimum/\allowbreak{}model\_\allowbreak{}base.\allowbreak{}py}, function \texttt{RBLNOptimumDecoderMixin.\allowbreak{}preprocess\_\allowbreak{}for\_\allowbreak{}decoder}. SHA256 before \texttt{46ce1675\ldots{}}, after \texttt{70942d16\ldots{}}. The diff adds nine lines (five code, four comment); no existing line is modified or deleted.
 
 \textbf{3. Why scheduler, batch selection and KV allocation are unchanged.} The added code is a single \texttt{logger.debug} call. It introduces no branch, loop or exception path and only reads a value the runtime has already computed. It does not touch the bucket selection function --- which is memoised, so \emph{wrapping} it would have captured only the first call and would also have perturbed the cache; reading at the call site avoids both. It does not touch the scheduler, the KV cache manager, the padding routine or the block table.
 
@@ -65,4 +67,4 @@ The stack computes, per decode step, both the actual number of running requests 
 \section{Simulator validation detail}
 
 Section~\ref{sec:04} summarises four gates. Per-cell predicted-versus-measured tables for each --- including the block-level breakdown, the invariant checks that made each run valid, and the raw artifact paths --- are recorded in the project's task history, which is released with the paper.
-% NEEDS-EVIDENCE: 저장소 공개 방식(익명 릴리스 vs 공개 repo)이 정해지면 여기에 구체적 위치를 적는다
+% NEEDS-EVIDENCE: 저장소 공개 방식(익명 릴리스 vs 공개 repo)이 정해지면 여기에 구체적 위치를 적는다. 2026-08-25 기준 repo 이름은 `dongkyeomjang/escapement`로 확정돼 URL은 안정적이다 — 남은 판정은 **공개 여부와 시점**이지 주소가 아니다. 공개로 정하면 이 문장에 URL과 commit hash를 함께 적는다

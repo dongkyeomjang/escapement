@@ -37,14 +37,14 @@
 | 원인 | 요청 전후로 `/metrics`를 긁는 사이에 **다른 요청이 진행**한다. 증분에 남의 기여가 섞인다 |
 | **올바른 방식** | **동시 workload의 per-request 채널은 request id를 담은 로그다** — `[PFX]`·`[BUCKET]` 로그, 또는 응답에 실려 오는 `usage.prompt_tokens_details.cached_tokens`([TASK18](TASK18.md)에서 게이트 통과). counter 증분은 **집계 지표로만** 쓴다 |
 
-## 4. 따옴표 없는 heredoc 안에서 문자열 치환 — **1회**
+## 4. 문서를 고치는 자동화가 조용히 아무것도 안 하기 — **2회**
 
 | | |
 |---|---|
-| 발생 | [TASK40](TASK40.md) (serving lifecycle 2회 추가 낭비) |
+| 발생 | [TASK40](TASK40.md)(heredoc 치환, serving lifecycle 2회 낭비), [TASK38](TASK38.md)–[TASK44](TASK44.md)(**표 행 삽입이 7개 TASK에 걸쳐 누락**) |
 | 증상 | 파일을 고치는 script가 **아무것도 바꾸지 않고** "고쳤다"고 출력한다 |
 | 원인 | `python3 - <<PYEOF`(따옴표 없음)에서 bash가 Python 소스 안의 `$RUN`·`$REPO`를 **먼저 확장**한다. 치환 대상 문자열이 파일 내용과 달라져 매칭에 실패한다 |
-| **올바른 방식** | **파일을 고치는 heredoc은 `<<'PYEOF'`(따옴표)로 연다.** 경로는 `os.environ`으로 넘긴다. 그리고 **치환마다 `assert old in s`를 넣는다** — "고쳤다"는 출력은 증거가 아니다 |
+| **올바른 방식** | **파일을 고치는 heredoc은 `<<'PYEOF'`(따옴표)로 연다.** 경로는 `os.environ`으로 넘긴다. **치환마다 `assert old in s`를 넣고, *삽입*에도 anchor 존재·중복·개수를 assert한다** — anchor를 못 찾고 조용히 끝나는 loop가 [TASK38](TASK38.md)–[TASK44](TASK44.md)에서 INDEX 표 행 7개를 누락시켰다. 고친 뒤에는 **결과를 독립적으로 세어** 확인한다. "고쳤다"는 출력은 증거가 아니다 |
 
 ## 5. 실행 중인 실험의 script 편집 — **2회**
 

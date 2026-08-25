@@ -60,7 +60,7 @@ arXiv 초록 필드는 **plain text**다. 다음이 제약이고, 오른쪽이 [
 | **수식은 `$...$` TeX만 지원**(제한적) | ✅ 초록에 수식 없음. `ε=2 s`, `N=8` 같은 표기는 평문으로 읽힌다. 압축본에는 그리스 문자가 남지 않았다 |
 | **줄바꿈이 보존되지 않는다**(단락은 빈 줄로) | ⚠️ 현재 3문단 구조. arXiv는 단락 구분을 유지하므로 **문단 3개 그대로 제출 가능**하되, 일부 시스템이 한 문단으로 합치므로 **문단 첫 문장이 독립적으로 읽히는지** 확인했다 — 세 문단 모두 통과 |
 | **유니코드**: 대부분 통과하나 일부 문자가 깨진다 | ✅ **해소됨** — 압축본은 **전부 ASCII**다(자동 확인). `−`·`→`·`×`·`①②③`이 남아 있지 않다 |
-| **길이 제한 1,920자**(공백 포함, 하드 캡) | ✅ **해소됨** — [ABSTRACT.md](ABSTRACT.md) §1의 압축본이 **1,876자**로 44자 여유가 있다. 평문 파일은 [`abstract_arxiv.txt`](abstract_arxiv.txt)다. 전체판(3,029자)은 논문 본문용으로 §3에 남겼다 |
+| **길이 제한 1,920자**(공백 포함, 하드 캡) | ✅ **해소됨** — [ABSTRACT.md](ABSTRACT.md) §1의 압축본이 **1,887자**로 33자 여유가 있다. 평문 파일은 [`abstract_arxiv.txt`](abstract_arxiv.txt)다. 전체판(3,029자)은 논문 본문용으로 §3에 남겼다 |
 | **제목 형식** | 제안: `Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs`. 콜론 형식은 arXiv에서 통상적이다. **`stack` 조건(NPU)을 제목에 넣은 것은 의도적이다** — [CLAIMS.md](CLAIMS.md) 전수 점검의 오독 방지 규칙을 제목에도 적용한다 |
 | **국문 초록** | arXiv 초록 필드는 **영문 하나만** 받는다. 국문 초록은 본문 부록이나 별도 배포용으로 남긴다 |
 
@@ -90,7 +90,7 @@ print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
 
 ### 해소된 항목 ([TASK39](../docs/research/TASK39.md))
 
-- [x] **초록 길이** — 압축본 1,876자 / 상한 1,920자. [`abstract_arxiv.txt`](abstract_arxiv.txt)
+- [x] **초록 길이** — 압축본 1,887자 / 상한 1,920자. [`abstract_arxiv.txt`](abstract_arxiv.txt)
 - [x] **초록 형식** — 마크다운 없음, 전부 ASCII, 3문단
 - [x] **그림 PDF 변환** — `paper/figures/pdf/` 8종. 구조 검사 8/8, 변환 손실 0, 캔버스 넘침 0
 - [x] **primary/cross-list 제안** — `cs.DC` / `cs.PF`·`cs.LG` (§1)
@@ -109,7 +109,7 @@ print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
 - [ ] **첫 Overleaf 컴파일** — 이 host에 TeX가 없어 소스가 **한 번도 컴파일된 적이 없다.** 첫 빌드가 첫 검증이며 오류를 전제한다
 - [ ] **그림 육안 검수** — `paper/figures/en/*.svg`를 브라우저로 열어 [INSPECTION.md](figures/INSPECTION.md)와 대조. **글자 겹침은 자동 검사가 잡지 못한다.** 그림 ⑨는 2패널이라 특히 확인이 필요하다
 - [ ] **표 캡션·상호참조 교정** — 캡션은 작성됐으나 본문에서 표를 `\ref`로 가리키지 않는다
-- [ ] **미확인 서지 보완** — `refs.bib`의 `TODO` 항목(저자 전체 목록 미확인 6건)
+- [ ] **미확인 서지 보완** — `refs.bib`의 `TODO` 항목 **4건**(kvflow·saga·autellix·sarathi의 저자 전체 목록). mori·leyline·smetric 3건은 [TASK44](../docs/research/TASK44.md)에서 1차 출처로 완결
 - [ ] **소속 영문 명칭 확인** — 사물인터넷 혁신융합대학
 - [ ] **소속 기관 preprint 규정 확인** — CC BY 4.0과 충돌 여부
 - [ ] **제출** — arXiv 업로드는 **저자 계정 작업**이며 이 저장소의 작업 범위 밖이다
@@ -119,7 +119,7 @@ print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
 1. `bash paper/latex/make_package.sh` → `cd paper/latex && zip -r escapement.zip main.tex refs.bib sections figures`
 2. **Overleaf 업로드 → pdfLaTeX로 컴파일 → 오류 수정** (두 번 컴파일해야 참고문헌이 나온다)
 3. **육안 검수** — 그림 겹침·잘림, 표 넘침, 저자란·감사의 글 렌더링
-4. **arXiv 업로드** — TeX source 제출(PDF-only는 HTML 렌더가 생기지 않는다). primary `cs.DC`, cross-list `cs.PF`·`cs.LG`, 라이선스 CC BY 4.0, 초록은 [abstract_arxiv.txt](abstract_arxiv.txt) 그대로 붙여넣기(1,876자)
+4. **arXiv 업로드** — TeX source 제출(PDF-only는 HTML 렌더가 생기지 않는다). primary `cs.DC`, cross-list `cs.PF`·`cs.LG`, 라이선스 CC BY 4.0, 초록은 [abstract_arxiv.txt](abstract_arxiv.txt) 그대로 붙여넣기(1,887자)
 5. **접수 확인** — announce 이후 abs 페이지에서 제목·저자·라이선스·그림 렌더를 확인하고, 필요하면 v2로 정정
 
 ## 7. AI 사용 고지 — 초안 (판정은 사용자)

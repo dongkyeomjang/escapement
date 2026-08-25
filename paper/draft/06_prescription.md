@@ -8,7 +8,7 @@ Section ⑤ closed the runtime path by a branch defined before the computation w
 
 Candidate configurations are scored by the uncalibrated model on **exploration** seeds and confirmed on **evaluation** seeds. The only workload facts entering the choice are the gap distribution and the concurrency ceiling; no device measurement enters the selection loop. <!-- CLAIMS 3.2 --> A sensitivity analysis says the choice is insensitive to the gap distribution and responds only to the concurrency ceiling — **that is the one statistic worth re-measuring before reconfiguring.** <!-- CLAIMS 3.9 -->
 
-The cost of acting on the choice is a recompile, and it is small: compile time is linear in the number of compiled graphs, and a model built from two observations held at the fifth, sixth and seventh points to within +3.0 % on time and +1.6 % on size. On this model and device a six-rung artifact takes about eight minutes. <!-- CLAIMS 3.3 -->
+The cost of acting on the choice is a recompile, and it is small: compile time is linear in the number of compiled graphs. The model was fitted to the first two observations alone; at the fifth, sixth and seventh points its predictions held to within +3.0 % on compile time and +1.6 % on artifact size. On this model and device a six-rung artifact takes about eight minutes. <!-- CLAIMS 3.3 -->
 
 **Figure ⑦.**
 

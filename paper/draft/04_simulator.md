@@ -8,6 +8,7 @@ The model carries only constants already measured for this substrate — per-wid
 
 ## 4.2 Four gates, each harder than the last
 
+<!-- TABLECOLS: p{1.55cm}p{3.35cm}p{2.6cm} -->
 <!-- TABLE: Four validation gates, in increasing order of what they rule out. Reproduction is compatible with overfitting; prediction committed in advance is not; predicting cells under a control tests the mechanism; and changing the gap law tests the substrate rather than the workload's shape. -->
 
 | Gate | What it tests | Result |
@@ -35,7 +36,7 @@ Because every use of the model in this paper rests on the gates above, it is wor
 
 One residual is regular enough to state rather than to leave implicit. In **every** device confirmation where the model predicted the effect of an intervention, the measured ratio came out **above** the prediction — five occasions, same sign, across two different kinds of intervention (a return-holding policy and a compile configuration). <!-- CLAIMS 1.18 -->
 
-Three things bound what this means. Every one of those errors fell **inside the tolerance registered before measurement**, so no verdict in this paper turns on the residual. The errors concentrate at the higher concurrencies, in the same region where §4.3.1 already withholds confirmation. And the direction is interpretable: the model **overestimates the benefit** of an intervention, which is the conservative direction for a paper whose positive result is an intervention — the device delivered slightly less than predicted, never more.
+Three things bound what this means. Each of those errors fell **inside the tolerance registered before measurement**, so no verdict in this paper turns on the residual. The errors concentrate at the higher concurrencies, in the same region where §4.3.1 already withholds confirmation. And the direction is interpretable: the model **overestimates the benefit** of an intervention, which is the conservative direction for a paper whose positive result is an intervention — the device delivered slightly less than predicted, never more.
 
 What it does mean is that a term is missing. The model does not know something that makes interventions marginally less effective on hardware than in simulation, and this work did not isolate it; candidates include client-side overhead, queueing serialisation, and the model's known weakness at attributing reuse to particular sessions. **We report it as an open input to the next model revision rather than as noise.**
 

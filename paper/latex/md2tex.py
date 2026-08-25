@@ -123,13 +123,22 @@ def inline(t: str) -> str:
     t = CITEKEY.sub(lambda m: "\x00CITE\x01"
                     + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "\x02", t)
     t = re.sub(r"Section~\\ref\{sec:(\d\d)\}", lambda m: "\x00REF\x01" + m.group(1) + "\x02", t)
-    t = re.sub(r"`([^`]+)`", lambda m: "\x00CODE\x01" + m.group(1) + "\x02", t)
+    t = re.sub(r"\^([a-z])\^", lambda m: "\x00SUP" + m.group(1) + "\x03", t)
+    def _code(m):
+        body = m.group(1)
+        if len(body) > 24:
+            body = re.sub(r"([/_.])", lambda c: c.group(1) + "\x04", body)
+        return "\x00CODE\x01" + body + "\x02"
+
+    t = re.sub(r"`([^`]+)`", _code, t)
     t = re.sub(r"\*\*([^*]+)\*\*", lambda m: "\x00BF\x01" + m.group(1) + "\x02", t)
     t = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", lambda m: "\x00IT\x01" + m.group(1) + "\x02", t)
     t = esc(t)
     t = t.replace("\x00CODE\x01", "\\texttt{").replace("\x00BF\x01", "\\textbf{")
+    t = re.sub(r"\x00SUP(.)\x03", lambda m: "$^{\\mathrm{" + m.group(1) + "}}$", t)
     t = t.replace("\x00IT\x01", "\\emph{").replace("\x00CITE\x01", "\\cite{").replace("\x02", "}")
     t = re.sub(r"\x00REF\x01(\d\d)\}", lambda m: "Section~\\ref{sec:" + m.group(1) + "}", t)
+    t = t.replace("\x04", "\\allowbreak{}")
     return t
 
 
@@ -146,6 +155,8 @@ def convert(path: Path) -> str:
                       "%% Mechanical first pass -- polish by hand, then stop regenerating.", ""]
     lines = path.read_text().splitlines()
     tablecap: list[str] = []
+    tablecols: list[str] = []
+    tablenote: list[str] = []
     i = 0
     while i < len(lines):
         ln = lines[i]
@@ -153,7 +164,11 @@ def convert(path: Path) -> str:
 
         if s.startswith("<!--") and s.endswith("-->"):
             note = s[4:-3].strip()
-            if note.startswith("TABLE:"):
+            if note.startswith("TABLECOLS:"):
+                tablecols.append(note[10:].strip())
+            elif note.startswith("TABLENOTE:"):
+                tablenote.append(note[10:].strip())
+            elif note.startswith("TABLE:"):
                 tablecap.append(inline(note[6:].strip()))
             else:
                 out.append("% " + note)
@@ -189,6 +204,8 @@ def convert(path: Path) -> str:
             continue
         if s.startswith("|"):
             cap = tablecap.pop() if tablecap else "TODO caption"
+            cols = tablecols.pop() if tablecols else None
+            note_row = tablenote.pop() if tablenote else None
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
                 cells = [re.sub(r"\s*<!--.*?-->", "", c).strip()
@@ -198,15 +215,24 @@ def convert(path: Path) -> str:
                 i += 1
             if rows:
                 n = len(rows[0])
+                # A fixed column spec plus \footnotesize is how a wide table is
+                # made to fit an IEEE column; without it the cells overrun.
+                spec = cols or ("l" * n)
                 out += ["", "\\begin{table}[t]", "  \\centering",
-                        f"  \\caption{{{cap}}}",
-                        f"  \\begin{{tabular}}{{{'l' * n}}}", "    \\toprule"]
+                        f"  \\caption{{{cap}}}"]
+                if cols:
+                    out.append("  \\footnotesize")
+                out += [f"  \\begin{{tabular}}{{{spec}}}", "    \\toprule"]
                 out.append("    " + " & ".join(inline(c) for c in rows[0]) + " \\\\")
                 out.append("    \\midrule")
                 for r in rows[1:]:
                     r = (r + [""] * n)[:n]
                     out.append("    " + " & ".join(inline(c) for c in r) + " \\\\")
-                out += ["    \\bottomrule", "  \\end{tabular}", "\\end{table}", ""]
+                out.append("    \\bottomrule")
+                out.append("  \\end{tabular}")
+                if note_row:
+                    out.append(f"  \\\\[2pt]{{\\footnotesize {note_row}}}")
+                out += ["\\end{table}", ""]
             continue
         if not s:
             out.append("")

@@ -24,7 +24,7 @@ These two are the whole of what this paper later chooses. Both are frozen when t
 
 \subsection{Two cache layers, counted differently}
 
-The stack keeps two ledgers. The upper one is vLLM's block table --- 128-token blocks under LRU. The lower one is the runtime's own pool of 8,192-token outer slots under \textbf{FIFO}, and it is the one that actually holds the tensors. The two disagree after the lower layer evicts: the upper layer keeps reporting hits for a prefix whose tensors are gone, so \texttt{prefix\_cache\_hits\_total} can overstate real reuse by 100 \%. Reuse in this paper always means the lower layer, read from \texttt{vllm:prompt\_tokens\_cached\_total} or from the per-request \texttt{cached\_tokens} field.
+The stack keeps two ledgers. The upper one is vLLM's block table --- 128-token blocks under LRU. The lower one is the runtime's own pool of 8,192-token outer slots under \textbf{FIFO}, and it is the one that actually holds the tensors. The two disagree after the lower layer evicts: the upper layer keeps reporting hits for a prefix whose tensors are gone, so \texttt{prefix\_cache\_hits\_total} can overstate real reuse by 100 \%. Reuse in this paper always means the lower layer, read from \texttt{vllm:prompt\_\allowbreak{}tokens\_\allowbreak{}cached\_\allowbreak{}total} or from the per-request \texttt{cached\_tokens} field.
 % CLAIMS 1.4
 
 A second property of the lower layer matters later: it holds only what \textbf{prefill} computed. Tokens produced by decode are not cached, so a session's turn \emph{k} can reuse at most the prompt of turn \emph{k$-$1}.

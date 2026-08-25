@@ -6,7 +6,7 @@
 
 \textbf{Single substrate, single stack version.} All absolute constants are from one accelerator and one set of package versions. The observation patch is hash-guarded and observation-only, but a version change can move the grid, the accounting and the metric layering together.
 
-\textbf{Single model, single sequence length.} Qwen3-4B at \texttt{max\_seq\_len = 8192}, 36 full-attention layers. Hybrid, sliding-window and MLA attention account for KV differently, and the chain from \texttt{batch\_size} to slot count assumes eager attention's \texttt{kvcache\_num\_blocks = batch\_size}.
+\textbf{Single model, single sequence length.} Qwen3-4B at \texttt{max\_seq\_len = 8192}, 36 full-attention layers. Hybrid, sliding-window and MLA attention account for KV differently, and the chain from \texttt{batch\_size} to slot count assumes eager attention's \texttt{kvcache\_\allowbreak{}num\_\allowbreak{}blocks = batch\_\allowbreak{}size}.
 % CLAIMS 3.8
 
 \textbf{One workload trace.} Tool latencies come from a single code-agent trace of 43 tools. This project has already demonstrated that this limitation bites: the value of return-time information reversed when the gap distribution was replaced.

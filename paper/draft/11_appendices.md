@@ -14,6 +14,8 @@ Claims in this paper carry the same tags. Where a claim's form is `class` and it
 
 Every measurement in this paper registered its decision criteria, predictions and experimental grid in a commit **before** measurement began, and each task records the preregistration hash alongside the time measurement started. The registrations relevant to the results reported here are:
 
+<!-- TABLECOLS: p{2.2cm}p{2.35cm}p{2.7cm} -->
+<!-- TABLENOTE: $^{\mathrm{a}}$Commit \texttt{28dd252} registered the judgement code (bootstrap procedure, resample count, CI width bound) before measurement began. -->
 <!-- TABLE: Preregistration record. Each commit fixed the decision criteria, predictions and experimental grid before the corresponding measurement began. -->
 
 | Registration | Commit | Covers |
@@ -27,7 +29,7 @@ Every measurement in this paper registered its decision criteria, predictions an
 | Real-workload transfer | `f61bafe` | §④, §⑤ workload change |
 | Compile configuration | `4e12b30`, `745317e` | §⑥ confirmation |
 | N=6 reconfirmation | `3e55240` | §⑥ corrected channel rule |
-| `batch_size` saturation | `492abe2` (+ `28dd252` for the judgement code) | §6.5 |
+| `batch_size` saturation | `492abe2`, `28dd252`^a^ | §6.5 |
 
 **No criterion was relaxed after measurement.** Where one was corrected — the channel-agreement rule, whose ratio-only band was structurally unfair to light loads — the original criterion's failure is reported alongside the corrected result, and the corrected run passed the original criterion as well. <!-- CLAIMS 4.5 -->
 

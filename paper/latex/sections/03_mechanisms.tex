@@ -43,7 +43,7 @@ One asymmetry is worth stating because it makes gaps costlier than a naive accou
 
 \subsection{Prefill is charged to everyone}
 
-Injecting a prefill while several sessions decode produces a latency spike in \textbf{all} of them, beginning within a millisecond of each other and lasting the prefill's duration; across nine runs the ratio of spike to prefill time stayed in 1.01--1.14. The stall is predictable from the computed token count: on this hardware and model, \texttt{ceil(n/128) $\times$ (0.0212 + 6.4e-7$\cdot$n)} seconds fits four injection sizes from 500 to 6,000 tokens with a worst residual of 2.4 ms.
+Injecting a prefill while several sessions decode produces a latency spike in \textbf{all} of them, beginning within a millisecond of each other and lasting the prefill's duration; across nine runs the ratio of spike to prefill time stayed in 1.01--1.14. The stall is predictable from the computed token count: on this hardware and model, \texttt{ceil(n/\allowbreak{}128) $\times$ (0.\allowbreak{}0212 + 6.\allowbreak{}4e-7$\cdot$n)} seconds fits four injection sizes from 500 to 6,000 tokens with a worst residual of 2.4 ms.
 % CLAIMS 1.8
 % CLAIMS 1.9
 
