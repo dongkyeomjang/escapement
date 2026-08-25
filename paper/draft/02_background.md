@@ -6,7 +6,7 @@
 
 Measurements are on an RBLN CA25 NPU (four devices per model instance) running `vllm 0.22.0+cpu` with `vllm-rbln 0.11.1` and artifacts compiled by `optimum-rbln 0.11.1`. The model is Qwen3-4B at `max_seq_len = 8192`, whose 36 layers are all full attention, so KV per token is a single expression. **Every absolute constant below belongs to this instance and is not carried elsewhere**; the paper marks each claim with the layer at which it is asserted.
 
-An observation-only patch exposes one line per decode step giving the actual running count and the padded batch width the runner selected. It changes no control flow, and every run records the patched file's hash. <!-- NEEDS-EVIDENCE: patch 정책 문서(patches/README.md)의 7개 항목을 본문에 요약할지 부록으로 뺄지 결정 필요 -->
+An observation-only patch exposes one line per decode step giving the actual running count and the padded batch width the runner selected; it adds a single debug log call, changes no control flow, and is guarded by a hash of the target file that every run records, with the full justification — target version, before/after hashes, the argument that scheduler, batch selection and KV allocation are untouched, and the apply/revert commands — given in Appendix C.
 
 ## Two things a recompile fixes
 

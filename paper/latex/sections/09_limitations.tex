@@ -12,7 +12,7 @@
 \textbf{One workload trace.} Tool latencies come from a single code-agent trace of 43 tools. This project has already demonstrated that this limitation bites: the value of return-time information reversed when the gap distribution was replaced.
 % CLAIMS 2.7
 
-\textbf{Concurrency above ten is not confirmed.} Model accuracy degrades above the admission ceiling, and cells there are reported as exploratory throughout.
+\textbf{The validated envelope is narrower than the paper's reach.} Confirmation is claimed at concurrencies at or below eight, on one grid family and one workload (Section~\ref{sec:04}). Model accuracy degrades above the scheduler's admission ceiling --- utilization error within 0.004 below it, 0.011--0.023 above --- and cells there are reported as exploratory throughout, never used for confirmation.
 
 \textbf{The saturation curve does not cover the reversal regime.} The widest compiled rung engages at a concurrency of eleven, and the sweep ran to ten, so the rung's step cost was never charged. \textbf{We expect a reversal beyond that point and did not measure it.} For the same reason the step costs of the wide rungs remain unmeasured, and the model interpolates them --- harmlessly here only because they were never selected.
 % CLAIMS 3.11, 3.12
@@ -23,7 +23,8 @@
 \textbf{GPU results are model statements.} The claim that the grid law survives on GPUs rests on a source read of default capture sizes plus a computation, not on a GPU run. The minimum promotion experiment is one survival curve at a matched admission ceiling.
 % CLAIMS 4.1, 4.3
 
-\textbf{A systematic residual is unexplained.} Across five device confirmations the measured ratio exceeded the prediction every time. The magnitudes never overturned a verdict; the sign is systematic and the responsible term is not identified.
+\textbf{A systematic residual is unexplained.} Across five device confirmations the measured ratio exceeded the prediction every time, in the conservative direction (the device delivered slightly less than predicted). Every error fell inside the preregistered tolerance, so no verdict turns on it, but the sign is systematic and the responsible term is not identified.
+% CLAIMS 1.18
 
 \textbf{The server-side scheduler path is untried.} Section~\ref{sec:05} identifies it as the one runtime location where coordination can live. It falls outside this work's patch policy. \textbf{The claim is not "runtime is impossible" but "per-session runtime is impossible and server-side is unmeasured."}
 % CLAIMS 2.6

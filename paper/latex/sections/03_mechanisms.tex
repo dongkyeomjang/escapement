@@ -16,7 +16,7 @@ We establish this causally. Holding the workload, the seed, the model and the sl
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig2_grid_alignment}
-  \caption{Grid alignment sets the sign of the gap effect, established by intervention.}
+  \caption{Whether a tool gap helps or hurts is decided by where the offered concurrency falls on the compiled grid, and the effect changes sign. Pooled utilization ratio (agentic/conventional) at an admission ceiling of eight; the square series is the same workload, seed, model and slot count after a recompile that added one rung, which is what makes the attribution causal rather than correlational. The flat line at 1.0000 is an ablation on a continuous grid (model).}
   \label{fig:fig2}
 \end{figure}
 
@@ -36,7 +36,7 @@ One asymmetry is worth stating because it makes gaps costlier than a naive accou
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig1_survival_cliff}
-  \caption{Reuse cliff: the threshold counts requests, not tokens.}
+  \caption{Reuse of a completed prefix is all-or-nothing, and the threshold counts requests rather than tokens. Measured on the layer-2 pool of this artifact (eight outer slots of 8{,}192 tokens, FIFO) with 2{,}000-token requests, where reuse survives six background arrivals and disappears at the seventh, reproduced identically in 12 of 12 trials. The grey step is the upper-layer metric, which keeps reporting hits after the tensors are gone; the dashed steps are an ablation (model, not measurement) replacing FIFO with block-granular LRU, under which the threshold becomes size-dependent.}
   \label{fig:fig1}
 \end{figure}
 
@@ -53,7 +53,7 @@ Adding this term is what makes a cost model transfer across concurrency. A decod
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig3_prefill_tax}
-  \caption{Prefill is a system cost; adding its term removes the concurrency-dependent bias.}
+  \caption{Prefill is charged to every concurrent session, and a cost model that omits it is biased in a way that grows with concurrency. Predicted over measured inter-token-latency sum for both arms; hollow markers omit the serialisation term and filled markers include it, on this hardware and model.}
   \label{fig:fig3}
 \end{figure}
 

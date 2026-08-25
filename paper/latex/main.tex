@@ -19,9 +19,21 @@
 \graphicspath{{figures/}{../figures/pdf/}}
 
 %% ---------------------------------------------------------------------------
-%% AUTHOR BLOCK -- PLACEHOLDER. Do not submit with this in place.
+%% AUTHOR BLOCK -- confirmed by the authors on 2026-08-25.
+%% TODO: confirm the official English name of the second author's college
+%%       (사물인터넷 혁신융합대학). "IoT Convergence" is a working rendering.
 %% ---------------------------------------------------------------------------
-\author{TBD --- pending advisor approval}
+\author{%
+  Dongkyeom~Jang,
+  In-Nea~Wang,
+  and~Junho~Jeong%
+  \thanks{D. Jang and J. Jeong are with the Department of Computer Science and
+    Artificial Intelligence, Dongguk University, Seoul, Republic of Korea
+    (e-mail: jangelliot0404@dgu.ac.kr; yanyenli@dongguk.edu).}%
+  \thanks{I.-N. Wang is with IoT Convergence, Dongguk University, Seoul,
+    Republic of Korea (e-mail: innea@dgu.ac.kr).}%
+  \thanks{Corresponding author: Junho Jeong.}%
+}
 
 \title{Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs}
 
@@ -48,31 +60,29 @@ preregistration.
 \input{sections/09_limitations}
 \input{sections/10_conclusion}
 
+\appendices
+\input{sections/11_appendices}
+
 %% ---------------------------------------------------------------------------
 %% ACKNOWLEDGMENT -- PLACEHOLDERS. Both need approval before submission.
 %% ---------------------------------------------------------------------------
 \section*{Acknowledgment}
-%% (1) Hardware acknowledgment placeholder.
-%%     TBD --- the RBLN CA25 hardware used for every measurement in this work
-%%     was provided by Rebellions Inc. Exact wording and whether a grant or
-%%     programme number applies is pending confirmation.
-%%
-%% (2) AI-use disclosure. Draft below; wording and placement (acknowledgment
-%%     vs. a dedicated section vs. a footnote on page 1) pending advisor
-%%     approval. arXiv recommends disclosure in the body.
-%%
-%%     The experiments, analyses, figures and research records in this work
-%%     were carried out by an AI coding agent operating on the authors'
-%%     hardware under a written protocol: every measurement task registers its
-%%     decision criteria, predictions and experimental grid in a commit before
-%%     measurement begins, and each task is recorded with its raw artefacts,
-%%     invariant checks and the layer at which each finding is claimed to
-%%     hold. The research direction, the choice of questions, the
-%%     preregistration criteria and every judgement reported here are the
-%%     authors'. The agent did not select which results to report, and no
-%%     criterion was relaxed after measurement; where one was corrected, the
-%%     original criterion's failure is reported alongside it.
-TBD.
+The RBLN CA25 hardware on which every measurement in this work was performed
+was provided by Rebellions Inc. The authors thank Rebellions for the access
+that made the device-level measurements and the recompilation experiments
+possible.
+
+\section*{Use of AI Tools}
+The experiments, analyses, figures and research records in this work were
+carried out by an AI coding agent operating on the authors' hardware under a
+written protocol: every measurement task registers its decision criteria,
+predictions and experimental grid in a commit before measurement begins, and
+each task is recorded with its raw artefacts, invariant checks and the layer at
+which each finding is claimed to hold. The research direction, the choice of
+questions, the preregistration criteria and every judgement reported here are
+the authors'. The agent did not select which results to report, and no
+criterion was relaxed after measurement; where one was corrected, the original
+criterion's failure is reported alongside it (Appendix~B).
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

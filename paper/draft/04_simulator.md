@@ -8,6 +8,8 @@ The model carries only constants already measured for this substrate — per-wid
 
 ## 4.2 Four gates, each harder than the last
 
+<!-- TABLE: Four validation gates, in increasing order of what they rule out. Reproduction is compatible with overfitting; prediction committed in advance is not; predicting cells under a control tests the mechanism; and changing the gap law tests the substrate rather than the workload's shape. -->
+
 | Gate | What it tests | Result |
 |---|---|---|
 | Reproduction | 80 previously measured combinations | utilization MAE 0.0066, direction 11/11 <!-- CLAIMS 1.14 --> |
@@ -23,9 +25,19 @@ The progression matters more than any single number. Reproducing measurements on
 
 Aggregate accuracy exceeds per-session accuracy. Hit *counts* are reproduced exactly while the attribution of which session hit is 92.9 % — the aggregate is right partly through cancellation, and **session-level conclusions must not be drawn from this model**. <!-- CLAIMS 1.15 -->
 
-Reproduction quality also degrades above the scheduler's admission ceiling: below it the utilization error stays within 0.004, above it 0.011–0.023. Cells above the ceiling are reported as exploratory throughout the paper and never used for confirmation. <!-- NEEDS-EVIDENCE: 이 문장의 근거는 TASK24 핵심 발견 5인데 CLAIMS.md에 별도 항목이 없다. 항목 추가 여부 판정 필요 -->
+## 4.3.1 The validated envelope
 
-A systematic residual remains: in every device confirmation where the model predicted the effect of an intervention, the measured ratio came out **above** the prediction — four device tasks, same sign, and a fifth in §⑥. The magnitudes never overturned a verdict, but the sign is systematic and the term responsible is not identified. <!-- NEEDS-EVIDENCE: 계통 편향을 CLAIMS 항목으로 세울지, 한계 절에만 둘지 판정 필요 -->
+Because every use of the model in this paper rests on the gates above, it is worth stating exactly what they covered. The reproduction gate spans eighty combinations over two compiled grids and concurrencies from three to sixteen. <!-- CLAIMS 1.14 --> The out-of-sample gate covers three concurrencies at or below seven. <!-- CLAIMS 1.15 --> The intervention and configuration gates cover concurrencies of six and eight, with ten reported as exploratory. <!-- CLAIMS 1.16 --> The workload-transfer gate holds the grid fixed and changes the gap law. <!-- CLAIMS 1.17 -->
+
+**Confirmation in this paper is therefore claimed at concurrencies at or below eight, on this one grid family and this one workload.** Cells above the scheduler's admission ceiling are reported as exploratory throughout and never used for confirmation, because reproduction quality degrades there: utilization error stays within 0.004 below the ceiling and runs 0.011–0.023 above it.
+
+## 4.3.2 A known error structure
+
+One residual is regular enough to state rather than to leave implicit. In **every** device confirmation where the model predicted the effect of an intervention, the measured ratio came out **above** the prediction — five occasions, same sign, across two different kinds of intervention (a return-holding policy and a compile configuration). <!-- CLAIMS 1.18 -->
+
+Three things bound what this means. Every one of those errors fell **inside the tolerance registered before measurement**, so no verdict in this paper turns on the residual. The errors concentrate at the higher concurrencies, in the same region where §4.3.1 already withholds confirmation. And the direction is interpretable: the model **overestimates the benefit** of an intervention, which is the conservative direction for a paper whose positive result is an intervention — the device delivered slightly less than predicted, never more.
+
+What it does mean is that a term is missing. The model does not know something that makes interventions marginally less effective on hardware than in simulation, and this work did not isolate it; candidates include client-side overhead, queueing serialisation, and the model's known weakness at attributing reuse to particular sessions. **We report it as an open input to the next model revision rather than as noise.**
 
 ## 4.4 What it buys
 

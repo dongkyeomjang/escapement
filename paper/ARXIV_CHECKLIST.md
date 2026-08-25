@@ -29,19 +29,26 @@ arXiv가 제시하는 선택지와 이 논문에 대한 평가다. **판정은 �
 | CC Zero | 저작권 포기 | 출처 표시조차 요구하지 않는다. 이 연구는 **인용으로 추적되는 것이 목적**이므로 부적합 |
 | arXiv non-exclusive license | arXiv 배포만 허용, 그 외 권리 유보 | 가장 보수적. **학회 저작권 정책이 불확실할 때의 안전한 선택**이며, 나중에 더 열 수 있다 |
 
-**권고: CC BY 4.0.** MLSys·EuroSys 모두 arXiv preprint의 CC BY를 문제 삼지 않는다. **다만 소속 기관에 preprint 라이선스 규정이 있으면 그것이 우선한다 — 확인 필요 (`UNKNOWN`).**
+**확정: CC BY 4.0** (사용자 판정 2026-08-25). 제출 시 arXiv 라이선스 선택 화면에서 `Creative Commons Attribution 4.0 International (CC BY 4.0)`을 고른다. **소속(동국대학교)에 preprint 라이선스 규정이 따로 있으면 그것이 우선하므로 제출 직전에 한 번 확인한다.**
 
-## 3. 저자 표기
+## 3. 저자 표기 — **확정** (2026-08-25)
+
+| 순서 | 이름 | 소속 | 이메일 |
+|---|---|---|---|
+| 1 (제1저자) | **Dongkyeom Jang** | 동국대학교 컴퓨터AI학과 | `jangelliot0404@dgu.ac.kr` |
+| 2 | **In-Nea Wang** | 동국대학교 사물인터넷 혁신융합대학 | `innea@dgu.ac.kr` |
+| 3 (**교신저자**) | **Junho Jeong** | 동국대학교 컴퓨터AI학과 | `yanyenli@dongguk.edu` |
+
+[main.tex](latex/main.tex)의 `\author` 블록과 `\thanks`에 반영했다.
 
 | 항목 | 상태 |
 |---|---|
-| 저자 목록·순서 | **`UNKNOWN` — 사용자가 정한다.** 이 저장소의 git author는 `dongkyeomjang`이지만 그것이 논문 저자 목록은 아니다 |
-| 소속(affiliation) | **`UNKNOWN`** |
-| 교신저자·이메일 | **`UNKNOWN`** |
-| ORCID | 있으면 제출 시 연결 권장 (인용 추적) |
-| **AI 사용 고지** | arXiv는 AI 도구 사용 시 **본문에 밝히기를 권고**한다. 이 연구는 실험 실행·분석·문서화에 Claude Code를 광범위하게 썼으므로 **Acknowledgements 또는 별도 절에 기재할 것을 권고한다.** 판정은 사용자 |
+| 소속 영문 표기 | 컴퓨터AI학과 → **Department of Computer Science and Artificial Intelligence, Dongguk University**. 사물인터넷 혁신융합대학은 **`IoT Convergence, Dongguk University`** 로 잠정 표기했고 `main.tex`에 TODO 주석을 달았다 — **기관의 공식 영문 명칭 확인 필요** |
+| ORCID | 있으면 제출 시 연결 권장 (인용 추적). 미기입 |
+| **AI 사용 고지** | **활성화됨** — [main.tex](latex/main.tex)의 `\section*{Use of AI Tools}`. 문구는 아래 §7 |
+| 하드웨어 감사 | **활성화됨** — 리벨리온 CA25 장비 제공 감사. [main.tex](latex/main.tex)의 `\section*{Acknowledgment}` |
 
-**주의**: 저자 목록은 제출 후 수정이 번거롭고, arXiv 계정 소유자가 제출자로 기록된다. **제출 전에 확정해야 한다.**
+**arXiv 제출자 계정이 저자 목록에 기록되므로, 제출은 저자 중 한 명의 계정으로 한다.**
 
 ## 4. 초록의 arXiv 형식 제약 점검
 
@@ -89,17 +96,31 @@ print(len(t), 'chars', 'OK' if len(t)<=1920 else 'OVER by '+str(len(t)-1920))"
 - [x] **primary/cross-list 제안** — `cs.DC` / `cs.PF`·`cs.LG` (§1)
 - [x] **제목 제안** — `Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs`
 
-### 남은 사용자 항목
+### 해소된 항목 (2026-08-25, 사용자 확정)
 
-- [ ] **저자 목록·순서·소속·교신저자 확정** — 제출 후 수정이 번거롭다
-- [ ] **라이선스 선택** — 권고 CC BY 4.0. **소속 기관의 preprint 규정이 있으면 그것이 우선한다**
-- [ ] **AI 사용 고지 문구 확정** — 초안은 아래 §7
-- [ ] **그림 육안 검수** — `paper/figures/en/*.svg`를 브라우저로 열어 [INSPECTION.md](figures/INSPECTION.md)와 대조. **글자 겹침은 자동 검사가 잡지 못한다**
-- [ ] **본문 초고 → LaTeX 이식**
-- [ ] **선행 연구 재확인** — [RELATED.md §7](RELATED.md#7-서지-확인-상태)의 버전 정보는 2026-08-24~25 기준이다. arXiv:2511.02230은 **버전마다 시스템 이름이 바뀐 전례**가 있다
-- [ ] **KV-RM(arXiv:2605.09735)이 철회 상태임을 인용문에 명시했는지 확인**
-- [ ] **재현 정보**(선등록 commit hash, artifact 경로, substrate patch hash)가 본문 또는 부록에 있는지 확인
-- [ ] **제출은 사용자 계정으로 사용자가 한다**
+- [x] **저자 목록·순서·소속·교신저자** — §3. `main.tex`의 `\author`/`\thanks` 반영 완료
+- [x] **라이선스** — **CC BY 4.0** 확정 (§2)
+- [x] **AI 사용 고지** — `\section*{Use of AI Tools}`로 활성화 (§7의 초안 그대로)
+- [x] **하드웨어 감사** — 리벨리온 CA25 장비 제공 문구 활성화
+- [x] **부록 연결** — `\appendices` + Appendix A–D
+
+### 남은 항목
+
+- [ ] **첫 Overleaf 컴파일** — 이 host에 TeX가 없어 소스가 **한 번도 컴파일된 적이 없다.** 첫 빌드가 첫 검증이며 오류를 전제한다
+- [ ] **그림 육안 검수** — `paper/figures/en/*.svg`를 브라우저로 열어 [INSPECTION.md](figures/INSPECTION.md)와 대조. **글자 겹침은 자동 검사가 잡지 못한다.** 그림 ⑨는 2패널이라 특히 확인이 필요하다
+- [ ] **표 캡션·상호참조 교정** — 캡션은 작성됐으나 본문에서 표를 `\ref`로 가리키지 않는다
+- [ ] **미확인 서지 보완** — `refs.bib`의 `TODO` 항목(저자 전체 목록 미확인 6건)
+- [ ] **소속 영문 명칭 확인** — 사물인터넷 혁신융합대학
+- [ ] **소속 기관 preprint 규정 확인** — CC BY 4.0과 충돌 여부
+- [ ] **제출** — arXiv 업로드는 **저자 계정 작업**이며 이 저장소의 작업 범위 밖이다
+
+### 제출 순서
+
+1. `bash paper/latex/make_package.sh` → `cd paper/latex && zip -r escapement.zip main.tex refs.bib sections figures`
+2. **Overleaf 업로드 → pdfLaTeX로 컴파일 → 오류 수정** (두 번 컴파일해야 참고문헌이 나온다)
+3. **육안 검수** — 그림 겹침·잘림, 표 넘침, 저자란·감사의 글 렌더링
+4. **arXiv 업로드** — TeX source 제출(PDF-only는 HTML 렌더가 생기지 않는다). primary `cs.DC`, cross-list `cs.PF`·`cs.LG`, 라이선스 CC BY 4.0, 초록은 [abstract_arxiv.txt](abstract_arxiv.txt) 그대로 붙여넣기(1,876자)
+5. **접수 확인** — announce 이후 abs 페이지에서 제목·저자·라이선스·그림 렌더를 확인하고, 필요하면 v2로 정정
 
 ## 7. AI 사용 고지 — 초안 (판정은 사용자)
 

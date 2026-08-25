@@ -37,8 +37,8 @@ Overleaf에서 **New Project → Upload Project**로 zip을 올리고, **Menu �
 
 1. **컴파일된 적이 없다.** TeX 설치는 이번 작업의 승인 범위 밖이다. 첫 Overleaf 빌드가 이 소스의 첫 실제 검증이며, **오류가 나올 것을 전제로 본다.**
 2. **표 캡션과 인용이 미완이다.** 위 "하지 않는다" 참조.
-3. **저자란·감사의 글이 placeholder다.** `\author{TBD --- pending advisor approval}`이고, 하드웨어 감사(리벨리온)와 AI 사용 고지는 `main.tex` 안에 **주석으로만** 들어 있다. **셋 다 교수 승인 전에는 채우지 않는다.**
-4. **제출하지 않았다.** arXiv·TPDS 어느 쪽에도 올리지 않았고, 올리는 것은 사용자 계정 작업이다.
+3. ~~저자란·감사의 글이 placeholder다.~~ → **2026-08-25 확정·활성화됨.** 저자 3인(제1저자 Dongkyeom Jang, In-Nea Wang, 교신저자 Junho Jeong)이 `\author`/`\thanks`에 들어갔고, 리벨리온 CA25 장비 감사와 AI 사용 고지가 각각 `\section*{Acknowledgment}`·`\section*{Use of AI Tools}`로 활성화됐다. **남은 것은 사물인터넷 혁신융합대학의 공식 영문 명칭 확인 하나이고 `main.tex`에 TODO 주석이 있다.**
+4. **제출하지 않았다.** arXiv·TPDS 어느 쪽에도 올리지 않았고, 올리는 것은 저자 계정 작업이다. 제출 순서는 [../ARXIV_CHECKLIST.md](../ARXIV_CHECKLIST.md) §6 "제출 순서"에 있다.
 5. 서지 일부가 `TODO`다. 저자 전체 목록이 1차 출처로 확인되지 않은 항목은 `refs.bib`에 그렇게 표시돼 있다.
 
 ## 제출 전 확인

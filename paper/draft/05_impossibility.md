@@ -6,7 +6,7 @@ An offline bound over return schedules finds real room: with a budget of 2 s und
 
 Before using it we have to discard the metric this project had been judging by. Under a rearrangement that conserves work, slot occupancy and device time move in **opposite** directions: the schedule that maximises utilization spends 11–37 % more device time, and in measured arm comparisons the two disagree in direction in 5 of 11 cells. <!-- CLAIMS 2.1 --> Utilization remains a valid observable; it is not a cost function.
 
-## 5.2 The headroom is anticipation, not coordination-free scheduling
+## 5.2 What a causal policy does with it
 
 The offline optimum does not hold sessions back evenly. It releases most of them immediately and detains a few — and *which* few depends on when the others will return. Every causal policy we evaluated, seeing only the present state, produced a negative mean saving; the best was −0.44 %. <!-- CLAIMS 2.4 --> On device this reproduced: the recovery fraction was −105 % and −70 % in the two confirmation cells. **The intuition "wait a moment and go together" is not merely unhelpful here; it costs about as much as the headroom is worth.** <!-- CLAIMS 2.4 -->
 
@@ -24,7 +24,7 @@ Two independent reasons close it.
 
 **The value of return-time information is workload-specific.** Under a synthetic gap law, knowing exactly when peers return recovers 86–88 % of the bound and defines an accuracy threshold of the same order as the gap standard deviation. Under the *measured* tool-latency distribution the same information is worth −1.20 % to +0.99 %, and no threshold is definable. The opportunity to co-schedule is similar in both (73.6 % vs 81.9 % at a 2 s budget) — **it is not the opportunity that is missing but its value.** <!-- CLAIMS 2.7 -->
 
-**And the prediction is not available anyway.** Borrowing a published tool-duration estimator verbatim, the converged error exceeds the accuracy threshold by 5.6–9.7×, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s — the wrong way. <!-- CLAIMS 2.8 --> The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker **conditioning**. Whether `Bash` takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command. <!-- CLAIMS 2.9 -->
+**And the prediction is not available anyway.** Borrowing the tool-duration estimator of [@continuum2025] verbatim, the converged error exceeds the accuracy threshold by 5.6–9.7×, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s — the wrong way. <!-- CLAIMS 2.8 --> The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker **conditioning**. Whether `Bash` takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command. <!-- CLAIMS 2.9 -->
 
 **Figure ⑥.**
 

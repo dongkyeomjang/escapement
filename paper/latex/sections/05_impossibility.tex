@@ -13,7 +13,7 @@ An offline bound over return schedules finds real room: with a budget of 2 s und
 Before using it we have to discard the metric this project had been judging by. Under a rearrangement that conserves work, slot occupancy and device time move in \textbf{opposite} directions: the schedule that maximises utilization spends 11--37 \% more device time, and in measured arm comparisons the two disagree in direction in 5 of 11 cells. Utilization remains a valid observable; it is not a cost function.
 % CLAIMS 2.1
 
-\subsection{The headroom is anticipation, not coordination-free scheduling}
+\subsection{What a causal policy does with it}
 
 The offline optimum does not hold sessions back evenly. It releases most of them immediately and detains a few --- and \emph{which} few depends on when the others will return. Every causal policy we evaluated, seeing only the present state, produced a negative mean saving; the best was $-$0.44 \%. On device this reproduced: the recovery fraction was $-$105 \% and $-$70 \% in the two confirmation cells. \textbf{The intuition "wait a moment and go together" is not merely unhelpful here; it costs about as much as the headroom is worth.}
 % CLAIMS 2.4
@@ -30,7 +30,7 @@ That share is not lost to ignorance. It is lost to the decision structure: when 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig5_headroom_decomposition}
-  \caption{Most of the headroom is coordination, and knowledge cannot buy it.}
+  \caption{Most of the reachable headroom is coordination rather than knowledge. Each bar splits the offline bound into what omniscient but independently deciding sessions recover and what only joint scheduling recovers; the number above each bar is the latter's share, median 60\%. Computed on the measured tool-latency workload at three budgets and three concurrencies.}
   \label{fig:fig5}
 \end{figure}
 
@@ -42,14 +42,14 @@ Two independent reasons close it.
 \textbf{The value of return-time information is workload-specific.} Under a synthetic gap law, knowing exactly when peers return recovers 86--88 \% of the bound and defines an accuracy threshold of the same order as the gap standard deviation. Under the \emph{measured} tool-latency distribution the same information is worth $-$1.20 \% to +0.99 \%, and no threshold is definable. The opportunity to co-schedule is similar in both (73.6 \% vs 81.9 \% at a 2 s budget) --- \textbf{it is not the opportunity that is missing but its value.}
 % CLAIMS 2.7
 
-\textbf{And the prediction is not available anyway.} Borrowing a published tool-duration estimator verbatim, the converged error exceeds the accuracy threshold by 5.6--9.7$\times$, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s --- the wrong way. The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker \textbf{conditioning}. Whether \texttt{Bash} takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command.
+\textbf{And the prediction is not available anyway.} Borrowing the tool-duration estimator of \cite{continuum2025} verbatim, the converged error exceeds the accuracy threshold by 5.6--9.7$\times$, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s --- the wrong way. The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker \textbf{conditioning}. Whether \texttt{Bash} takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command.
 % CLAIMS 2.8
 % CLAIMS 2.9
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig6_predictor_error}
-  \caption{The predictor misses the accuracy threshold, and more samples do not help.}
+  \caption{The published estimator misses the accuracy threshold that would make return-time information usable, and more data does not close the gap. Converged error standard deviation per tool and in aggregate, log axis; the green band is the accuracy threshold derived for the synthetic gap law, which is the only workload for which such a threshold is definable.}
   \label{fig:fig6}
 \end{figure}
 

@@ -1,0 +1,68 @@
+%% Generated from paper/draft/11_appendices.md by md2tex.py.
+%% Mechanical first pass -- polish by hand, then stop regenerating.
+
+% Appendices
+
+% 편집 주석: OUTLINE.md의 부록 A–D. C가 §②의 참조 대상이므로 문자 순서를 맞추려면 A·B·D도 존재해야 한다. A·B는 짧게 실물로 쓰고 D는 §4.2와 저장소 기록을 가리킨다.
+
+\section{Substrate descriptor and layer tags}
+
+Every constant this paper uses about the substrate is held in one typed record, and each field carries a provenance triple: the \textbf{layer} at which it holds, the task that established it, and how (measured, source-read, or derived). Construction fails if a field lacks one.
+
+The layers are: \texttt{silicon} for values specific to this accelerator (absolute step times, prefill constants), \texttt{stack} for values specific to this software stack and compiled artifact (grid, slot count, block sizes, eviction order), \texttt{class} for the \emph{shape} of a law that follows from a design category rather than an implementation, and \texttt{universal} for methodological facts. \textbf{A \texttt{class} tag is attached to a law's form and never to its value} --- "eight outer slots" is never \texttt{class}.
+
+Claims in this paper carry the same tags. Where a claim's form is \texttt{class} and its value is \texttt{stack}, the two are made as separate statements.
+
+\section{Preregistration record}
+
+Every measurement in this paper registered its decision criteria, predictions and experimental grid in a commit \textbf{before} measurement began, and each task records the preregistration hash alongside the time measurement started. The registrations relevant to the results reported here are:
+
+
+\begin{table}[t]
+  \centering
+  \caption{Preregistration record. Each commit fixed the decision criteria, predictions and experimental grid before the corresponding measurement began.}
+  \begin{tabular}{lll}
+    \toprule
+    Registration & Commit & Covers \\
+    \midrule
+    Decode step cost & \texttt{241b7b8} & Section~\ref{sec:03} step cost decomposition \\
+    Reuse cliff reproduction & \texttt{2d79431} & Section~\ref{sec:03} survival threshold \\
+    Prefill serialisation & \texttt{ba6ee2b} & Section~\ref{sec:03} exclusive prefill \\
+    Grid intervention & \texttt{d5dfc7f} & Section~\ref{sec:03} the recompile intervention \\
+    Simulator out-of-sample & \texttt{41fd96f} & Section~\ref{sec:04} prediction gate \\
+    Policy on device & \texttt{980f0c7} & Section~\ref{sec:05} causal policy \\
+    Real-workload transfer & \texttt{f61bafe} & Section~\ref{sec:04}, Section~\ref{sec:05} workload change \\
+    Compile configuration & \texttt{4e12b30}, \texttt{745317e} & Section~\ref{sec:06} confirmation \\
+    N=6 reconfirmation & \texttt{3e55240} & Section~\ref{sec:06} corrected channel rule \\
+    \texttt{batch\_size} saturation & \texttt{492abe2} (+ \texttt{28dd252} for the judgement code) & Section~\ref{sec:06} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{No criterion was relaxed after measurement.} Where one was corrected --- the channel-agreement rule, whose ratio-only band was structurally unfair to light loads --- the original criterion's failure is reported alongside the corrected result, and the corrected run passed the original criterion as well.
+% CLAIMS 4.5
+
+\section{The observation-only patch}
+
+The stack computes, per decode step, both the actual number of running requests and the padded batch width it will execute at, but exposes neither. Section~\ref{sec:03}'s attribution depends on that pair, so a patch was applied under a written policy whose seven requirements are answered here.
+
+\textbf{1. Target package and exact version.} \texttt{vllm-rbln} \texttt{0.11.1}, on the default execution path (\texttt{VLLM\_RBLN\_USE\_VLLM\_MODEL=False}). The apply script re-checks the version on every invocation and exits non-zero on a mismatch.
+
+\textbf{2. Upstream path and hashes.} \texttt{vllm\_rbln/model\_executor/models/optimum/model\_base.py}, function \texttt{RBLNOptimumDecoderMixin.preprocess\_for\_decoder}. SHA256 before \texttt{46ce1675\ldots{}}, after \texttt{70942d16\ldots{}}. The diff adds nine lines (five code, four comment); no existing line is modified or deleted.
+
+\textbf{3. Why scheduler, batch selection and KV allocation are unchanged.} The added code is a single \texttt{logger.debug} call. It introduces no branch, loop or exception path and only reads a value the runtime has already computed. It does not touch the bucket selection function --- which is memoised, so \emph{wrapping} it would have captured only the first call and would also have perturbed the cache; reading at the call site avoids both. It does not touch the scheduler, the KV cache manager, the padding routine or the block table.
+
+\textbf{4. Observation-only alternatives were exhausted first.} Four exposure routes were searched before the patch was written --- the full DEBUG server log, all 122 \texttt{/metrics} entries, the vendor metrics environment variable, and other read-only paths. None exposes the per-step pair. The computation already exists on the execution path; the patch exports it rather than creating it.
+
+\textbf{5. Apply and revert.} Both are single commands in the patch directory, and the patch is a plain diff against the recorded pre-image.
+
+\textbf{6. Fail-loud on drift.} The apply script compares the target's hash against the recorded value and exits non-zero if either the version or the hash differs, so a package upgrade stops the experiment instead of silently changing what is measured.
+
+\textbf{7. Provenance in run metadata.} Every measurement run records the output of the patch status command, so each result carries the hash of the file it was produced under. The runs behind every number in this paper record \texttt{70942d16\ldots{}}.
+
+\textbf{Effect at default log level: none.} The call is at DEBUG, so an unmodified run produces no output.
+
+\section{Simulator validation detail}
+
+Section~\ref{sec:04} summarises four gates. Per-cell predicted-versus-measured tables for each --- including the block-level breakdown, the invariant checks that made each run valid, and the raw artifact paths --- are recorded in the project's task history, which is released with the paper.
+% NEEDS-EVIDENCE: 저장소 공개 방식(익명 릴리스 vs 공개 repo)이 정해지면 여기에 구체적 위치를 적는다

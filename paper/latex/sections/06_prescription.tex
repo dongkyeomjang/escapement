@@ -22,7 +22,7 @@ The cost of acting on the choice is a recompile, and it is small: compile time i
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig7_compile_cost}
-  \caption{A recompile costs seven minutes; a two-point cost model holds at the fifth point.}
+  \caption{A recompile is cheap enough to treat as a configuration choice, and its cost is predictable. Wall-clock against the number of compiled graphs; the dashed line is a model fitted to the two square points alone, and the circles are the later observations that tested it. Qwen3-4B at a sequence length of 8{,}192 on four devices.}
   \label{fig:fig7}
 \end{figure}
 
@@ -40,7 +40,7 @@ A device-side ablation separates the two axes. Changing only \texttt{batch\_size
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig8_final_result}
-  \caption{Compile configuration recovers device time, and the source is conditional.}
+  \caption{A configuration chosen without any device measurement recovers device time, and the source of the gain is conditional rather than fixed. Bars are channel A$'$, hollow circles channel B, crosses the predictions committed before measurement; the lighter portion of each right-hand bar is what grid alignment adds on top of pool size. At N=8 the pool dominates; at N=6 on a fresh seed the baseline already reuses 17 of 18, so almost nothing is left for the pool to buy.}
   \label{fig:fig8}
 \end{figure}
 
@@ -75,7 +75,7 @@ One further result belongs here because of what it tests. The uncalibrated model
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{fig9_batch_saturation}
-  \caption{The batch\_size gain ends where the survival rate saturates.}
+  \caption{The gain from a larger KV pool ends where the survival rate saturates, at one third of what the device can physically hold. Upper panel is device time against batch\_size with the grid held at $(1,4,6,8,10,B)$ so that only the top rung changes; lower panel is layer-2 survival on the same axis. The vertical dashed line is the KV ceiling extrapolated from a three-point fit of device memory, not a measurement. The circled point is the one cell whose survival had not yet saturated, and the only one where a larger pool still bought anything. Concurrency of ten and below.}
   \label{fig:fig9}
 \end{figure}
 

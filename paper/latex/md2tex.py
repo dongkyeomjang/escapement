@@ -32,15 +32,54 @@ FIGFILE = {
     "⑨": "fig9_batch_saturation",
 }
 FIGCAP = {
-    "①": "Reuse cliff: the threshold counts requests, not tokens.",
-    "②": "Grid alignment sets the sign of the gap effect, established by intervention.",
-    "③": "Prefill is a system cost; adding its term removes the concurrency-dependent bias.",
-    "④": "Predictive power of the uncalibrated simulator.",
-    "⑤": "Most of the headroom is coordination, and knowledge cannot buy it.",
-    "⑥": "The predictor misses the accuracy threshold, and more samples do not help.",
-    "⑦": "A recompile costs seven minutes; a two-point cost model holds at the fifth point.",
-    "⑧": "Compile configuration recovers device time, and the source is conditional.",
-    "⑨": "The batch\\_size gain ends where the survival rate saturates.",
+    "①": "Reuse of a completed prefix is all-or-nothing, and the threshold counts requests rather "
+         "than tokens. Measured on the layer-2 pool of this artifact (eight outer slots of 8{,}192 "
+         "tokens, FIFO) with 2{,}000-token requests, where reuse survives six background arrivals "
+         "and disappears at the seventh, reproduced identically in 12 of 12 trials. The grey step "
+         "is the upper-layer metric, which keeps reporting hits after the tensors are gone; the "
+         "dashed steps are an ablation (model, not measurement) replacing FIFO with "
+         "block-granular LRU, under which the threshold becomes size-dependent.",
+    "②": "Whether a tool gap helps or hurts is decided by where the offered concurrency falls on "
+         "the compiled grid, and the effect changes sign. Pooled utilization ratio "
+         "(agentic/conventional) at an admission ceiling of eight; the square series is the same "
+         "workload, seed, model and slot count after a recompile that added one rung, which is "
+         "what makes the attribution causal rather than correlational. The flat line at 1.0000 is "
+         "an ablation on a continuous grid (model).",
+    "③": "Prefill is charged to every concurrent session, and a cost model that omits it is biased "
+         "in a way that grows with concurrency. Predicted over measured inter-token-latency sum "
+         "for both arms; hollow markers omit the serialisation term and filled markers include "
+         "it, on this hardware and model.",
+    "④": "The model predicts rather than merely reproduces. Predicted against measured ratio; "
+         "every blue, orange and red point was committed to the repository before the "
+         "corresponding measurement ran. The band is the $\\pm$0.03 agreement region. Grey "
+         "points are in-sample reproduction and are not evidence of prediction.",
+    "⑤": "Most of the reachable headroom is coordination rather than knowledge. Each bar splits "
+         "the offline bound into what omniscient but independently deciding sessions recover and "
+         "what only joint scheduling recovers; the number above each bar is the latter's share, "
+         "median 60\\%. Computed on the measured tool-latency workload at three budgets and three "
+         "concurrencies.",
+    "⑥": "The published estimator misses the accuracy threshold that would make return-time "
+         "information usable, and more data does not close the gap. Converged error standard "
+         "deviation per tool and in aggregate, log axis; the green band is the accuracy threshold "
+         "derived for the synthetic gap law, which is the only workload for which such a "
+         "threshold is definable.",
+    "⑦": "A recompile is cheap enough to treat as a configuration choice, and its cost is "
+         "predictable. Wall-clock against the number of compiled graphs; the dashed line is a "
+         "model fitted to the two square points alone, and the circles are the later observations "
+         "that tested it. Qwen3-4B at a sequence length of 8{,}192 on four devices.",
+    "⑧": "A configuration chosen without any device measurement recovers device time, and the "
+         "source of the gain is conditional rather than fixed. Bars are channel A$'$, hollow "
+         "circles channel B, crosses the predictions committed before measurement; the lighter "
+         "portion of each right-hand bar is what grid alignment adds on top of pool size. At "
+         "N=8 the pool dominates; at N=6 on a fresh seed the baseline already reuses 17 of 18, so "
+         "almost nothing is left for the pool to buy.",
+    "⑨": "The gain from a larger KV pool ends where the survival rate saturates, at one third of "
+         "what the device can physically hold. Upper panel is device time against "
+         "batch\\_size with the grid held at $(1,4,6,8,10,B)$ so that only the top rung changes; "
+         "lower panel is layer-2 survival on the same axis. The vertical dashed line is the KV "
+         "ceiling extrapolated from a three-point fit of device memory, not a measurement. The "
+         "circled point is the one cell whose survival had not yet saturated, and the only one "
+         "where a larger pool still bought anything. Concurrency of ten and below.",
 }
 
 
@@ -55,7 +94,7 @@ def esc(t: str) -> str:
                  ("“", "``"), ("”", "''"), ("×", "$\\times$"), ("≤", "$\\leq$"),
                  ("≥", "$\\geq$"), ("→", "$\\rightarrow$"), ("−", "$-$"), ("·", "$\\cdot$"),
                  ("±", "$\\pm$"), ("∈", "$\\in$"), ("′", "$'$"), ("≈", "$\\approx$"),
-                 ("∼", "$\\sim$"), ("½", "$1/2$"), ("°", "$^\\circ$")):
+                 ("∼", "$\\sim$"), ("½", "$1/2$"), ("°", "$^\\circ$"), ("…", "\\ldots{}")):
         t = t.replace(a, b)
     return t
 
@@ -75,16 +114,21 @@ def crossrefs(t: str) -> str:
     return t
 
 
+CITEKEY = re.compile(r"\[@([A-Za-z0-9_,;@\s]+)\]")
+
+
 def inline(t: str) -> str:
     """Escape, then restore the markup spans that were written as markdown."""
     t = crossrefs(t)
+    t = CITEKEY.sub(lambda m: "\x00CITE\x01"
+                    + ",".join(k.strip().lstrip("@") for k in m.group(1).split(";")) + "\x02", t)
     t = re.sub(r"Section~\\ref\{sec:(\d\d)\}", lambda m: "\x00REF\x01" + m.group(1) + "\x02", t)
     t = re.sub(r"`([^`]+)`", lambda m: "\x00CODE\x01" + m.group(1) + "\x02", t)
     t = re.sub(r"\*\*([^*]+)\*\*", lambda m: "\x00BF\x01" + m.group(1) + "\x02", t)
     t = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", lambda m: "\x00IT\x01" + m.group(1) + "\x02", t)
     t = esc(t)
     t = t.replace("\x00CODE\x01", "\\texttt{").replace("\x00BF\x01", "\\textbf{")
-    t = t.replace("\x00IT\x01", "\\emph{").replace("\x02", "}")
+    t = t.replace("\x00IT\x01", "\\emph{").replace("\x00CITE\x01", "\\cite{").replace("\x02", "}")
     t = re.sub(r"\x00REF\x01(\d\d)\}", lambda m: "Section~\\ref{sec:" + m.group(1) + "}", t)
     return t
 
@@ -101,13 +145,18 @@ def convert(path: Path) -> str:
     out: list[str] = [f"%% Generated from {path.relative_to(HERE.parents[1])} by md2tex.py.",
                       "%% Mechanical first pass -- polish by hand, then stop regenerating.", ""]
     lines = path.read_text().splitlines()
+    tablecap: list[str] = []
     i = 0
     while i < len(lines):
         ln = lines[i]
         s = ln.strip()
 
         if s.startswith("<!--") and s.endswith("-->"):
-            out.append("% " + s[4:-3].strip())
+            note = s[4:-3].strip()
+            if note.startswith("TABLE:"):
+                tablecap.append(inline(note[6:].strip()))
+            else:
+                out.append("% " + note)
             i += 1
             continue
         m = re.match(r"^(#+)\s*(.*)$", s)
@@ -115,6 +164,18 @@ def convert(path: Path) -> str:
             level, title = len(m.group(1)), m.group(2)
             title = re.sub(rf"^[{CIRCLED}]\s*", "", title)
             title = re.sub(r"^\d+(\.\d+)*\s+", "", title)
+            # Under IEEEtran's \appendices each appendix is a \section, so the
+            # appendix file's heading levels shift by one.
+            if path.stem.endswith("appendices"):
+                if level == 1:
+                    out.append("% " + title)
+                    i += 1
+                    continue
+                title = re.sub(r"^Appendix [A-Z]:\s*", "", title)
+                cmd = {2: "section", 3: "subsection"}.get(level, "subsubsection")
+                out += ["", f"\\{cmd}{{{inline(title)}}}"]
+                i += 1
+                continue
             cmd = {1: "section", 2: "subsection"}.get(level, "subsubsection")
             out += ["", f"\\{cmd}{{{inline(title)}}}"]
             if level == 1:
@@ -127,6 +188,7 @@ def convert(path: Path) -> str:
             i += 1
             continue
         if s.startswith("|"):
+            cap = tablecap.pop() if tablecap else "TODO caption"
             rows = []
             while i < len(lines) and lines[i].strip().startswith("|"):
                 cells = [re.sub(r"\s*<!--.*?-->", "", c).strip()
@@ -137,7 +199,7 @@ def convert(path: Path) -> str:
             if rows:
                 n = len(rows[0])
                 out += ["", "\\begin{table}[t]", "  \\centering",
-                        "  \\caption{TODO caption}",
+                        f"  \\caption{{{cap}}}",
                         f"  \\begin{{tabular}}{{{'l' * n}}}", "    \\toprule"]
                 out.append("    " + " & ".join(inline(c) for c in rows[0]) + " \\\\")
                 out.append("    \\midrule")
