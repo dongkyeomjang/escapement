@@ -1,0 +1,60 @@
+%% Generated from paper/draft/05_impossibility.md by md2tex.py.
+%% Mechanical first pass -- polish by hand, then stop regenerating.
+
+\section{What runtime policy cannot reach}
+\label{sec:05}
+
+\subsection{There is headroom, and utilization does not measure it}
+
+An offline bound over return schedules finds real room: with a budget of 2 s under the measured tool-latency distribution, 5.0--6.9 \% of device time. The bound comes from local search and is therefore a \textbf{lower} bound.
+% CLAIMS 2.3
+% CLAIMS 2.2
+
+Before using it we have to discard the metric this project had been judging by. Under a rearrangement that conserves work, slot occupancy and device time move in \textbf{opposite} directions: the schedule that maximises utilization spends 11--37 \% more device time, and in measured arm comparisons the two disagree in direction in 5 of 11 cells. Utilization remains a valid observable; it is not a cost function.
+% CLAIMS 2.1
+
+\subsection{The headroom is anticipation, not coordination-free scheduling}
+
+The offline optimum does not hold sessions back evenly. It releases most of them immediately and detains a few --- and \emph{which} few depends on when the others will return. Every causal policy we evaluated, seeing only the present state, produced a negative mean saving; the best was $-$0.44 \%. On device this reproduced: the recovery fraction was $-$105 \% and $-$70 \% in the two confirmation cells. \textbf{The intuition "wait a moment and go together" is not merely unhelpful here; it costs about as much as the headroom is worth.}
+% CLAIMS 2.4
+% CLAIMS 2.4
+
+\subsection{Most of the headroom is coordination, and knowledge cannot buy it}
+
+We decompose the headroom by information rather than by policy. Give every session \textbf{omniscient} knowledge of the future but require each to decide \textbf{independently}, and 27--51 \% of the bound is recovered --- the remaining \textbf{median 60 \% (range 49--73 \%) disappears}.
+% CLAIMS 2.5
+
+That share is not lost to ignorance. It is lost to the decision structure: when the gain comes from several sessions riding the same batch, \emph{which} group forms cannot be decided by any one session from its own information. \textbf{No per-session runtime policy can reach it, in principle.} The only places coordination can live are a scheduler that sees every session, or a configuration that freezes the coordination at build time for everybody.
+% CLAIMS 2.6
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig5_headroom_decomposition}
+  \caption{Most of the headroom is coordination, and knowledge cannot buy it.}
+  \label{fig:fig5}
+\end{figure}
+
+
+\subsection{And the reachable remainder is not reachable in practice}
+
+Two independent reasons close it.
+
+\textbf{The value of return-time information is workload-specific.} Under a synthetic gap law, knowing exactly when peers return recovers 86--88 \% of the bound and defines an accuracy threshold of the same order as the gap standard deviation. Under the \emph{measured} tool-latency distribution the same information is worth $-$1.20 \% to +0.99 \%, and no threshold is definable. The opportunity to co-schedule is similar in both (73.6 \% vs 81.9 \% at a 2 s budget) --- \textbf{it is not the opportunity that is missing but its value.}
+% CLAIMS 2.7
+
+\textbf{And the prediction is not available anyway.} Borrowing a published tool-duration estimator verbatim, the converged error exceeds the accuracy threshold by 5.6--9.7$\times$, and growing per-tool samples by four orders of magnitude moves the error standard deviation from 8.4 s to 10.5 s --- the wrong way. The bound and the point estimate hit the same wall (10.196 vs 10.185 s), which locates the problem: not a weaker estimator but weaker \textbf{conditioning}. Whether \texttt{Bash} takes 27 ms or 300 s is decided by the command, and the tool name does not carry the command.
+% CLAIMS 2.8
+% CLAIMS 2.9
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig6_predictor_error}
+  \caption{The predictor misses the accuracy threshold, and more samples do not help.}
+  \label{fig:fig6}
+\end{figure}
+
+
+\subsection{A methodological warning that applies to us too}
+
+Two free parameters and a twenty-configuration search manufacture a +4.32 \% gain on exploration seeds that becomes $-$0.14 \% on held-out seeds; an earlier instance with a larger search showed up to 34 \% before the sign reversed. Everything in Section~\ref{sec:06} is therefore selected on one set of seeds, evaluated on another, and confirmed against predictions committed before measurement.
+% CLAIMS 2.10

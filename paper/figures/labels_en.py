@@ -141,19 +141,22 @@ TABLE: dict[str, str] = {
         "left to buy.",
 
     # -- (9) batch_size saturation ----------------------------------------
-    "통제된 구간 — 눈금은 (1,4,6,8,10,B), 최상위만 B":
-        "controlled range - grid (1,4,6,8,10,B), only the top rung changes",
-    "B8→B16: 계속 이득": "B8->B16: still gaining",
-    "B16 이후 평평": "flat beyond B16",
+    "KV 한계 B ≈ 46 (외삽)": "KV ceiling B ~ 46 (extrapolated)",
+    "B=16 이후 평평": "flat beyond B=16",
+    "이득은 KV 한계의": "the gain ends at one third",
+    "3분의 1에서 끝난다": "of the KV ceiling",
+    "device time ratio (B8 대비)": "device time ratio vs B8",
+    "⑨ batch_size의 이득은 생존율이 포화하는 곳에서 끝난다":
+        "The batch_size gain ends where the survival rate saturates",
+    "실선·채운 표식 = 채널 A′, 속 빈 표식 = 채널 B (두 채널 차 ≤ 0.0068), 점선 = 측정 전 commit한 sim":
+        "Solid/filled = channel A', hollow = channel B (gap <= 0.0068), dashed = sim committed "
+        "before measurement",
+    "생존율 100 %": "100 % survival",
+    "N=10만 28/30 — 여기서만 B24가 2 % 더 준다":
+        "only N=10 is at 28/30 - the one place B24 still buys 2 %",
     "batch_size B  (= outer KV slot 수 = max_num_seqs)":
         "batch_size B  (= outer KV slots = max_num_seqs)",
-    "device time ratio (B8 대비) — 작을수록 개선":
-        "device time ratio vs B8 - lower is better",
-    "⑨ batch_size의 이득은 B=16에서 포화한다":
-        "The batch_size gain saturates at B=16",
-    "실선 = 실측 채널 A′, 점선 = 선등록 sim. 최상위 눈금 16·24·32는 N ≤ 10에서 한 번도 선택되지 않는다 (TASK40)":
-        "Solid = measured (channel A'), dashed = preregistered sim. Top rungs are never selected at N <= 10",
-    "점선 = 측정 전 commit된 sim 예측": "dashed = sim, committed before measurement",
+    "층 2 재사용 생존율": "layer-2 reuse survival rate",
 }
 
 #: Labels built with an f-string: fixed text, variable number.

@@ -31,6 +31,8 @@ Research history source of truth는 [`docs/research/INDEX.md`](docs/research/IND
 
 TASK 생성 기준, 번호, 상태, 필수 구조, 동시 작업 규칙의 상세 source of truth는 [`docs/research/TASK_GUIDE.md`](docs/research/TASK_GUIDE.md)다. 새 TASK를 기록할 때 반드시 읽고 따른다.
 
+**새 실행 script를 쓰거나, 파일을 고치는 자동화를 돌리거나, 새 관측 채널을 정의하기 전에 [`docs/research/KNOWN_PITFALLS.md`](docs/research/KNOWN_PITFALLS.md)를 읽는다.** 이 저장소에서 실제로 재발했거나 측정을 무효화한 함정 5종(상대 경로 × 임시 디렉터리 실행기, pattern 기반 process 종료, counter 증분 per-request 귀속, 따옴표 없는 heredoc 치환, 실행 중 script 편집)과 각각의 올바른 방식이 있다. 원칙 15가 요구하는 "과거 실패를 반복하지 않는다"를 36개 TASK를 뒤지지 않고 실행하기 위한 문서다.
+
 현재 작업이 끝났더라도 사용자의 지시 없이 INDEX의 다음 연구 TASK를 자동으로 시작하지 않는다.
 
 ## HARD REQUIREMENT: 작업 종료 Commit

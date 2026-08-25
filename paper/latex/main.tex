@@ -1,0 +1,80 @@
+%% Escapement -- compile-time coordination for agentic LLM serving on NPUs
+%%
+%% Target: IEEE journal (TPDS). Compile on Overleaf; see README.md.
+%% This file was written without a local TeX installation and HAS NOT BEEN
+%% COMPILED. Treat the first successful build as the first real test.
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+%% Figures live in paper/figures/pdf/. make_package.sh copies them into
+%% figures/ so this directory can be uploaded to Overleaf on its own.
+\graphicspath{{figures/}{../figures/pdf/}}
+
+%% ---------------------------------------------------------------------------
+%% AUTHOR BLOCK -- PLACEHOLDER. Do not submit with this in place.
+%% ---------------------------------------------------------------------------
+\author{TBD --- pending advisor approval}
+
+\title{Escapement: Compile-Time Coordination for Agentic LLM Serving on NPUs}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\begin{IEEEkeywords}
+LLM serving, agentic workloads, KV cache, NPU, compile-time configuration,
+preregistration.
+\end{IEEEkeywords}
+
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_mechanisms}
+\input{sections/04_simulator}
+\input{sections/05_impossibility}
+\input{sections/06_prescription}
+\input{sections/07_generality}
+\input{sections/08_related}
+\input{sections/09_limitations}
+\input{sections/10_conclusion}
+
+%% ---------------------------------------------------------------------------
+%% ACKNOWLEDGMENT -- PLACEHOLDERS. Both need approval before submission.
+%% ---------------------------------------------------------------------------
+\section*{Acknowledgment}
+%% (1) Hardware acknowledgment placeholder.
+%%     TBD --- the RBLN CA25 hardware used for every measurement in this work
+%%     was provided by Rebellions Inc. Exact wording and whether a grant or
+%%     programme number applies is pending confirmation.
+%%
+%% (2) AI-use disclosure. Draft below; wording and placement (acknowledgment
+%%     vs. a dedicated section vs. a footnote on page 1) pending advisor
+%%     approval. arXiv recommends disclosure in the body.
+%%
+%%     The experiments, analyses, figures and research records in this work
+%%     were carried out by an AI coding agent operating on the authors'
+%%     hardware under a written protocol: every measurement task registers its
+%%     decision criteria, predictions and experimental grid in a commit before
+%%     measurement begins, and each task is recorded with its raw artefacts,
+%%     invariant checks and the layer at which each finding is claimed to
+%%     hold. The research direction, the choice of questions, the
+%%     preregistration criteria and every judgement reported here are the
+%%     authors'. The agent did not select which results to report, and no
+%%     criterion was relaxed after measurement; where one was corrected, the
+%%     original criterion's failure is reported alongside it.
+TBD.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

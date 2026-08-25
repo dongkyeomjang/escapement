@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Cross-check every figure against its source TASK, and dump its text for review.
 
-This host has no SVG rasteriser, so nobody has looked at the eight figures with
+This host has no SVG rasteriser, so nobody has looked at the figures with
 their eyes. Two things stand in for that, and neither is a substitute for the
 third:
 
@@ -185,12 +185,20 @@ def check_fig9() -> None:
             r = [x for x in rows("BATCH_SATURATION_PREREG") if len(x) == 5 and x[0] == str(n)]
             e = num(r[0][{16: 2, 24: 3, 32: 4}[b]]) if r else None
             chk("⑨", f"sim N={n} B={b}", "선등록 예측표", e, v)
-    dev = F._bsat_measured()
-    for n, row in dev.items():
+    dev_a, dev_b, surv = F._bsat_measured()
+    for n, row in dev_a.items():
         for b, v in row.items():
             if b == 8:
                 continue
-            chk("⑨", f"실측 N={n} B={b}", "TASK40 B-곡선", F.BSAT_DEV[n][b], v, tol=2e-3)
+            chk("⑨", f"A′ N={n} B={b}", "TASK40 B-곡선", F.BSAT_DEV[n][b], v, tol=2e-3)
+    for n, row in dev_b.items():
+        for b, v in row.items():
+            if b == 8:
+                continue
+            chk("⑨", f"채널B N={n} B={b}", "TASK40 B-곡선", F.BSAT_DEV_B[n][b], v, tol=2e-3)
+    for n, row in surv.items():
+        for b, v in row.items():
+            chk("⑨", f"생존율 N={n} B={b}", "TASK40 기전 분해", F.BSAT_SURV[n][b], v, tol=2e-3)
 
 
 def check_fig8() -> None:
@@ -345,7 +353,7 @@ def main() -> int:
                        f"{'**찾지 못함**' if e is None else f'{e:g}'} | {a:g} |")
         out.append("")
     else:
-        out += ["**불일치 없음.** 8개 그림의 데이터 상수가 전부 원 TASK 문서의 표·문장과 일치한다.", ""]
+        out += [f"**불일치 없음.** {len(FIGS)}개 그림의 데이터 상수가 전부 원 TASK 문서의 표·문장과 일치한다.", ""]
 
     out += ["### 그림별 대조 항목 수", "", "| 그림 | 대조 항목 | 일치 | 출처 |", "|---|---|---|---|"]
     for sym, _ in FIGS:
@@ -392,7 +400,7 @@ def main() -> int:
             out.append(f"| {sym} | {t[:60]} | {a:.0f} | {b_:.0f} | {w} |")
         out.append("")
     else:
-        out += ["**넘침 0건.** 8개 영문 그림의 모든 문자열이 캔버스 안에 든다.", ""]
+        out += [f"**넘침 0건.** {len(FIGS)}개 영문 그림의 모든 문자열이 캔버스 안에 든다.", ""]
 
     # -- PDF conversion check ------------------------------------------
     out += ["---", "", "## 3. PDF 변환 검사 — 영문판", "",

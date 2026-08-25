@@ -22,3 +22,6 @@ results/**/*
 !.env.example
 
 models/
+
+# LaTeX 패키지 조립 산출물 (paper/latex/make_package.sh가 복사)
+paper/latex/figures/

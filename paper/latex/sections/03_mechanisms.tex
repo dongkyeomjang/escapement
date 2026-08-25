@@ -1,0 +1,65 @@
+%% Generated from paper/draft/03_mechanisms.md by md2tex.py.
+%% Mechanical first pass -- polish by hand, then stop regenerating.
+
+\section{Three mechanisms of the return-arrival process}
+\label{sec:03}
+
+\subsection{Grid alignment decides the \emph{sign} of the gap effect}
+
+Comparing an agentic arm (turns separated by tool gaps) against a conventional arm (same work, no gaps) across concurrency levels does not give a single direction. At some concurrencies the gap makes utilization \emph{better}, at others worse. The distinguishing variable is not load but \textbf{where the offered concurrency falls on the compiled grid}: when it lands between two rungs, the gap breaks the running set into pieces that pad less, and the arm with gaps wins.
+% CLAIMS 1.5
+
+We establish this causally. Holding the workload, the seed, the model and the slot count fixed, we recompiled the artifact with one additional rung and measured again. On the grid \texttt{(1,2,4,8)} the pooled ratio at N=6 was 1.1504; adding rung 6 to make \texttt{(1,2,4,6,8)} moved it to 0.9717, and the reversal disappeared. An ablation completes the attribution: on a hypothetical continuous grid the law vanishes to exactly 1.0000, since with no padding there is no padding difference to explain (model).
+% CLAIMS 1.6
+% CLAIMS 1.7
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig2_grid_alignment}
+  \caption{Grid alignment sets the sign of the gap effect, established by intervention.}
+  \label{fig:fig2}
+\end{figure}
+
+
+\subsection{The reuse cliff counts requests, not tokens}
+
+A completed prefix either survives a gap intact or is gone; there is no partial survival, because a request of 8,192 tokens or fewer occupies exactly one outer slot regardless of its length. Survival is therefore decided by \textbf{how many other requests were admitted during the gap}, not by how many tokens they carried. On this artifact --- eight outer slots of 8,192 tokens under FIFO, with 2,000-token requests --- reuse survives six background requests and dies at the seventh, and that threshold reproduced identically in 12 of 12 trials.
+% CLAIMS 1.1
+% CLAIMS 1.2
+
+The eviction order is FIFO over \emph{allocation}, not over last use, so the oldest allocation is the first victim and re-access does not protect it. An ablation replacing the policy with LRU over blocks removes the count threshold entirely and makes the threshold inversely proportional to request size instead (model).
+% CLAIMS 1.3
+
+One asymmetry is worth stating because it makes gaps costlier than a naive account suggests: a session that returns \emph{immediately} does not evict its own cache, because a completed block becomes evictable only after the next admission has already chosen its victim. A session that returns after a gap has lost that protection. \textbf{The cost of a gap therefore includes losing one's own shield, not merely gaining competitors.}
+% CLAIMS 1.13
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig1_survival_cliff}
+  \caption{Reuse cliff: the threshold counts requests, not tokens.}
+  \label{fig:fig1}
+\end{figure}
+
+
+\subsection{Prefill is charged to everyone}
+
+Injecting a prefill while several sessions decode produces a latency spike in \textbf{all} of them, beginning within a millisecond of each other and lasting the prefill's duration; across nine runs the ratio of spike to prefill time stayed in 1.01--1.14. The stall is predictable from the computed token count: on this hardware and model, \texttt{ceil(n/128) $\times$ (0.0212 + 6.4e-7$\cdot$n)} seconds fits four injection sizes from 500 to 6,000 tokens with a worst residual of 2.4 ms.
+% CLAIMS 1.8
+% CLAIMS 1.9
+
+Adding this term is what makes a cost model transfer across concurrency. A decode-only model's predicted/measured ratio ran from 0.565 to 0.855 with a monotone dependence on concurrency; adding the serialisation term moves it to 0.973--1.039 and removes the dependence, accounting for 87--120 \% of the earlier bias.
+% CLAIMS 1.10
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{fig3_prefill_tax}
+  \caption{Prefill is a system cost; adding its term removes the concurrency-dependent bias.}
+  \label{fig:fig3}
+\end{figure}
+
+
+\subsection{Why the three multiply}
+
+The mechanisms are not three independent costs to be summed. The slot pool decides \textbf{who} must recompute; exclusive prefill decides that the recomputation is charged to \textbf{everyone then decoding}; and the grid decides \textbf{how many} that is. A cache miss under a wide batch is expensive twice over.
+
+This composition is also why an intuition that works elsewhere fails here, and Section~\ref{sec:05} takes it up: holding a returning session back so that it can share a batch looks like it should help, and does not.

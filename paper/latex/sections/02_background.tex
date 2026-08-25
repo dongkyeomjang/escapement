@@ -1,0 +1,42 @@
+%% Generated from paper/draft/02_background.md by md2tex.py.
+%% Mechanical first pass -- polish by hand, then stop regenerating.
+
+\section{Background: the substrate, and what it fixes at compile time}
+\label{sec:02}
+
+% 편집 주석: 이 절은 주장을 세우지 않는다. 뒤 절이 쓰는 용어와 "무엇이 compile 시점에 굳는가"만 정의한다.
+
+\subsection{The stack}
+
+Measurements are on an RBLN CA25 NPU (four devices per model instance) running \texttt{vllm 0.22.0+cpu} with \texttt{vllm-rbln 0.11.1} and artifacts compiled by \texttt{optimum-rbln 0.11.1}. The model is Qwen3-4B at \texttt{max\_seq\_len = 8192}, whose 36 layers are all full attention, so KV per token is a single expression. \textbf{Every absolute constant below belongs to this instance and is not carried elsewhere}; the paper marks each claim with the layer at which it is asserted.
+
+An observation-only patch exposes one line per decode step giving the actual running count and the padded batch width the runner selected. It changes no control flow, and every run records the patched file's hash.
+% NEEDS-EVIDENCE: patch 정책 문서(patches/README.md)의 7개 항목을 본문에 요약할지 부록으로 뺄지 결정 필요
+
+\subsection{Two things a recompile fixes}
+
+\textbf{Compiled decode widths.} The decoder is compiled for an explicit set of batch widths. At run time the actual running count is rounded \textbf{up} to the smallest compiled width that is at least as large, and the model executes at that width. Widths that were not compiled do not exist.
+% CLAIMS 1.5
+
+\textbf{KV pool size.} With eager attention, the number of KV blocks equals the compile-time \texttt{batch\_size}, and the block size defaults to \texttt{max\_seq\_len}. One block therefore holds one sequence, and \texttt{batch\_size} \emph{is} the number of sequence-granular slots.
+% CLAIMS 3.8
+
+These two are the whole of what this paper later chooses. Both are frozen when the artifact is built; neither can be changed at run time.
+
+\subsection{Two cache layers, counted differently}
+
+The stack keeps two ledgers. The upper one is vLLM's block table --- 128-token blocks under LRU. The lower one is the runtime's own pool of 8,192-token outer slots under \textbf{FIFO}, and it is the one that actually holds the tensors. The two disagree after the lower layer evicts: the upper layer keeps reporting hits for a prefix whose tensors are gone, so \texttt{prefix\_cache\_hits\_total} can overstate real reuse by 100 \%. Reuse in this paper always means the lower layer, read from \texttt{vllm:prompt\_tokens\_cached\_total} or from the per-request \texttt{cached\_tokens} field.
+% CLAIMS 1.4
+
+A second property of the lower layer matters later: it holds only what \textbf{prefill} computed. Tokens produced by decode are not cached, so a session's turn \emph{k} can reuse at most the prompt of turn \emph{k$-$1}.
+% CLAIMS 1.12
+
+\subsection{Workload}
+
+Sessions alternate between an LLM turn and a tool gap. Gap durations are drawn from a measured tool-latency population (43 tools, capped at 60 s) taken from a code-agent trace, replacing the synthetic uniform gap used in this project's earlier measurements. Prompts, generation lengths and gaps are generated from a seed plus a block id, so every arm of a comparison runs the \textbf{identical plan} and differs only in the compiled configuration.
+% CLAIMS 2.3
+
+\subsection{How device time is measured}
+
+Two independent channels. \textbf{Channel A$'$} reconstructs device time from two measured cost models --- the step trace priced by a per-width decode cost, plus each request's actually computed prefill tokens priced by a prefill cost model. \textbf{Channel B} is the union of the intervals in which at least one request was in flight, taken from the client's own timestamps and depending on no model at all. A judgement is withheld unless the two agree within a tolerance that carries the residual channel B has and A$'$ structurally cannot.
+% CLAIMS 4.5

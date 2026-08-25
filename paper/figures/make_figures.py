@@ -382,58 +382,96 @@ def fig8() -> None:
 
 
 # --------------------------------------------------------------------------
-# ⑨ batch_size saturation curve
+# ⑨ batch_size saturation curve, over the survival rate that explains it
 # --------------------------------------------------------------------------
 #: Preregistered sim predictions (BATCH_SATURATION_PREREG.md), ratio vs B8.
 BSAT_SIM = {6: {8: 1.0, 16: 0.9666, 24: 0.9666, 32: 0.9666},
             8: {8: 1.0, 16: 0.9177, 24: 0.9177, 32: 0.9177},
             10: {8: 1.0, 16: 0.8412, 24: 0.8379, 32: 0.8379}}
-#: Fallback measurements, as recorded in TASK40.
+#: Fallback measurements, as recorded in TASK40. Channel A' then channel B.
 BSAT_DEV = {6: {8: 1.0, 16: 0.9659, 24: 0.9660, 32: 0.9663},
             8: {8: 1.0, 16: 0.9151, 24: 0.9151, 32: 0.9161},
             10: {8: 1.0, 16: 0.8601, 24: 0.8480, 32: 0.8482}}
+BSAT_DEV_B = {6: {8: 1.0, 16: 0.9625, 24: 0.9693, 32: 0.9595},
+              8: {8: 1.0, 16: 0.9146, 24: 0.9146, 32: 0.9158},
+              10: {8: 1.0, 16: 0.8599, 24: 0.8464, 32: 0.8460}}
+BSAT_SURV = {6: {8: 15 / 18, 16: 1.0, 24: 1.0, 32: 1.0},
+             8: {8: 10 / 24, 16: 1.0, 24: 1.0, 32: 1.0},
+             10: {8: 2 / 30, 16: 28 / 30, 24: 1.0, 32: 1.0}}
 BSAT_B = {"B8": 8, "B16": 16, "B24": 24, "B32": 32}
+#: TASK40: device memory is 2.1 + 0.28125*B GiB/device, so 15.7 GiB is reached
+#: near B = 46. Extrapolated, not measured -- the figure says so.
+KV_LIMIT_B = 46
 
 
 def _bsat_measured():
+    """(channel A', channel B, survival), from the run if it is on disk."""
     runs = sorted((REPO / "results/npu/stage2").glob("*-batch-saturation/batch_curve.json"))
     if not runs:
-        return BSAT_DEV
-    out = {}
-    for row in json.loads(runs[-1].read_text())["per_n"]:
-        out[row["N"]] = {BSAT_B[a]: v["a_prime_ratio"] for a, v in row["arms"].items()}
-    return out
+        return BSAT_DEV, BSAT_DEV_B, BSAT_SURV
+    d = json.loads(runs[-1].read_text())
+    a = {r["N"]: {BSAT_B[k]: v["a_prime_ratio"] for k, v in r["arms"].items()} for r in d["per_n"]}
+    b = {r["N"]: {BSAT_B[k]: v["b_ratio"] for k, v in r["arms"].items()} for r in d["per_n"]}
+    sv: dict[int, dict[int, float]] = {}
+    for m in d["mechanism"]:
+        sv.setdefault(m["N"], {})[BSAT_B[m["arm"]]] = m["survival"]
+    return a, b, sv
+
+
+SERIES = ((6, C["base"], "o"), (8, C["arm2"], "s"), (10, C["arm3"], "^"))
 
 
 def fig9() -> None:
-    dev = _bsat_measured()
-    ax = Axes(width=700, height=430, xlim=(6, 34), ylim=(0.82, 1.02), bottom=64)
-    ax.hline(1.0, color=C["ink"], dash="4 3")
-    # the two controlled steps: only the top rung and the pool size change
-    left, right = ax.px(16), ax.px(32)
-    ax.rect_px(left, ax.y1, right - left, ax.y0 - ax.y1, fill=C["ok"], opacity=0.08)
-    ax.text((16 + 32) / 2, 1.008, "통제된 구간 — 눈금은 (1,4,6,8,10,B), 최상위만 B",
-            size=11, fill=C["ok"])
-    for n, color, shape in ((6, C["base"], "o"), (8, C["arm2"], "s"), (10, C["arm3"], "^")):
-        sim = [(b, BSAT_SIM[n][b]) for b in (8, 16, 24, 32)]
-        mea = [(b, dev[n][b]) for b in (8, 16, 24, 32)]
-        ax.line(sim, color=color, width=1.6, dash="5 3", opacity=0.6)
-        ax.line(mea, color=color, width=2.6)
-        for x, y in mea:
-            ax.marker(x, y, color=color, r=5, shape=shape)
-        ax.text(33.4, dev[n][32] - 0.004, f"N={n}", size=12, fill=color, anchor="end")
-    ax.text(8.4, 0.845, "B8→B16: 계속 이득", size=11, fill=C["muted"], anchor="start")
-    ax.text(24, 0.917, "B16 이후 평평", size=11.5, fill=C["ok"], weight="bold")
-    ax.frame(xticks=[8, 16, 24, 32], yticks=[0.85, 0.90, 0.95, 1.00],
-             yfmt=lambda v: f"{v:.2f}",
-             xlabel="batch_size B  (= outer KV slot 수 = max_num_seqs)",
-             ylabel="device time ratio (B8 대비) — 작을수록 개선",
-             title="⑨ batch_size의 이득은 B=16에서 포화한다",
-             subtitle="실선 = 실측 채널 A′, 점선 = 선등록 sim. 최상위 눈금 16·24·32는 N ≤ 10에서 한 번도 선택되지 않는다 (TASK40)")
-    ax.legend([("N=6", C["base"], "o"), ("N=8", C["arm2"], "s"), ("N=10", C["arm3"], "^"),
-               ("점선 = 측정 전 commit된 sim 예측", C["muted"], "line")],
-              x=ax.x0 + 250, y=ax.y0 - 92)
-    _save(ax, "fig9_batch_saturation")
+    dev_a, dev_b, surv = _bsat_measured()
+    W, H = 760, 620
+    XLIM = (5, 50)
+    XT = [8, 16, 24, 32, KV_LIMIT_B]
+
+    # -- upper panel: device time ratio ---------------------------------
+    top = Axes(width=W, height=H, left=86, right=24, top=48, bottom=H - 330,
+               xlim=XLIM, ylim=(0.82, 1.03))
+    top.hline(1.0, color=C["ink"], dash="4 3")
+    lo, hi = top.px(16), top.px(32)
+    top.rect_px(lo, top.y1, hi - lo, top.y0 - top.y1, fill=C["ok"], opacity=0.08)
+    top.vline(KV_LIMIT_B, color=C["muted"], dash="2 4", width=1.6)
+    top.text(KV_LIMIT_B - 0.8, 0.955, "KV 한계 B ≈ 46 (외삽)", size=11, fill=C["muted"],
+             anchor="end", rotate=-90)
+    for n, color, shape in SERIES:
+        top.line([(b, BSAT_SIM[n][b]) for b in (8, 16, 24, 32)], color=color,
+                 width=1.6, dash="5 3", opacity=0.6)
+        top.line([(b, dev_a[n][b]) for b in (8, 16, 24, 32)], color=color, width=2.6)
+        for b in (8, 16, 24, 32):
+            top.marker(b, dev_a[n][b], color=color, r=5, shape=shape)
+            top.marker(b, dev_b[n][b], color=color, r=3.2, shape="o", fill="#ffffff")
+        top.text(33.4, dev_a[n][32] - 0.004, f"N={n}", size=12, fill=color, anchor="start")
+    top.text(24, 0.902, "B=16 이후 평평", size=12, fill=C["ok"], weight="bold")
+    top.text(40.5, 0.868, "이득은 KV 한계의", size=11, fill=C["muted"])
+    top.text(40.5, 0.852, "3분의 1에서 끝난다", size=11, fill=C["muted"], weight="bold")
+    top.frame(xticks=XT, yticks=[0.85, 0.90, 0.95, 1.00], yfmt=lambda v: f"{v:.2f}",
+              ylabel="device time ratio (B8 대비)",
+              title="⑨ batch_size의 이득은 생존율이 포화하는 곳에서 끝난다",
+              subtitle="실선·채운 표식 = 채널 A′, 속 빈 표식 = 채널 B (두 채널 차 ≤ 0.0068), 점선 = 측정 전 commit한 sim")
+    top.legend([("N=6", C["base"], "o"), ("N=8", C["arm2"], "s"), ("N=10", C["arm3"], "^")],
+               x=top.x0 + 14, y=top.y1 + 22)
+
+    # -- lower panel: the survival rate that explains it -----------------
+    bot = Axes(width=W, height=H, left=86, right=24, top=H - 250, bottom=54,
+               xlim=XLIM, ylim=(-0.05, 1.14))
+    bot.hline(1.0, color=C["ok"], dash="4 3")
+    bot.text(6.4, 1.06, "생존율 100 %", size=11, fill=C["ok"], anchor="start")
+    bot.vline(KV_LIMIT_B, color=C["muted"], dash="2 4", width=1.6)
+    for n, color, shape in SERIES:
+        bot.line([(b, surv[n][b]) for b in (8, 16, 24, 32)], color=color, width=2.6)
+        for b in (8, 16, 24, 32):
+            bot.marker(b, surv[n][b], color=color, r=5, shape=shape)
+    bot.marker(16, surv[10][16], color=C["bad"], r=8.5, shape="o", fill="#ffffff")
+    bot.text(17.6, surv[10][16] - 0.10, "N=10만 28/30 — 여기서만 B24가 2 % 더 준다",
+             size=11, fill=C["bad"], anchor="start")
+    bot.frame(xticks=XT, yticks=[0.0, 0.5, 1.0], yfmt=lambda v: f"{100 * v:.0f} %",
+              xlabel="batch_size B  (= outer KV slot 수 = max_num_seqs)",
+              ylabel="층 2 재사용 생존율")
+    top.prims += bot.prims
+    _save(top, "fig9_batch_saturation")
 
 
 def main() -> int:
