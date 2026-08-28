@@ -224,11 +224,15 @@ state:   patched
 | 항목 | 값 | 확인 |
 |---|---|---|
 | 경로 | `/home/rebel/vllm-continuum/results/tracelab/summary.json` (legacy, **read-only**) | `ls -la` |
-| **출처** | **legacy 저장소가 공개 coding-agent trace에서 자체 재계산한 산출물** ([TASK31](TASK31.md) 기록). **원 gz(`/mnt/ssd/tracelab/…`)는 접근 불가** | [TASK31](TASK31.md), `src/continuum/workload/tools.py` docstring |
+| **원 데이터셋** | **TraceLab** — `uw-syfi/TraceLab`, **arXiv:2606.30560**, Zhu·Jacob·Ma·Pan·Wang·Krishnamurthy·Kasikci (2026-06-29). **CC BY 4.0**(데이터) / Apache-2.0(코드) | legacy `tasks/TASK31.md` 판정 표, arXiv abs 재확인 (2026-08-28) |
+| **사용 릴리스** | **v0.0.2** — `jsonl.gz` 96 MB + `duckdb` 152 MB. **665,453 스텝 / 743,819 도구호출 / 8,058 세션 / 52명**, Claude Code + Codex 실사용, 2025-09~2026-07 | legacy `tasks/TASK31.md` §1-1·§7 (SHA256 `11ce51ec…` 공표값 일치 확인 기록) |
+| **arXiv 초록과 릴리스의 규모 차이** | 초록은 약 4,300 세션 / 35만 스텝 / 43만 도구호출로 적는다. **우리가 쓴 v0.0.2는 그보다 크다**(8,058 / 665,453 / 743,819). **버전을 명시해 인용해야 한다** | arXiv abs 대조 |
+| **이 프로젝트가 읽은 것** | legacy가 원자료에서 재계산한 `summary.json`. **원 gz(`/mnt/ssd/tracelab/syfi_coding_trace.jsonl.gz`)는 현재 접근 불가** | [TASK31](TASK31.md), legacy `experiments/analyze_tracelab.py` |
 | rows | **665,453** | `summary.json["rows"]` |
 | tool calls | **743,819** | `summary.json["tools"]` |
 | sessions | **8,058** | `summary.json["sessions"]` |
 | latency 출처 분할 | wall **397,527** / internal **345,523** / none **769** (합 743,819) | `summary.json["lat_src"]` |
+| latency 우선순위 | **internal이 있으면 internal, 없으면 wall.** 원 필드는 `tool_internal_latency_ms`(러너 보고)와 `tool_wall_latency_ms`(= `result_at − emitted_at`) | legacy `analyze_tracelab.py` 주석 ③ |
 | front-end 구분 | `claude`, `codex` 두 계열의 `n`/`p50`/`p90`/`p99`/`sub1s_pct` | `summary.json["lat"]` 키 |
 | **sampler가 쓰는 도구 종수** | **43** | `load_mix(..., cap_s=60).tools` 길이 재계산 |
 | 제외 규칙 | `HUMAN_IN_THE_LOOP` = `AskUserQuestion`, `ExitPlanMode`, `request_user_input`, `TaskOutput` — **도구가 아니라 사람을 기다리는 것**이라 제외 | `tools.py` |
@@ -284,7 +288,7 @@ state:   patched
 
 **이 절은 보고만 한다. 어느 쪽이 맞는지는 Advisor·사용자 판정이며 수정하지 않았다.**
 
-### F-1 (중대) — trace 출처 서술이 사실과 다르다
+### F-1 (중대) — trace 출처 서술이 사실과 달랐다 — **[TASK48](TASK48.md)에서 정정됨**
 
 | | |
 |---|---|
@@ -292,9 +296,10 @@ state:   patched
 | 현재 서술 | "a trace of coding-agent sessions **collected by the authors from their own use** of two agent front-ends, **instrumented at the client**" |
 | 재확인된 사실 | [TASK31](TASK31.md)과 `tools.py` docstring 모두 **"legacy 저장소가 공개(public) coding-agent trace에서 자체 재계산한 산출물"** 이라 기록한다. **원 gz는 접근 불가**이며 이 프로젝트는 재계산 산출물만 읽었다 |
 | 파급 | 같은 문단의 **비공개 사유**("저자의 작업 세션 prompt·출력이라 제3자 자료 없이는 공개 불가")도 함께 성립하지 않는다. 실제 제약은 **원자료가 우리에게도 없다**는 것이다 |
-| 판단 | **투고 전 반드시 정정해야 한다.** 자료 출처 진술이라 문체 문제가 아니다. 지시문이 F를 보고 전용으로 한정해 고치지 않았다 |
+| 판단 | **투고 전 반드시 정정해야 한다.** 자료 출처 진술이라 문체 문제가 아니다 |
+| **정정** | **[TASK48](TASK48.md)에서 반영.** §II-D를 TraceLab v0.0.2 인용으로 다시 쓰고, "저자 수집"과 프라이버시 사유 문장을 삭제했으며, 실제 제약(**원 아카이브 접근 불가, 분위수만 사용**)을 §IX 한계로 옮겼다 |
 
-### F-2 — trace 규모 표기가 rows와 tool calls를 혼동한다
+### F-2 — trace 규모 표기가 rows와 tool calls를 혼동했다 — **[TASK48](TASK48.md)에서 정정됨**
 
 | | |
 |---|---|
@@ -302,7 +307,7 @@ state:   patched
 | 사실 | `rows` = 665,453, **`tools`(tool call 수) = 743,819**, `sessions` = 8,058. 세 수가 서로 다른 대상을 센다 |
 | 판단 | "records"가 rows를 뜻한다면 맞지만, 뒤 문장이 도구 지연을 말하므로 **tool call 수(743,819)를 함께 적는 편이 정확**하다 |
 
-### F-3 — vLLM 버전 표기가 절마다 다르다
+### F-3 — vLLM 버전 표기가 절마다 달랐다 — **[TASK48](TASK48.md)에서 정정됨**
 
 | 위치 | 표기 |
 |---|---|
@@ -310,11 +315,11 @@ state:   patched
 | `02_background.md:7` | `vllm 0.22.0+cpu` |
 | 사실 | `importlib.metadata.version("vllm")` = **`0.22.0+cpu`** |
 
-### F-4 — `num_devices`를 tensor parallel로 부르는 곳이 있다
+### F-4 — `num_devices`를 tensor parallel로 부르는 곳이 있었다 — **[TASK48](TASK48.md)에서 정정됨**
 
 지시문과 일부 서술이 `num_devices`를 "tensor parallel 정도"로 부른다. **artifact의 키 이름은 `num_devices`이고 `tensor_parallel_size` 키는 존재하지 않는다.** 두 개념이 같은지는 이 조사로 확인하지 못했다(`UNKNOWN`).
 
-### F-5 — "code-agent trace of 43 tools"의 43은 전체가 아니라 sampler 채택분
+### F-5 — "43 tools"가 전체가 아니라 sampler 채택분 — **[TASK48](TASK48.md)에서 조건화됨**
 
 [`09_limitations.md:7`](../../paper/draft/09_limitations.md)이 "a single code-agent trace of 43 tools"라고 적는다. **43은 `load_mix`가 60 s cap과 human-in-the-loop 제외 후 채택한 도구 수**이며, trace 전체의 도구 종수는 이 조사로 확인하지 못했다(`summary.json`이 종수를 따로 내지 않는다, `UNKNOWN`).
 
@@ -338,5 +343,5 @@ state:   patched
 | 스토리지 매체 종류(SSD/HDD) | `lsblk`에서 물리 매체를 특정하지 못함 |
 | 모델 파라미터 수 | 공식 명세 인용(4.02 B). **이 서버에서 재계산하지 않았다** |
 | `num_devices`와 tensor parallel의 동치 여부 | 확인 경로 없음 (F-4) |
-| trace 전체의 도구 종수 | `summary.json`이 종수를 따로 내지 않음 (F-5) |
+| trace 전체의 도구 종수 | `summary.json`이 종수를 따로 내지 않고 원 아카이브에 접근할 수 없음 (F-5). 논문은 **"채택된 43종"** 으로 조건화해 표기한다 |
 | host의 hostname 이력 | [NPU_ENVIRONMENT.md](../environment/NPU_ENVIRONMENT.md)의 `rebel-pcie-0123`과 현재 `atom-max8`이 같은 장비인지는 [TASK05](TASK05.md) 이래 `UNKNOWN` |

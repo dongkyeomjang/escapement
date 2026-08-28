@@ -4,7 +4,9 @@
 
 **Single model, single sequence length.** Qwen3-4B at `max_seq_len = 8192`, 36 full-attention layers. Hybrid, sliding-window and MLA attention account for KV differently, and the chain from `batch_size` to slot count assumes eager attention's `kvcache_num_blocks = batch_size`. <!-- CLAIMS 3.8 -->
 
-**One workload trace.** Tool latencies come from a single code-agent trace of 43 tools. This project has already demonstrated that this limitation bites: the value of return-time information reversed when the gap distribution was replaced. <!-- CLAIMS 2.7 -->
+**One workload trace, and one derived form of it.** Tool latencies come from a single public coding-agent trace [@tracelab2026], reduced to the **43 tools** that survive a human-in-the-loop exclusion and a 60 s cap — not to the trace's full tool vocabulary. This project has already demonstrated that the workload limitation bites: the value of return-time information reversed when the gap distribution was replaced. <!-- CLAIMS 2.7 -->
+
+**We did not recompute the tool-latency quantiles from the released archive.** They were produced by an earlier stage of this project, and the archive is no longer accessible to us, so the reduction from raw records to quantiles is not re-derivable here. What is reproducible is everything downstream of the quantiles, which is every measurement reported in this paper.
 
 **The validated envelope is narrower than the paper's reach.** Confirmation is claimed at concurrencies at or below eight, on one grid family and one workload (§④). Model accuracy degrades above the scheduler's admission ceiling — utilization error within 0.004 below it, 0.011–0.023 above — and cells there are reported as exploratory throughout, never used for confirmation.
 

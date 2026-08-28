@@ -46,7 +46,7 @@
 |---|---|---|---|---|---|
 | 2.1 | 작업량이 보존되는 재배치에서 **slot 점유율과 device time은 반대로 움직인다** — utilization은 비용 지표가 아니다 | [TASK26](../docs/research/TASK26.md), [TASK27](../docs/research/TASK27.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 "11–37 % 더 씀", "방향 5/11 어긋남"은 이 격자·이 워크로드 |
 | 2.2 | 반환 시점 재배치에 **실질적 headroom이 있다** (합성 gap: ε=0.5 s 1.2–4.4 %, ε=5 s 9.7–27.2 %) | [TASK26](../docs/research/TASK26.md) | **`stack`** | ⑤ | 국소 탐색 결과이므로 **하한**. 합성 `uniform:1:5` |
-| 2.3 | headroom은 현실 tool latency 분포에서도 같은 자릿수로 남는다 (ε=2 s에 5.0–6.9 %) | [TASK31](../docs/research/TASK31.md) | **`stack`** | ⑤ | 실측 trace 1종(코드 agent류), 43 도구, 60 s cap |
+| 2.3 | headroom은 현실 tool latency 분포에서도 같은 자릿수로 남는다 (ε=2 s에 5.0–6.9 %) | [TASK31](../docs/research/TASK31.md) | **`stack`** | ⑤ | 공개 trace **TraceLab v0.0.2**(arXiv:2606.30560, CC BY 4.0)에서 파생한 도구 지연 분포. **43종은 human-in-the-loop 제외와 60 s cap 이후 채택분**이며 trace 전체 종수가 아니다. 값·확인 명령은 [ENVIRONMENT.md §E](../docs/research/ENVIRONMENT.md) |
 | 2.4 | **이 headroom은 조정이 아니라 예지에서 나온다** — 현재 상태만 보는 causal 정책은 전부 평균 절감이 음수다 | [TASK27](../docs/research/TASK27.md), [TASK28](../docs/research/TASK28.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 X = −105 %·−70 %는 device 확증 구간 N ∈ {6,8} |
 | 2.5 | **headroom의 중앙 60 %(49–73 %)는 조율의 몫이며 지식으로 살 수 없다** — 전지적 지식을 주고도 세션별 독립 결정이면 그만큼 사라진다 | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) + **`stack`**(값) | ⑤ | 값 60 %는 현실 워크로드 9칸(N ∈ {6,8,10} × 3블록) . **scope**: 60 %는 **집계 device time**에서 산출되며, [TASK25](../docs/research/TASK25.md)가 실격시킨 것은 **세션 단위 귀속**(어느 세션이 hit했는가)이지 집계량이 아니다 — 두 축이 다르므로 이 수치는 그 실격 범위 밖이다 |
 | 2.6 | 따라서 **per-session runtime 정책은 그 부분에 원리적으로 닿을 수 없다.** 조율이 가능한 위치는 중앙집중 지점이거나 compile-time 구성인데, **중앙집중 × causal은 [2.11](#막-2--불가능성)에서 실증적으로 닫혔다** | [TASK33](../docs/research/TASK33.md) | **`class`** (형태) | ⑤ | — (수치 금지) |
@@ -116,10 +116,10 @@
 
 ## 한계 (본문 한계 절의 원본)
 
-1. **단일 substrate.** RBLN CA25 + `vllm-rbln 0.11.1` + `optimum-rbln 0.11.1` 하나. 모든 절대 상수는 `silicon`/`stack`이며 이식하지 않는다.
+1. **단일 substrate.** RBLN CA25 + `vllm 0.22.0+cpu` + `vllm-rbln 0.11.1` + `optimum-rbln 0.11.1` 하나 (전체 환경 명세와 확인 명령은 [ENVIRONMENT.md](../docs/research/ENVIRONMENT.md)). 모든 절대 상수는 `silicon`/`stack`이며 이식하지 않는다.
 2. **단일 스택 버전.** patch는 observation-only이고 hash guard가 걸려 있으나, 버전이 바뀌면 격자·회계·metric 층 구조가 함께 바뀔 수 있다.
-3. **단일 모델.** Qwen3-4B, `max_seq_len=8192`, `num_devices=4`, 36 layer 전부 full attention. hybrid·sliding-window·MLA 계열에서 KV 회계가 다르다.
-4. **trace 1종.** 실측 tool latency는 코드 agent류 trace 하나(43 도구)에서 왔다. [TASK31](../docs/research/TASK31.md)이 보인 대로 **워크로드가 바뀌면 예지의 가치가 뒤집힌다** — 이 한계는 이 연구가 스스로 실증한 것이다.
+3. **단일 모델.** Qwen3-4B(revision `1cfa9a72…`, bfloat16), `max_seq_len=8192`, `num_devices=4`, 36 layer 전부 full attention. hybrid·sliding-window·MLA 계열에서 KV 회계가 다르다.
+4. **trace 1종, 그리고 그 파생형 하나.** 도구 지연은 공개 trace **TraceLab v0.0.2**(arXiv:2606.30560, CC BY 4.0)에서 왔고, sampler가 쓰는 것은 그 원자료가 아니라 **이 프로젝트의 앞 단계가 산출한 도구별 분위수**다. **원 아카이브는 현재 접근 불가**여서 분위수 산출을 여기서 재현할 수 없다. 43종은 human-in-the-loop 제외·60 s cap 이후 채택분이다. 전체 명세는 [ENVIRONMENT.md §E](../docs/research/ENVIRONMENT.md). [TASK31](../docs/research/TASK31.md)이 보인 대로 **워크로드가 바뀌면 예지의 가치가 뒤집힌다** — 이 한계는 이 연구가 스스로 실증한 것이다.
 5. **N > 10 미검증.** 시뮬레이터 재현 품질이 `max_num_seqs`에서 꺾이고([TASK24](../docs/research/TASK24.md)) N=10은 탐색 구간으로만 다뤘다.
 6. ~~**batch > 16 미검증.**~~ → [TASK40](../docs/research/TASK40.md)에서 B ∈ {8,16,24,32}를 쟀고 **B=16 포화**를 확인했다. 남은 미검증: **B > 32**, 그리고 **최상위 눈금이 실제로 선택되는 구간(N > 16)의 반전 여부** — 이 격자는 그 구간을 재지 않았다.
 7. **GPU 실측 이연.** 일반성 절의 세 축 중 ①(생존 곡선의 문턱이 개수인가 크기인가)만 실측 없이 값을 말할 수 없다. 최소 범위는 생존 곡선 1건으로 좁혀져 있다.

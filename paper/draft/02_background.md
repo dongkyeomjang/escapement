@@ -4,7 +4,7 @@
 
 ## The stack
 
-Measurements are on an RBLN CA25 NPU (four devices per model instance) running `vllm 0.22.0+cpu` with `vllm-rbln 0.11.1` and artifacts compiled by `optimum-rbln 0.11.1`. The model is Qwen3-4B at `max_seq_len = 8192`, whose 36 layers are all full attention, so KV per token is a single expression. **Every absolute constant below belongs to this instance and is not carried elsewhere**; the paper marks each claim with the layer at which it is asserted.
+Measurements are on an RBLN CA25 NPU running `vllm 0.22.0+cpu` with `vllm-rbln 0.11.1` and artifacts compiled by `optimum-rbln 0.11.1`. Each artifact is built with `num_devices = 4`, the compile-time setting that fixes how many devices one model instance occupies. The model is Qwen3-4B at `max_seq_len = 8192`, whose 36 layers are all full attention, so KV per token is a single expression. **Every absolute constant below belongs to this instance and is not carried elsewhere**; the paper marks each claim with the layer at which it is asserted.
 
 An observation-only patch exposes one line per decode step giving the actual running count and the padded batch width the runner selected; it adds a single debug log call, changes no control flow, and is guarded by a hash of the target file that every run records, with the full justification — target version, before/after hashes, the argument that scheduler, batch selection and KV allocation are untouched, and the apply/revert commands — given in Appendix C.
 
@@ -26,9 +26,11 @@ A second property of the lower layer matters later: it holds only what **prefill
 
 Sessions alternate between an LLM turn and a tool gap. Gap durations are drawn from a measured tool-latency population rather than a synthetic law. <!-- CLAIMS 2.3 -->
 
-**Where the tool latencies come from.** The population is a trace of coding-agent sessions collected by the authors from their own use of two agent front-ends, instrumented at the client so that each record carries the request's token counts and the wall-clock duration of the tool call that followed. It contains **665,453 records over 8,058 sessions**, from which the gap sampler keeps the **43 tools** that appear often enough to have a stable duration distribution, capped at 60 s. Latency is taken from the client's own wall clock where the front-end reports it and from the front-end's internal timing otherwise; the split is recorded with the trace.
+**Where the tool latencies come from.** The population is derived from **TraceLab** [@tracelab2026], a public trace of day-to-day coding-agent usage released under CC BY 4.0. We use release v0.0.2, which contains **665,453 LLM steps, 743,819 tool calls and 8,058 sessions**. Each tool call carries its duration directly: a runner-reported internal latency where present, and otherwise the wall-clock difference between the call being emitted and its result arriving.
 
-We release the **per-tool duration distributions** that the sampler consumes, which is what is needed to reproduce every gap draw in this paper. We do not release the raw records: they contain the prompts and outputs of the authors' working sessions, which cannot be published without disclosing unrelated third-party material. <!-- NEEDS-EVIDENCE: 배포 형식(별도 아카이브 vs repo 내 파일)이 정해지면 여기에 적는다 --> Prompts, generation lengths and gaps are generated from a seed plus a block id, so every arm of a comparison runs the **identical plan** and differs only in the compiled configuration.
+**What we computed, and what we did not.** We did not collect this trace, and we do not recompute from the released archive: the gap sampler consumes a set of per-tool duration quantiles that an earlier stage of this project produced from the archive, and the archive itself is no longer accessible to us. Everything downstream — the sampler, every gap draw, and therefore every measurement in this paper — depends on those quantiles and not on the raw records. We release the quantiles, which is what reproduces the draws. Section~⑨ states the limitation this leaves.
+
+From that population the sampler keeps the **43 tools** that remain after excluding four whose latency is a human deciding rather than a tool running, and after capping draws at 60 s.
 
 ## How device time is measured
 
