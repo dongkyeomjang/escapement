@@ -26,7 +26,12 @@ BUCKETS="${SWEEP_BUCKETS:-1,2,4,8}"
 # so those runs stay reproducible byte for byte.
 GAP="${SWEEP_GAP:-uniform:1:5}"
 TAG="${ARM}.n${N}.b${BLOCK}"
-BLOCK_ID="${BLOCK_PREFIX}${BLOCK}"
+# The plan id normally varies with the block, which is what makes each block a
+# fresh trace. A repeat experiment needs the opposite: the SAME trace run again
+# under a different tag. SWEEP_BLOCK_ID pins the plan id so BLOCK becomes a
+# repetition counter and nothing else. Unset, the behaviour is byte-identical
+# to every run before it.
+BLOCK_ID="${SWEEP_BLOCK_ID:-${BLOCK_PREFIX}${BLOCK}}"
 DONE_MARK="$RUN/done.${TAG}"
 
 if [ -f "$DONE_MARK" ]; then
