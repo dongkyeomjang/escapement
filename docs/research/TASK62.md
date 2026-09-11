@@ -234,7 +234,7 @@ G5(채널 D 평균 ≈ 채널 C 평균): 60 lifecycle에서 차이 최대 **0.00
 1. **판정과 같은 집계 단위의 귀무** — [TASK50](TASK50.md) 발견 4를 충족하려면 artifact당 회차를 늘려(예: 10회차) 같은 artifact 안에서 5회차 중앙값의 차를 만들어야 한다. lifecycle 수가 두 배가 된다.
 2. **날짜 간 변동** — 같은 설계를 다른 날 한 번 더 재면 [TASK55](TASK55.md) 관측 4 종류의 변동을 분포로 얻는다.
 3. **논문 서술 반영 여부** — [TASK55](TASK55.md) P2 `FAIL`과 이번 R1·R2를 병치할지 결정한다.
-4. **A3 artifact(`models/…-mb-rc`, 11.5 GiB)의 보존·삭제 여부** — 사용자 판단 사항이다.
+4. ~~**A3 artifact(`models/…-mb-rc`, 11.5 GiB)의 보존·삭제 여부**~~ → **보존으로 결정됐다**(사용자 판정, 2026-09-11). 근거: 같은 명령으로 재compile해도 같은 바이트가 나온다는 보장이 없어(이번 재compile에서 `.rbln` 5/5가 달랐다) 지우면 이 artifact를 다시 만들 수 없고, 측정의 증거물이며 심사 단계에서 필요할 수 있다. 판정 재현 자체는 원자료(측정값)로 가능하다. 파일별 SHA256은 「재현 정보」에 옮겨 적었다. 바이트 차이의 출처(컴파일러 비결정 대 `HF_HUB_OFFLINE=1`)는 여전히 `UNKNOWN`이다.
 5. **substrate descriptor에 실측 `C(6)`을 반영할지**([TASK55](TASK55.md))는 여전히 미해결 사용자 결정이며, 이번 TASK는 descriptor를 바꾸지 않았다.
 
 ## 재현 정보
@@ -248,6 +248,22 @@ G5(채널 D 평균 ≈ 채널 C 평균): 60 lifecycle에서 차이 최대 **0.00
   - lifecycle별 `server-<TAG>.log`, `probe/decode_cost.<TAG>.json`, `probe-<TAG>.log`, `check-<TAG>.json`, `<TAG>-launch.txt`·`-server-start.txt`·`-server-stop.txt`, `smi/<TAG>.txt`, `done.<TAG>`
   - 판정 산출: `recompile_variance.json` (SHA256 `450fd6a3fa2b2b4e11a7c133e3927015399a447d2fc204d3f2a5f9afedd6f28c`)
 - Model artifact: A1 `models/Qwen3-4B-rbln-b8-s8192-d4-mb`(manifest `b4f5cbf1…651f5f`), A2 `…-mb6`(`348f2863…cd24bf`), A3 `…-mb-rc`(`2d73b141…21f1cd`)
+- **A3 artifact 파일별 SHA256** (`results/`는 git 미추적이라 여기에 옮긴다. 2026-09-11T20:48 디스크에서 다시 계산한 값이 `manifest-A3.txt`와 byte 동일, manifest `2d73b14143e300846b268f7a5aa8b4c2bd41d4169bf3204d33de30934121f1cd` 일치, 총 12,349,415,920 B):
+
+  | 파일 | 크기 (B) | SHA256 |
+  |---|---|---|
+  | `chat_template.jinja` | 4,168 | `a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8` |
+  | `config.json` | 1,592 | `3833b85a7977a1d0d19c0bebbe62a7e571b54bdfa75a1814508d37a6d6fdda8d` |
+  | `decoder_batch_1.rbln` | 841,829,608 | `310c2293a2a201296b805d41e7092dbc5bb349c52a042f248508487b4bd79f7f` |
+  | `decoder_batch_2.rbln` | 871,612,781 | `98dd0d314570f8a1f57ded1697b500b92cf058373537f43e6de455c408b99dc9` |
+  | `decoder_batch_4.rbln` | 847,605,989 | `5f4f232b42fb52e165c589a06b9015896276f7205898931ead01b3be09d1e6a8` |
+  | `decoder_batch_8.rbln` | 877,817,914 | `9e47eb86644c59b08df2b113415cb5e73fd75ad17fe9a016fbfa0ee57936b4e5` |
+  | `generation_config.json` | 214 | `81e8e13e77962857509cc06a9960bb68f8b7893096a60357627b2dfaa72d78fe` |
+  | `prefill.rbln` | 8,899,037,396 | `3c2fddbcb75b11459ea1ac0f172699c4cde729df2fcf462445b7a1338b7984fe` |
+  | `rbln_config.json` | 78,819 | `e855e9b26798b5842d7df9eb513cd53fc6ea61754d62c9ced408d465b89ab898` |
+  | `tokenizer_config.json` | 693 | `c4f4c62b741ab2940841480f9942f378d7d3878d47c2babb862af7381c59b952` |
+  | `tokenizer.json` | 11,422,650 | `be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506` |
+
 - probe 설정: `--prompt-file experiments/npu/stage1/prompt.txt --max-tokens 512 --seed 20260819`, server는 prefix caching flag 없음
 - 예산 사용: compile **1/1**(343 s), serving lifecycle **61회**(60 + 재실행 1), `models/` +11 GiB(86 → 97 GiB)
 - 측정 후 device 상태: 32 ID 전부 `0.0B / 15.7GiB`, 잔여 context 없음, 누수 server 없음, port 8000 비어 있음
