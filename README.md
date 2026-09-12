@@ -8,6 +8,10 @@
 > 로컬 디렉터리 경로(`/home/rebel/continuum-npu`)와 Python package 이름(`src/continuum/`)은
 > **의도적으로 그대로 둔다.** 40여 개 TASK 문서의 재현 command와 artifact 경로가 그 이름에
 > 걸려 있어, 바꾸면 과거 측정의 재현 정보가 전부 어긋난다.
+>
+> **논문 텍스트는 이 저장소에 포함되지 않으며 별도 관리된다.** 저장소에는 실험·기록·코드와
+> 표·그림 산출물(`paper/figures/`, `paper/draft/table_3_1.*`)·`paper/latex/refs.bib`만 남는다
+> ([TASK65](docs/research/TASK65.md), 제거 전 원고는 git 이력에 있다).
 
 ## 프로젝트 목적
 
