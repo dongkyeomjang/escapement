@@ -1,0 +1,96 @@
+--- a/vllm_rbln/v1/core/prefix_cache_manager/optimum_prefix_cache_manager.py
++++ b/vllm_rbln/v1/core/prefix_cache_manager/optimum_prefix_cache_manager.py
+@@ -14,6 +14,7 @@
+ 
+ import logging
+ import math
++import time  # [continuum-npu observation patch] wall time for [OBS] lines
+ from abc import ABC, abstractmethod
+ from collections import deque
+ from dataclasses import dataclass
+@@ -313,6 +314,12 @@
+             len(inner_blocks),
+             inner_blocks,
+         )
++        # [continuum-npu observation patch] Dummy-lifecycle timeline.
++        # Read-only: logs values already computed; no control-flow change.
++        logger.debug(
++            "[OBS] [ALLOC] t=%.6f REQUEST=%s OB=%s FREE_AFTER=%d",
++            time.time(), request_id, block_ids, self._allocator.get_free_count(),
++        )
+ 
+     def _compute_num_blocks_to_allocate(
+         self, num_inner_blocks: int, num_allocated_tokens: int = 0
+@@ -371,6 +378,11 @@
+                         for m in self._mapping_manager.get_inactive_mappings()
+                     ],
+                 )
++                # [continuum-npu observation patch] read-only
++                logger.debug(
++                    "[OBS] [EVICT] t=%.6f OB=%d FREE_AFTER=%d",
++                    time.time(), block_id, self._allocator.get_free_count(),
++                )
+             else:
+                 logger.error(
+                     "[PFX] [EVICTION-ERROR] OB=%d | "
+@@ -410,6 +422,12 @@
+             preemption,
+             outer_blocks,
+         )
++        # [continuum-npu observation patch] read-only
++        logger.debug(
++            "[OBS] [FREE] t=%.6f REQUEST=%s PREEMPTION=%s OB=%s FREE=%d",
++            time.time(), request_id, preemption, outer_blocks,
++            self._allocator.get_free_count(),
++        )
+         for block_id in outer_blocks:
+             mapping = self._mapping_manager.get_mapping(block_id)
+             if preemption:
+@@ -463,6 +481,12 @@
+             num_new_blocks, num_computed_tokens
+         )
+         free_count = self._allocator.get_free_count()
++        # [continuum-npu observation patch] read-only
++        logger.debug(
++            "[OBS] [CAN-ALLOCATE] t=%.6f NUM_NEW=%d COMPUTED=%d REQUIRED_OB=%d FREE=%d",
++            time.time(), num_new_blocks, num_computed_tokens, required_num_ob,
++            free_count,
++        )
+         if free_count >= required_num_ob:
+             return True
+ 
+@@ -511,11 +535,24 @@
+             # If the kv cache is not a full-block,
+             # there is an additional block kept for padding.
+             # So we utilize it as a dummy block.
++            # [continuum-npu observation patch] read-only
++            logger.debug(
++                "[OBS] [DUMMY-FIXED] t=%.6f OB=%d", time.time(), self._config.num_ob
++            )
+             return self._config.num_ob
+         else:
+             # NOTE(eunji.lee):
+             # If the kv cache is full-block,
+             # we utilize remaining blocks for padding.
++            # [continuum-npu observation patch] read-only
++            logger.debug(
++                "[OBS] [DUMMY-BEGIN] t=%.6f FREE_BEFORE=%d HEAD=%d",
++                time.time(),
++                self._allocator.get_free_count(),
++                self._allocator._free_blocks[0].block_id
++                if self._allocator.get_free_count() > 0
++                else -1,
++            )
+             num_blocks_to_allocate = 1
+             can_allocate = self.can_allocate(num_blocks_to_allocate, 0)
+             if not can_allocate:
+@@ -525,4 +562,9 @@
+                 )
+             self._check_free_blocks(num_blocks_to_allocate)
+             dummy_block = self._allocator.peek_dummy_block()
++            # [continuum-npu observation patch] read-only
++            logger.debug(
++                "[OBS] [DUMMY-END] t=%.6f OB=%d FREE_AFTER=%d",
++                time.time(), dummy_block, self._allocator.get_free_count(),
++            )
+             return dummy_block
