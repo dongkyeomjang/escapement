@@ -77,7 +77,7 @@ git diff --check; git diff --cached --check
 | 근거·출처 기록 | `PROVENANCE_3_2.md`, `EVIDENCE_3_3.md`, `TABLE_3_1_PROVENANCE.md`, `PADDING_RATIO.md`, `CHANNEL_TOLERANCE_SENSITIVITY.md`, `EXECUTION_MODEL_TERMS.md` | 유지 — 논문 문장이 아니라 TASK의 근거표·계산 결과·문헌 조사 기록이다 |
 | 코드, results | `src/`, `experiments/`, `scripts/`, `patches/`, `results/` | 유지 |
 
-삭제 뒤 `paper/`에는 41개가 남는다(아래 판단 요청 6개 포함).
+삭제 뒤 `paper/`에는 **43개**가 남는다 — 삭제 34개 중 2개(`PAPER_3_2.md`·`PAPER_3_3.md`)는 `paper/` 밖이라 `paper/`에서는 32개가 빠졌다(75 − 32). 내역: 그림 33(SVG·PDF 27, script 4, `SOURCES.md`, `INSPECTION.md`), 표 3, `refs.bib` 1, 판단 요청 6.
 
 ### 판단 요청 (삭제하지 않음, 6개)
 
