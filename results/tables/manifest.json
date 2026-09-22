@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-22T18:21:19.190997+09:00",
-  "git_head": "ac1b7d85c3a6c08ba1c99d0f131a7de858d9e5df",
-  "git_dirty": "M .gitignore\n M README.md\n M docs/research/INDEX.md\n M experiments/npu/analysis/config_search_rerun.py\n M src/continuum/sim/engine.py\n?? .idea/\n?? docs/research/TASK67.md\n?? experiments/npu/analysis/arrival_feedback.py\n?? experiments/npu/analysis/make_tables.py\n?? experiments/npu/analysis/per_repetition.py\n?? results/tables/",
+  "generated_at": "2026-09-22T18:22:09.556068+09:00",
+  "git_head": "71551bb971ba8af37eed2e48caba374baf55afeb",
+  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n M results/tables/S02.md\n M results/tables/manifest.json\n M src/continuum/sim/engine.py\n?? .idea/\n?? experiments/npu/analysis/arrival_feedback.py\n?? results/tables/S07.csv\n?? results/tables/S07.md",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -215,6 +215,18 @@
       ],
       "rows": 27,
       "checks": 1,
+      "mismatches": []
+    },
+    {
+      "id": "S07",
+      "title": "재도착 재계산을 껐을 때의 예측 오차",
+      "tasks": "TASK35, TASK36, TASK68",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/arrival_feedback.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/arrival_feedback.json"
+      ],
+      "rows": 8,
+      "checks": 8,
       "mismatches": []
     },
     {

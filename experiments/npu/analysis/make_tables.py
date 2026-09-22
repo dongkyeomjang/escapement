@@ -730,6 +730,53 @@ def s03_dummy_lifecycle():
     return header, rows, notes, ck
 
 
+def s07_arrival_feedback():
+    """재도착 재계산을 껐을 때의 예측 오차 (B-3)."""
+    ck = Check()
+    header = ["run", "N", "구간", "arm", "실측 A′ 비", "전체 모형 비", "|e_c| 전체",
+              "고정 모형 비", "|e_c| 고정", "|e_c| 고정 − 전체", "더 작은 쪽"]
+    seg = {(20261000, 6): "확증(TASK35 채널 보류)", (20261000, 8): "확증",
+           (20261000, 10): "탐색", (20261100, 6): "확증"}
+    rows = []
+    better = {"전체": 0, "고정": 0}
+    for seed, path in ((20261000, RUN_FINAL / "arrival_feedback.json"),
+                       (20261100, RUN_N6 / "arrival_feedback.json")):
+        for row in load(path):
+            for arm in row["arms"]:
+                fu, fx = arm["modes"]["full"], arm["modes"]["fixed"]
+                win = "전체" if fu["abs_e_c"] < fx["abs_e_c"] else "고정"
+                better[win] += 1
+                rows.append([f"seed {seed}", str(row["N"]), seg[(seed, row["N"])],
+                             ARM_LABEL[arm["arm"]],
+                             f"{arm['measured_a_prime_ratio']:.4f}",
+                             f"{fu['sim_ratio']:.4f}", f"{fu['abs_e_c']:.4f}",
+                             f"{fx['sim_ratio']:.4f}", f"{fx['abs_e_c']:.4f}",
+                             f"{arm['abs_e_c_fixed_minus_full']:+.4f}", win])
+    # The full mode must still reproduce the preregistered predictions exactly:
+    # that is what "the switch changes nothing when it is off" means here.
+    rec = {(20261000, 6, "BATCHONLY"): 0.9610, (20261000, 6, "TUNED"): 0.9466,
+           (20261000, 8, "BATCHONLY"): 0.9101, (20261000, 8, "TUNED"): 0.8971,
+           (20261000, 10, "BATCHONLY"): 0.9213, (20261000, 10, "TUNED"): 0.8899,
+           (20261100, 6, "BATCHONLY"): 0.9874, (20261100, 6, "TUNED"): 0.9713}
+    for seed, path in ((20261000, RUN_FINAL / "arrival_feedback.json"),
+                       (20261100, RUN_N6 / "arrival_feedback.json")):
+        for row in load(path):
+            for arm in row["arms"]:
+                ck.eq(f"seed {seed} N={row['N']} {arm['arm']} 전체 모형 비",
+                      round(arm["modes"]["full"]["sim_ratio"], 4),
+                      rec[(seed, row["N"], arm["arm"])], tol=5e-5,
+                      source="선등록 예측 (스위치 off = 기존 동작)")
+    notes = [
+        "`e_c` = 시뮬레이터 비 − 실측 A′ 비. 전체 모형은 재도착 시각을 완료 시각에서 "
+        "다시 계산하고, 고정 모형은 기준 arm(`BASE`) 실행에서 관측된 값으로 고정한다.",
+        f"|e_c|가 더 작은 쪽: 전체 {better['전체']}건, 고정 {better['고정']}건 "
+        f"(전 {sum(better.values())}건).",
+        "고정 모형에서는 분자·분모 모두 같은 관측 도착 열로 고정된다.",
+        "스위치는 기본값 off다 — 전체 모형 열 8건이 선등록 예측과 자릿수까지 같다.",
+    ]
+    return header, rows, notes, ck
+
+
 def s06a_per_repetition_config():
     """검증 비교와 절감률의 반복별 분해 (B-2)."""
     ck = Check()
@@ -864,16 +911,25 @@ TABLES = {
               "results/npu/stage2/20260824-160028-n6-reconfirm/per_repetition.json"]),
     "S06b": (s06b_per_repetition_saturation, "추가 slot 포화의 N×반복별 분해 (S6)",
              "TASK40", ["results/npu/stage2/20260824-222453-batch-saturation/per_repetition.json"]),
+    "S07": (s07_arrival_feedback, "재도착 재계산을 껐을 때의 예측 오차",
+            "TASK35, TASK36, TASK68",
+            ["results/npu/stage2/20260823-183505-final-confirm/arrival_feedback.json",
+             "results/npu/stage2/20260824-160028-n6-reconfirm/arrival_feedback.json"]),
     "B01": (b01_config_search_sensitivity, "구성 선정의 N 집합·score 민감도", "TASK61",
             ["results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"]),
 }
 
 
 def render_md(header: list[str], rows: list[list[str]]) -> str:
-    out = ["| " + " | ".join(header) + " |",
+    # A bare "|" inside a cell ends the cell, and several column names here
+    # carry one (|e_c|, |차|). Escape on the way into markdown only: the csv
+    # keeps the raw text.
+    def cell(x) -> str:
+        return str(x).replace("|", "\\|")
+    out = ["| " + " | ".join(cell(h) for h in header) + " |",
            "|" + "|".join("---" for _ in header) + "|"]
     for r in rows:
-        out.append("| " + " | ".join(str(x) for x in r) + " |")
+        out.append("| " + " | ".join(cell(x) for x in r) + " |")
     return "\n".join(out)
 
 
@@ -983,6 +1039,12 @@ env -u PYTHONPATH python3 experiments/npu/analysis/per_repetition.py --mode conf
 env -u PYTHONPATH python3 experiments/npu/analysis/per_repetition.py --mode saturation \\
     --run $R/20260824-222453-batch-saturation --baseline B8 --arms B16,B24,B32 \\
     --sessions 6,8,10 --output $R/20260824-222453-batch-saturation/per_repetition.json
+env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \\
+    --run $R/20260823-183505-final-confirm --fix-arrivals $R/20260823-183505-final-confirm \\
+    --sessions 6,8,10 --output $R/20260823-183505-final-confirm/arrival_feedback.json
+env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \\
+    --run $R/20260824-160028-n6-reconfirm --fix-arrivals $R/20260824-160028-n6-reconfirm \\
+    --sessions 6 --output $R/20260824-160028-n6-reconfirm/arrival_feedback.json
 for W in sum-seconds per-n; do for S in 6,8 6,8,10 8,10; do
   env -u PYTHONPATH python3 experiments/npu/analysis/config_search_rerun.py \\
       --sessions "$S" --weight "$W" --top 20 \\

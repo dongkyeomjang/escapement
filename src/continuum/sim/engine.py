@@ -81,6 +81,21 @@ class SimConfig:
     prefill alongside decode, so no session stops -- an ablation, not an
     observation."""
 
+    fixed_arrivals: dict[tuple[int, int], float] | None = None
+    """Re-arrival times to use instead of recomputing them from completion.
+
+    Normally a session's next turn arrives at ``finish + tool gap``, so a
+    configuration that finishes a turn earlier also starts the next one
+    earlier and the two feed back into each other. Supplying a
+    ``(session_index, turn) -> arrival_s`` map pins every re-arrival to a time
+    measured elsewhere, which switches that feedback off: the arm is then
+    scored on the same arrival series as whatever run the map came from.
+
+    Turn 0 is not covered -- it is not a re-arrival. A missing key for a turn
+    that does occur is an error rather than a silent fall-back to the computed
+    time, because a half-pinned series is neither model.
+    """
+
     admission_priority: tuple[int, ...] = ()
     """Session indices in the order simultaneous arrivals should be admitted.
 
@@ -104,6 +119,15 @@ class SimConfig:
             raise ValueError("return_budget_s must be non-negative")
         if self.cache_granularity not in ("outer", "inner"):
             raise ValueError(f"unknown cache_granularity {self.cache_granularity!r}")
+        if self.fixed_arrivals is not None:
+            for (idx, turn), at in self.fixed_arrivals.items():
+                if turn < 1:
+                    raise ValueError(
+                        f"fixed_arrivals covers turn {turn} of session {idx}; "
+                        "only re-arrivals (turn >= 1) have an arrival to pin"
+                    )
+                if at < 0:
+                    raise ValueError(f"fixed arrival {at} is negative")
 
 
 @dataclass
@@ -297,14 +321,23 @@ def simulate(
         sess = by_index[r["session_index"]]
         nxt = r["turn"] + 1
         if nxt < len(sess.turns):
+            arrival = at + r["gap_after_s"] + config.client_overhead_s
+            if config.fixed_arrivals is not None:
+                key = (r["session_index"], nxt)
+                if key not in config.fixed_arrivals:
+                    raise RuntimeError(
+                        f"fixed_arrivals has no entry for session "
+                        f"{r['session_index']} turn {nxt}"
+                    )
+                arrival = config.fixed_arrivals[key]
             pending.append(_Pending(
                 session=r["session"], session_index=r["session_index"], turn=nxt,
                 prompt_tokens=_prompt_tokens(sess, nxt),
                 generation_tokens=sess.turns[nxt].generation_tokens,
                 gap_after_s=sess.turns[nxt].gap_after_s,
                 gap_start_s=at,
-                arrival_s=at + r["gap_after_s"] + config.client_overhead_s,
-                ready_s=at + r["gap_after_s"] + config.client_overhead_s,
+                arrival_s=arrival,
+                ready_s=arrival,
                 seq=next(counter),
             ))
 
