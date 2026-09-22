@@ -122,6 +122,9 @@ def main() -> int:
     p.add_argument("--weight", choices=("sum-seconds", "per-n"), default="sum-seconds",
                    help="ranking score: summed device seconds (recorded rule) or "
                         "the unweighted mean of the per-N cost ratios")
+    p.add_argument("--dummy-block", action="store_true",
+                   help="charge the KV pool one extra slot while the decode batch "
+                        "is partial (TASK63 observation; off in every recorded search)")
     p.add_argument("--output-dir", type=Path, required=True)
     args = p.parse_args()
 
@@ -160,7 +163,8 @@ def main() -> int:
     base_desc = descriptor_for(D, *BASELINE)
     cells_of = {tag: {n: [(n, b, s) for s in seeds for b in blocks] for n in ns}
                 for tag, seeds in (("explore", explore), ("eval", evals))}
-    base_busy = {tag: {n: score(base_desc, cells_of[tag][n], max_running=8)
+    base_busy = {tag: {n: score(base_desc, cells_of[tag][n], max_running=8,
+                                dummy_block=args.dummy_block)
                        for n in ns} for tag in cells_of}
 
     rows = []
@@ -173,7 +177,8 @@ def main() -> int:
             tot = base = 0.0
             per_n, busy_n = {}, {}
             for n in ns:
-                v = score(d, cells_of[tag][n], max_running=batch)
+                v = score(d, cells_of[tag][n], max_running=batch,
+                          dummy_block=args.dummy_block)
                 bv = base_busy[tag][n]
                 per_n[n] = v / bv
                 busy_n[n] = v
@@ -209,6 +214,7 @@ def main() -> int:
 
     comparison = {
         "weight": args.weight,
+        "dummy_block": args.dummy_block,
         "rank_key": rank_key,
         "eval_key": eval_key,
         "sessions": ns,
@@ -263,6 +269,7 @@ def main() -> int:
         "PYTHONHASHSEED": os.environ.get("PYTHONHASHSEED"),
         "explore_seeds": explore, "eval_seeds": evals, "blocks": blocks, "sessions": ns,
         "max_total_buckets": args.max_total_buckets,
+        "dummy_block": args.dummy_block,
         "compile_budget_s": args.compile_budget_s,
         "baseline": {"buckets": list(BASELINE[0]), "batch_size": BASELINE[1],
                      "base_busy_s": base_busy},

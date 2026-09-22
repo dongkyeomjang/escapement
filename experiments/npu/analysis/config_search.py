@@ -76,9 +76,12 @@ def descriptor_for(base, buckets: tuple[int, ...], batch_size: int):
     )
 
 
-def score(descriptor, cells, max_running: int) -> float:
+def score(descriptor, cells, max_running: int, *, dummy_block: bool = False) -> float:
+    """Device time over ``cells``. ``dummy_block`` is off by default, which is
+    the setting every recorded search ran in (TASK69)."""
     return sum(simulate(descriptor, F.plan(*c),
-                        SimConfig(max_running_requests=max_running)).busy_s
+                        SimConfig(max_running_requests=max_running,
+                                  dummy_block=dummy_block)).busy_s
                for c in cells)
 
 

@@ -56,6 +56,15 @@ class OuterBlockPool:
 
     capacity: int
     policy: str = "fifo"
+    reserved: int = 0
+    """Blocks held by something that is not a request.
+
+    This stack asks for a padding block while the decode batch is short
+    (TASK63), and that request takes a block from the free list -- evicting one
+    if the list is empty -- without ever becoming an allocation. Reserving the
+    slot is how that shows up in the pool's arithmetic. Left at zero, which is
+    the state every earlier task's numbers were produced in.
+    """
     entries: dict[int, Entry] = field(default_factory=dict)
     evictions: list[Eviction] = field(default_factory=list)
     _next_order: int = 0
@@ -71,7 +80,10 @@ class OuterBlockPool:
 
     @property
     def free_count(self) -> int:
-        return self.capacity - len(self.entries)
+        """Blocks an admission could take. Negative when the reservation
+        overlaps entries that are all still held -- the admission then has to
+        evict one more than its own need, which is the whole effect."""
+        return self.capacity - len(self.entries) - self.reserved
 
     def _inactive(self) -> list[Entry]:
         return [e for e in self.entries.values() if not e.active]

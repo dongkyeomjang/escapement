@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-22T18:22:09.556068+09:00",
-  "git_head": "71551bb971ba8af37eed2e48caba374baf55afeb",
-  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n M results/tables/S02.md\n M results/tables/manifest.json\n M src/continuum/sim/engine.py\n?? .idea/\n?? experiments/npu/analysis/arrival_feedback.py\n?? results/tables/S07.csv\n?? results/tables/S07.md",
+  "generated_at": "2026-09-22T18:27:21.612564+09:00",
+  "git_head": "22759b3c34893abecf368f72560ca92d600179d4",
+  "git_dirty": "M experiments/npu/analysis/config_search.py\n M experiments/npu/analysis/config_search_rerun.py\n M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n M src/continuum/sim/cache.py\n M src/continuum/sim/engine.py\n?? .idea/\n?? experiments/npu/analysis/dummy_block_effect.py\n?? results/tables/S08.csv\n?? results/tables/S08.md",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -227,6 +227,19 @@
       ],
       "rows": 8,
       "checks": 8,
+      "mismatches": []
+    },
+    {
+      "id": "S08",
+      "title": "dummy block 모형 반영 전후",
+      "tasks": "TASK58, TASK63, TASK69",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/dummy_block_effect.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/dummy_block_effect.json",
+        "results/npu/stage2/20260922-dummy-block/search-on/comparison.json"
+      ],
+      "rows": 12,
+      "checks": 10,
       "mismatches": []
     },
     {

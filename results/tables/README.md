@@ -67,6 +67,15 @@ env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \
 env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \
     --run $R/20260824-160028-n6-reconfirm --fix-arrivals $R/20260824-160028-n6-reconfirm \
     --sessions 6 --output $R/20260824-160028-n6-reconfirm/arrival_feedback.json
+env -u PYTHONPATH python3 experiments/npu/analysis/dummy_block_effect.py \
+    --run $R/20260823-183505-final-confirm --sessions 6,8,10 \
+    --output $R/20260823-183505-final-confirm/dummy_block_effect.json
+env -u PYTHONPATH python3 experiments/npu/analysis/dummy_block_effect.py \
+    --run $R/20260824-160028-n6-reconfirm --sessions 6 \
+    --output $R/20260824-160028-n6-reconfirm/dummy_block_effect.json
+env -u PYTHONPATH python3 experiments/npu/analysis/config_search_rerun.py \
+    --sessions 6,8,10 --weight sum-seconds --top 20 --dummy-block \
+    --output-dir $R/20260922-dummy-block/search-on
 for W in sum-seconds per-n; do for S in 6,8 6,8,10 8,10; do
   env -u PYTHONPATH python3 experiments/npu/analysis/config_search_rerun.py \
       --sessions "$S" --weight "$W" --top 20 \
@@ -99,8 +108,9 @@ done; done
 | S06a | 검증 비교·절감률의 반복별 분해 (S6) | `S06a.md` / `S06a.csv` | `make_tables.py --table S06a` | TASK35, TASK36 | 6 | 0 |
 | S06b | 추가 slot 포화의 N×반복별 분해 (S6) | `S06b.md` / `S06b.csv` | `make_tables.py --table S06b` | TASK40 | 1 | 0 |
 | S07 | 재도착 재계산을 껐을 때의 예측 오차 | `S07.md` / `S07.csv` | `make_tables.py --table S07` | TASK35, TASK36, TASK68 | 8 | 0 |
+| S08 | dummy block 모형 반영 전후 | `S08.md` / `S08.csv` | `make_tables.py --table S08` | TASK58, TASK63, TASK69 | 10 | 0 |
 | B01 | 구성 선정의 N 집합·score 민감도 | `B01.md` / `B01.csv` | `make_tables.py --table B01` | TASK61 | 2 | 0 |
 
-대조 합계 202건, 불일치 **0건**.
+대조 합계 212건, 불일치 **0건**.
 
 생성 시각과 commit은 `manifest.json`에 있다.

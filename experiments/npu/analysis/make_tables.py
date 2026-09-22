@@ -777,6 +777,77 @@ def s07_arrival_feedback():
     return header, rows, notes, ck
 
 
+def s08_dummy_block():
+    """dummy block을 KV pool에 반영했을 때의 차이 (B-4)."""
+    ck = Check()
+    header = ["run", "N", "arm", "실측 A′ 비", "off 비", "|e_c| off", "on 비",
+              "|e_c| on", "Δ비 (on−off)", "|e_c| 차", "sim 재사용 off→on",
+              "sim 회수 off→on"]
+    rows = []
+    for seed, path in ((20261000, RUN_FINAL / "dummy_block_effect.json"),
+                       (20261100, RUN_N6 / "dummy_block_effect.json")):
+        for row in load(path):
+            b = row["baseline_sim"]
+            mh, mt = row["baseline_measured_reuse"]
+            rows.append([f"seed {seed}", str(row["N"]), ARM_LABEL[row["baseline_arm"]],
+                         "1.0000", "1.0000", "—", "1.0000", "—", "+0.0000", "—",
+                         f"{b['False']['reuse_hits']}→{b['True']['reuse_hits']} "
+                         f"of {b['True']['resume']} (실측 {mh}/{mt})",
+                         f"{b['False']['evictions']}→{b['True']['evictions']}"])
+            for arm in row["arms"]:
+                off, on = arm["modes"]["off"], arm["modes"]["on"]
+                rows.append([f"seed {seed}", str(row["N"]), ARM_LABEL[arm["arm"]],
+                             f"{arm['measured_a_prime_ratio']:.4f}",
+                             f"{off['sim_ratio']:.4f}", f"{off['abs_e_c']:.4f}",
+                             f"{on['sim_ratio']:.4f}", f"{on['abs_e_c']:.4f}",
+                             f"{arm['ratio_on_minus_off']:+.4f}",
+                             f"{arm['abs_e_c_on_minus_off']:+.4f}",
+                             f"{off['reuse_hits']}→{on['reuse_hits']} of {on['resume']} "
+                             f"(실측 {arm['measured_reuse'][0]}/{arm['measured_reuse'][1]})",
+                             f"{off['evictions']}→{on['evictions']}"])
+
+    off_c = load(RUN_SENS / "sum-seconds_6_8_10" / "comparison.json")
+    on_c = load(R2 / "20260922-dummy-block/search-on/comparison.json")
+    header2 = ["dummy block", "선정 구성", "batch", "탐색 합산비", "평가 합산비",
+               "기록 구성과 일치", "기록 구성의 순위", "상위 20 ∩ off"]
+    off_top = {(tuple(r["buckets"]), r["batch_size"]) for r in off_c["top_explore"]}
+    rows2 = []
+    for tag, c in (("off (기록 설정)", off_c), ("on", on_c)):
+        a = c["argmin"]
+        top = {(tuple(r["buckets"]), r["batch_size"]) for r in c["top_explore"]}
+        rows2.append([tag, str(tuple(a["buckets"])), str(a["batch_size"]),
+                      f"{a['explore_ratio']:.6f}", f"{a['eval_ratio']:.6f}",
+                      "예" if c["argmin_equals_recorded"] else "아니오",
+                      str(c["recorded_choice_rank"]), str(len(top & off_top))])
+    ck.eq("off 조건이 기록 선정과 일치", off_c["argmin_equals_recorded"], True,
+          source="TASK61")
+    ck.eq("off 조건 평가 합산비 (반올림 4자리)",
+          round(off_c["recorded_choice_eval_ratio"], 4), 0.9066, tol=5e-5,
+          source="COMPILE_CONFIG_PREREG 기록")
+    # Switch off must leave the validation numbers exactly where they were.
+    rec = {(20261000, 6, "BATCHONLY"): 0.9610, (20261000, 6, "TUNED"): 0.9466,
+           (20261000, 8, "BATCHONLY"): 0.9101, (20261000, 8, "TUNED"): 0.8971,
+           (20261000, 10, "BATCHONLY"): 0.9213, (20261000, 10, "TUNED"): 0.8899,
+           (20261100, 6, "BATCHONLY"): 0.9874, (20261100, 6, "TUNED"): 0.9713}
+    for seed, path in ((20261000, RUN_FINAL / "dummy_block_effect.json"),
+                       (20261100, RUN_N6 / "dummy_block_effect.json")):
+        for row in load(path):
+            for arm in row["arms"]:
+                ck.eq(f"seed {seed} N={row['N']} {arm['arm']} off 비",
+                      round(arm["modes"]["off"]["sim_ratio"], 4),
+                      rec[(seed, row["N"], arm["arm"])], tol=5e-5,
+                      source="선등록 예측 (스위치 off = 기존 동작)")
+    notes = [
+        "규칙: decode 요청 수 n이 `0 < n < 실행 상한`이면 outer pool이 slot 1개를 더 "
+        "점유한다 (TASK63 관측). 실행 상한은 `max_running_requests` = `batch_size`다.",
+        "`|e_c|` = |시뮬레이터 비 − 실측 A′ 비|. 기준 arm 행은 비가 정의상 1이다.",
+        "두 번째 블록은 구성 탐색(탐색 seed 3 × 블록 3 × N 6,8,10, 후보 2,077개)의 "
+        "상위 20을 off/on으로 비교한 것이다.",
+        "스위치는 기본값 off다 — off 열 8건이 선등록 예측과 자릿수까지 같다.",
+    ]
+    return header, rows, notes, ck, (header2, rows2)
+
+
 def s06a_per_repetition_config():
     """검증 비교와 절감률의 반복별 분해 (B-2)."""
     ck = Check()
@@ -915,6 +986,10 @@ TABLES = {
             "TASK35, TASK36, TASK68",
             ["results/npu/stage2/20260823-183505-final-confirm/arrival_feedback.json",
              "results/npu/stage2/20260824-160028-n6-reconfirm/arrival_feedback.json"]),
+    "S08": (s08_dummy_block, "dummy block 모형 반영 전후", "TASK58, TASK63, TASK69",
+            ["results/npu/stage2/20260823-183505-final-confirm/dummy_block_effect.json",
+             "results/npu/stage2/20260824-160028-n6-reconfirm/dummy_block_effect.json",
+             "results/npu/stage2/20260922-dummy-block/search-on/comparison.json"]),
     "B01": (b01_config_search_sensitivity, "구성 선정의 N 집합·score 민감도", "TASK61",
             ["results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"]),
 }
@@ -1045,6 +1120,15 @@ env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \\
 env -u PYTHONPATH python3 experiments/npu/analysis/arrival_feedback.py \\
     --run $R/20260824-160028-n6-reconfirm --fix-arrivals $R/20260824-160028-n6-reconfirm \\
     --sessions 6 --output $R/20260824-160028-n6-reconfirm/arrival_feedback.json
+env -u PYTHONPATH python3 experiments/npu/analysis/dummy_block_effect.py \\
+    --run $R/20260823-183505-final-confirm --sessions 6,8,10 \\
+    --output $R/20260823-183505-final-confirm/dummy_block_effect.json
+env -u PYTHONPATH python3 experiments/npu/analysis/dummy_block_effect.py \\
+    --run $R/20260824-160028-n6-reconfirm --sessions 6 \\
+    --output $R/20260824-160028-n6-reconfirm/dummy_block_effect.json
+env -u PYTHONPATH python3 experiments/npu/analysis/config_search_rerun.py \\
+    --sessions 6,8,10 --weight sum-seconds --top 20 --dummy-block \\
+    --output-dir $R/20260922-dummy-block/search-on
 for W in sum-seconds per-n; do for S in 6,8 6,8,10 8,10; do
   env -u PYTHONPATH python3 experiments/npu/analysis/config_search_rerun.py \\
       --sessions "$S" --weight "$W" --top 20 \\

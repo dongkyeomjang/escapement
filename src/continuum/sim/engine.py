@@ -96,6 +96,17 @@ class SimConfig:
     time, because a half-pinned series is neither model.
     """
 
+    dummy_block: bool = False
+    """Charge the outer pool one extra slot while the decode batch is short.
+
+    TASK63 watched this stack ask for a padding block on every decode step
+    whose request count is strictly between zero and the execution ceiling, and
+    stop asking at the ceiling; TASK58 had already traced a one-block
+    difference in reclaim counts to it. Off by default -- the measured reclaim
+    arithmetic closed without it, and switching it on changes what the pool can
+    admit, so nothing produced before this switch existed is affected.
+    """
+
     admission_priority: tuple[int, ...] = ()
     """Session indices in the order simultaneous arrivals should be admitted.
 
@@ -119,6 +130,11 @@ class SimConfig:
             raise ValueError("return_budget_s must be non-negative")
         if self.cache_granularity not in ("outer", "inner"):
             raise ValueError(f"unknown cache_granularity {self.cache_granularity!r}")
+        if self.dummy_block and self.cache_granularity != "outer":
+            raise ValueError(
+                "dummy_block describes the outer block pool; it has no meaning "
+                "at inner granularity"
+            )
         if self.fixed_arrivals is not None:
             for (idx, turn), at in self.fixed_arrivals.items():
                 if turn < 1:
@@ -460,6 +476,10 @@ def simulate(
             blocks = (pool.blocks_for(p.prompt_tokens)
                       if isinstance(pool, GranularPool)
                       else descriptor.outer_slots_for(p.prompt_tokens))
+            if config.dummy_block:
+                # The padding block is live exactly while the decode batch is
+                # partial: not at an empty batch, not at the ceiling (TASK63).
+                pool.reserved = int(0 < len(running) < config.max_running_requests)
             if not pool.can_admit(blocks):
                 # No room: the scheduler leaves it waiting and decodes instead.
                 # Releases that were deferred for this admission now land.
