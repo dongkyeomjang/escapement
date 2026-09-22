@@ -1,0 +1,11 @@
+trial,server 로그 (저장소 상대경로),decode step,부분 step,dummy 호출,step당 호출,상한 step,상한 step의 dummy 호출,회수 (OB),회수 라벨,재할당되지 않은 회수
+A.B5r0,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B5r0.log`,49,49,49,1회×49,0,0,0,—,0
+A.B5r1,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B5r1.log`,49,49,49,1회×49,0,0,0,—,0
+A.B6r0,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B6r0.log`,56,56,56,1회×56,0,0,1,OB0#1:dummy,1
+A.B6r1,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B6r1.log`,56,56,56,1회×56,0,0,1,OB0#1:dummy,1
+A.B7r0,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B7r0.log`,63,63,63,1회×63,0,0,2,"OB0#1:dummy, OB1#1:dummy",1
+A.B7r1,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B7r1.log`,63,63,63,1회×63,0,0,2,"OB0#1:dummy, OB1#1:dummy",1
+A.B8r0,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B8r0.log`,70,70,70,1회×70,0,0,3,"OB0#1:dummy, OB1#1:dummy, OB2#1:dummy",1
+A.B8r1,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-A.B8r1.log`,70,70,70,1회×70,0,0,3,"OB0#1:dummy, OB1#1:dummy, OB2#1:dummy",1
+B.b0,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-B.b0.log`,535,304,304,1회×304,231,0,1,OB0#1:dummy,1
+B.b1,`results/npu/stage2/20260912-134732-dummy-lifecycle/server-B.b1.log`,535,304,304,1회×304,231,0,1,OB0#1:dummy,1

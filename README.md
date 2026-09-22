@@ -48,7 +48,18 @@ Clean-room migration과 source isolation 검증 단계다. Stage 0 NPU inference
 - `src/continuum/`: accelerator-neutral workload, metric, analysis, policy 계층
 - `experiments/npu/`: RBLN-specific probe, launcher, config, instrumentation
 - `patches/`: version/hash가 고정된 observation-only patch 정책
-- `results/`: 새 NPU run artifact 전용
+- `results/`: 새 NPU run artifact 전용. git이 추적하지 않는다 — 예외는
+  [`results/tables/`](results/tables/)로, 보고된 표의 집계 파일과 그 생성 명령을 담는다
+  ([TASK67](docs/research/TASK67.md))
+
+## 도구 사용 시 주의
+
+- **`config_search.py --max-buckets`는 논문의 후보 정의와 한 칸 어긋난다.** 이 flag는
+  bucket 총수가 아니라 *중간* bucket 수의 상한 + 1로 동작해, 기본값 `6`은 bucket 7개짜리
+  집합까지 연다(후보 4,393개). 선등록 문서가 말하는 "bucket 최대 6개"에 해당하는 값은
+  **`--max-buckets 5`** 이며 그때 후보가 기록된 2,077개가 된다
+  ([TASK61](docs/research/TASK61.md)). `config_search_rerun.py`는 선등록 정의를 직접
+  열거하므로 이 어긋남의 영향을 받지 않고, 두 수를 모두 보고한다.
 
 ## 실행 원칙
 

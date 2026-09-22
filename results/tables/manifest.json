@@ -1,0 +1,232 @@
+{
+  "generated_at": "2026-09-22T18:21:19.190997+09:00",
+  "git_head": "ac1b7d85c3a6c08ba1c99d0f131a7de858d9e5df",
+  "git_dirty": "M .gitignore\n M README.md\n M docs/research/INDEX.md\n M experiments/npu/analysis/config_search_rerun.py\n M src/continuum/sim/engine.py\n?? .idea/\n?? docs/research/TASK67.md\n?? experiments/npu/analysis/arrival_feedback.py\n?? experiments/npu/analysis/make_tables.py\n?? experiments/npu/analysis/per_repetition.py\n?? results/tables/",
+  "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
+  "tables": [
+    {
+      "id": "T01",
+      "title": "padding 비율과 decode device time (N별)",
+      "tasks": "TASK52, TASK53",
+      "inputs": [
+        "results/npu/stage2/padding_ratio.json"
+      ],
+      "rows": 11,
+      "checks": 2,
+      "mismatches": []
+    },
+    {
+      "id": "T02",
+      "title": "bucket 6 개입의 짝 비교",
+      "tasks": "TASK54",
+      "inputs": [
+        "results/npu/stage2/20260908-133635-grid-paired/grid_paired.json"
+      ],
+      "rows": 4,
+      "checks": 4,
+      "mismatches": []
+    },
+    {
+      "id": "T03",
+      "title": "slot 8→16 개입의 재사용과 계산량",
+      "tasks": "TASK35, TASK58",
+      "inputs": [
+        "results/npu/stage2/layer_audit.json"
+      ],
+      "rows": 8,
+      "checks": 44,
+      "mismatches": []
+    },
+    {
+      "id": "T04",
+      "title": "prefill 주입과 병행 세션의 정지",
+      "tasks": "TASK22",
+      "inputs": [
+        "results/npu/stage2/20260821-220100-prefill-tax/prefill_tax_result.json"
+      ],
+      "rows": 12,
+      "checks": 36,
+      "mismatches": []
+    },
+    {
+      "id": "T05",
+      "title": "N=6의 seed 간 상충",
+      "tasks": "TASK35, TASK36",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/config_device.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/config_device.n6.json"
+      ],
+      "rows": 4,
+      "checks": 10,
+      "mismatches": []
+    },
+    {
+      "id": "T06",
+      "title": "decode step 비용 계수",
+      "tasks": "TASK13, TASK55",
+      "inputs": [
+        "results/npu/stage2/20260908-151119-step-cost/grid_step_cost.json"
+      ],
+      "rows": 9,
+      "checks": 5,
+      "mismatches": []
+    },
+    {
+      "id": "T07",
+      "title": "검증 구성의 비용 비 예측",
+      "tasks": "TASK33, TASK35, TASK36",
+      "inputs": [
+        "(시뮬레이터 재계산)"
+      ],
+      "rows": 8,
+      "checks": 8,
+      "mismatches": []
+    },
+    {
+      "id": "T08",
+      "title": "채널별 device time",
+      "tasks": "TASK35, TASK36",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/config_device.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/config_device.n6.json"
+      ],
+      "rows": 12,
+      "checks": 18,
+      "mismatches": []
+    },
+    {
+      "id": "T09",
+      "title": "구성 선택의 절감률 X",
+      "tasks": "TASK35, TASK36",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/config_device.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/config_device.n6.json"
+      ],
+      "rows": 8,
+      "checks": 12,
+      "mismatches": []
+    },
+    {
+      "id": "T10",
+      "title": "추가 slot의 포화",
+      "tasks": "TASK40",
+      "inputs": [
+        "results/npu/stage2/20260824-222453-batch-saturation/batch_curve.json"
+      ],
+      "rows": 3,
+      "checks": 3,
+      "mismatches": []
+    },
+    {
+      "id": "T11",
+      "title": "컴파일 비용과 artifact 크기",
+      "tasks": "TASK06, TASK10, TASK23, TASK40, TASK62",
+      "inputs": [
+        "(run별 compile/ 시각 기록)"
+      ],
+      "rows": 7,
+      "checks": 6,
+      "mismatches": []
+    },
+    {
+      "id": "T12",
+      "title": "무처치 반복의 채널 차 분포 (S1)",
+      "tasks": "TASK50",
+      "inputs": [
+        "results/npu/stage2/20260901-020342-null-channel/null_channel.json"
+      ],
+      "rows": 2,
+      "checks": 0,
+      "mismatches": []
+    },
+    {
+      "id": "T13",
+      "title": "N ∈ {3,4,7}의 6블록 짝 비교 (S4)",
+      "tasks": "TASK23, TASK25",
+      "inputs": [
+        "(4개 run의 util.*.json)"
+      ],
+      "rows": 21,
+      "checks": 21,
+      "mismatches": []
+    },
+    {
+      "id": "T14",
+      "title": "개입의 padding 하락 분해 (S5)",
+      "tasks": "TASK56",
+      "inputs": [
+        "results/npu/stage2/padding_decompose.json"
+      ],
+      "rows": 16,
+      "checks": 5,
+      "mismatches": []
+    },
+    {
+      "id": "A01",
+      "title": "재사용 실패의 추가 비용: 두 정의",
+      "tasks": "TASK66",
+      "inputs": [
+        "results/npu/stage2/reuse_cost.json"
+      ],
+      "rows": 7,
+      "checks": 4,
+      "mismatches": []
+    },
+    {
+      "id": "S02",
+      "title": "재compile 변동과 회차 간 변동 (S2)",
+      "tasks": "TASK62",
+      "inputs": [
+        "results/npu/stage2/20260911-191300-recompile-variance/recompile_variance.json"
+      ],
+      "rows": 12,
+      "checks": 2,
+      "mismatches": []
+    },
+    {
+      "id": "S03",
+      "title": "dummy block 생애 주기 직접 관측 (S3)",
+      "tasks": "TASK63",
+      "inputs": [
+        "results/npu/stage2/20260912-134732-dummy-lifecycle/dummy_lifecycle.json"
+      ],
+      "rows": 10,
+      "checks": 5,
+      "mismatches": []
+    },
+    {
+      "id": "S06a",
+      "title": "검증 비교·절감률의 반복별 분해 (S6)",
+      "tasks": "TASK35, TASK36",
+      "inputs": [
+        "results/npu/stage2/20260823-183505-final-confirm/per_repetition.json",
+        "results/npu/stage2/20260824-160028-n6-reconfirm/per_repetition.json"
+      ],
+      "rows": 32,
+      "checks": 6,
+      "mismatches": []
+    },
+    {
+      "id": "S06b",
+      "title": "추가 slot 포화의 N×반복별 분해 (S6)",
+      "tasks": "TASK40",
+      "inputs": [
+        "results/npu/stage2/20260824-222453-batch-saturation/per_repetition.json"
+      ],
+      "rows": 27,
+      "checks": 1,
+      "mismatches": []
+    },
+    {
+      "id": "B01",
+      "title": "구성 선정의 N 집합·score 민감도",
+      "tasks": "TASK61",
+      "inputs": [
+        "results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"
+      ],
+      "rows": 6,
+      "checks": 2,
+      "mismatches": []
+    }
+  ]
+}

@@ -16,6 +16,10 @@ dist/
 
 results/**/*
 !results/.gitkeep
+# 집계 표는 원자료가 아니라 원자료에서 나온 산출물이고, 저장소 밖 원고가 참조할
+# 값이므로 추적한다 (TASK67). 원자료·run 디렉터리는 계속 제외다.
+!results/tables/
+!results/tables/**
 
 .env
 .env.*

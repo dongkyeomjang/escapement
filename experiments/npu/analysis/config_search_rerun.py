@@ -16,6 +16,17 @@ again, from the preregistration's wording rather than from the committed loop:
 the committed loop takes ``--max-buckets`` as a limit on the *middle* buckets
 plus one, so its default of 6 admits seven-bucket sets. Both counts are
 reported.
+
+``--weight`` selects which of two summaries the ranking reads. Both are always
+written to the ledger, so the choice changes the order of the rows and nothing
+else:
+
+  ``sum-seconds``  the recorded rule: device seconds are summed over every N
+                   and divided by the baseline's sum, so an N whose plans take
+                   longer weighs more.
+  ``per-n``        the per-N cost ratios are averaged with equal weight, so
+                   every session count counts the same regardless of how much
+                   device time it happens to consume.
 """
 
 from __future__ import annotations
@@ -108,6 +119,9 @@ def main() -> int:
     p.add_argument("--max-total-buckets", type=int, default=6)
     p.add_argument("--compile-budget-s", type=float, default=1800.0)
     p.add_argument("--top", type=int, default=20)
+    p.add_argument("--weight", choices=("sum-seconds", "per-n"), default="sum-seconds",
+                   help="ranking score: summed device seconds (recorded rule) or "
+                        "the unweighted mean of the per-N cost ratios")
     p.add_argument("--output-dir", type=Path, required=True)
     args = p.parse_args()
 
@@ -168,6 +182,7 @@ def main() -> int:
             row[f"{tag}_busy_s"] = tot
             row[f"{tag}_base_busy_s"] = base
             row[f"{tag}_ratio"] = tot / base
+            row[f"{tag}_mean_per_n_ratio"] = sum(per_n[n] for n in ns) / len(ns)
             row[f"{tag}_per_n_ratio"] = per_n
             row[f"{tag}_per_n_busy_s"] = busy_n
         rows.append(row)
@@ -175,12 +190,17 @@ def main() -> int:
             print(f"  {idx + 1}/{len(cands)}  {time.perf_counter() - t0:.1f} s", flush=True)
 
     # Same ranking rule as config_search.main: stable sort on the exploration
-    # ratio, so exact ties keep enumeration order.
-    ranked = sorted(rows, key=lambda r: r["explore_ratio"])
+    # score, so exact ties keep enumeration order. ``--weight`` only chooses
+    # which score that is; both are in every row either way.
+    rank_key = ("explore_ratio" if args.weight == "sum-seconds"
+                else "explore_mean_per_n_ratio")
+    eval_key = ("eval_ratio" if args.weight == "sum-seconds"
+                else "eval_mean_per_n_ratio")
+    ranked = sorted(rows, key=lambda r: r[rank_key])
     for rank, r in enumerate(ranked, 1):
         r["explore_rank"] = rank
     best = ranked[0]
-    tied_min = [r for r in ranked if r["explore_ratio"] == best["explore_ratio"]]
+    tied_min = [r for r in ranked if r[rank_key] == best[rank_key]]
     by_key = {(tuple(r["buckets"]), r["batch_size"]): r for r in rows}
     rec = by_key.get(RECORDED_CHOICE)
 
@@ -188,12 +208,29 @@ def main() -> int:
     finished = dt.datetime.now().astimezone()
 
     comparison = {
+        "weight": args.weight,
+        "rank_key": rank_key,
+        "eval_key": eval_key,
+        "sessions": ns,
+        "top_n": args.top,
+        "top_explore": [{"rank": r["explore_rank"], "buckets": r["buckets"],
+                         "batch_size": r["batch_size"],
+                         "explore_ratio": r["explore_ratio"],
+                         "explore_mean_per_n_ratio": r["explore_mean_per_n_ratio"],
+                         "eval_ratio": r["eval_ratio"],
+                         "eval_mean_per_n_ratio": r["eval_mean_per_n_ratio"],
+                         "eval_per_n_ratio": r["eval_per_n_ratio"]}
+                        for r in ranked[:args.top]],
         "argmin": {"buckets": best["buckets"], "batch_size": best["batch_size"],
-                   "explore_ratio": best["explore_ratio"], "eval_ratio": best["eval_ratio"]},
+                   "explore_ratio": best["explore_ratio"], "eval_ratio": best["eval_ratio"],
+                   "explore_mean_per_n_ratio": best["explore_mean_per_n_ratio"],
+                   "eval_mean_per_n_ratio": best["eval_mean_per_n_ratio"]},
         "argmin_equals_recorded": (tuple(best["buckets"]), best["batch_size"]) == RECORDED_CHOICE,
         "tied_at_min": [(r["buckets"], r["batch_size"]) for r in tied_min],
         "recorded_choice_rank": rec["explore_rank"] if rec else None,
         "recorded_choice_eval_ratio": rec["eval_ratio"] if rec else None,
+        "recorded_choice_eval_mean_per_n_ratio": rec["eval_mean_per_n_ratio"] if rec else None,
+        "recorded_choice_in_top": bool(rec) and rec["explore_rank"] <= args.top,
         "recorded_eval_ratio": RECORDED_EVAL_RATIO,
         "eval_ratio_round4_matches": (round(rec["eval_ratio"], 4) == RECORDED_EVAL_RATIO) if rec else None,
         "eval_ratio_minus_recorded": (rec["eval_ratio"] - RECORDED_EVAL_RATIO) if rec else None,
@@ -239,26 +276,30 @@ def main() -> int:
         w = csv.writer(fh)
         w.writerow(["enum_index", "explore_rank", "buckets", "batch_size",
                     "compile_s", "artifact_gib", "explore_busy_s", "explore_ratio",
-                    "eval_busy_s", "eval_ratio"]
+                    "explore_mean_per_n_ratio", "eval_busy_s", "eval_ratio",
+                    "eval_mean_per_n_ratio"]
                    + [f"explore_ratio_n{n}" for n in ns] + [f"eval_ratio_n{n}" for n in ns])
         for r in rows:
             w.writerow([r["enum_index"], r["explore_rank"],
                         " ".join(map(str, r["buckets"])), r["batch_size"],
                         repr(r["compile_s"]), repr(r["artifact_gib"]),
                         repr(r["explore_busy_s"]), repr(r["explore_ratio"]),
-                        repr(r["eval_busy_s"]), repr(r["eval_ratio"])]
+                        repr(r["explore_mean_per_n_ratio"]),
+                        repr(r["eval_busy_s"]), repr(r["eval_ratio"]),
+                        repr(r["eval_mean_per_n_ratio"])]
                        + [repr(r["explore_per_n_ratio"][n]) for n in ns]
                        + [repr(r["eval_per_n_ratio"][n]) for n in ns])
     (args.output_dir / "comparison.json").write_text(json.dumps(comparison, indent=2) + "\n")
     (args.output_dir / "meta.json").write_text(json.dumps(meta, indent=2) + "\n")
 
-    print(f"\n=== 탐색 seed 기준 상위 {args.top} (ratio < 1 이 개선) ===")
-    print(f"{'순위':>4} {'buckets':<24} {'batch':>5} {'탐색 ratio':>11} {'평가 ratio':>11} "
-          f"{'탐색 busy(s)':>13} {'평가 busy(s)':>13}")
+    print(f"\n=== 탐색 seed 기준 상위 {args.top} "
+          f"(score={args.weight}, N={','.join(map(str, ns))}, ratio < 1 이 개선) ===")
+    print(f"{'순위':>4} {'buckets':<24} {'batch':>5} {'탐색 합산비':>11} {'탐색 N평균비':>12} "
+          f"{'평가 합산비':>11} {'평가 N평균비':>12}")
     for r in ranked[:args.top]:
         print(f"{r['explore_rank']:>4} {str(tuple(r['buckets'])):<24} {r['batch_size']:>5} "
-              f"{r['explore_ratio']:>11.6f} {r['eval_ratio']:>11.6f} "
-              f"{r['explore_busy_s']:>13.4f} {r['eval_busy_s']:>13.4f}")
+              f"{r['explore_ratio']:>11.6f} {r['explore_mean_per_n_ratio']:>12.6f} "
+              f"{r['eval_ratio']:>11.6f} {r['eval_mean_per_n_ratio']:>12.6f}")
     print(f"\n탐색 최소: {tuple(best['buckets'])} batch {best['batch_size']} "
           f"(동률 {len(tied_min)}개) — 기록과 일치: {comparison['argmin_equals_recorded']}")
     if rec:
