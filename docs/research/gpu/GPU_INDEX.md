@@ -15,6 +15,8 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
+**GTASK05 (step 비용) `PARTIAL`**: 2026-09-29 문제 PCIe 슬롯 비활성화로 host의 A6000이 2장이 됐고, 이후 측정은 uuid `4485e769…` 카드에서 한다(GTASK02–04는 빠진 카드 `00596b63…`). FULL·eager 곡선은 확보, PIECEWISE 증분은 관측 채널 분해능 아래.
+
 **Advisor 결정 대기**: (1) step 단위 격자 관측 수단(v1 runner + `VLLM_USE_FLASHINFER_SAMPLER=0` 또는 `CUDA_HOME` 지정 / v2 observation-only patch), (2) `SubstrateDescriptor` 확장(`src/continuum/`, 이 branch에서 수정 금지), (3) GPU 간섭 통제(`EXCLUSIVE_PROCESS`·persistence mode, root 필요).
 
 **환경 요약**: RTX A6000 × 3 (48 GiB, cc 8.6), driver 580.178.04, venv `/home/csdc/kyeom/envs/vllm-0.22.0`(Python 3.12.13, torch 2.11.0+cu130), `HF_HOME=/mnt/nvme/hf`. 계정 1개, 조사 시점 GPU 전부 idle.
@@ -40,7 +42,7 @@
 | [GTASK02](GTASK02.md) | DONE | GPU Stage 0 기능 확인과 descriptor 초안 | 선등록 C0–C5 전부 충족으로 **Stage 0 `PASS`**. override 16,034→2,048 block, 격자 `[1,2,4,6,8]` 반영, hit 5/5, 생성 token 캐시(H5 1,024), v2 runner에서 cudagraph 통계 없음, v1 runner는 `nvcc` 부재로 기동 실패. descriptor 초안과 적합성 문제 11건 |
 | [GTASK03](GTASK03.md) | DONE | GPU 관측 수단: observation-only patch·KV events collector·관문 G1–G3 | merge `a48c7b4`. v2 runner `[GSTEP]`·scheduler `[GPFX]` 로그 patch(32줄, env gate)와 KV events collector. 원 기준 G1 `FAIL`(warmup 2 step 미예상, endpoint 오류) → 개정 1 후 **G1·G2·G3 `PASS`**(hit 23/23, 사상 375/375, 시간 비 1.002) |
 | [GTASK04](GTASK04.md) | DONE | 순차 생존 곡선: 첫 교차 기판 blind 예측 | **`CONFIRMED` 60/60 정확 일치**(네 채널 일치, 무효 0). NPU 데이터로 만든 모형 코드(무수정)에 GPU 파라미터·의미론만 넣어 측정 전 commit. 문턱은 token 총량, 곡선은 16 token 계단, 생성 token 캐시 확인(2,016) |
-| [GTASK05](GTASK05.md) | IN_PROGRESS | GPU step 비용 측정 (FULL · PIECEWISE · eager) | 설계 선등록 [GPU_STEPCOST_PREREG.md](GPU_STEPCOST_PREREG.md). 첫 run은 host 다운으로 중단, 문제 PCIe 슬롯 비활성화 후 **측정 카드 변경**(uuid `4485e769…`) — 개정 1 후 6 lifecycle 재측정 |
+| [GTASK05](GTASK05.md) | PARTIAL | GPU step 비용 측정 (FULL · PIECEWISE · eager) | 첫 run은 host 다운으로 중단 → 문제 PCIe 슬롯 비활성화, **측정 카드 변경**(uuid `4485e769…`, 개정 1) 후 6 lifecycle 전부 유효. 선등록 분석은 p=2048 chunk 분할로 실패 → 개정 2(수치 확인 전). FULL decode 13.3–14.4 ms, `g` 0.041 ms/요청, padding +3.4 % 대 격자 밖 eager +42 %, lag `L = 1` 확인, eager 증분 p=256→2048에서 12→138 ms. **PIECEWISE 증분은 dispatch 채널 분해능(약 2 ms) 아래라 `UNKNOWN`** |
 | [GTASK06](GTASK06.md) | DONE | descriptor 구조 요구사항 정리 (두 기판 공통 표현) | 코드 변경 0. 층 목록·`reuse_layer`·규칙 field 5개(축출 기준, 창 시작, 요청 내부 손실 순서, 조회·할당 순서, 캐시 대상)·`value_source`·`grid_unit` 등 11개 묶음을 NPU 값·GPU 값과 함께 [DESCRIPTOR_REQUIREMENTS.md](DESCRIPTOR_REQUIREMENTS.md)에 정리. GPU step 비용 값은 GTASK05 대기 |
 
 ## 다음 작업
