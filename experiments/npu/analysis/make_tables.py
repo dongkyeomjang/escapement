@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+from collections import defaultdict
 from pathlib import Path
 import subprocess
 import sys
@@ -936,6 +937,146 @@ def b01_config_search_sensitivity():
     return header, rows, notes, ck, (header2, rows2)
 
 
+# -- model v0 retro comparison (TASK72) ---------------------------------------
+
+RETRO = REPO / "results/npu/stage3/model_v0_retro"
+
+
+def m01_retro_verdicts():
+    """R1-R5' 판정 요약."""
+    ck = Check()
+    r1, r2, r3 = load(RETRO / "r1.json"), load(RETRO / "r2.json"), load(RETRO / "r3.json")
+    r4, r5, r5p = load(RETRO / "r4.json"), load(RETRO / "r5.json"), load(RETRO / "r5p.json")
+    a, b = r3["R3a"], r3["R3b"]
+    header = ["항목", "성격", "판정", "핵심 수치"]
+    rows = [
+        ["R1", "확증", r1["summary"]["verdict"],
+         f"P1 {r1['summary']['P1']}, P2 {r1['summary']['P2']}, P3 {r1['summary']['P3_evictions']}, "
+         f"P4 {r1['summary']['P4_evictions']} (admission 경로 예측 {r1['summary']['P4_admission_path_pred']})"],
+        ["R2", "모형–시뮬레이터 일관성(측정 아님)", r2["summary"]["verdict"],
+         f"칸 {r2['summary']['cells']}, 불일치 {r2['summary']['mismatches']}"],
+        ["R3", "확증(고정점 필요조건)", r3["summary"]["verdict"],
+         f"R3a regret {a['regret_rel']:.4f} / E {a['E']:.4f}; R3b regret {b['regret_rel']:.4f} / "
+         f"E {b['E']:.4f}; 원 기준 {r3['summary']['old_R3a']}/{r3['summary']['old_R3b']}; "
+         f"R3c {r3['summary']['R3c']}"],
+        ["R4", "탐색", "판정 없음",
+         f"cell {r4['summary']['cells']}, TVD 중앙값 {r4['summary']['tvd_median']:.3f}, "
+         f"TVD>0.3 {r4['summary']['tvd_gt_0_3']}, 평균 running 과소 {r4['summary']['mean_running_underpredicted']}"],
+        ["R5", "탐색", "판정 없음",
+         f"cell {r5['summary']['cells']}, 평균 절대오차 binomial {r5['summary']['binomial_abs_err_mean']:.3f} / "
+         f"poisson {r5['summary']['poisson_abs_err_mean']:.3f} 요청"],
+        ["R5′", "확증", r5p["summary"]["verdict"],
+         f"일치 {r5p['summary']['agreement']:.4f} ({r5p['summary']['decided']}건), RESERVED "
+         f"{r5p['summary']['reserved_agreement']:.4f}, 닫힌 형태 보조 {r5p['summary']['closed_form_agreement']:.4f}, "
+         f"UNDECIDABLE+UNKNOWN {r5p['summary']['undecidable_unknown_share']:.4f}"],
+    ]
+    th = {x["background_tokens"]: (x["sim_first_loss"], x["sim_zero"]) for x in r2["rows"]}
+    ck.eq("R2 시뮬레이터 문턱 1,000 token", list(th[1000]), [61, 62], source="TASK29 축 ①")
+    ck.eq("R2 시뮬레이터 문턱 2,000 token", list(th[2000]), [31, 31], source="TASK29 축 ①")
+    ck.eq("R2 시뮬레이터 문턱 4,000 token", list(th[4000]), [16, 16], source="TASK29 축 ①")
+    ck.eq("R3c 시작 격자의 탐색 순위", r3["R3c"]["chain"][0]["explore_rank"], 1, source="TASK61")
+    notes = ["판정 기준은 MODEL_V0_RETRO_PREREG.md(초판 `8c107a0`, 개정 1 `1728f0d`)에 계산 전 등록됐다.",
+             "R1·R2는 모형을 결과를 알고 세웠으므로 blind 예측 성공이 아니라 전 raw run 포괄 검사다."]
+    return header, rows, notes, ck
+
+
+def m02_retro_r1():
+    """R1 순차·동시 run별 P1–P4."""
+    ck = Check()
+    r1 = load(RETRO / "r1.json")
+    header = ["run", "trial", "종류", "ALLOC", "m", "P1 예측", "P1 관측", "P2 예측", "P2 관측",
+              "P3", "P4", "admission 경로 예측"]
+    rows = []
+    for t in r1["trials"]:
+        p1 = t.get("P1")
+        rows.append([t["task"], t["file"].split("/")[-1], t["kind"], str(t["allocs"]),
+                     str(p1["m"]) if p1 else "—",
+                     ("생존" if p1["pred_survive"] else "소멸") if p1 else "—",
+                     ("생존" if p1["obs_survive"] else "소멸") if p1 else "—",
+                     str(t["P2"]["pred"]), str(t["P2"]["obs"]),
+                     f"{sum(t['P3']['ok_each'])}/{t['P3']['n']}",
+                     f"{sum(x['ok'] for x in t['P4']['items'])}/{len(t['P4']['items'])}",
+                     str(sum(1 for x in t["P4"]["items"] if x["path_pred"] == "admission"))])
+    tr = [t for t in r1["trials"] if t["task"] in ("TASK14", "TASK15")]
+    ck.eq("TASK14+15 회수 산술 일치 trial 수", sum(t["P2"]["ok"] for t in tr), 21,
+          source="TASK58 (21/21)")
+    notes = ["P1 관측: resume의 `[CACHE-HIT]`, `[CACHE-PARTIAL] REUSED`, 또는 (layer 2 조회 없음) "
+             "resume ALLOC 전 target OB 축출.",
+             "P4: k번째 축출이 ALLOC #(8+k−1) 뒤 첫 `0<n<8` decode step 전(dummy), 그런 step이 없으면 "
+             "곧바로 다음 ALLOC(admission)."]
+    return header, rows, notes, ck
+
+
+def m03_retro_r3():
+    """R3 격자 DP 대 선정 격자."""
+    ck = Check()
+    r3 = load(RETRO / "r3.json")
+    header = ["h 출처", "DP 격자", "cost_grid(G*) s", "cost_grid(DP) s", "cost_grid(G_ref) s",
+              "regret_rel", "E(h)", "0.25·E", "판정", "원 기준 regret", "원 기준 판정"]
+    rows = []
+    for label, x in [("R3a 시뮬레이터(탐색 seed 27칸)", r3["R3a"]),
+                     ("R3b 실측 TUNED 전체", r3["R3b"])] + \
+            [(f"R3b N={n} (보고만)", v) for n, v in r3["R3b_per_n"].items()]:
+        rows.append([label, str(tuple(x["dp_grid"])), f"{x['cost_grid_star_s']:.4f}",
+                     f"{x['cost_grid_dp_s']:.4f}", f"{x['cost_grid_ref_s']:.4f}",
+                     f"{x['regret_rel']:.5f}", f"{x['E']:.5f}", f"{x['threshold']:.5f}",
+                     x["verdict"], f"{x['old_regret_rel']:.5f}", x["old_verdict"]])
+    notes = ["G* = (1,4,6,8,10,16), G_ref = (1,2,4,8,16), top 16, 격자 크기 ≤ 6.",
+             f"R3c: {r3['R3c']['status']}.",
+             "N별 행은 판정에 쓰지 않는다(선등록 §R3: N별 regret은 보고만)."]
+    return header, rows, notes, ck
+
+
+def m04_retro_r4():
+    """R4 B2 예측 h(n) 대 관측 (탐색)."""
+    ck = Check()
+    r4 = load(RETRO / "r4.json")
+    header = ["src", "N", "격자", "평균 gap s", "주기 c s", "TVD", "평균 running 예측", "관측",
+              "차", "padding 예측", "관측"]
+    rows = [[c["src"], str(c["N"]), str(tuple(c["grid"])), f"{c['gap_mean_s']:.2f}",
+             f"{c['cycle_s']:.2f}", f"{c['tvd']:.3f}", f"{c['mean_running_pred']:.2f}",
+             f"{c['mean_running_obs']:.2f}", f"{c['mean_running_diff']:+.2f}",
+             f"{c['padding_pred']:.3f}", f"{c['padding_obs']:.3f}"] for c in r4["cells"]]
+    notes = ["AGENTIC만. CONVENTIONAL(gap 0)은 B2가 정의되지 않아 계산하지 않는다.",
+             "원고 workload는 steady state가 아니므로 이 표는 B2의 검증이 아니다."]
+    return header, rows, notes, ck
+
+
+def m05_retro_r5():
+    """R5′ run별 일치와 R5 확률식 대 관측."""
+    ck = Check()
+    r5p, r5 = load(RETRO / "r5p.json"), load(RETRO / "r5.json")
+    header = ["run", "turn≥1 요청", "일치", "불일치", "UNDECIDABLE", "UNKNOWN", "일치율",
+              "RESERVED 일치율", "닫힌 형태 보조 일치율"]
+    rows = [[r["run"], str(r["total"]), str(r["match"]), str(r["mismatch"]),
+             str(r["undecidable"]), str(r["unknown"]), f"{r['agreement']:.4f}",
+             f"{r['reserved_agreement']:.4f}", f"{r['closed_form_agreement']:.4f}"]
+            for r in r5p["runs"]]
+    agg = defaultdict(lambda: [0, 0.0, 0.0, 0])
+    for c in r5["cells"]:
+        k = (c["run"], c["N"])
+        agg[k][0] += c["obs_reuse"]
+        agg[k][1] += c["pred_binomial"]
+        agg[k][2] += c["pred_poisson"]
+        agg[k][3] += c["turn1"]
+    header2 = ["run", "N", "turn1 요청", "관측 재사용", "binomial 예측", "poisson 예측"]
+    rows2 = [[k[0], str(k[1]), str(v[3]), str(v[0]), f"{v[1]:.1f}", f"{v[2]:.1f}"]
+             for k, v in sorted(agg.items())]
+    n8 = r5["task50_repeat"]["8"]["counts"]
+    ck.eq("TASK50 N=8 10회 중 재사용 6/8 회차 수", sum(1 for x in n8 if x == 6), 7,
+          source="원고 III-B-c (7회 6/8)")
+    ck.eq("TASK50 N=8 10회 중 재사용 5/8 회차 수", sum(1 for x in n8 if x == 5), 3,
+          source="원고 III-B-c (3회 5/8)")
+    base8 = [q for r in r5p["runs"] if r["run"] == "TASK35" for q in r["requests"]
+             if q["cell"].startswith("BASE.n8.")]
+    ck.eq("TASK35 BASE N=8 재사용", sum(1 for q in base8 if q.get("obs")), 9,
+          source="원고 Table III (9/24)")
+    notes = ["R5′ 관측 = client `cached_tokens > 0`, server `[CACHE-HIT]`/`REUSED>0`과 교차 확인.",
+             "R5 표(두 번째)는 AGENTIC 계열 cell만(gap 평균 0인 CONVENTIONAL 제외), 탐색.",
+             f"TASK50 반복 재사용 수: N=6 {r5['task50_repeat']['6']['counts']}, N=8 {n8}."]
+    return header, rows, notes, ck, (header2, rows2)
+
+
 # -- registry ----------------------------------------------------------------
 
 TABLES = {
@@ -990,6 +1131,16 @@ TABLES = {
             ["results/npu/stage2/20260823-183505-final-confirm/dummy_block_effect.json",
              "results/npu/stage2/20260824-160028-n6-reconfirm/dummy_block_effect.json",
              "results/npu/stage2/20260922-dummy-block/search-on/comparison.json"]),
+    "M01": (m01_retro_verdicts, "모형 v0 대조 판정 요약 (R1–R5′)", "TASK72",
+            ["results/npu/stage3/model_v0_retro/{r1,r2,r3,r4,r5,r5p}.json"]),
+    "M02": (m02_retro_r1, "모형 v0 R1: 순차 run 생존·축출 산술", "TASK72",
+            ["results/npu/stage3/model_v0_retro/r1.json"]),
+    "M03": (m03_retro_r3, "모형 v0 R3: 격자 DP 대 선정 격자", "TASK72",
+            ["results/npu/stage3/model_v0_retro/r3.json"]),
+    "M04": (m04_retro_r4, "모형 v0 R4: 점유 분포 예측 대 관측 (탐색)", "TASK72",
+            ["results/npu/stage3/model_v0_retro/r4.json"]),
+    "M05": (m05_retro_r5, "모형 v0 R5′·R5: 동시 run 재사용", "TASK72",
+            ["results/npu/stage3/model_v0_retro/r5p.json", "results/npu/stage3/model_v0_retro/r5.json"]),
     "B01": (b01_config_search_sensitivity, "구성 선정의 N 집합·score 민감도", "TASK61",
             ["results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"]),
 }

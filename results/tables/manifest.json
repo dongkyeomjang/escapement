@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-22T18:27:21.612564+09:00",
-  "git_head": "22759b3c34893abecf368f72560ca92d600179d4",
-  "git_dirty": "M experiments/npu/analysis/config_search.py\n M experiments/npu/analysis/config_search_rerun.py\n M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n M src/continuum/sim/cache.py\n M src/continuum/sim/engine.py\n?? .idea/\n?? experiments/npu/analysis/dummy_block_effect.py\n?? results/tables/S08.csv\n?? results/tables/S08.md",
+  "generated_at": "2026-09-29T16:32:16.022638+09:00",
+  "git_head": "1728f0d7322ca62093371f2c79486d7e1eefed61",
+  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n?? .idea/\n?? experiments/npu/analysis/model_v0_retro.py\n?? results/tables/M01.csv\n?? results/tables/M01.md\n?? results/tables/M02.csv\n?? results/tables/M02.md\n?? results/tables/M03.csv\n?? results/tables/M03.md\n?? results/tables/M04.csv\n?? results/tables/M04.md\n?? results/tables/M05.csv\n?? results/tables/M05.md",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -240,6 +240,62 @@
       ],
       "rows": 12,
       "checks": 10,
+      "mismatches": []
+    },
+    {
+      "id": "M01",
+      "title": "모형 v0 대조 판정 요약 (R1–R5′)",
+      "tasks": "TASK72",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/{r1,r2,r3,r4,r5,r5p}.json"
+      ],
+      "rows": 6,
+      "checks": 4,
+      "mismatches": []
+    },
+    {
+      "id": "M02",
+      "title": "모형 v0 R1: 순차 run 생존·축출 산술",
+      "tasks": "TASK72",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r1.json"
+      ],
+      "rows": 36,
+      "checks": 1,
+      "mismatches": []
+    },
+    {
+      "id": "M03",
+      "title": "모형 v0 R3: 격자 DP 대 선정 격자",
+      "tasks": "TASK72",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r3.json"
+      ],
+      "rows": 5,
+      "checks": 0,
+      "mismatches": []
+    },
+    {
+      "id": "M04",
+      "title": "모형 v0 R4: 점유 분포 예측 대 관측 (탐색)",
+      "tasks": "TASK72",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r4.json"
+      ],
+      "rows": 17,
+      "checks": 0,
+      "mismatches": []
+    },
+    {
+      "id": "M05",
+      "title": "모형 v0 R5′·R5: 동시 run 재사용",
+      "tasks": "TASK72",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r5p.json",
+        "results/npu/stage3/model_v0_retro/r5.json"
+      ],
+      "rows": 7,
+      "checks": 3,
       "mismatches": []
     },
     {

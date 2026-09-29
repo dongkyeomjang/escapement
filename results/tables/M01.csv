@@ -1,0 +1,7 @@
+항목,성격,판정,핵심 수치
+R1,확증,PASS,"P1 29/29, P2 36/36, P3 140/140, P4 140/140 (admission 경로 예측 5)"
+R2,모형–시뮬레이터 일관성(측정 아님),CONSISTENT,"칸 524, 불일치 0"
+R3,확증(고정점 필요조건),PASS (EXACT),R3a regret 0.0000 / E 0.0285; R3b regret 0.0000 / E 0.0298; 원 기준 PASS/PASS; R3c fixed_point_at_start
+R4,탐색,판정 없음,"cell 17, TVD 중앙값 0.248, TVD>0.3 5, 평균 running 과소 8"
+R5,탐색,판정 없음,"cell 126, 평균 절대오차 binomial 1.075 / poisson 1.120 요청"
+R5′,확증,PASS,"일치 1.0000 (1298건), RESERVED 0.8475, 닫힌 형태 보조 0.8328, UNDECIDABLE+UNKNOWN 0.0000"

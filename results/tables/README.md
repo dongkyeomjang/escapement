@@ -109,8 +109,13 @@ done; done
 | S06b | 추가 slot 포화의 N×반복별 분해 (S6) | `S06b.md` / `S06b.csv` | `make_tables.py --table S06b` | TASK40 | 1 | 0 |
 | S07 | 재도착 재계산을 껐을 때의 예측 오차 | `S07.md` / `S07.csv` | `make_tables.py --table S07` | TASK35, TASK36, TASK68 | 8 | 0 |
 | S08 | dummy block 모형 반영 전후 | `S08.md` / `S08.csv` | `make_tables.py --table S08` | TASK58, TASK63, TASK69 | 10 | 0 |
+| M01 | 모형 v0 대조 판정 요약 (R1–R5′) | `M01.md` / `M01.csv` | `make_tables.py --table M01` | TASK72 | 4 | 0 |
+| M02 | 모형 v0 R1: 순차 run 생존·축출 산술 | `M02.md` / `M02.csv` | `make_tables.py --table M02` | TASK72 | 1 | 0 |
+| M03 | 모형 v0 R3: 격자 DP 대 선정 격자 | `M03.md` / `M03.csv` | `make_tables.py --table M03` | TASK72 | 0 | 0 |
+| M04 | 모형 v0 R4: 점유 분포 예측 대 관측 (탐색) | `M04.md` / `M04.csv` | `make_tables.py --table M04` | TASK72 | 0 | 0 |
+| M05 | 모형 v0 R5′·R5: 동시 run 재사용 | `M05.md` / `M05.csv` | `make_tables.py --table M05` | TASK72 | 3 | 0 |
 | B01 | 구성 선정의 N 집합·score 민감도 | `B01.md` / `B01.csv` | `make_tables.py --table B01` | TASK61 | 2 | 0 |
 
-대조 합계 212건, 불일치 **0건**.
+대조 합계 220건, 불일치 **0건**.
 
 생성 시각과 commit은 `manifest.json`에 있다.
