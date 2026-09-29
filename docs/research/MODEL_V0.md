@@ -248,7 +248,7 @@ F[j][b] = min_{b' < b} F[j−1][b'] + fixed(b) · H(b', b],   H(a,b] = Σ_{a<n�
 
 ## B4. prefill 간섭 — `interference.py`
 
-**원고 식 (6)·(9)의 본문은 이 저장소에 없다**([TASK65](TASK65.md)에서 원고 제거). 아래는 [TASK22](TASK22.md)·[TASK66](TASK66.md)·[TASK67](TASK67.md) 기록에서 재구성한 형태이며, 원고 식과의 번호 대응은 Advisor 확인이 필요하다.
+**원고 식 (6)·(9)의 본문은 이 저장소에 없다**(개정 1에서 Advisor가 식을 제공했고 (9)와 일치함을 확인 — [선등록 §8.1](MODEL_V0_RETRO_PREREG.md))([TASK65](TASK65.md)에서 원고 제거). 아래는 [TASK22](TASK22.md)·[TASK66](TASK66.md)·[TASK67](TASK67.md) 기록에서 재구성한 형태이며, 원고 식과의 번호 대응은 Advisor 확인이 필요하다.
 
 ### (i) 수식 (정식화만, 검증 없음)
 
@@ -276,6 +276,8 @@ E[P(q)]     = p_s · P(L − H) + (1 − p_s) · P(L),   p_s = B1의 생존 확�
 ### (ii) 가정
 
 q_j와 K_j 독립, 동시 도착(동시 시작 workload의 t=0 폭주)은 arrival theorem 밖, P는 descriptor의 배타 prefill 모형.
+
+**독립 가정의 방향 (개정 1, Advisor 지시문 02)**: 재사용 실패(긴 P)는 부하가 높을 때(큰 K) 몰리므로 P와 K의 공분산은 양일 가능성이 높다. 그렇다면 `X·E[P]·E[K]`는 `E[W]`를 **과소** 추정한다. 식은 수정하지 않는다. 원고 식 (9) `Ŵ = Σ_j T̂_prefill(q̂_j)·K̂_j`는 사건 단위 형태와 일치한다.
 
 ### (iii) 입력
 

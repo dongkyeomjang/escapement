@@ -117,6 +117,8 @@ cost = Σ h(n)·t_step(b(n), n)   (intercept·marginal 포함, 즉 decode device
 
 ### 판정 기준
 
+> **개정 1(§8.2)로 대체됨.** 아래 원 기준은 병기용으로만 계산한다.
+
 **R3 `PASS` ⇔ R3a와 R3b(전체 합산) 모두 `regret_rel ≤ 1.0 %`.** 격자가 같으면 `PASS (EXACT)`로 표기한다. N별 regret은 보고만 한다. 한쪽이라도 1.0 %를 넘으면 `FAIL`.
 
 탐색(판정 없음) R3c: `G_DP ≠ G*`이면 G_DP로 다시 시뮬레이션해 h를 얻고 DP를 반복한다(최대 5회). 고정점 수렴·순환 여부와 각 격자의 config_search 탐색 ratio(재계산)를 보고한다.
@@ -170,6 +172,8 @@ cell마다 B2 입력: N, M = 8(해당 artifact의 `batch_size`), G = plan의 평
 
 ### R5′ (확증 대안, 제안 — §7 결정 D2)
 
+> **개정 1(§8.3)로 확증 항목으로 채택되고 계산 방법·기준이 구체화됐다.** 아래는 초판 제안이다.
+
 확률 법칙 대신 **결정론적 핵심을 요청 단위로** 적용한다. 각 turn-1 요청 R에 대해 server 로그의 `[PFX] [ALLOC]` 순서에서 T(같은 세션 turn 0)의 할당부터 R의 할당까지의 할당 수 A를 세고, T보다 먼저 할당된 항목 중 T 축출 시점에 running이던 수 `K_pin`을 요청 완료 시각(probe `done_s`, `request_id` join)으로 정한다. 예측 = (B1-1), 관측 = `cached_tokens > 0`.
 
 - 사전 예측: 전체 일치율 ≥ 0.97. 불일치는 (i) 즉시 복귀(gap ≈ 0) 요청의 release 시점 문제, (ii) `K_pin` 시점 판정이 초 단위 로그 시각에 걸리는 경우에 몰릴 것이다.
@@ -220,6 +224,77 @@ cell마다 B2 입력: N, M = 8(해당 artifact의 `batch_size`), G = plan의 평
 - **D2 — R5의 성격.** 권고: 확률적 확장 R5는 탐색으로 두고, 결정론적 핵심을 동시 run에 요청 단위로 적용하는 **R5′를 확증으로 추가**한다. 대안: (a) R5만 탐색으로 두고 R5′ 없음 — 동시 부하 모형의 확증이 multi-turn 실험까지 미뤄진다. (b) R5를 확증으로 — 비정상 workload에서 renewal 가정을 판정하게 되어 결과 해석이 불가능하다(비권고).
 - **D3 — dummy 모드.** 판정은 관측 근거가 있는 `PRE_EVICT`로 사전 고정하고 `RESERVED`는 병기만 한다(권고). [TASK69](TASK69.md) 스위치 정의를 바꾸는 일은 이 대조 뒤 별도 TASK로.
 
+## 8. 개정 1 — Advisor 지시문 02 반영 (2026-09-29, 대조 계산 전)
+
+이 절이 §1–§7과 충돌하면 이 절이 우선한다. **이 개정을 commit하기 전까지 R1–R5′의 대조 계산은 한 건도 수행하지 않았다.** 개정 전에 한 일은 데이터 형식·provenance 확인(아래 §8.3의 code-read와 server 인자 확인, TUNED artifact 확인)뿐이다.
+
+### 8.1 D1 — 원고 번호와 저장소 산출물의 대응 (Advisor 확인)
+
+| 원고 | 저장소 | 비고 |
+|---|---|---|
+| Table I (padding, decode device time, N=3..16) | `results/tables/T01`, `padding_ratio.json` | N=3·7은 두 측정 batch가 합산돼 있다 |
+| Table II (bucket 6 개입) | T02, [TASK54](TASK54.md) | |
+| Table III (8 vs 16 slot, 재사용 9/24 vs 24/24) | T03, [TASK35](TASK35.md) final-confirm N=8 | |
+| Table VI (N=6, padding 0.232→0.167, 재사용 18/18→14/18) | [TASK54](TASK54.md) grid-paired의 기존 격자 arm | 같은 절 "N=8 기존 격자 11/24 vs 7/24"도 TASK54. "대기 시간 동일 vs 세션별 7/24 vs 11/24"는 [TASK21](TASK21.md) |
+| Table IX / X / XII | T07 / T08 / T09 | |
+| Table XI (fixed-arrival 비교) | [TASK68](TASK68.md) 산출물 | T 파일 없음 |
+| Table XIII (slot 16·24·32 포화) | T10, [TASK40](TASK40.md) | |
+| III-B-c "같은 N=8 plan 10회, 7회 6/8·3회 5/8" | [TASK50](TASK50.md) null-channel N=8 | |
+| "S3의 21 run" | **[TASK58](TASK58.md)의 21 trial (TASK14 9 + TASK15 12)** | 원고 보충 S3의 `max(0, m−5)` 21/21. 같은 절 Table S4 10 run은 [TASK63](TASK63.md) |
+| 보충 S1·S2·S4·S5·S6·S7·S8·S9 | T12·S02·T13·T14·S06a·S06b·B01·S08 | 원고 S 번호와 파일 번호가 다르다 |
+
+원고의 식: (5) `T̂_prefill(q) = ceil(q/128)·(0.021206 + 6.399e-7·q)`, (6) `W_j = ∫ K_j(t) dt`, (9) `Ŵ = Σ_j T̂_prefill(q̂_j)·K̂_j`. B4 재구성은 (9)와 일치한다. **B4의 기대값 형태는 P와 K의 독립을 가정하며, 재사용 실패(긴 P)가 고부하(큰 K)에 몰려 공분산이 양일 가능성이 높다** — [MODEL_V0.md](MODEL_V0.md) B4 가정에 추가했다(식은 수정하지 않음).
+
+R1 모집단은 바뀌지 않는다(36 trial이 21 trial과 S4 10 run을 모두 포함). §0-5의 확인 요청은 해소됐다.
+
+### 8.2 R3 판정 기준 강화 (§R3 "판정 기준" 대체)
+
+- regret은 **격자 의존 항만**으로 계산한다: `cost_grid(G; h) = Σ h(n)·fixed(b_G(n))`, `regret_rel(h) = [cost_grid(G*; h) − cost_grid(G_DP; h)] / cost_grid(G*; h)`.
+- 효과 척도: `E(h) = [cost_grid(G_ref; h) − cost_grid(G*; h)] / cost_grid(G*; h)`, `G_ref = (1,2,4,8,16)`. `fixed`는 두 격자 모두 `interpolated_fixed_costs`(= `config_search.descriptor_for` 규칙)로 만든다.
+- **R3 `PASS` ⇔ R3a와 R3b(전체 합산) 모두 `regret_rel ≤ 0.25·E(h)`.** 한 항목에서 `E(h) ≤ 0`이면 그 항목은 `NOT_INFORMATIVE`로 보고하고 판정에서 뺀다(둘 다 그러면 R3 전체 `NOT_INFORMATIVE`). 격자가 같으면(`regret_rel = 0`) `PASS (EXACT)`.
+- **병기**: 원 기준(`regret_rel ≤ 1.0 %`, 분모에 intercept·marginal을 포함한 전체 decode 비용)의 결과. intercept·marginal은 RBLN descriptor 값.
+- **R3b provenance 확인(계산 전 완료)**: [TASK35](TASK35.md)·[TASK36](TASK36.md) TUNED arm의 `served_model_id`는 `Qwen3-4B-rbln-b16-s8192-d4-mb16`(meta 9+3건 전부)이고, 그 artifact의 `rbln_config.json`은 `batch_size 16`, `kvcache_num_blocks 16`, `decoder_batch_sizes [16, 10, 8, 6, 4, 1]`이다. 파일 mtime 2026-08-23 17:09:59로 두 run(08-23 18:35, 08-24)보다 앞선다. **확인됨 → R3b 계산 가능.**
+- 사전 예측(개정): R3a `PASS (EXACT)` 또는 PASS, R3b PASS. E(h)는 R3a·R3b 모두 양수(2–6 % 범위)로 예측한다. 확신 중간.
+- 실패 시 결론은 §R3과 같다.
+
+### 8.3 R5′ — 확증 항목으로 채택, 전제·방법·기준
+
+**전제 확인 (code-read·server 인자, 계산 전 완료).**
+
+1. `at_utc`: `experiments/npu/stage2/session_runner.py`의 모든 이력 버전(`37604b5`, `838a42d`, `f9cc106`, `980f0c7`, `f61bafe`)에서 `at_utc`는 **응답 수신(`done`) 직후, `emit` 직전**에 찍힌다 — 완료 시각에 가깝다. run별 runner 버전은 run 시작 시각 직전의 runner commit으로 정하며(run 디렉터리에 runner commit이 없는 run이 있다) 의미는 모든 버전에서 같다. run별 표는 TASK에 기록한다. **R5′는 `at_utc`를 쓰지 않는다**(아래 방법 참조).
+2. `--enable-prompt-tokens-details`: R5·R5′ 대상 7개 run 디렉터리의 server 로그 **160/160**에서 `enable_prompt_tokens_details: True`가 확인된다(nslots-sweep 44, null-channel 20, final-confirm 27, n6-reconfirm 9, batch-saturation 36, grid-paired mb 12·mb6 12). 따라서 이 run들의 `cached_tokens = 0`은 관측으로 취급한다. 단 runner의 `details.get("cached_tokens", 0)` 0 채움은 원칙 14와 충돌하는 잠재 결함이며 KNOWN_PITFALLS 추가 후보로 보고만 한다(runner 수정 없음). 응답에 `prompt_tokens_details`가 실제로 없었던 행은 jsonl에서 구별할 수 없으므로, 각 행의 server 로그 조회 결과(`[CACHE-HIT]`/`[CACHE-PARTIAL]`)와 교차 확인하고, 둘이 어긋나는 행은 `UNKNOWN`으로 둔다.
+
+**시각 정렬 — 쓰지 않는다.** R5′의 모든 판정은 **server EngineCore 로그의 파일 순서**만으로 한다. EngineCore는 단일 process이고 `[PFX]`·`[BUCKET]` 줄은 사건 순서대로 기록된다. client 시각(`sent_s`, `done_s`, `at_utc`)은 판정에 쓰지 않는다. client 행과 server 요청의 join은 `request_id`가 server `REQUEST=` 값의 strict prefix라는 성질([TASK18](TASK18.md))로 한다. 따라서 초 단위 시각 경계 문제는 구조적으로 생기지 않는다.
+
+**계산 방법 — (B1-1)의 사건 재생.** 입력은 server 로그의 `[PFX] [ALLOC] REQUEST=…`, `[PFX] [FREE-REQUEST] REQUEST=…`, `[BUCKET] request_nums=n` 세 종류뿐이다. **결과 줄(`[EVICTION]`, `[MAPPING-*]`, `[CACHE-*]`)은 입력에 쓰지 않는다.** C = artifact `batch_size`(= `kvcache_num_blocks`, 모델 이름의 `b8`/`b16`/…), 상한 = 같은 값.
+
+- `ALLOC(R)`: free가 0이면 할당 순서상 가장 이른 inactive 항목 1개 축출(admission 경로). 그 뒤 R의 새 항목을 active로 등록. **그 다음** R 세션의 이전 turn 항목이 아직 pool에 있으면 예측 = 재사용(할당 후 조회).
+- `FREE-REQUEST(R)`: R의 항목을 **즉시 inactive**로 둔다(release 규칙 = 즉시. 근거 [TASK63](TASK63.md) B.b0 상한 이탈, 계산 전 고정).
+- `[BUCKET] n`: `PRE_EVICT` 모드에서 `0 < n < 상한`이고 free가 0이며 inactive 항목이 있으면 가장 이른 inactive 1개 축출(dummy 경로).
+- `RESERVED` 모드(병기): `[BUCKET]`에서 축출하지 않고, `ALLOC` 시 `0 < (그 시점 active 수) < 상한`이면 free 요구량을 1 늘린다.
+- 이 재생은 각 축출 순간의 `K_pin`(T보다 오래된 active 항목)을 정확히 반영한 (B1-1)이다. 보조로 R의 lookup 시점 값 `A`(T의 ALLOC부터 R의 ALLOC까지 할당 수), 그 시점 `K_pin`으로 `survival.survives`를 호출한 닫힌 형태 예측도 계산해 재생 예측과의 일치율을 보고한다(판정 미사용).
+- 관측 = client `cached_tokens > 0`. server `[CACHE-HIT]`와 교차 확인.
+- 모집단 = 7개 run 디렉터리의 모든 turn ≥ 1 요청.
+- `UNDECIDABLE`: T 또는 R의 `ALLOC`을 join하지 못함, `OB_COUNT ≠ 1`, 재생 중 축출 대상이 없어 규칙이 정의되지 않음(inactive 0개인데 free 0). `UNKNOWN`: client 관측과 server 조회 결과가 어긋나는 행.
+
+**기준.** 모두 `PRE_EVICT` 재생 기준.
+
+- **R5′ `PASS` ⇔ run 디렉터리별 일치율(분모에서 `UNDECIDABLE`·`UNKNOWN` 제외) ≥ 0.95가 7개 run 모두에서 성립.** grid-paired는 mb·mb6를 별도 run으로 센다.
+- `UNDECIDABLE + UNKNOWN`이 전체 turn ≥ 1 요청의 5 %를 넘으면 `INCONCLUSIVE`.
+- 모든 불일치를 사전 범주로 분류한다. **(i) 즉시 복귀 release 시점**: release 규칙을 "다음 ALLOC의 축출 선택 뒤에 inactive"로 바꾼 재생에서 그 요청의 예측이 관측과 일치하게 되는 불일치. **(ii) 시각 경계**: client–server join이 모호해 판정이 갈리는 불일치(server 순서만 쓰므로 0건으로 예측). **(iii) 기타**. (iii)이 1건이라도 있으면 PASS여도 `PASS (미설명 k건)`으로 표기하고 사건 순서를 전부 보고한다.
+- `RESERVED` 재생의 일치율을 병기해 두 읽기의 적중을 비교한다(판정 미사용).
+- 원고 III-B-a의 "재사용 실패 73건"이 이 모집단의 부분집합으로 특정되면(관측 실패 수가 73인 run 조합을 찾는다) 그 73건의 모형 측 원인(창 안 할당 수 초과 / `K_pin` / dummy pre-evict / 기타)을 건별로 분류한다. 특정되지 않으면 `UNKNOWN`으로 보고한다.
+- 사전 예측: 전체 일치율 ≥ 0.97, run별 모두 ≥ 0.95. 범주 (ii) 0건. `PRE_EVICT` 일치율 > `RESERVED` 일치율.
+
+### 8.4 GPU 관련 기록 정정 (문서만)
+
+[TASK29](TASK29.md)의 GPU 측 block 문턱 계산은 할당 후 조회를 가정했으므로 GPU 기판의 사전 예측으로 **그대로 쓰지 않는다.** TASK29 원문은 수정하지 않는다. GPU 측 사전 예측은 **GPU 서버에 실제 설치될 vLLM 버전의 source-read로 순서를 다시 확인한 뒤 새로 선등록**한다. 현재 확인은 NPU 서버의 `vllm 0.22.0+cpu` 기준이다. INDEX 결정 4에 같은 내용을 추가했다.
+
+### 8.5 산출물 위치
+
+계산 산출물은 `results/npu/stage3/model_v0_retro/`(비추적). 판정 요약표는 `results/tables/M01`부터(추적). 대조 스크립트는 `experiments/npu/analysis/model_v0_retro.py`이며 `src/continuum/model/`을 import만 한다. **모형 수정이 필요해 보이면 그 항목 계산을 멈추고 보고한다.**
+
 ## 개정 이력
 
-- 2026-09-29 초판 (대조 계산 전).
+- 2026-09-29 초판 (대조 계산 전, commit `8c107a0`).
+- 2026-09-29 개정 1 (지시문 02, 대조 계산 전): §8 추가 — D1 대응표, R3 기준 강화(격자 의존 regret ≤ 0.25·E(h)), R5′ 확증 채택과 사건 재생 방법·기준·범주, GPU 기록 정정. 초판의 R3 기준은 병기용으로 격하.
