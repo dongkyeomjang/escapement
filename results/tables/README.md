@@ -115,8 +115,9 @@ done; done
 | M04 | 모형 v0 R4: 점유 분포 예측 대 관측 (탐색) | `M04.md` / `M04.csv` | `make_tables.py --table M04` | TASK72 | 0 | 0 |
 | M05 | 모형 v0 R5′·R5: 동시 run 재사용 | `M05.md` / `M05.csv` | `make_tables.py --table M05` | TASK72 | 3 | 0 |
 | M06 | 모형 v1 개발 집합 보정 (판정 없음) | `M06.md` / `M06.csv` | `make_tables.py --table M06` | TASK73 | 1 | 0 |
+| M07 | 시뮬레이터 의미론 스위치와 계통 오차 | `M07.md` / `M07.csv` | `make_tables.py --table M07` | TASK74 | 2 | 0 |
 | B01 | 구성 선정의 N 집합·score 민감도 | `B01.md` / `B01.csv` | `make_tables.py --table B01` | TASK61 | 2 | 0 |
 
-대조 합계 221건, 불일치 **0건**.
+대조 합계 223건, 불일치 **0건**.
 
 생성 시각과 commit은 `manifest.json`에 있다.

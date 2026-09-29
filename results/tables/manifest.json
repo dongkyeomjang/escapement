@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-29T17:29:29.963655+09:00",
-  "git_head": "e1f791eff6e4b65093248343a8246e9a8bbbfc2b",
-  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M experiments/npu/analysis/model_v0_retro.py\n M experiments/npu/analysis/model_v0_selfcheck.py\n M experiments/npu/substrate/rbln_ca25_vllm_rbln_0111.py\n M results/tables/README.md\n M src/continuum/substrate/descriptor.py\n?? .idea/\n?? docs/research/MODEL_V1.md\n?? experiments/npu/analysis/model_v1_dev.py\n?? results/tables/M06.csv\n?? results/tables/M06.md\n?? src/continuum/model/reference.py\n?? src/continuum/model/survival_v1.py",
+  "generated_at": "2026-09-29T17:33:37.618280+09:00",
+  "git_head": "86dcf37c25863fa2aa2623d3548659b1e3884644",
+  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n?? .idea/\n?? results/tables/M07.csv\n?? results/tables/M07.md",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -307,6 +307,17 @@
       ],
       "rows": 5,
       "checks": 1,
+      "mismatches": []
+    },
+    {
+      "id": "M07",
+      "title": "시뮬레이터 의미론 스위치와 계통 오차",
+      "tasks": "TASK74",
+      "inputs": [
+        "results/npu/stage3/sim_semantics/effect.json"
+      ],
+      "rows": 10,
+      "checks": 2,
       "mismatches": []
     },
     {
