@@ -71,6 +71,15 @@ def g1(bdir: Path) -> dict:
     checks["b_hit_mismatches"] = mism
     checks["b_pass"] = not mism
 
+    # Revision 1 (GPU_OBS_GATE_PREREG.md section 8): the server's startup warmup
+    # executes non-dummy steps before any request; (c) and (d) count from the
+    # first LOOKUP, and the warmup steps are reported separately.
+    first_line = lookups[0]["line"]
+    warm = [s for s in steps if s["line"] < first_line]
+    checks["warmup_steps_report_only"] = [
+        {k: s[k] for k in ("reqs", "toks", "maxq", "padded", "mode")} for s in warm]
+    steps = [s for s in steps if s["line"] > first_line]
+
     # c: total scheduled tokens
     exp_toks = sum(r["prompt_tokens"] - (r["cached_tokens"] or 0) + r["completion_tokens"] - 1
                    for r in reqs)
@@ -78,7 +87,7 @@ def g1(bdir: Path) -> dict:
     checks["c_tokens"] = {"expected": exp_toks, "observed": obs_toks}
     checks["c_pass"] = exp_toks == obs_toks
 
-    # d: sequential step count (steps logged before the first concurrent LOOKUP)
+    # d: sequential step count (between the first LOOKUP and the first concurrent LOOKUP)
     seq = [r for r in reqs if r["phase"] == "seq"]
     first_conc_line = lookups[len(seq)]["line"]
     seq_steps = [s for s in steps if s["line"] < first_conc_line]
@@ -88,7 +97,8 @@ def g1(bdir: Path) -> dict:
     checks["d_pass"] = exp_steps == len(seq_steps)
 
     # e: dispatch mapping on every step
-    bad = [s for s in steps if (s["padded"], s["mode"]) != expected_step(s["toks"], s["maxq"])]
+    bad = [s for s in steps + warm
+           if (s["padded"], s["mode"]) != expected_step(s["toks"], s["maxq"])]
     checks["e_mapping_violations"] = bad[:20]
     checks["e_n_violations"] = len(bad)
     checks["e_pass"] = not bad

@@ -55,9 +55,17 @@ def base_args(*, num_gpu_blocks: int, max_num_seqs: int, max_num_batched_tokens:
     return args + (extra or [])
 
 
-def kv_events_args(port: int = 5557) -> list[str]:
+# vLLM's publisher binds only for "*", ipc:// or inproc:// endpoints and connects
+# otherwise (vllm/distributed/kv_events.py:387-397). A tcp://127.0.0.1 endpoint
+# made both sides connect and nothing arrived (GTASK03 first gate run). An ipc
+# socket binds on the server side and stays local to this host.
+KV_IPC_DIR = Path("/home/csdc/kyeom/envs/ipc")
+KV_ENDPOINT = f"ipc://{KV_IPC_DIR}/kv_events.ipc"
+
+
+def kv_events_args(endpoint: str = KV_ENDPOINT) -> list[str]:
     cfg = {"enable_kv_cache_events": True, "publisher": "zmq",
-           "endpoint": f"tcp://127.0.0.1:{port}", "topic": ""}
+           "endpoint": endpoint, "topic": ""}
     return ["--kv-events-config", json.dumps(cfg)]
 
 
@@ -114,7 +122,7 @@ class Lifecycle:
     """Context manager: start server (and collector), yield, stop by PID."""
 
     def __init__(self, out_dir: Path, server_args: list[str], *, obs: bool,
-                 kv_events: bool, port: int = 8100, kv_port: int = 5557,
+                 kv_events: bool, port: int = 8100, kv_endpoint: str = KV_ENDPOINT,
                  ready_timeout_s: int = 900, extra_env: dict | None = None):
         if not Path(out_dir).is_absolute():
             raise ValueError("out_dir must be absolute (KNOWN_PITFALLS 1)")
@@ -126,7 +134,7 @@ class Lifecycle:
         self.obs = obs
         self.kv_events = kv_events
         self.port = port
-        self.kv_port = kv_port
+        self.kv_endpoint = kv_endpoint
         self.ready_timeout_s = ready_timeout_s
         self.extra_env = extra_env or {}
         self.base = f"http://127.0.0.1:{port}"
@@ -179,9 +187,13 @@ class Lifecycle:
         except OSError:
             pass
         if self.kv_events:
+            KV_IPC_DIR.mkdir(parents=True, exist_ok=True)
+            sock = Path(self.kv_endpoint.removeprefix("ipc://"))
+            if sock.exists():
+                sock.unlink()
             self.col = subprocess.Popen(
                 [str(VENV / "bin/python"), str(COLLECTOR), "--endpoint",
-                 f"tcp://127.0.0.1:{self.kv_port}", "--out", str(self.out / "kv_events.jsonl")],
+                 self.kv_endpoint, "--out", str(self.out / "kv_events.jsonl")],
                 stdout=open(self.out / "collector.log", "w"), stderr=subprocess.STDOUT, env=env)
             self.meta["collector_pid"] = self.col.pid
         log = open(self.out / "server.log", "w")

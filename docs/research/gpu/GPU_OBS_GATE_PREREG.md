@@ -67,3 +67,21 @@ preemption 구조적 불가 확인: 가용 2,047 block ≥ `max_num_seqs 8 × ce
 
 - G2 elapsed 중앙값 비는 1.00–1.03(로그 1줄/step ≈ 수십 µs 대 step ≈ 10 ms). KV events publisher는 별도 thread라 server CPU 증가는 수 % 이내.
 - 동시 요청의 prompt가 첫 16 token을 공유하면 같은 step에 admission된 뒤 요청이 앞 요청의 block에 hit할 수 있다(`allocate_slots`가 할당 시점에 full block을 캐시로 등록, `kv_cache_manager.py:421–425`). (b)는 로그·응답의 일치만 보므로 영향 없다.
+
+## 개정 1 (2026-09-29, 첫 관문 실행 뒤 — 원 기준의 실패를 먼저 기록한다)
+
+**첫 실행**: `results/gpu/obs_gate/20260929T0927Z/`, 선등록 `3eebb02`(09:26:42 UTC) 뒤 09:26:47–09:28:39 UTC. **원 기준 판정: G1 `FAIL`, G2 `PASS`, G3 `PASS`.** G1의 (a)(b)(e)는 통과, 실패는 셋이다.
+
+| 항목 | 원 기준 결과 | 원인 (확인된 사실) |
+|---|---|---|
+| (c) Σ toks | 기대 5,127, 관측 5,151 (+24) | server 기동의 `warmup model` 단계가 **요청 없이** `execute_model`을 non-dummy로 2회 실행했다(`reqs=8 toks=16 NONE`, `reqs=8 toks=8 FULL`, 첫 `LOOKUP` 전). 선등록이 이 step을 예상하지 못했다. 요청 15건은 요청별 step 수·token 수가 **15/15 정확히** 맞았다 |
+| (d) 순차 step 수 | 기대 243, 관측 245 (+2) | 같은 warmup 2 step |
+| (f) KV events | batch 0개 | **collector 설정 오류.** vLLM publisher는 endpoint에 `*`·`ipc://`·`inproc://`가 있을 때만 bind하고 그 외에는 connect한다(`vllm/distributed/kv_events.py:387–397`). `tcp://127.0.0.1:5557`로 주어 publisher와 collector가 **둘 다 connect**했다 |
+
+어느 것도 patch 로그의 의미론 오류가 아니다. 지시문 §4에 따라 이 실패 상태로는 GTASK04·05 측정을 하지 않는다. 아래 개정 뒤 관문 sequence 전체(A → apply → B → revert → 판정)를 **다시 실행**한다.
+
+**개정 내용** (기준 완화가 아니라 누락 사실 반영과 설정 교정):
+
+1. (c)(d)는 **첫 `LOOKUP` 이후**의 `GSTEP`만 센다. 첫 `LOOKUP` 이전 step은 `warmup_steps_report_only`로 따로 보고하고, (e)의 사상 규칙 검사에는 포함한다. (c)(d)의 식은 그대로다.
+2. KV events endpoint를 `ipc:///home/csdc/kyeom/envs/ipc/kv_events.ipc`로 바꾼다(server bind, host 밖으로 노출되지 않음). collector는 같은 ipc에 connect. collector decode는 vLLM의 실제 `KVEventBatch`·`BlockStored`·`BlockRemoved`로 encode한 message로 사전 smoke test했다(2 batch·4 event 정상 decode, 측정 아님).
+3. (a)(b)(e)(f)·G2·G3의 기준은 **바꾸지 않는다.** G2는 KV events가 실제로 발행되는 상태에서 다시 재므로 재실행 결과로 판정한다(첫 실행 G2 값은 함께 보고).
