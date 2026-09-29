@@ -107,6 +107,18 @@ class SimConfig:
     admit, so nothing produced before this switch existed is affected.
     """
 
+    release_rule: str = "deferred"
+    """When a finished request's outer block becomes evictable. ``deferred``
+    is the behaviour every earlier task was computed with; ``immediate`` is
+    the rule TASK72 found on the measured substrate. A switch, not a default."""
+
+    dummy_mode: str = "off"
+    """``off`` (every earlier task), ``reserved`` (same as ``dummy_block``:
+    one slot held at admission while the batch is partial, TASK69) or
+    ``pre_evict`` (TASK63's observed behaviour: on each decode step with
+    ``0 < running < max_running_requests`` evict the oldest inactive block if
+    none is free; the next admission takes it)."""
+
     admission_priority: tuple[int, ...] = ()
     """Session indices in the order simultaneous arrivals should be admitted.
 
@@ -130,6 +142,16 @@ class SimConfig:
             raise ValueError("return_budget_s must be non-negative")
         if self.cache_granularity not in ("outer", "inner"):
             raise ValueError(f"unknown cache_granularity {self.cache_granularity!r}")
+        if self.release_rule not in ("deferred", "immediate"):
+            raise ValueError(f"unknown release_rule {self.release_rule!r}")
+        if self.dummy_mode not in ("off", "reserved", "pre_evict"):
+            raise ValueError(f"unknown dummy_mode {self.dummy_mode!r}")
+        if self.dummy_block and self.dummy_mode not in ("off", "reserved"):
+            raise ValueError("dummy_block=True is the 'reserved' mode; do not combine "
+                             "it with another dummy_mode")
+        if (self.release_rule != "deferred" or self.dummy_mode != "off") and \
+                self.cache_granularity != "outer":
+            raise ValueError("release_rule and dummy_mode describe the outer block pool")
         if self.dummy_block and self.cache_granularity != "outer":
             raise ValueError(
                 "dummy_block describes the outer block pool; it has no meaning "
@@ -295,7 +317,15 @@ def simulate(
                             policy=policy_name)
     else:
         pool = OuterBlockPool(capacity=descriptor.outer_slot_count,
-                              policy=policy_name)
+                              policy=policy_name,
+                              immediate_release=config.release_rule == "immediate")
+    reserved_dummy = config.dummy_block or config.dummy_mode == "reserved"
+    pre_evict = config.dummy_mode == "pre_evict"
+
+    def _padding_step(actual: int) -> None:
+        # TASK63: the padding request exists only while the batch is partial.
+        if pre_evict and 0 < actual < config.max_running_requests:
+            pool.pre_evict()
 
     counter = itertools.count()
     pending: list[_Pending] = []
@@ -476,7 +506,7 @@ def simulate(
             blocks = (pool.blocks_for(p.prompt_tokens)
                       if isinstance(pool, GranularPool)
                       else descriptor.outer_slots_for(p.prompt_tokens))
-            if config.dummy_block:
+            if reserved_dummy:
                 # The padding block is live exactly while the decode batch is
                 # partial: not at an empty batch, not at the ceiling (TASK63).
                 pool.reserved = int(0 < len(running) < config.max_running_requests)
@@ -495,6 +525,7 @@ def simulate(
                         )
                     continue
                 actual = len(running)
+                _padding_step(actual)
                 bucket = descriptor.bucket_for(actual)
                 dur = descriptor.step_time_s(actual)
                 steps.append(StepRecord(kind="decode", start_s=t, duration_s=dur,
@@ -549,6 +580,7 @@ def simulate(
 
         if running:
             actual = len(running)
+            _padding_step(actual)
             bucket = descriptor.bucket_for(actual)
             dur = descriptor.step_time_s(actual)
             steps.append(StepRecord(

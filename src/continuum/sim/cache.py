@@ -65,6 +65,12 @@ class OuterBlockPool:
     slot is how that shows up in the pool's arithmetic. Left at zero, which is
     the state every earlier task's numbers were produced in.
     """
+    immediate_release: bool = False
+    """``False`` (every earlier task): a finished request's block becomes
+    evictable only at the next admission, after that admission has chosen its
+    victim (TASK24). ``True``: evictable at release, which is what TASK72's
+    event replay found on the measured substrate (1,298/1,298 against 0.934
+    for the deferred rule)."""
     entries: dict[int, Entry] = field(default_factory=dict)
     evictions: list[Eviction] = field(default_factory=list)
     _next_order: int = 0
@@ -171,11 +177,30 @@ class OuterBlockPool:
     def release(self, session_key: str) -> None:
         """A request finished: its blocks stay cached but become evictable.
 
-        The transition is deferred to the next admission, after that
-        admission has already chosen its eviction victim. See the module
-        docstring for why the lag is load-bearing rather than cosmetic.
+        By default the transition is deferred to the next admission, after
+        that admission has already chosen its eviction victim. With
+        ``immediate_release`` it happens now.
         """
         self._pending_release.append(session_key)
+        if self.immediate_release:
+            self.settle()
+
+    def pre_evict(self, by_session: str = "<padding>") -> Eviction | None:
+        """The padding request of a partial decode step (TASK63): when no block
+        is free, evict the oldest inactive one so a free block exists. Nothing
+        is allocated; the next admission takes that block without evicting.
+        Returns the eviction, or ``None`` when nothing had to (or could) go."""
+        if self.free_count > 0:
+            return None
+        inactive = sorted(self._inactive(), key=self._victim_order)
+        if not inactive:
+            return None
+        v = inactive[0]
+        del self.entries[v.block_id]
+        ev = Eviction(victim_session=v.session_key, block_id=v.block_id,
+                      by_session=by_session)
+        self.evictions.append(ev)
+        return ev
 
 
 @dataclass
