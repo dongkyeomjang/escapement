@@ -13,7 +13,9 @@
 
 ## 현재 상태
 
-GPU 기판 착수 단계(Stage 0). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. Stage 0 선등록은 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md), 실행·판정은 [GTASK02](GTASK02.md)다.
+**GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
+
+**Advisor 결정 대기**: (1) step 단위 격자 관측 수단(v1 runner + `VLLM_USE_FLASHINFER_SAMPLER=0` 또는 `CUDA_HOME` 지정 / v2 observation-only patch), (2) `SubstrateDescriptor` 확장(`src/continuum/`, 이 branch에서 수정 금지), (3) GPU 간섭 통제(`EXCLUSIVE_PROCESS`·persistence mode, root 필요).
 
 **환경 요약**: RTX A6000 × 3 (48 GiB, cc 8.6), driver 580.178.04, venv `/home/csdc/kyeom/envs/vllm-0.22.0`(Python 3.12.13, torch 2.11.0+cu130), `HF_HOME=/mnt/nvme/hf`. 계정 1개, 조사 시점 GPU 전부 idle.
 
@@ -35,8 +37,8 @@ GPU 기판 착수 단계(Stage 0). [GTASK01](GTASK01.md)에서 환경 inventory,
 | Task | 상태 | 제목 | 간략 설명 |
 |---|---|---|---|
 | [GTASK01](GTASK01.md) | DONE | A6000 기판 착수: inventory, vLLM 0.22.0 설치, source 감사 | 환경 inventory와 간섭 위험 판단, 격리 venv에 `vllm 0.22.0` 설치, NPU와 같은 revision의 model download(byte 일치), 조회·할당 순서·회수·hit·용량·preemption·격자·chunked prefill·비요청 소비자·관측 수단 9항목 source 감사 |
-| [GTASK02](GTASK02.md) | IN_PROGRESS | GPU Stage 0 기능 확인과 descriptor 초안 | 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) 후 L1·L2·L3 serving lifecycle 실행 |
+| [GTASK02](GTASK02.md) | DONE | GPU Stage 0 기능 확인과 descriptor 초안 | 선등록 C0–C5 전부 충족으로 **Stage 0 `PASS`**. override 16,034→2,048 block, 격자 `[1,2,4,6,8]` 반영, hit 5/5, 생성 token 캐시(H5 1,024), v2 runner에서 cudagraph 통계 없음, v1 runner는 `nvcc` 부재로 기동 실패. descriptor 초안과 적합성 문제 11건 |
 
 ## 다음 작업
 
-GTASK02 완료 후에는 Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다.
+Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. 권고 후보: (1) GPU step 비용 측정 선등록(FULL·PIECEWISE·eager 세 곡선, 관측 수단 결정 선행), (2) GPU 생존 곡선 사전 예측 선등록(GTASK01·02로 확정된 파라미터로 [TASK29](../TASK29.md) 축 ①을 새로 계산).
