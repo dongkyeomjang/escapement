@@ -76,9 +76,13 @@ def lifecycle_metrics(run: Path) -> dict:
             alloc_line.setdefault(e["req"], e["line"])
         elif e["kind"] == "LOOKUP":
             lookup_hit.setdefault(e["req"], e["hit"])
+    # client id is a strict prefix of the server id followed by "-"
+    # (non-streaming "cmpl-X-0" and streaming "cmpl-X" both map to "cmpl-X-0-Y")
     sid_of = {}
     for sid in alloc_line:
-        sid_of.setdefault(sid.rsplit("-", 1)[0], sid)
+        parts = sid.split("-")
+        for k in range(2, len(parts)):
+            sid_of.setdefault("-".join(parts[:k]), sid)
     # reusable tokens from the session's previous row
     by_sess: dict[str, list] = {}
     for r in rows:

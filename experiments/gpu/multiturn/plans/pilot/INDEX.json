@@ -1,0 +1,38 @@
+[
+  {
+    "plan_id": "gpilot-n22-r0",
+    "kind": "pilot",
+    "n": 22,
+    "rep": 0,
+    "seed": 20262500,
+    "cycle_s": 6.442,
+    "content_sha256": "b9f6f9db4664abd7bdea1a8d5cf2b8833abeb943191a5796a29adf84121bb3ee",
+    "file_sha256": "eb33e34484775cd99d7dec9996d7b8f017777382b804d07ecbbce9ec46a4786f",
+    "max_context": 3137,
+    "preemption_blocks_needed": 1577
+  },
+  {
+    "plan_id": "gpilot-n22-r1",
+    "kind": "pilot",
+    "n": 22,
+    "rep": 1,
+    "seed": 20262501,
+    "cycle_s": 6.467,
+    "content_sha256": "d0bf99000a55faa45117d53ab41ddc27cd384463b4974a6fa751decd8d7b14ae",
+    "file_sha256": "f2dd6261f3001c8c3d795554f32ed590abec2a482ab97477aa4829fbb5485992",
+    "max_context": 3100,
+    "preemption_blocks_needed": 1553
+  },
+  {
+    "plan_id": "gpilot-n22-r2",
+    "kind": "pilot",
+    "n": 22,
+    "rep": 2,
+    "seed": 20262502,
+    "cycle_s": 6.233,
+    "content_sha256": "3c08fab4545d24593eb80efb73359f201b1f67181fd987f3916457e9648da95a",
+    "file_sha256": "c566e9e6752c7944a4ca71ad7a40670bd67f7c5743844188d894b53efc393b84",
+    "max_context": 3066,
+    "preemption_blocks_needed": 1537
+  }
+]

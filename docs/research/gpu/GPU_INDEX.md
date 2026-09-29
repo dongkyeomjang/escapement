@@ -46,6 +46,7 @@
 | [GTASK06](GTASK06.md) | DONE | descriptor 구조 요구사항 정리 (두 기판 공통 표현) | 코드 변경 0. 층 목록·`reuse_layer`·규칙 field 5개(축출 기준, 창 시작, 요청 내부 손실 순서, 조회·할당 순서, 캐시 대상)·`value_source`·`grid_unit` 등 11개 묶음을 NPU 값·GPU 값과 함께 [DESCRIPTOR_REQUIREMENTS.md](DESCRIPTOR_REQUIREMENTS.md)에 정리. GPU step 비용 값은 GTASK05 대기 |
 | [GTASK07](GTASK07.md) | DONE | GPU multi-turn 설계: token id prompt, runner, GPU 의미론 예측기 | merge `fe8a4df`(TASK75–80). NPU 설계 대비 바뀐 15개 항목([GPU_MULTITURN_DESIGN.md](GPU_MULTITURN_DESIGN.md)). streaming token id prompt·`return_token_ids` 기능 확인 6/6(생성 token까지 hit 식 일치). `continuum.sim`은 GPU 의미론을 표현할 수 없어 `experiments/gpu/multiturn/`에 시뮬레이터(LRU·FIFO)·해석 v1 GPU 인스턴스·비용 모형 작성. neutral `lru_block_survival` underflow(평균 > 745) 발견·wrapper 우회 |
 | [GTASK08](GTASK08.md) | DONE | GPU multi-turn 구성·pool blind 선정 | 측정 없이 모형으로 선정. 확증 N = 20·22·24, BASE pool 1,900(preemption 불가 하한 1,857)/격자 (1,2,4,8,16), POOL 2,300, POOL+GRID (1,5,7,8,16), `max_num_seqs` 8. 원 규칙 5(상한 0.85) 해 없음 → 개정 1(상한 0.90). 재사용 압력은 포화 근처에서만 생기고 N=26에서 붕괴(sim 0.37, 해석 0.78) |
+| [GTASK09](GTASK09.md) | DONE | GPU multi-turn 본 실험 blind 예측·판정 기준 선등록, 파일럿 선등록 | plan 20(N 20·22·24 확증, 26 탐색)+파일럿 3. 세 예측기 × 두 bound. LRU−FIFO 재사용 차 0.08–0.17(9/9 cell) → 판별 가능. POOL/BASE 비 0.96–0.99(해상도 경계). §2.1 구간 영향 ≤ 0.04 %(재도착 혼합 step은 대부분 eager). 계기 점검에서 id join 오류 수정 |
 
 ## 다음 작업
 
