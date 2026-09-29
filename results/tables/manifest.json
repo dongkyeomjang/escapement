@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-29T16:32:16.022638+09:00",
-  "git_head": "1728f0d7322ca62093371f2c79486d7e1eefed61",
-  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n?? .idea/\n?? experiments/npu/analysis/model_v0_retro.py\n?? results/tables/M01.csv\n?? results/tables/M01.md\n?? results/tables/M02.csv\n?? results/tables/M02.md\n?? results/tables/M03.csv\n?? results/tables/M03.md\n?? results/tables/M04.csv\n?? results/tables/M04.md\n?? results/tables/M05.csv\n?? results/tables/M05.md",
+  "generated_at": "2026-09-29T17:33:37.618280+09:00",
+  "git_head": "86dcf37c25863fa2aa2623d3548659b1e3884644",
+  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n?? .idea/\n?? results/tables/M07.csv\n?? results/tables/M07.md",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -296,6 +296,28 @@
       ],
       "rows": 7,
       "checks": 3,
+      "mismatches": []
+    },
+    {
+      "id": "M06",
+      "title": "모형 v1 개발 집합 보정 (판정 없음)",
+      "tasks": "TASK73",
+      "inputs": [
+        "results/npu/stage3/model_v1_dev/dev.json"
+      ],
+      "rows": 5,
+      "checks": 1,
+      "mismatches": []
+    },
+    {
+      "id": "M07",
+      "title": "시뮬레이터 의미론 스위치와 계통 오차",
+      "tasks": "TASK74",
+      "inputs": [
+        "results/npu/stage3/sim_semantics/effect.json"
+      ],
+      "rows": 10,
+      "checks": 2,
       "mismatches": []
     },
     {

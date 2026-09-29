@@ -187,12 +187,27 @@ class SubstrateDescriptor:
     prefill_cost_model: PrefillCostModel | None = None
     """Set when prefill is known to run exclusively. ``None`` means the
     substrate has not been measured for it, not that prefill is free."""
+    release_rule: str | None = None
+    """When a finished request's cache entry becomes evictable: ``immediate``
+    (at release) or ``deferred`` (only after the next admission has chosen its
+    victim). ``None`` means not measured."""
+    dummy_mode: str | None = None
+    """How a non-request padding block uses the pool: ``none``, ``pre_evict``
+    (points at a free slot during a partial decode step, evicting one if none
+    is free; the next admission takes that slot) or ``reserved`` (holds a slot
+    at admission time). ``None`` means not measured."""
+    resume_allocates_first: bool | None = None
+    """Whether an admitted request takes its own slot before looking up its
+    prefix. ``None`` means not established."""
     provenance: Mapping[str, Provenance] = field(default_factory=dict)
     notes: tuple[str, ...] = ()
 
     #: Fields that describe the substrate and therefore require provenance.
     _UNATTRIBUTED = frozenset({"name", "provenance", "notes"})
-    _OPTIONAL = frozenset({"prefill_cost_model"})
+    _OPTIONAL = frozenset({"prefill_cost_model", "release_rule", "dummy_mode",
+                           "resume_allocates_first"})
+    _RELEASE_RULES = frozenset({"immediate", "deferred"})
+    _DUMMY_MODES = frozenset({"none", "pre_evict", "reserved"})
 
     def __post_init__(self) -> None:
         if not self.bucket_sizes:
@@ -217,6 +232,10 @@ class SubstrateDescriptor:
                 "hit_formula.block_tokens must equal inner_block_tokens "
                 f"({self.hit_formula.block_tokens} != {self.inner_block_tokens})"
             )
+        if self.release_rule is not None and self.release_rule not in self._RELEASE_RULES:
+            raise ValueError(f"unknown release_rule {self.release_rule!r}")
+        if self.dummy_mode is not None and self.dummy_mode not in self._DUMMY_MODES:
+            raise ValueError(f"unknown dummy_mode {self.dummy_mode!r}")
         missing = [
             f.name
             for f in fields(self)

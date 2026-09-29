@@ -1077,6 +1077,69 @@ def m05_retro_r5():
     return header, rows, notes, ck, (header2, rows2)
 
 
+def m06_v1_dev_calibration():
+    """모형 v1 개발 집합 보정 (TASK73, 판정 없음)."""
+    ck = Check()
+    dev = load(REPO / "results/npu/stage3/model_v1_dev/dev.json")["summary"]
+    labels = {"v1_log": "v1 (기록된 초기 상태)", "v1_ss": "v1 (steady state)",
+              "v0_bin": "v0 binomial", "v0_poi": "v0 poisson"}
+    header = ["모형", "Brier", "예측 합", "관측 합"] + \
+        [f"[{b['lo']:.1f},{b['hi']:.1f})" for b in dev["models"]["v1_log"]["bins"]]
+    rows = []
+    for k, lab in labels.items():
+        m = dev["models"][k]
+        cells = [("—" if b["n"] == 0 else f"{b['obs_rate']:.2f} (n={b['n']})") for b in m["bins"]]
+        rows.append([lab, f"{m['brier']:.4f}", f"{m['sum_pred']:.1f}", str(m["sum_obs"])] + cells)
+    rows.append(["기후값", f"{dev['brier_climatology']:.4f}", "—", "—"] + [""] * 10)
+    ck.eq("정확 추적기 일치 (재도착 전체)", dev["exact_agree"], dev["n_requests"],
+          source="TASK72 R5′ 1,298/1,298")
+    notes = ["**개발 집합이며 판정하지 않는다** — v1은 이 데이터를 본 뒤 만들었다.",
+             f"평가 {dev['n_scored']}건(gap 평균 0인 cell {dev['n_unscored_zero_gap']}건 제외). "
+             "구간 칸은 '관측 생존 비율 (n)'.",
+             "이 run들은 세션당 2요청·동시 시작이라 renewal·Poisson 가정이 깨진다."]
+    return header, rows, notes, ck
+
+
+def m07_sim_semantics():
+    """시뮬레이터 의미론 스위치와 계통 오차 (TASK74)."""
+    ck = Check()
+    d = load(REPO / "results/npu/stage3/sim_semantics/effect.json")
+    combos = ["deferred/off", "immediate/off", "deferred/pre_evict", "immediate/pre_evict",
+              "deferred/reserved"]
+    cells = sorted({(r["seed"], r["N"], r["arm"]) for r in d["rows"]},
+                   key=lambda x: (x[0], x[1], x[2]))
+    header = ["seed", "N", "arm", "실측 비"] + [f"e {c}" for c in combos]
+    rows = []
+    for seed, n, arm in cells:
+        sel = {f"{r['release']}/{r['dummy']}": r for r in d["rows"]
+               if (r["seed"], r["N"], r["arm"]) == (seed, n, arm)}
+        rows.append([str(seed), str(n), arm, f"{sel['deferred/off']['measured_ratio']:.4f}"]
+                    + [f"{sel[c]['e']:+.4f}" for c in combos])
+    rows.append(["평균 |e|", "", "", ""] + [f"{d['summary'][c]['mean_abs_e']:.5f}" for c in combos])
+    rows.append(["양수 e", "", "", ""] + [f"{d['summary'][c]['positive_e']}/8" for c in combos])
+    header2 = ["seed", "N", "실측 BASE 재사용"] + [f"sim {c}" for c in combos]
+    rows2 = []
+    for seed, n in sorted({(b["seed"], b["N"]) for b in d["baseline"]}):
+        sel = {f"{b['release']}/{b['dummy']}": b for b in d["baseline"]
+               if (b["seed"], b["N"]) == (seed, n)}
+        m = sel["deferred/off"]
+        rows2.append([str(seed), str(n), f"{m['measured_reuse']}/{m['measured_total']}"]
+                     + [f"{sel[c]['sim_reuse']}/{sel[c]['resume']} (축출 {sel[c]['sim_evictions']})"
+                        for c in combos])
+    ck.eq("기존 조합 평균 |e| (반올림 4자리)",
+          round(d["summary"]["deferred/off"]["mean_abs_e"], 4), 0.0169, tol=5e-5,
+          source="S08 off 열 8건 평균")
+    ck.eq("reserved 조합 = TASK69 on 평균 |e| (반올림 4자리)",
+          round(d["summary"]["deferred/reserved"]["mean_abs_e"], 4), 0.0284, tol=1e-4,
+          source="S08 on 열 8건 평균 0.02845")
+    notes = [f"판정 {d['verdict']} — 기준 C1 {d['criteria']['C1_mean_abs_e_down']}, "
+             f"C2 {d['criteria']['C2_baseline_3of4']}, C3 {d['criteria']['C3_reduction_ge_25pct']} "
+             "(SIM_SEMANTICS_PREREG.md, 선등록 `86dcf37`).",
+             "e = 실측 A′ 비 − 시뮬레이터 비. 양수 = 절감 과대 예측.",
+             "기본값(`deferred`/`off`)은 바꾸지 않았다."]
+    return header, rows, notes, ck, (header2, rows2)
+
+
 # -- registry ----------------------------------------------------------------
 
 TABLES = {
@@ -1141,6 +1204,10 @@ TABLES = {
             ["results/npu/stage3/model_v0_retro/r4.json"]),
     "M05": (m05_retro_r5, "모형 v0 R5′·R5: 동시 run 재사용", "TASK72",
             ["results/npu/stage3/model_v0_retro/r5p.json", "results/npu/stage3/model_v0_retro/r5.json"]),
+    "M06": (m06_v1_dev_calibration, "모형 v1 개발 집합 보정 (판정 없음)", "TASK73",
+            ["results/npu/stage3/model_v1_dev/dev.json"]),
+    "M07": (m07_sim_semantics, "시뮬레이터 의미론 스위치와 계통 오차", "TASK74",
+            ["results/npu/stage3/sim_semantics/effect.json"]),
     "B01": (b01_config_search_sensitivity, "구성 선정의 N 집합·score 민감도", "TASK61",
             ["results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"]),
 }
