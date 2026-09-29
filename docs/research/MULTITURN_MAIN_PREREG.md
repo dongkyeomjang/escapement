@@ -2,6 +2,8 @@
 
 작성: 2026-09-29, Advisor 지시문 04 작업 D. **본 측정은 하지 않았다.** 이 문서는 Advisor 검토 후 지시문 05에서 측정할 실험의 plan·예측·판정 기준을 측정 전에 고정한다. 기준은 **제안**이며, Advisor가 바꾸면 측정 전에 개정 commit한다.
 
+**개정 2 (2026-09-30, Advisor 지시문 05, 측정 전)**: §1–§6의 기준은 Advisor가 채택했다. 영(null) 예측기 대비 skill 조건 추가, DP 격자 결정(N = 8만), 측정 순서·재실행·모집단 규칙은 **[§7 개정 2](#7-개정-2-2026-09-30-지시문-05-측정-전)** 이 §1–§6보다 우선한다.
+
 ## 1. plan (고정)
 
 - N ∈ {6, 8, 10, 12}, replicate r = 0..4, **seed `20261400 + 10N + r`**, plan_id `main-n{N}-r{r}`. 생성 규칙은 `make_plan.py`(K = 8, 첫 prompt U(800,1600), 이후 segment 8, 생성 U(32,256), gap `toolmix` 상한 60 s, slot당 세션 16개)와 [TASK77](TASK77.md)의 `generate_plan`. `cycle_s`(엇갈림·구간 규칙)는 해석 모형의 TUNED 예측값.
@@ -131,6 +133,56 @@ lifecycle 검사(파일럿과 같음: runner exit 0, `stopped_by = window`, 고�
 
 60 lifecycle × 파일럿 실측 lifecycle 시간(3.5–4.2 분, [TASK79](TASK79.md)) ≈ **3.5–4.2 h** (DP 격자 N개당 +5 lifecycle ≈ +0.3 h; 권고안 (a) N=6·8 compile이면 70 lifecycle ≈ 4.1–4.9 h, compile 2회 ≈ 16 분 추가). 재시도 여유 ×1.5를 두어도 하루 안에 끝난다.
 
+## 7. 개정 2 (2026-09-30, 지시문 05, 측정 전)
+
+### 7.1 문제
+
+N = 6·8의 예측 비용 비가 0.97–0.99이고 파일럿 짝 ratio 산포가 0.998–1.023이라, §5.2 기본 기준(|예측 − m| ≤ 0.03)은 "모든 비 = 1.0"이라는 정보 없는 예측기도 통과할 수 있다. §5.1도 재사용률이 좁은 범위에 몰리면 상수 예측기가 통과할 수 있다. 기존 기준은 그대로 두고, 확증 판정에 **영 예측기 대비 skill 조건을 AND로** 붙인다.
+
+### 7.2 영 예측기 (전부 측정 전 확정)
+
+값과 출처: `experiments/npu/stage3/plans/main/NULL_PREDICTORS.json`(`null_predictors.py` 산출, SHA256 `1e7e38ac…3ac690`).
+
+| 항목 | 영 예측기 | 값 |
+|---|---|---|
+| §5.1 재사용률 | 개발 집합([TASK73](TASK73.md) A4) 합산 생존율, 모든 cell 같은 상수 | **0.67635** = 675/998 (A4 채점 모집단 = 기후값 Brier의 base rate) |
+| §5.2 비용 비 | 모든 cell 1.0 | 1.0 |
+| §5.6 h(n) | 원고 Table I 조건(T01, 격자 (1,2,4,8), AGENTIC)의 같은 N 관측 h — `padding_ratio.json`의 그 격자·N cell을 step 수로 합산(T01과 같은 합산) | N=6 TASK20(2,193 step), N=8 TASK19+TASK20+TASK23-2a(5,677), N=10 TASK20(1,896), N=12 TASK20(1,797, 탐색 전용). 합산 padding이 T01 값(0.120·0.163·0.152·0.098)과 일치함을 스크립트가 assert |
+
+### 7.3 skill 조건과 최종 판정
+
+- **§5.1 skill**(해석 v1): 확증 cell 전체에서 `MAE(해석) ≤ 0.5 × MAE(영)`. 확증 cell 관측 재사용률의 범위(max − min) < 0.10이면 `NOT_INFORMATIVE`.
+- **§5.2 skill**(예측기별): 확증 cell 전체에서 `Σ|예측 − m| ≤ 0.5 × Σ|1 − m|`. `Σ|1 − m| / cell 수 < 0.01`이면 `NOT_INFORMATIVE`.
+- **§5.6 skill**(예측기별): 확증 cell TVD 중앙값 < 영 예측기 TVD 중앙값.
+- **최종 판정 표기**: 기존 기준 FAIL → `FAIL`; 기존 PASS ∧ skill PASS → `PASS`; 기존 PASS ∧ skill `NOT_INFORMATIVE` → `PASS (skill NOT_INFORMATIVE)`; 기존 PASS ∧ skill FAIL → `NOT_CONFIRMED (base PASS, skill FAIL)`.
+- **skill 실패 시 결론**:
+  - §5.1 기존 PASS + skill FAIL: v1의 재사용 예측은 허용 오차 안이지만 cell 간 차이(구성·N에 따른 재사용 변화)를 상수보다 크게 낫게 설명하지 못했다 — "생존 모형이 구성 효과를 설명한다"는 주장을 쓰지 않는다.
+  - §5.2 기존 PASS + skill FAIL: 모형이 틀리지 않았지만 구성 효과를 설명하지도 못했다 — 이 부하에서 비용 비 예측은 "효과가 작다"는 정성 결론까지만 쓴다.
+  - §5.6 기존 PASS + skill FAIL: B2가 절대 오차 기준은 맞췄지만 원고 조건의 관측 분포를 그대로 가져다 쓰는 것보다 낫지 않다 — steady-state 전용 점유 모형의 부가가치를 주장하지 않는다.
+- **측정 전 참고값**(관측 = 해석 예측이라고 가정한 계산, 판정에 쓰지 않음): 확증 cell 해석 예측 재사용 범위 0.281(`NOT_INFORMATIVE` 아님), 그때 영 MAE 0.171; 해석 예측 비의 평균 |1 − 비| 0.032(해상도 0.01 이상), Σ 0.225; 해석 예측 h와 영 h의 TVD 중앙값 0.297. **관측이 sim 기본 예측과 같다면** Σ|1 − m| = 0.150이고 해석의 Σ|예측 − m| = 0.075로 skill 비가 정확히 0.50 — 해석의 §5.2 skill은 경계에 있을 것으로 예측한다.
+
+### 7.4 DP 격자 결정과 확증 cell 수
+
+- **N = 8의 해석 경로 격자 (1,2,3,4,6,16)만 compile**(artifact `models/Qwen3-4B-rbln-b16-s8192-d4-dp8`, `compile_dp8.sh`). N = 6·10·12 DP 격자는 **compile하지 않는다**([TASK78](TASK78.md) 선정 결과만 보고). 그래서 DP cell은 N = 8에만 있다.
+- 확증 cell 수: §5.1 10개(9 + DP8, PASS에 9/10 필요), §5.2 7개(6 + DP8, 강화 기준 6/7), §5.3 N = 8은 4구성 6쌍, §5.5 7 cell(양측 이항 p ≥ 0.05 ⇔ k ∈ {1, …, 6}), §5.6 10개.
+- **§5.4는 N = 8에서 확증**, DP·TUNED **각 10 replicate**(r0–r9)의 짝 비. 사전 예측 `INCONCLUSIVE` 유지. 추가 plan r5–r9는 기존 생성 규칙, seed `20261400 + 10·8 + r` = 20261485–20261489(기존 plan·격자 선정·파일럿 seed와 겹치지 않음), `make_main_plans_ext.py`, 목록 `INDEX_EXT.json`(SHA256 `e3e33cf0…7ccbff7`). **r5–r9는 BASE·BATCHONLY에 쓰지 않는다.**
+- r5–r9·r0–r9의 세 예측기 예측: `PREDICTIONS_EXT.json`(`predict_ext.py`, SHA256 `904ccd63…72d7275`). DP/TUNED turn당 A′ 비(해석 / sim 기본 / sim 관측): r5–r9 0.9956 / 0.9908 / 0.9908, **r0–r9 0.9958 / 0.9890 / 0.9890**. 재사용(r0–r9) TUNED 0.882 / 0.886 / 0.886, DP 0.882 / 0.884 / 0.884.
+- N = 12 시뮬레이터 경로의 격자 순환([TASK78](TASK78.md) 발견 3)은 INDEX 논문 기록 대상에 남긴다.
+
+### 7.5 측정 순서·재실행·모집단 규칙
+
+- **순서**: `ORDER.json`(`make_main_order.py`, seed 20261410, SHA256 `bd2800a8…9c64c20`), 75 lifecycle. 5 round; round k에 블록 (N=6, r=k)·(8, k)·(10, k)·(12, k)·(8, k+5) — 블록 순서는 round마다 무작위, 블록 안 구성 순서는 같은 N의 replicate끼리 서로 다른 순열(비복원 추출), 추가 블록(DP, TUNED)은 round마다 교대.
+- 구동 `run_main.sh`(streaming, `run_multiturn.sh` 호출). lifecycle마다 `mt_check.py`가 **유효성만** 기록한다(A′·재사용·h는 출력하지 않음). 유효 조건은 §5.8 + plan 파일·내용 SHA256이 index와 일치 + 평가 구간 요청 전부 server id·`prompt_tokens` join.
+- **`INVALID` lifecycle은 같은 plan으로 1회만 재실행**(tag `<tag>.retry1`). 두 번째도 `INVALID`면 그 replicate는 빠지고, 그 cell·쌍은 남은 replicate로 판정하며 수를 표기한다.
+- **판정 계산은 모든 lifecycle이 끝난 뒤 한 번** `main_analyze.py`로 한다. 측정 중 HEAD를 바꾸지 않는다([TASK79](TASK79.md) 교훈).
+- **모집단**: §5.1·5.2·5.3·5.5·5.6과 N = 12 탐색은 **r0–r4만**(예측이 계산된 plan). r5–r9는 §5.4에만 쓴다. §5.3의 DP/TUNED 쌍도 r0–r4. 보고용으로 §5.4의 r0–r4 값도 낸다.
+- **bootstrap**: percentile, replicate 복원 추출 10,000회, cell·쌍마다 새 `random.Random(20261420)`. 신뢰구간 경계는 정렬된 표본의 `int(0.025·B)`번째와 `int(0.975·B) − 1`번째(파일럿 판정과 같은 방식).
+- **§5.7 구현**: W 측정은 §3 정의 그대로(요청별 chunk 간격 중앙값의 3배를 넘는 간격의 (간격 − 중앙값) 합 / 평가 구간 요청 수). B4 독립 가정의 편향 방향은 평가 구간 요청마다 P = `prefill_s(prompt − cached)`, K = 그 요청의 `[PFX] [ALLOC]` 직전 `[BUCKET] request_nums`로 cov(P, K)의 부호를 본다(양수면 E[P]·E[K] 예측은 과소).
+- **정상성(보고)**: 평가 구간을 60 s씩 반으로 나눠 turn ≥ 1 재사용률 차(후반 − 전반)와 h TVD(전·후반 경계 = 후반 첫 요청의 ALLOC 위치).
+- §5.1의 "요청 단위 보정(v1 기록 상태 입력)"은 이번 판정 스크립트에 넣지 않는다(보고 항목, 판정 무관). 하지 못하면 미수행으로 보고한다.
+- 판정 스크립트 `main_analyze.py`는 측정 전 이 commit에 포함된다. 파일럿 산출을 symlink로 가짜 run에 배치해 코드 경로만 시험했다(값은 의미 없음). 판정 전 버그 수정이 필요하면 멈추고 고친 뒤 무엇을 고쳤는지 TASK에 기록한다.
+
 ## 개정 이력
 
 - 2026-09-29 초판 (측정 전, 파일럿 판정 [TASK79](TASK79.md) 후). 예측 계산은 파일럿 측정 중(18:45경) 파일럿 산출을 읽지 않고 수행했다.
+- 2026-09-30 개정 2 (측정 전, Advisor 지시문 05): §7 — 영 예측기·skill 조건, DP 격자 N = 8만 compile, N = 8 DP·TUNED 10 replicate(추가 plan r5–r9와 예측), 순서표, 재실행·모집단 규칙, 판정 스크립트.
