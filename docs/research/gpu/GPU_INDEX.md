@@ -40,7 +40,7 @@
 | [GTASK02](GTASK02.md) | DONE | GPU Stage 0 기능 확인과 descriptor 초안 | 선등록 C0–C5 전부 충족으로 **Stage 0 `PASS`**. override 16,034→2,048 block, 격자 `[1,2,4,6,8]` 반영, hit 5/5, 생성 token 캐시(H5 1,024), v2 runner에서 cudagraph 통계 없음, v1 runner는 `nvcc` 부재로 기동 실패. descriptor 초안과 적합성 문제 11건 |
 | [GTASK03](GTASK03.md) | DONE | GPU 관측 수단: observation-only patch·KV events collector·관문 G1–G3 | merge `a48c7b4`. v2 runner `[GSTEP]`·scheduler `[GPFX]` 로그 patch(32줄, env gate)와 KV events collector. 원 기준 G1 `FAIL`(warmup 2 step 미예상, endpoint 오류) → 개정 1 후 **G1·G2·G3 `PASS`**(hit 23/23, 사상 375/375, 시간 비 1.002) |
 | [GTASK04](GTASK04.md) | DONE | 순차 생존 곡선: 첫 교차 기판 blind 예측 | **`CONFIRMED` 60/60 정확 일치**(네 채널 일치, 무효 0). NPU 데이터로 만든 모형 코드(무수정)에 GPU 파라미터·의미론만 넣어 측정 전 commit. 문턱은 token 총량, 곡선은 16 token 계단, 생성 token 캐시 확인(2,016) |
-| [GTASK05](GTASK05.md) | IN_PROGRESS | GPU step 비용 측정 (FULL · PIECEWISE · eager) | 설계 선등록 [GPU_STEPCOST_PREREG.md](GPU_STEPCOST_PREREG.md) |
+| [GTASK05](GTASK05.md) | IN_PROGRESS | GPU step 비용 측정 (FULL · PIECEWISE · eager) | 설계 선등록 [GPU_STEPCOST_PREREG.md](GPU_STEPCOST_PREREG.md). 첫 run은 host 다운으로 중단, 문제 PCIe 슬롯 비활성화 후 **측정 카드 변경**(uuid `4485e769…`) — 개정 1 후 6 lifecycle 재측정 |
 | [GTASK06](GTASK06.md) | DONE | descriptor 구조 요구사항 정리 (두 기판 공통 표현) | 코드 변경 0. 층 목록·`reuse_layer`·규칙 field 5개(축출 기준, 창 시작, 요청 내부 손실 순서, 조회·할당 순서, 캐시 대상)·`value_source`·`grid_unit` 등 11개 묶음을 NPU 값·GPU 값과 함께 [DESCRIPTOR_REQUIREMENTS.md](DESCRIPTOR_REQUIREMENTS.md)에 정리. GPU step 비용 값은 GTASK05 대기 |
 
 ## 다음 작업

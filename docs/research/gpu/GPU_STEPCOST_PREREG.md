@@ -46,3 +46,35 @@ GPU 지시문 G-02 작업 D의 **측정 설계 선등록**이다. 파라미터 �
 ## 유효성
 
 lifecycle마다 GPU 0 외 process 부재, `vllm:num_preemptions` 증분 0을 기록한다. 어긋나면 그 lifecycle은 `INVALID`로 표에서 뺀다.
+
+## 개정 1 — 장비 교체 후 재측정 (2026-09-29, 재측정 시작 전 commit)
+
+**원 선등록**: `fc2d0ab` (2026-09-29 09:41:05 UTC). 이 개정은 판정 기준을 바꾸지 않는다(이 선등록에는 판정이 없다). 격자·요청 구성·lag 규칙·요약 방식·유효성 규칙은 **그대로**이며, 측정 장비와 run 범위만 바꾼다.
+
+**사건 (관찰)**:
+
+- 첫 run `results/gpu/stepcost/20260929T1021Z`(측정 시작 10:21:31 UTC)에서 G1 r0·G2 r0은 `rc=0`으로 끝났다. G3 r0은 server 로그가 10:28:57 UTC의 `[GSTEP]` 줄 뒤에서 NUL byte로 끊겼고, 그 boot에는 shutdown 기록이 없다 — **측정 중 host 다운**.
+- 사용자가 문제가 있던 PCIe 슬롯을 비활성화했다. 빠진 카드는 uuid `GPU-00596b63-c6a5-db28-01a2-81c3a1d42a24`, serial `1320523024057`(GTASK01 inventory의 `17:00.0`)이다. **GTASK02–05의 모든 측정이 이 카드에서 이뤄졌다**(`lifecycle.json`의 `gpu0_uuid`).
+- 슬롯이 빠지면서 bus 번호가 당겨져 `CUDA_VISIBLE_DEVICES=0` / `nvidia-smi` index 0이 **다른 카드**(예전 `18:00.0`)를 가리킨다.
+
+**run `20260929T1021Z` 처리**:
+
+- G3 r0: `INVALID`(host 다운).
+- G1 r0·G2 r0: **결과에서 제외**한다. 이유 — (1) 곧 다운된 슬롯의 카드에서 나온 timing이다. (2) 나머지 lifecycle은 다른 카드에서 돌게 되므로 섞으면 카드 차이와 재기동 간 변동을 구분할 수 없다. raw는 삭제하지 않고 보존한다. 이 개정 작성 시점까지 첫 run의 `summary.json`·`events.json`은 열지 않았다(진단용으로 `sequence.log`와 server 로그 끝부분만 봤다).
+
+**재측정 장비** (2026-09-29 15:58 UTC boot 이후 관찰):
+
+| 항목 | 값 |
+|---|---|
+| `CUDA_VISIBLE_DEVICES=0` 대상 | uuid `GPU-4485e769-430a-430d-3383-b9c4ce92a175`, serial `1324321025786`, bus `00000000:17:00.0`(예전 `18:00.0`), PCIe link x8(예전 inventory의 같은 카드도 x8) |
+| host의 GPU 수 | 2 (`17:00.0`, `65:00.0`) |
+| 사전 점검 | 두 카드 모두 40 GB 메모리 쓰기·검증 통과, bf16 8192² matmul warmup 후 약 114 TFLOPS(GPU 0)·111 TFLOPS(GPU 1), throttle reason 없음, 현재 boot의 kernel log에 Xid·NVRM error 없음 |
+| driver·venv·model·patch | 변경 없음(driver 580.178.04, `vllm 0.22.0`, revision `1cfa9a72…`, patch `state: patched`) |
+
+**추가 유효성 규칙**: lifecycle마다 `lifecycle.json`의 `gpu0_uuid`가 `GPU-4485e769-430a-430d-3383-b9c4ce92a175`이고, ready 시점 `gpu_apps`에서 이 run의 process가 그 uuid에 있어야 한다. 어긋나면 그 lifecycle은 `INVALID`.
+
+**재측정 범위**: 새 run 디렉터리(`results/gpu/stepcost/<새 UTC 시각>`)에서 **6 lifecycle 전체**(G1 r0, G2 r0, G3 r0, G1 r1, G2 r1, G3 r1)를 원 순서대로 `run_stepcost.sh`로 다시 돈다. script는 수정하지 않는다.
+
+**해석 범위**: 결과는 **uuid `4485e769…` 카드 한 장**의 step 비용이다. 같은 모델명의 다른 카드(GTASK02–04에 쓴 카드)와 같은 값이라는 보장은 없다. 카드 간 차이는 이 run으로 판정하지 않는다.
+
+**host 다운이 재발하면**: 그 lifecycle을 `INVALID`로 두고 run을 멈춘 뒤 사용자에게 보고한다. 자동으로 다시 시도하지 않는다.
