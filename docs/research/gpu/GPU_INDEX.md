@@ -38,6 +38,7 @@
 |---|---|---|---|
 | [GTASK01](GTASK01.md) | DONE | A6000 기판 착수: inventory, vLLM 0.22.0 설치, source 감사 | 환경 inventory와 간섭 위험 판단, 격리 venv에 `vllm 0.22.0` 설치, NPU와 같은 revision의 model download(byte 일치), 조회·할당 순서·회수·hit·용량·preemption·격자·chunked prefill·비요청 소비자·관측 수단 9항목 source 감사 |
 | [GTASK02](GTASK02.md) | DONE | GPU Stage 0 기능 확인과 descriptor 초안 | 선등록 C0–C5 전부 충족으로 **Stage 0 `PASS`**. override 16,034→2,048 block, 격자 `[1,2,4,6,8]` 반영, hit 5/5, 생성 token 캐시(H5 1,024), v2 runner에서 cudagraph 통계 없음, v1 runner는 `nvcc` 부재로 기동 실패. descriptor 초안과 적합성 문제 11건 |
+| [GTASK03](GTASK03.md) | IN_PROGRESS | GPU 관측 수단: observation-only patch·KV events collector·관문 G1–G3 | 지시문 G-02 작업 A·B. `origin/main` merge `a48c7b4`, 선등록 [GPU_OBS_GATE_PREREG.md](GPU_OBS_GATE_PREREG.md) |
 
 ## 다음 작업
 
