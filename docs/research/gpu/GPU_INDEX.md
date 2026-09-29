@@ -45,6 +45,7 @@
 | [GTASK05](GTASK05.md) | PARTIAL | GPU step 비용 측정 (FULL · PIECEWISE · eager) | 첫 run은 host 다운으로 중단 → 문제 PCIe 슬롯 비활성화, **측정 카드 변경**(uuid `4485e769…`, 개정 1) 후 6 lifecycle 전부 유효. 선등록 분석은 p=2048 chunk 분할로 실패 → 개정 2(수치 확인 전). FULL decode 13.3–14.4 ms, `g` 0.041 ms/요청, padding +3.4 % 대 격자 밖 eager +42 %, lag `L = 1` 확인, eager 증분 p=256→2048에서 12→138 ms. **PIECEWISE 증분은 dispatch 채널 분해능(약 2 ms) 아래라 `UNKNOWN`** |
 | [GTASK06](GTASK06.md) | DONE | descriptor 구조 요구사항 정리 (두 기판 공통 표현) | 코드 변경 0. 층 목록·`reuse_layer`·규칙 field 5개(축출 기준, 창 시작, 요청 내부 손실 순서, 조회·할당 순서, 캐시 대상)·`value_source`·`grid_unit` 등 11개 묶음을 NPU 값·GPU 값과 함께 [DESCRIPTOR_REQUIREMENTS.md](DESCRIPTOR_REQUIREMENTS.md)에 정리. GPU step 비용 값은 GTASK05 대기 |
 | [GTASK07](GTASK07.md) | DONE | GPU multi-turn 설계: token id prompt, runner, GPU 의미론 예측기 | merge `fe8a4df`(TASK75–80). NPU 설계 대비 바뀐 15개 항목([GPU_MULTITURN_DESIGN.md](GPU_MULTITURN_DESIGN.md)). streaming token id prompt·`return_token_ids` 기능 확인 6/6(생성 token까지 hit 식 일치). `continuum.sim`은 GPU 의미론을 표현할 수 없어 `experiments/gpu/multiturn/`에 시뮬레이터(LRU·FIFO)·해석 v1 GPU 인스턴스·비용 모형 작성. neutral `lru_block_survival` underflow(평균 > 745) 발견·wrapper 우회 |
+| [GTASK08](GTASK08.md) | DONE | GPU multi-turn 구성·pool blind 선정 | 측정 없이 모형으로 선정. 확증 N = 20·22·24, BASE pool 1,900(preemption 불가 하한 1,857)/격자 (1,2,4,8,16), POOL 2,300, POOL+GRID (1,5,7,8,16), `max_num_seqs` 8. 원 규칙 5(상한 0.85) 해 없음 → 개정 1(상한 0.90). 재사용 압력은 포화 근처에서만 생기고 N=26에서 붕괴(sim 0.37, 해석 0.78) |
 
 ## 다음 작업
 
