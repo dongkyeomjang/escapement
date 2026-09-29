@@ -119,6 +119,16 @@ class SimConfig:
     ``0 < running < max_running_requests`` evict the oldest inactive block if
     none is free; the next admission takes it)."""
 
+    session_start_s: tuple[float, ...] | None = None
+    """Arrival time of each session's first turn, by session index. ``None``
+    (every earlier task) starts every session at 0."""
+
+    successor: tuple[int | None, ...] | None = None
+    """Session renewal: ``successor[i] = j`` starts session ``j``'s first turn
+    as soon as session ``i``'s last turn finishes. A session that is someone's
+    successor is not started at the beginning. ``None`` (every earlier task)
+    means no renewal. Used by the steady-state multi-turn workload (TASK77)."""
+
     admission_priority: tuple[int, ...] = ()
     """Session indices in the order simultaneous arrivals should be admitted.
 
@@ -329,13 +339,22 @@ def simulate(
 
     counter = itertools.count()
     pending: list[_Pending] = []
+    if config.session_start_s is not None and len(config.session_start_s) != len(sessions):
+        raise ValueError("session_start_s must give one time per session")
+    if config.successor is not None and len(config.successor) != len(sessions):
+        raise ValueError("successor must give one entry per session")
+    followers = ({j for j in config.successor if j is not None}
+                 if config.successor is not None else set())
     for idx, s in enumerate(sessions):
+        if idx in followers:
+            continue
         t0 = s.turns[0]
+        start = config.session_start_s[idx] if config.session_start_s is not None else 0.0
         pending.append(_Pending(
             session=s.session_id, session_index=idx, turn=0,
             prompt_tokens=_prompt_tokens(s, 0),
             generation_tokens=t0.generation_tokens,
-            gap_after_s=t0.gap_after_s, gap_start_s=0.0, arrival_s=0.0, ready_s=0.0,
+            gap_after_s=t0.gap_after_s, gap_start_s=start, arrival_s=start, ready_s=start,
             seq=next(counter),
         ))
 
@@ -366,6 +385,18 @@ def simulate(
         ))
         sess = by_index[r["session_index"]]
         nxt = r["turn"] + 1
+        if nxt >= len(sess.turns) and config.successor is not None \
+                and config.successor[r["session_index"]] is not None:
+            j = config.successor[r["session_index"]]
+            s2 = by_index[j]
+            pending.append(_Pending(
+                session=s2.session_id, session_index=j, turn=0,
+                prompt_tokens=_prompt_tokens(s2, 0),
+                generation_tokens=s2.turns[0].generation_tokens,
+                gap_after_s=s2.turns[0].gap_after_s, gap_start_s=at,
+                arrival_s=at + config.client_overhead_s,
+                ready_s=at + config.client_overhead_s, seq=next(counter),
+            ))
         if nxt < len(sess.turns):
             arrival = at + r["gap_after_s"] + config.client_overhead_s
             if config.fixed_arrivals is not None:

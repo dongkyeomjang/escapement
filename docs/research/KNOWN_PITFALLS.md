@@ -66,6 +66,8 @@
 
 원칙 14(관측 불가 field를 0으로 채우지 않는다)와 직접 충돌하는 구조라, 발생 전이지만 목록에 둔다.
 
+**보강 ([TASK79](TASK79.md), source-read + 파일럿 교차 확인)**: 설치된 vLLM(`vllm/entrypoints/openai/completion/serving.py:446`, `:586`)은 플래그가 켜져 있어도 **`num_cached_tokens`가 0이면 `prompt_tokens_details`를 넣지 않는다.** 파일럿 12 lifecycle에서 field가 없는 행은 전부 server 조회 결과도 재사용 0이었고, 있는 행은 client 값 = server 값이었다(streaming 포함). 따라서 **플래그가 켜진 run에서 "field 없음"은 "재사용 0"이고**, 플래그가 꺼진 run에서는 관측 불가다 — 두 경우를 가르는 것은 server 인자 provenance뿐이다. 과거 run(플래그 켜짐 160/160)의 0 기록은 결과적으로 옳았다. 새 runner의 `null` 기록은 이 구분을 분석 단계로 미루며, 분석은 server 조회 줄로 채운다(`mt_measure.py`).
+
 ---
 
 ## 이 목록을 쓰는 법
