@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-29T16:32:16.022638+09:00",
-  "git_head": "1728f0d7322ca62093371f2c79486d7e1eefed61",
-  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M results/tables/README.md\n?? .idea/\n?? experiments/npu/analysis/model_v0_retro.py\n?? results/tables/M01.csv\n?? results/tables/M01.md\n?? results/tables/M02.csv\n?? results/tables/M02.md\n?? results/tables/M03.csv\n?? results/tables/M03.md\n?? results/tables/M04.csv\n?? results/tables/M04.md\n?? results/tables/M05.csv\n?? results/tables/M05.md",
+  "generated_at": "2026-09-29T17:29:29.963655+09:00",
+  "git_head": "e1f791eff6e4b65093248343a8246e9a8bbbfc2b",
+  "git_dirty": "M experiments/npu/analysis/make_tables.py\n M experiments/npu/analysis/model_v0_retro.py\n M experiments/npu/analysis/model_v0_selfcheck.py\n M experiments/npu/substrate/rbln_ca25_vllm_rbln_0111.py\n M results/tables/README.md\n M src/continuum/substrate/descriptor.py\n?? .idea/\n?? docs/research/MODEL_V1.md\n?? experiments/npu/analysis/model_v1_dev.py\n?? results/tables/M06.csv\n?? results/tables/M06.md\n?? src/continuum/model/reference.py\n?? src/continuum/model/survival_v1.py",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -296,6 +296,17 @@
       ],
       "rows": 7,
       "checks": 3,
+      "mismatches": []
+    },
+    {
+      "id": "M06",
+      "title": "모형 v1 개발 집합 보정 (판정 없음)",
+      "tasks": "TASK73",
+      "inputs": [
+        "results/npu/stage3/model_v1_dev/dev.json"
+      ],
+      "rows": 5,
+      "checks": 1,
       "mismatches": []
     },
     {

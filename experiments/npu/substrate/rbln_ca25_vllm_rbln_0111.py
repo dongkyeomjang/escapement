@@ -65,7 +65,26 @@ RBLN_CA25_VLLM_RBLN_0111 = SubstrateDescriptor(
     hit_formula=HIT_FORMULA,
     kv_pool_tokens=8 * 8192,
     prefill_cost_model=PREFILL_COST,
+    release_rule="immediate",
+    dummy_mode="pre_evict",
+    resume_allocates_first=True,
     provenance={
+        "release_rule": Provenance(
+            "stack", "TASK72", "derived",
+            "event replay of 1,298 re-arrivals: immediate 1.000 vs deferred 0.934; "
+            "consistent with TASK63 B.b0 (a just-released block evicted at the next "
+            "dummy check). Not read by the simulator unless its switch says so",
+        ),
+        "dummy_mode": Provenance(
+            "stack", "TASK63", "measured",
+            "padding request per decode step with 0<n<batch_size; the next admission "
+            "takes its slot (74/74). TASK72 replay: pre_evict 1.000 vs reserved 0.847",
+        ),
+        "resume_allocates_first": Provenance(
+            "stack", "TASK15", "measured",
+            "[PFX] ALLOC precedes MAPPING-SEARCH/CACHE-* for the same request; "
+            "TASK72 R1 36/36 trials",
+        ),
         "bucket_sizes": Provenance(
             "stack", "TASK13", "measured",
             "decoder_batch_sizes=[8,4,2,1] at compile; mapping 1->1 2->2 3->4 "

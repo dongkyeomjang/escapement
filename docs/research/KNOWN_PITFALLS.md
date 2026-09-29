@@ -55,13 +55,24 @@
 | 원인 | bash는 script를 **실행 도중에 다시 읽는다.** 편집 중인 파일을 읽으면 부분 내용을 실행한다 |
 | **올바른 방식** | **실행 중인 실험의 script를 편집하지 않는다.** 고칠 것이 있으면 run을 끝내고 고치거나, 새 파일로 만들어 다음 run부터 쓴다. 이 규칙은 이후 모든 선등록 문서의 "실행 절차" 절에 명시돼 있다 |
 
+## 6. 관측 불가 값을 0으로 기록하는 runner — **잠재 (발생 0회, Advisor 지시로 추가)**
+
+| | |
+|---|---|
+| 발견 | [TASK72](TASK72.md) (code-read), 추가 지시 [TASK73](TASK73.md) |
+| 증상 | 응답에 `usage.prompt_tokens_details`가 없으면 `requests.*.jsonl`의 `cached_tokens`가 **조용히 0**으로 기록된다. 재사용 실패와 관측 불가가 같은 값이 된다 |
+| 원인 | [`session_runner.py`](../../experiments/npu/stage2/session_runner.py)의 `details.get("cached_tokens", 0)`. server가 `--enable-prompt-tokens-details` 없이 떠 있으면 field 자체가 없다 |
+| **올바른 방식** | **재사용률을 쓰기 전에 그 run의 server 로그에서 `enable_prompt_tokens_details: True`를 provenance로 확인한다**([TASK72](TASK72.md): 대상 160/160 확인). 가능하면 server `[CACHE-HIT]`/`REUSED`와 교차한다. 새 multi-turn runner는 field가 없을 때 `null`을 기록한다. 기존 runner는 재현성 보존을 위해 고치지 않는다 |
+
+원칙 14(관측 불가 field를 0으로 채우지 않는다)와 직접 충돌하는 구조라, 발생 전이지만 목록에 둔다.
+
 ---
 
 ## 이 목록을 쓰는 법
 
 1. **새 실행 script를 쓰기 전** — 항목 1·2·5를 본다.
 2. **파일을 고치는 자동화를 쓰기 전** — 항목 4를 본다.
-3. **새 관측 채널을 정의하기 전** — 항목 3을 본다.
+3. **새 관측 채널을 정의하기 전** — 항목 3을 본다. **재사용 field를 읽기 전** — 항목 6을 본다.
 4. **새 함정이 발생하면** — 해당 TASK의 "실패 / 무효 시도"에 먼저 기록하고, **재발했거나 측정을 무효화했으면** 이 문서에 항목을 추가한다.
 
 **추가 기준**: 두 번 이상 발생했거나, 한 번이라도 측정 결과를 무효화·낭비시킨 것. 단순 오타나 일회성 실수는 넣지 않는다 — 목록이 길어지면 아무도 읽지 않는다.

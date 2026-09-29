@@ -1077,6 +1077,29 @@ def m05_retro_r5():
     return header, rows, notes, ck, (header2, rows2)
 
 
+def m06_v1_dev_calibration():
+    """모형 v1 개발 집합 보정 (TASK73, 판정 없음)."""
+    ck = Check()
+    dev = load(REPO / "results/npu/stage3/model_v1_dev/dev.json")["summary"]
+    labels = {"v1_log": "v1 (기록된 초기 상태)", "v1_ss": "v1 (steady state)",
+              "v0_bin": "v0 binomial", "v0_poi": "v0 poisson"}
+    header = ["모형", "Brier", "예측 합", "관측 합"] + \
+        [f"[{b['lo']:.1f},{b['hi']:.1f})" for b in dev["models"]["v1_log"]["bins"]]
+    rows = []
+    for k, lab in labels.items():
+        m = dev["models"][k]
+        cells = [("—" if b["n"] == 0 else f"{b['obs_rate']:.2f} (n={b['n']})") for b in m["bins"]]
+        rows.append([lab, f"{m['brier']:.4f}", f"{m['sum_pred']:.1f}", str(m["sum_obs"])] + cells)
+    rows.append(["기후값", f"{dev['brier_climatology']:.4f}", "—", "—"] + [""] * 10)
+    ck.eq("정확 추적기 일치 (재도착 전체)", dev["exact_agree"], dev["n_requests"],
+          source="TASK72 R5′ 1,298/1,298")
+    notes = ["**개발 집합이며 판정하지 않는다** — v1은 이 데이터를 본 뒤 만들었다.",
+             f"평가 {dev['n_scored']}건(gap 평균 0인 cell {dev['n_unscored_zero_gap']}건 제외). "
+             "구간 칸은 '관측 생존 비율 (n)'.",
+             "이 run들은 세션당 2요청·동시 시작이라 renewal·Poisson 가정이 깨진다."]
+    return header, rows, notes, ck
+
+
 # -- registry ----------------------------------------------------------------
 
 TABLES = {
@@ -1141,6 +1164,8 @@ TABLES = {
             ["results/npu/stage3/model_v0_retro/r4.json"]),
     "M05": (m05_retro_r5, "모형 v0 R5′·R5: 동시 run 재사용", "TASK72",
             ["results/npu/stage3/model_v0_retro/r5p.json", "results/npu/stage3/model_v0_retro/r5.json"]),
+    "M06": (m06_v1_dev_calibration, "모형 v1 개발 집합 보정 (판정 없음)", "TASK73",
+            ["results/npu/stage3/model_v1_dev/dev.json"]),
     "B01": (b01_config_search_sensitivity, "구성 선정의 N 집합·score 민감도", "TASK61",
             ["results/npu/stage2/20260922-config-search-sensitivity/*/comparison.json"]),
 }

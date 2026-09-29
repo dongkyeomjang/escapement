@@ -36,6 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from continuum.model import grid as G  # noqa: E402
 from continuum.model import occupancy as O  # noqa: E402
 from continuum.model import survival as S  # noqa: E402
+from continuum.model.reference import FifoReplay  # noqa: E402
 from rbln_ca25_vllm_rbln_0111 import RBLN_CA25_VLLM_RBLN_0111 as D  # noqa: E402
 
 ST2 = REPO / "results/npu/stage2"
@@ -93,78 +94,37 @@ def parse_log(path: Path) -> list[tuple]:
 # -- replay of (B1-1) ----------------------------------------------------------
 
 class Replay:
-    """FIFO-by-allocation pool driven by ALLOC / FREE-REQUEST / [BUCKET] only.
-
-    ``mode``: ``pre_evict`` (observed dummy reading), ``reserved`` (TASK69
-    switch reading) or ``none``. ``release``: ``immediate`` or ``deferred``
-    (inactive only after the next admission's victim choice).
-    """
+    """Adapter over ``continuum.model.reference.FifoReplay`` (the reference
+    semantics). Since TASK73 the replay lives in the model package; this class
+    only translates parsed log events and keeps the attribute shape the
+    comparisons below use."""
 
     def __init__(self, capacity: int, ceiling: int, mode: str = "pre_evict",
                  release: str = "immediate", session_of=None):
-        self.C = capacity
-        self.ceiling = ceiling
-        self.mode = mode
-        self.release = release
-        self.session_of = session_of or (lambda req: req)
-        self.entries: list[dict] = []     # resident entries, allocation order
-        self.pending: list[str] = []
-        self.evictions: list[dict] = []   # predicted: {"req", "pos", "path"}
-        self.lookups: dict[str, dict] = {}
-        self.undefined: list[int] = []
-
-    def _active_count(self) -> int:
-        return sum(1 for e in self.entries if e["active"])
-
-    def _evict_one(self, pos: int, path: str) -> bool:
-        for i, e in enumerate(self.entries):
-            if not e["active"]:
-                self.evictions.append({"req": e["req"], "pos": pos, "path": path})
-                del self.entries[i]
-                return True
-        self.undefined.append(pos)
-        return False
+        self._r = FifoReplay(capacity=capacity, ceiling=ceiling, release=release,
+                             dummy=mode, allocate_before_lookup=True)
+        self._session_of = session_of or (lambda req: req)
 
     def run(self, events: list[tuple]) -> "Replay":
-        for pos, e in enumerate(events):
-            kind = e[0]
-            if kind == "alloc":
-                req = e[1]
-                need = 1
-                if self.mode == "reserved":
-                    active = self._active_count()
-                    need += int(0 < active < self.ceiling)
-                while self.C - len(self.entries) < need:
-                    if not self._evict_one(pos, "admission"):
-                        break
-                if self.release == "deferred":
-                    for r in self.pending:
-                        for x in self.entries:
-                            if x["req"] == r:
-                                x["active"] = False
-                    self.pending.clear()
-                sess = self.session_of(req)
-                prior = [x for x in self.entries if x["session"] == sess]
-                pinned = None
-                if prior:
-                    first = self.entries.index(prior[0])
-                    pinned = sum(1 for x in self.entries[:first] if x["active"])
-                self.entries.append({"req": req, "session": sess, "active": True})
-                self.lookups[req] = {"pos": pos, "predicted_hit": bool(prior),
-                                     "prior_req": prior[-1]["req"] if prior else None,
-                                     "pinned_older_at_lookup": pinned}
-            elif kind == "free":
-                if self.release == "immediate":
-                    for x in self.entries:
-                        if x["req"] == e[1]:
-                            x["active"] = False
-                else:
-                    self.pending.append(e[1])
-            elif kind == "bucket" and self.mode == "pre_evict":
-                n = e[1]
-                if 0 < n < self.ceiling and len(self.entries) >= self.C:
-                    if any(not x["active"] for x in self.entries):
-                        self._evict_one(pos, "dummy")
+        ref = []
+        for e in events:
+            if e[0] == "alloc":
+                ref.append(("alloc", e[1]))
+            elif e[0] == "free":
+                ref.append(("free", e[1]))
+            elif e[0] == "bucket":
+                ref.append(("decode", e[1]))
+            else:
+                ref.append(("skip",))
+        self._r.run(ref, session_of=self._session_of)
+        self.evictions = [{"req": x.key, "pos": x.pos, "path": x.path}
+                          for x in self._r.evictions]
+        self.lookups = {k: {"pos": v.pos, "predicted_hit": v.predicted_hit,
+                            "prior_req": v.prior_key,
+                            "pinned_older_at_lookup": v.pinned_older_at_lookup,
+                            "state_at_alloc": v.state_at_alloc}
+                        for k, v in self._r.lookups.items()}
+        self.undefined = list(self._r.undefined)
         return self
 
 
