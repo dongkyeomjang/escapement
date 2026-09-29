@@ -78,3 +78,20 @@ lifecycle마다 GPU 0 외 process 부재, `vllm:num_preemptions` 증분 0을 기
 **해석 범위**: 결과는 **uuid `4485e769…` 카드 한 장**의 step 비용이다. 같은 모델명의 다른 카드(GTASK02–04에 쓴 카드)와 같은 값이라는 보장은 없다. 카드 간 차이는 이 run으로 판정하지 않는다.
 
 **host 다운이 재발하면**: 그 lifecycle을 `INVALID`로 두고 run을 멈춘 뒤 사용자에게 보고한다. 자동으로 다시 시도하지 않는다.
+
+## 개정 2 — p = 2048 probe의 chunk 분할 (2026-09-29, 측정 후·수치 확인 전 commit)
+
+**원 규칙의 실패 (기록)**: run `20260929T1607Z`의 6 lifecycle은 모두 유효했다(`valid`, preemption 0, 전부 uuid `4485e769…`). 그런데 사전 등록한 `stepcost_analyze.py`는 `ValueError: max() iterable argument is empty`로 멈췄다. **lag 규칙을 정하는 cell(EAGER d=4, p=2048)의 probe step이 0개**였기 때문이다. 원 traceback은 `analyze.stdout`에 그대로 보존한다.
+
+**원인 (관찰)**: server 인자 `--max-num-batched-tokens 2048` 때문에 `d + p > 2048`인 probe는 chunked prefill로 두 step에 나뉜다. G1 r0 로그의 step 모양은 다음과 같다.
+
+- d=4, p=2048: `reqs=5 maxq=2044 toks=2048 mode=NONE` × 10, 이어서 `reqs=5 maxq=4 toks=8 mode=PIECEWISE` × 10
+- d=1, p=2048: `reqs=2 maxq=2047 toks=2048` × 10
+
+분석 코드는 probe를 `maxq == p`로 찾았으므로 이 cell들이 비었다. 설계 때 step token 상한과 `d + p`의 관계를 확인하지 않은 선등록의 오류다. p ≤ 1024인 cell과 MIXED는 영향이 없다(`d + p ≤ 2048`).
+
+**수정 규칙 (데이터를 보기 전에 정함)**: probe는 **첫 chunk**로 찾는다. 조건은 `maxq == min(p, 2048 − d)`, `reqs == d + 1`이다. 구현은 opt-in flag `--chunk-budget 2048`이며, flag가 없으면 원 동작(원 오류)이 그대로 재현된다. lag 규칙 cell은 **그대로 EAGER d=4, p=2048**이고, 그 첫 chunk(2,044 prefill + 4 decode = 2,048 token)가 여전히 가장 큰 고립 step이다. `L` 후보 `{0,1,2}`와 argmax 규칙은 바꾸지 않는다.
+
+**p = 2048 cell의 해석 제한**: 이 cell의 "고립 step"은 prompt 전체가 아니라 첫 chunk(`2048 − d` token)의 비용이다. 나머지 chunk(`p − (2048 − d)` token)는 다음 step에 PIECEWISE로 실행되며 이 cell에 포함하지 않는다. 표에는 `toks = d + 첫 chunk`와 `chunked` 표시를 남긴다.
+
+**확인 순서**: 이 개정을 commit하기 전까지 본 것은 step 모양 집계(위 두 줄)와 lifecycle 유효성 field뿐이다. step 시간, 증분, lag elevation 수치는 보지 않았다.

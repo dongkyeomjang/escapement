@@ -51,7 +51,7 @@ def windows(events: list) -> dict:
     return w
 
 
-def lifecycle_cells(d: Path, lag: int | None) -> tuple[dict, dict]:
+def lifecycle_cells(d: Path, lag: int | None, budget: int | None = None) -> tuple[dict, dict]:
     steps = [s for s in parse(d / "server.log") if s["kind"] == "STEP"]
     t = [s["t"] for s in steps]
     delta = [t[i + 1] - t[i] for i in range(len(t) - 1)] + [None]
@@ -78,7 +78,10 @@ def lifecycle_cells(d: Path, lag: int | None) -> tuple[dict, dict]:
                        "padded": steps[seg[len(seg) // 2]]["padded"] if seg else None}
         else:
             dd, pp = (int(x.split("=")[1]) for x in spec.split())
-            probes = [i for i in idx if steps[i]["maxq"] == pp and steps[i]["reqs"] == dd + 1]
+            # Amendment 2: with a token budget, a probe with dd + pp > budget is chunked and its
+            # first chunk carries budget - dd prefill tokens (the rest runs in the next step).
+            first = min(pp, budget - dd) if budget else pp
+            probes = [i for i in idx if steps[i]["maxq"] == first and steps[i]["reqs"] == dd + 1]
             base = [delta[i] for i in idx
                     if steps[i]["reqs"] == dd and steps[i]["maxq"] == 1
                     and i > 0 and steps[i - 1]["reqs"] == dd and steps[i - 1]["maxq"] == 1
@@ -87,7 +90,7 @@ def lifecycle_cells(d: Path, lag: int | None) -> tuple[dict, dict]:
             lagged = {L: [delta[i + L] for i in probes if i + L < len(delta) and delta[i + L] is not None]
                       for L in (0, 1, 2)}
             iso[(phase, dd, pp)] = {"probe_steps": len(probes), "baseline": base, "lagged": lagged,
-                                    "toks": dd + pp,
+                                    "toks": dd + first, "chunked": first != pp,
                                     "mode": steps[probes[0]]["mode"] if probes else None,
                                     "padded": steps[probes[0]]["padded"] if probes else None}
     return full, iso
@@ -98,6 +101,8 @@ def main() -> int:
     ap.add_argument("--run-dir", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--md", required=True)
+    ap.add_argument("--chunk-budget", type=int, default=None,
+                    help="amendment 2: match the first chunk of probes split by --max-num-batched-tokens")
     a = ap.parse_args()
     lcs, excluded = [], {}
     for p in sorted(Path(a.run_dir).iterdir()):
@@ -109,7 +114,7 @@ def main() -> int:
             excluded[p.name] = {"valid": sm["valid"], "reasons": sm["invalid_reasons"], "preemptions": pre}
             continue
         lcs.append(p)
-    data = {p.name: lifecycle_cells(p, None) for p in lcs}
+    data = {p.name: lifecycle_cells(p, None, a.chunk_budget) for p in lcs}
 
     # lag rule on EAGER d=4 p=2048
     elev = {L: [] for L in (0, 1, 2)}
@@ -153,7 +158,8 @@ def main() -> int:
             base = [v for x in names for v in data[x][1][k]["baseline"]]
             per = [statistics.median(data[x][1][k]["lagged"][LAG]) for x in names if data[x][1][k]["lagged"][LAG]]
             out["iso"][f"{grid}/{k[0]}/d{k[1]}/p{k[2]}"] = {
-                "grid": grid, "phase": k[0], "d": k[1], "p": k[2], "toks": k[1] + k[2],
+                "grid": grid, "phase": k[0], "d": k[1], "p": k[2], "toks": data[names[0]][1][k]["toks"],
+                "chunked": data[names[0]][1][k]["chunked"],
                 "mode": sorted({data[x][1][k]["mode"] for x in names} - {None}),
                 "padded": sorted({data[x][1][k]["padded"] for x in names} - {None}),
                 "probe_steps": sum(data[x][1][k]["probe_steps"] for x in names),
