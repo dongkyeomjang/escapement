@@ -50,6 +50,7 @@
 | [GTASK08](GTASK08.md) | DONE | GPU multi-turn 구성·pool blind 선정 | 측정 없이 모형으로 선정. 확증 N = 20·22·24, BASE pool 1,900(preemption 불가 하한 1,857)/격자 (1,2,4,8,16), POOL 2,300, POOL+GRID (1,5,7,8,16), `max_num_seqs` 8. 원 규칙 5(상한 0.85) 해 없음 → 개정 1(상한 0.90). 재사용 압력은 포화 근처에서만 생기고 N=26에서 붕괴(sim 0.37, 해석 0.78) |
 | [GTASK09](GTASK09.md) | DONE | GPU multi-turn 본 실험 blind 예측·판정 기준 선등록, 파일럿 선등록 | plan 20(N 20·22·24 확증, 26 탐색)+파일럿 3. 세 예측기 × 두 bound. LRU−FIFO 재사용 차 0.08–0.17(9/9 cell) → 판별 가능. POOL/BASE 비 0.96–0.99(해상도 경계). §2.1 구간 영향 ≤ 0.04 %(재도착 혼합 step은 대부분 eager). 계기 점검에서 id join 오류 수정 |
 | [GTASK10](GTASK10.md) | DONE | GPU multi-turn 파일럿: runner·streaming·산포 | 12/12 유효, preemption 0, step mode 예측 불일치 0. streaming `EQUIVALENT`(중앙 1.0066, CI [0.994, 1.009]) → 본 실험 streaming. POOL/BASE 짝 ratio 산포 0.025–0.038. lifecycle 3.2–4.0분 |
+| [GTASK11](GTASK11.md) | IN_PROGRESS | GPU multi-turn 본 측정과 판정 | 선등록 개정 1(G-04, NPU 개정 2와 정렬). 55 lifecycle. **N = 26 plan(`gmain-n26-r*`)은 v1.1 blind 검증에 다시 쓰지 않는다**(v1.1 개발에 쓰일 수 있음) |
 
 ## 다음 작업
 

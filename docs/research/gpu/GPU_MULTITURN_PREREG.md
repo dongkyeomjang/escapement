@@ -228,3 +228,93 @@
 ## 개정 이력
 
 - 2026-09-29 초판 (측정 전, 파일럿 전)
+
+## 7. 개정 1 (2026-09-30, GPU 지시문 G-04, 본 측정 전)
+
+**우선순위**: 이 절은 §5의 해당 부분보다 우선한다. **예측값은 바꾸지 않는다**(`PREDICTIONS.json`, `2bef619`, SHA256 `1be9a991…`).
+
+### 7.1 이유
+
+- GTASK09는 NPU 지시문 05 개정 2의 원문을 찾지 못했다. 원문은 `main` `5f62fb4`(`MULTITURN_MAIN_PREREG.md` §7)에 있었고, 그 전의 merge(`fe8a4df`)에서 보이지 않았다.
+- 그래서 GPU의 skill 조건이 NPU보다 약하게 쓰였다(`<`, 영 예측기와 비슷하기만 하면 통과).
+- merge `eb6343c`로 원문을 반영하고, 두 기판이 같은 강도의 기준을 쓰도록 고친다.
+
+### 7.2 §5.1 재사용률 skill
+
+- **영 예측기**: **NPU 본 실험([TASK82](../TASK82.md)) 확증 cell의 turn ≥ 1 합산 재사용률**을 모든 GPU cell에 같은 상수로 쓴다. 의미는 "GPU도 NPU처럼 재사용한다"는 기판 무관 예측이다.
+  - 계산: TASK82 결과표의 확증 10 cell(N = 6·8·10 × BASE·BATCHONLY·TUNED + DP N8)의 r0–r4 합산 hit / turn ≥ 1 = (437 + 500 + 500 + 541 + 620 + 620 + 619 + 545 + 691 + 698) / (533 + 542 + 543 + 695 + 704 + 702 + 704 + 780 + 800 + 809) = **5,771 / 6,812 = 0.84718**
+  - 이 값은 GPU 측정 전에 정해져 있다.
+- **skill**: `MAE(예측기) ≤ 0.5 × MAE(영)`, 확증 9 cell, bound마다 판정한다.
+  - **`MAE(영) < 0.05`이면 skill은 `NOT_INFORMATIVE`**다. 이때는 (a)(b)로만 판정한다.
+  - 측정 전 참고: 확증 cell 예측 재사용이 0.75–0.90이므로 이 규칙이 적용될 가능성이 크다.
+- **기존 영 예측기**(같은 예측기의 같은 N BASE 값)는 판정에서 빼고 **구성 차이 설명력** 보고로 남긴다. N별로 예측 (POOL − BASE) 재사용 차와 관측 차를 비교하고, 기존 합 비교(Σ|예측 − 관측| 대 Σ|BASE 예측 − 관측|)도 병기한다.
+- **최종 표기(NPU §7.3과 같음)**
+
+| 기존 기준 | skill | 최종 표기 |
+|---|---|---|
+| FAIL | — | `FAIL` |
+| PASS | PASS | `PASS` |
+| PASS | `NOT_INFORMATIVE` | `PASS (skill NOT_INFORMATIVE)` |
+| PASS | FAIL | `NOT_CONFIRMED (base PASS, skill FAIL)` |
+
+  이 표기는 §5.2·§5.6에도 같이 쓴다.
+
+### 7.3 §5.2 비용 비 skill
+
+- **skill**: `Σ|예측 − m| ≤ 0.5 × Σ|1 − m|`(확증 6 cell, 예측기별, bound별)
+- **`NOT_INFORMATIVE` ⇔ Σ|1 − m| / 6 < 0.01**(NPU와 같은 규칙)
+- 기존 규칙(6 cell CI가 모두 1을 포함하면 `NOT_INFORMATIVE`)의 결과도 병기한다.
+
+### 7.4 §5.6 h(n)
+
+- **skill**: `TVD 중앙값(해석) ≤ 0.5 × TVD 중앙값(균등 {1..8})`
+- **관측 h 정의(판정용)**: **step별 decode 요청 수**의 step 가중 분포이며, decode가 없는 step은 뺀다.
+  - decode 수 = `maxq == 1`이면 `reqs`, 아니면 `reqs − k`다.
+  - k = 직전 `[GSTEP]` 이후의 `[GPFX] ALLOC` 줄 수(이 step에 admission된 요청)이고, 최소 1이다.
+  - 가격 채널(`gpu_mt_measure`)의 decode 수 규칙과 같다.
+  - **알려진 한계**: 긴 prompt의 두 번째 chunk는 ALLOC 줄이 없다. 같은 step에 새 admission과 이어지는 chunk가 함께 있으면 decode 수를 1 크게 센다. 계기 점검·파일럿에서 step mode 예측 불일치가 0이었으므로 드물다고 본다.
+- 기존 정의(`reqs`)의 TVD도 병기한다.
+- 구현: `main_judge.py` `decode_h`
+
+### 7.5 재실행 규칙
+
+- `INVALID` lifecycle은 **같은 plan으로 1회만** 재실행한다(`<tag>.retry1`).
+- 두 번째도 `INVALID`면 그 replicate는 빠지고, 그 cell·쌍은 남은 replicate로 판정하며 수를 표기한다.
+- `INVALID`는 §5.8(runner 유효와 측정 모듈의 구간·join·발행·HTTP·생성 길이 검사)로 정한다.
+- 첫 순서표를 다 돈 뒤 한 번에 재실행한다.
+
+### 7.6 실행 순서
+
+- `plans/main/ORDER.json`(`make_main_order.py`, seed 20262410, 55 lifecycle, SHA256 `95aac4b5…`)을 쓴다.
+- 5 round로 나뉘고, round k에 블록 (N = 20·22·24·26, r = k)을 무작위 순서로 돈다.
+- 블록 안 구성 순서는 N = 20·22·24에서 replicate마다 서로 다른 순열(3! = 6개 중 5개 비복원 추출)이고, N = 26은 BASE·POOL 교대다.
+- 모든 lifecycle은 streaming이다(파일럿 `EQUIVALENT`).
+- `SCHEDULE_PROPOSED.json`(GTASK09)은 이 순서표로 대체한다.
+
+### 7.7 판정 시점
+
+- 모든 lifecycle과 재실행이 끝난 뒤 `main_judge.py`로 한 번 계산한다.
+- 측정 중에는 유효성 검사만 본다.
+- 측정 중 HEAD를 바꾸지 않는다.
+- 판정 전 script 버그로 수정이 필요하면 멈추고 고친 뒤 무엇을 고쳤는지 기록한다.
+- bootstrap은 percentile, replicate 복원 추출 10,000회, cell·쌍마다 새 `random.Random(20262420)`이다.
+
+### 7.8 추가 보고 (판정 없음)
+
+- **H-sim 지표**: sim LRU의 비용 비 오차 `e = m − 예측`의 부호 수와 |e| 중앙값(확증 6 cell, 두 bound). NPU TASK82(음 6/7, 중앙 0.0055)와 나란히 보고한다.
+- **N = 26 탐색**: 세 예측기 대 관측 재사용, POOL/BASE 비, N=24 → 26 BASE 재사용 하락폭
+- **가격 채널 대 직접 dispatch 채널** 비(lifecycle별)
+- **KV events 고아 축출 비율(탐색, §5.5 보고 항목)**
+  - 정의: `BlockRemoved` 사건 중, 축출되는 순간 그 block의 자식 block(`BlockStored`의 `block_hashes` 사슬·`parent_block_hash`로 복원)이 아직 캐시에 있는 비율이다.
+  - source 규칙에서 나오는 기대는 해제 순서 LRU ≈ 0(요청 반납은 tail 먼저), 할당 순서 FIFO는 높음(오래된 turn의 prefix block이 먼저 나감)이다.
+  - 새 예측 계산은 하지 않는다.
+- **사실 기록**: 판정 script는 파일럿 산출을 symlink로 엮은 가짜 run에서 코드 경로만 시험했다. 이 시험에서 파일럿의 고아 축출 비율(0.0)과 decode-only h의 TVD를 보게 됐다. 두 항목의 정의와 판정 기준은 이 지시문(G-04)과 §5.5 선등록(`2bef619`)이 정한 것이며, 그 값을 보고 바꾸지 않았다.
+
+### 7.9 v1.1과 N = 26
+
+- 이번 N = 26 탐색 결과는 NPU 쪽 v1.1(대기열 항) 개발에 쓰일 수 있다.
+- 그래서 **v1.1 blind 검증에는 이 N = 26 plan(`gmain-n26-r*`)을 다시 쓰지 않는다**(GPU_INDEX에도 적는다).
+
+### 개정 이력 추가
+
+- 2026-09-30 개정 1 (본 측정 전, G-04): §7 — skill 조건을 NPU 개정 2와 정렬, NPU 영 재사용 0.84718, decode-only h, 재실행·순서·판정 시점, 추가 보고, 판정 script `main_judge.py`
