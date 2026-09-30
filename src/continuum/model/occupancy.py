@@ -210,3 +210,16 @@ def arrival_running_distribution(w: ClosedWorkload,
         r = min(n, w.max_running)
         out[r] = out.get(r, 0.0) + p
     return dict(sorted(out.items()))
+
+
+def others_in_engine_at_arrival(w: ClosedWorkload,
+                                t_step: Callable[[int], float]) -> list[float]:
+    """Sessions *in the engine* (running or waiting) an arriving request finds,
+    ``m = 0..N-1`` -- the arrival theorem before the running ceiling is applied.
+    ``arrival_running_distribution`` is this folded at ``max_running``; model
+    v1.1 needs the unfolded law because the queue length decides whether the
+    arrival waits (TASK85)."""
+    if w.sessions <= 1:
+        return [1.0]
+    phi = solve_occupancy(w, t_step).phi
+    return _distribution(w, t_step, phi, w.sessions - 1)
