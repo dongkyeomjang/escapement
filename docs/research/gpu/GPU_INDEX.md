@@ -15,7 +15,9 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
-**G-03 완료(GTASK07–10), Advisor 검토 대기**: GPU multi-turn 설계·구성 blind 선정(N 20·22·24, pool 1,900/2,300)·세 예측기 blind 예측과 판정 기준 선등록(`2bef619`)·파일럿(streaming `EQUIVALENT`). 본 측정은 G-04.
+**G-04 완료(GTASK11), Advisor 검토 대기**: 본 측정 55/55 유효, LRU_SUPPORTED, sim LRU PASS / 해석 v1 FAIL(포화 근처). N=26 plan은 v1.1 blind 검증에 재사용 금지.
+
+**G-03 완료(GTASK07–10)**: GPU multi-turn 설계·구성 blind 선정(N 20·22·24, pool 1,900/2,300)·세 예측기 blind 예측과 판정 기준 선등록(`2bef619`)·파일럿(streaming `EQUIVALENT`). 본 측정은 G-04.
 
 **GTASK05 (step 비용) `PARTIAL`**: 2026-09-29 문제 PCIe 슬롯 비활성화로 host의 A6000이 2장이 됐고, 이후 측정은 uuid `4485e769…` 카드에서 한다(GTASK02–04는 빠진 카드 `00596b63…`). FULL·eager 곡선은 확보, PIECEWISE 증분은 관측 채널 분해능 아래.
 
@@ -50,7 +52,7 @@
 | [GTASK08](GTASK08.md) | DONE | GPU multi-turn 구성·pool blind 선정 | 측정 없이 모형으로 선정. 확증 N = 20·22·24, BASE pool 1,900(preemption 불가 하한 1,857)/격자 (1,2,4,8,16), POOL 2,300, POOL+GRID (1,5,7,8,16), `max_num_seqs` 8. 원 규칙 5(상한 0.85) 해 없음 → 개정 1(상한 0.90). 재사용 압력은 포화 근처에서만 생기고 N=26에서 붕괴(sim 0.37, 해석 0.78) |
 | [GTASK09](GTASK09.md) | DONE | GPU multi-turn 본 실험 blind 예측·판정 기준 선등록, 파일럿 선등록 | plan 20(N 20·22·24 확증, 26 탐색)+파일럿 3. 세 예측기 × 두 bound. LRU−FIFO 재사용 차 0.08–0.17(9/9 cell) → 판별 가능. POOL/BASE 비 0.96–0.99(해상도 경계). §2.1 구간 영향 ≤ 0.04 %(재도착 혼합 step은 대부분 eager). 계기 점검에서 id join 오류 수정 |
 | [GTASK10](GTASK10.md) | DONE | GPU multi-turn 파일럿: runner·streaming·산포 | 12/12 유효, preemption 0, step mode 예측 불일치 0. streaming `EQUIVALENT`(중앙 1.0066, CI [0.994, 1.009]) → 본 실험 streaming. POOL/BASE 짝 ratio 산포 0.025–0.038. lifecycle 3.2–4.0분 |
-| [GTASK11](GTASK11.md) | IN_PROGRESS | GPU multi-turn 본 측정과 판정 | 선등록 개정 1(G-04, NPU 개정 2와 정렬). 55 lifecycle. **N = 26 plan(`gmain-n26-r*`)은 v1.1 blind 검증에 다시 쓰지 않는다**(v1.1 개발에 쓰일 수 있음) |
+| [GTASK11](GTASK11.md) | DONE | GPU multi-turn 본 측정과 판정 | 개정 1 `721e4d0`(NPU 개정 2와 정렬) → 55/55 유효, 재실행 0. **LRU_SUPPORTED**(8/9, Σ오차 0.148 대 0.937, 부분 hit·고아 축출 0/958,078 일치). sim LRU §5.1·§5.2 PASS, 해석 v1 §5.1·§5.2 FAIL(N24 BASE 포화 근처), §5.3 PASS, §5.4 INCONCLUSIVE, §5.6 PASS(decode-only). N26 BASE 재사용 붕괴 0.450(세 예측기 모두 과소). **N = 26 plan(`gmain-n26-r*`)은 v1.1 blind 검증에 다시 쓰지 않는다** |
 
 ## 다음 작업
 
