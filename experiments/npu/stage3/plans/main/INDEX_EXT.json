@@ -1,0 +1,52 @@
+[
+  {
+    "plan_id": "main-n8-r5",
+    "n": 8,
+    "rep": 5,
+    "seed": 20261485,
+    "cycle_s": 5.779,
+    "content_sha256": "883fe145c1ba4bc7f77f2d33cb963b712cd96a4fbd8c5a74d6e6e625f1c25363",
+    "file_sha256": "2989dd2f711691d272bb6a8525ccf3fa211710ddd78b9cb15eeb9099794d5212",
+    "max_context": 3099
+  },
+  {
+    "plan_id": "main-n8-r6",
+    "n": 8,
+    "rep": 6,
+    "seed": 20261486,
+    "cycle_s": 5.364,
+    "content_sha256": "0574f3d8bd6cb8476aa4bc6e74b14ec480092d133aed6878c5a1fbfef2698198",
+    "file_sha256": "aa409dbee0bacb5040bdfaaa3e3a5023c92abb1f92173305341a3545e1a12510",
+    "max_context": 3074
+  },
+  {
+    "plan_id": "main-n8-r7",
+    "n": 8,
+    "rep": 7,
+    "seed": 20261487,
+    "cycle_s": 5.582,
+    "content_sha256": "9a62ef328b2db09897d1f6f4093230594215868b99a9957bd258b44007622112",
+    "file_sha256": "2cb383204d8b6ce4a3456666be723e017a7a0d8bbc2c242b15858f10fabc7652",
+    "max_context": 3019
+  },
+  {
+    "plan_id": "main-n8-r8",
+    "n": 8,
+    "rep": 8,
+    "seed": 20261488,
+    "cycle_s": 6.126,
+    "content_sha256": "4587c0c5806ae481038b946ea753615d94664aa95c447d1e134619a633d931ce",
+    "file_sha256": "c06251dfc34c4ebcca4c8369aa81fbee7766f93b1860af055b0b25bf2aad10e2",
+    "max_context": 2991
+  },
+  {
+    "plan_id": "main-n8-r9",
+    "n": 8,
+    "rep": 9,
+    "seed": 20261489,
+    "cycle_s": 5.47,
+    "content_sha256": "f873b892058b5b2512d4c7c1bf716c617caeb0845c3ceec4a5eddcb1668950cb",
+    "file_sha256": "5f1df5bdea2f56cf10fe018c74a64bb61102eaa787b529154e6768ffbed84510",
+    "max_context": 3082
+  }
+]

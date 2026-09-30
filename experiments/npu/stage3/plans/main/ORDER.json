@@ -1,0 +1,681 @@
+{
+ "seed": 20261410,
+ "lifecycles": 75,
+ "order": [
+  {
+   "seq": 0,
+   "round": 0,
+   "n": 8,
+   "rep": 5,
+   "config": "DP",
+   "tag": "DP.n8.r5",
+   "plan_id": "main-n8-r5"
+  },
+  {
+   "seq": 1,
+   "round": 0,
+   "n": 8,
+   "rep": 5,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r5",
+   "plan_id": "main-n8-r5"
+  },
+  {
+   "seq": 2,
+   "round": 0,
+   "n": 6,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n6.r0",
+   "plan_id": "main-n6-r0"
+  },
+  {
+   "seq": 3,
+   "round": 0,
+   "n": 6,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n6.r0",
+   "plan_id": "main-n6-r0"
+  },
+  {
+   "seq": 4,
+   "round": 0,
+   "n": 6,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n6.r0",
+   "plan_id": "main-n6-r0"
+  },
+  {
+   "seq": 5,
+   "round": 0,
+   "n": 8,
+   "rep": 0,
+   "config": "DP",
+   "tag": "DP.n8.r0",
+   "plan_id": "main-n8-r0"
+  },
+  {
+   "seq": 6,
+   "round": 0,
+   "n": 8,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n8.r0",
+   "plan_id": "main-n8-r0"
+  },
+  {
+   "seq": 7,
+   "round": 0,
+   "n": 8,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r0",
+   "plan_id": "main-n8-r0"
+  },
+  {
+   "seq": 8,
+   "round": 0,
+   "n": 8,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n8.r0",
+   "plan_id": "main-n8-r0"
+  },
+  {
+   "seq": 9,
+   "round": 0,
+   "n": 10,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n10.r0",
+   "plan_id": "main-n10-r0"
+  },
+  {
+   "seq": 10,
+   "round": 0,
+   "n": 10,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n10.r0",
+   "plan_id": "main-n10-r0"
+  },
+  {
+   "seq": 11,
+   "round": 0,
+   "n": 10,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n10.r0",
+   "plan_id": "main-n10-r0"
+  },
+  {
+   "seq": 12,
+   "round": 0,
+   "n": 12,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n12.r0",
+   "plan_id": "main-n12-r0"
+  },
+  {
+   "seq": 13,
+   "round": 0,
+   "n": 12,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n12.r0",
+   "plan_id": "main-n12-r0"
+  },
+  {
+   "seq": 14,
+   "round": 0,
+   "n": 12,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n12.r0",
+   "plan_id": "main-n12-r0"
+  },
+  {
+   "seq": 15,
+   "round": 1,
+   "n": 8,
+   "rep": 6,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r6",
+   "plan_id": "main-n8-r6"
+  },
+  {
+   "seq": 16,
+   "round": 1,
+   "n": 8,
+   "rep": 6,
+   "config": "DP",
+   "tag": "DP.n8.r6",
+   "plan_id": "main-n8-r6"
+  },
+  {
+   "seq": 17,
+   "round": 1,
+   "n": 6,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n6.r1",
+   "plan_id": "main-n6-r1"
+  },
+  {
+   "seq": 18,
+   "round": 1,
+   "n": 6,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n6.r1",
+   "plan_id": "main-n6-r1"
+  },
+  {
+   "seq": 19,
+   "round": 1,
+   "n": 6,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n6.r1",
+   "plan_id": "main-n6-r1"
+  },
+  {
+   "seq": 20,
+   "round": 1,
+   "n": 12,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n12.r1",
+   "plan_id": "main-n12-r1"
+  },
+  {
+   "seq": 21,
+   "round": 1,
+   "n": 12,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n12.r1",
+   "plan_id": "main-n12-r1"
+  },
+  {
+   "seq": 22,
+   "round": 1,
+   "n": 12,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n12.r1",
+   "plan_id": "main-n12-r1"
+  },
+  {
+   "seq": 23,
+   "round": 1,
+   "n": 8,
+   "rep": 1,
+   "config": "DP",
+   "tag": "DP.n8.r1",
+   "plan_id": "main-n8-r1"
+  },
+  {
+   "seq": 24,
+   "round": 1,
+   "n": 8,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n8.r1",
+   "plan_id": "main-n8-r1"
+  },
+  {
+   "seq": 25,
+   "round": 1,
+   "n": 8,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r1",
+   "plan_id": "main-n8-r1"
+  },
+  {
+   "seq": 26,
+   "round": 1,
+   "n": 8,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n8.r1",
+   "plan_id": "main-n8-r1"
+  },
+  {
+   "seq": 27,
+   "round": 1,
+   "n": 10,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n10.r1",
+   "plan_id": "main-n10-r1"
+  },
+  {
+   "seq": 28,
+   "round": 1,
+   "n": 10,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n10.r1",
+   "plan_id": "main-n10-r1"
+  },
+  {
+   "seq": 29,
+   "round": 1,
+   "n": 10,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n10.r1",
+   "plan_id": "main-n10-r1"
+  },
+  {
+   "seq": 30,
+   "round": 2,
+   "n": 6,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n6.r2",
+   "plan_id": "main-n6-r2"
+  },
+  {
+   "seq": 31,
+   "round": 2,
+   "n": 6,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n6.r2",
+   "plan_id": "main-n6-r2"
+  },
+  {
+   "seq": 32,
+   "round": 2,
+   "n": 6,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n6.r2",
+   "plan_id": "main-n6-r2"
+  },
+  {
+   "seq": 33,
+   "round": 2,
+   "n": 8,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n8.r2",
+   "plan_id": "main-n8-r2"
+  },
+  {
+   "seq": 34,
+   "round": 2,
+   "n": 8,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n8.r2",
+   "plan_id": "main-n8-r2"
+  },
+  {
+   "seq": 35,
+   "round": 2,
+   "n": 8,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r2",
+   "plan_id": "main-n8-r2"
+  },
+  {
+   "seq": 36,
+   "round": 2,
+   "n": 8,
+   "rep": 2,
+   "config": "DP",
+   "tag": "DP.n8.r2",
+   "plan_id": "main-n8-r2"
+  },
+  {
+   "seq": 37,
+   "round": 2,
+   "n": 8,
+   "rep": 7,
+   "config": "DP",
+   "tag": "DP.n8.r7",
+   "plan_id": "main-n8-r7"
+  },
+  {
+   "seq": 38,
+   "round": 2,
+   "n": 8,
+   "rep": 7,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r7",
+   "plan_id": "main-n8-r7"
+  },
+  {
+   "seq": 39,
+   "round": 2,
+   "n": 10,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n10.r2",
+   "plan_id": "main-n10-r2"
+  },
+  {
+   "seq": 40,
+   "round": 2,
+   "n": 10,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n10.r2",
+   "plan_id": "main-n10-r2"
+  },
+  {
+   "seq": 41,
+   "round": 2,
+   "n": 10,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n10.r2",
+   "plan_id": "main-n10-r2"
+  },
+  {
+   "seq": 42,
+   "round": 2,
+   "n": 12,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n12.r2",
+   "plan_id": "main-n12-r2"
+  },
+  {
+   "seq": 43,
+   "round": 2,
+   "n": 12,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n12.r2",
+   "plan_id": "main-n12-r2"
+  },
+  {
+   "seq": 44,
+   "round": 2,
+   "n": 12,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n12.r2",
+   "plan_id": "main-n12-r2"
+  },
+  {
+   "seq": 45,
+   "round": 3,
+   "n": 10,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n10.r3",
+   "plan_id": "main-n10-r3"
+  },
+  {
+   "seq": 46,
+   "round": 3,
+   "n": 10,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n10.r3",
+   "plan_id": "main-n10-r3"
+  },
+  {
+   "seq": 47,
+   "round": 3,
+   "n": 10,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n10.r3",
+   "plan_id": "main-n10-r3"
+  },
+  {
+   "seq": 48,
+   "round": 3,
+   "n": 8,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n8.r3",
+   "plan_id": "main-n8-r3"
+  },
+  {
+   "seq": 49,
+   "round": 3,
+   "n": 8,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r3",
+   "plan_id": "main-n8-r3"
+  },
+  {
+   "seq": 50,
+   "round": 3,
+   "n": 8,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n8.r3",
+   "plan_id": "main-n8-r3"
+  },
+  {
+   "seq": 51,
+   "round": 3,
+   "n": 8,
+   "rep": 3,
+   "config": "DP",
+   "tag": "DP.n8.r3",
+   "plan_id": "main-n8-r3"
+  },
+  {
+   "seq": 52,
+   "round": 3,
+   "n": 12,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n12.r3",
+   "plan_id": "main-n12-r3"
+  },
+  {
+   "seq": 53,
+   "round": 3,
+   "n": 12,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n12.r3",
+   "plan_id": "main-n12-r3"
+  },
+  {
+   "seq": 54,
+   "round": 3,
+   "n": 12,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n12.r3",
+   "plan_id": "main-n12-r3"
+  },
+  {
+   "seq": 55,
+   "round": 3,
+   "n": 6,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n6.r3",
+   "plan_id": "main-n6-r3"
+  },
+  {
+   "seq": 56,
+   "round": 3,
+   "n": 6,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n6.r3",
+   "plan_id": "main-n6-r3"
+  },
+  {
+   "seq": 57,
+   "round": 3,
+   "n": 6,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n6.r3",
+   "plan_id": "main-n6-r3"
+  },
+  {
+   "seq": 58,
+   "round": 3,
+   "n": 8,
+   "rep": 8,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r8",
+   "plan_id": "main-n8-r8"
+  },
+  {
+   "seq": 59,
+   "round": 3,
+   "n": 8,
+   "rep": 8,
+   "config": "DP",
+   "tag": "DP.n8.r8",
+   "plan_id": "main-n8-r8"
+  },
+  {
+   "seq": 60,
+   "round": 4,
+   "n": 8,
+   "rep": 9,
+   "config": "DP",
+   "tag": "DP.n8.r9",
+   "plan_id": "main-n8-r9"
+  },
+  {
+   "seq": 61,
+   "round": 4,
+   "n": 8,
+   "rep": 9,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r9",
+   "plan_id": "main-n8-r9"
+  },
+  {
+   "seq": 62,
+   "round": 4,
+   "n": 8,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n8.r4",
+   "plan_id": "main-n8-r4"
+  },
+  {
+   "seq": 63,
+   "round": 4,
+   "n": 8,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n8.r4",
+   "plan_id": "main-n8-r4"
+  },
+  {
+   "seq": 64,
+   "round": 4,
+   "n": 8,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n8.r4",
+   "plan_id": "main-n8-r4"
+  },
+  {
+   "seq": 65,
+   "round": 4,
+   "n": 8,
+   "rep": 4,
+   "config": "DP",
+   "tag": "DP.n8.r4",
+   "plan_id": "main-n8-r4"
+  },
+  {
+   "seq": 66,
+   "round": 4,
+   "n": 10,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n10.r4",
+   "plan_id": "main-n10-r4"
+  },
+  {
+   "seq": 67,
+   "round": 4,
+   "n": 10,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n10.r4",
+   "plan_id": "main-n10-r4"
+  },
+  {
+   "seq": 68,
+   "round": 4,
+   "n": 10,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n10.r4",
+   "plan_id": "main-n10-r4"
+  },
+  {
+   "seq": 69,
+   "round": 4,
+   "n": 6,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n6.r4",
+   "plan_id": "main-n6-r4"
+  },
+  {
+   "seq": 70,
+   "round": 4,
+   "n": 6,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n6.r4",
+   "plan_id": "main-n6-r4"
+  },
+  {
+   "seq": 71,
+   "round": 4,
+   "n": 6,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n6.r4",
+   "plan_id": "main-n6-r4"
+  },
+  {
+   "seq": 72,
+   "round": 4,
+   "n": 12,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n12.r4",
+   "plan_id": "main-n12-r4"
+  },
+  {
+   "seq": 73,
+   "round": 4,
+   "n": 12,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n12.r4",
+   "plan_id": "main-n12-r4"
+  },
+  {
+   "seq": 74,
+   "round": 4,
+   "n": 12,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n12.r4",
+   "plan_id": "main-n12-r4"
+  }
+ ]
+}
