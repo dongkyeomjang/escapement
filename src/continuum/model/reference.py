@@ -91,14 +91,28 @@ class FifoReplay:
     @classmethod
     def for_descriptor(cls, descriptor, *, capacity: int | None = None,
                        ceiling: int | None = None) -> "FifoReplay":
-        """Build from a descriptor's measured semantics; refuses unmeasured ones."""
-        for name in ("release_rule", "dummy_mode", "resume_allocates_first"):
-            if getattr(descriptor, name) is None:
+        """Build from a descriptor's measured semantics; refuses unmeasured ones.
+
+        Accepts a v1 descriptor or a v2 one (``semantics`` + the reuse layer)."""
+        if hasattr(descriptor, "semantics"):
+            if descriptor.eviction_order != "allocation_fifo":
+                raise ValueError("FifoReplay is the allocation-FIFO rule; the descriptor "
+                                 f"says {descriptor.eviction_order!r}")
+            sem = descriptor.semantics
+            rules = {"release_rule": sem.evictable_when, "dummy_mode": sem.dummy_mode,
+                     "resume_allocates_first": sem.resume_allocates_first}
+            pool = descriptor.reuse_pool.capacity_units
+        else:
+            rules = {n: getattr(descriptor, n)
+                     for n in ("release_rule", "dummy_mode", "resume_allocates_first")}
+            pool = descriptor.outer_slot_count
+        for name, value in rules.items():
+            if value is None:
                 raise ValueError(f"descriptor has no measured {name}")
-        cap = capacity if capacity is not None else descriptor.outer_slot_count
+        cap = capacity if capacity is not None else pool
         return cls(capacity=cap, ceiling=ceiling if ceiling is not None else cap,
-                   release=descriptor.release_rule, dummy=descriptor.dummy_mode,
-                   allocate_before_lookup=descriptor.resume_allocates_first)
+                   release=rules["release_rule"], dummy=rules["dummy_mode"],
+                   allocate_before_lookup=rules["resume_allocates_first"])
 
     # -- helpers ----------------------------------------------------------------
 

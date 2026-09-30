@@ -12,6 +12,6 @@ The specification, assumptions and what each part does not predict are in
 ``docs/research/MODEL_V0.md``. Nothing here names an accelerator.
 """
 
-from . import grid, interference, occupancy, survival
+from . import grid, interference, occupancy, protocol, survival
 
-__all__ = ["grid", "interference", "occupancy", "survival"]
+__all__ = ["grid", "interference", "occupancy", "protocol", "survival"]

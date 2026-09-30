@@ -27,6 +27,7 @@ import itertools
 from ..policy.lookahead import Context, Informed, Lookahead, PeerView
 from ..policy.online import ReturnPolicy, ReturnState
 from ..substrate.descriptor import SubstrateDescriptor
+from ..substrate.v2 import SubstrateDescriptorV2
 from ..workload.agentic import Session
 from .cache import Eviction, GranularPool, OuterBlockPool
 
@@ -139,7 +140,24 @@ class SimConfig:
     an observed order here is how that assumption's cost is measured.
     """
 
+    semantics: str = "legacy"
+    """Where the pool rules come from. ``legacy`` (every result before TASK84,
+    and the default so they reproduce bit for bit) uses ``release_rule``,
+    ``dummy_mode``/``dummy_block`` and ``eviction_policy`` from this config.
+    ``descriptor`` reads them from the descriptor (v2 ``semantics`` and the
+    reuse layer's eviction order, or the v1 fields of the same names) and
+    refuses any rule this simulator does not implement; the config switches
+    must then stay at their defaults. New predictions use ``descriptor``
+    (directive 06 decision 4)."""
+
     def __post_init__(self) -> None:
+        if self.semantics not in ("legacy", "descriptor"):
+            raise ValueError(f"unknown semantics {self.semantics!r}")
+        if self.semantics == "descriptor" and (
+                self.release_rule != "deferred" or self.dummy_mode != "off"
+                or self.dummy_block or self.eviction_policy is not None):
+            raise ValueError("semantics='descriptor' reads the pool rules from the "
+                             "descriptor; leave the config switches at their defaults")
         if self.max_running_requests <= 0:
             raise ValueError("max_running_requests must be positive")
         if self.client_overhead_s < 0:
@@ -308,19 +326,68 @@ def _prompt_tokens(session: Session, turn_index: int) -> int:
     return session.context_tokens_before(turn_index) + session.turns[turn_index].new_segment_tokens
 
 
+def _descriptor_rules(descriptor, config: SimConfig):
+    """(numeric v1 view, release rule, dummy mode, eviction policy) for ``config``.
+
+    Accepts a v1 ``SubstrateDescriptor`` or a ``SubstrateDescriptorV2``. With
+    ``semantics='descriptor'`` every rule the engine depends on is checked
+    against what it implements -- a rule it cannot follow is an error, not a
+    silent approximation."""
+    v2 = isinstance(descriptor, SubstrateDescriptorV2)
+    if config.semantics == "legacy":
+        numeric = descriptor.legacy_view() if v2 else descriptor
+        return (numeric, config.release_rule,
+                config.dummy_mode if not config.dummy_block else "reserved",
+                config.eviction_policy or numeric.outer_eviction_policy)
+    if v2:
+        sem = descriptor.semantics
+        order = descriptor.eviction_order
+        release, dummy = sem.evictable_when, sem.dummy_mode
+        unsupported = []
+        if order != "allocation_fifo":
+            unsupported.append(f"eviction_order={order}")
+        if sem.intra_request_loss != "all_or_nothing":
+            unsupported.append(f"intra_request_loss={sem.intra_request_loss}")
+        if sem.resume_allocates_first is not True:
+            unsupported.append(f"resume_allocates_first={sem.resume_allocates_first}")
+        if sem.cacheable_tokens != "prefill_only":
+            unsupported.append(f"cacheable_tokens={sem.cacheable_tokens}")
+        if sem.preemption != "none":
+            unsupported.append(f"preemption={sem.preemption}")
+        if descriptor.prefill.execution != "exclusive" and config.prefill_exclusive:
+            unsupported.append(f"prefill.execution={descriptor.prefill.execution}")
+        if unsupported:
+            raise ValueError("simulator does not implement: " + ", ".join(unsupported))
+        if descriptor.admission.max_running not in (None, config.max_running_requests):
+            raise ValueError("config.max_running_requests differs from the descriptor's")
+        if dummy != "none" and sem.dummy_ceiling is None \
+                and descriptor.grid.sizes[-1] != config.max_running_requests:
+            raise ValueError("dummy ceiling not established and the top grid size differs "
+                             "from max_running: the trigger is ambiguous")
+    else:
+        release, dummy = descriptor.release_rule, descriptor.dummy_mode
+        order = {"fifo": "allocation_fifo"}.get(descriptor.outer_eviction_policy)
+        if order is None or descriptor.resume_allocates_first is not True:
+            raise ValueError("descriptor rules are outside what the simulator implements")
+    if release is None or dummy is None:
+        raise ValueError("descriptor does not establish the release rule or dummy mode")
+    numeric = descriptor.legacy_view() if v2 else descriptor
+    return numeric, release, {"none": "off"}.get(dummy, dummy), "fifo"
+
+
 def simulate(
-    descriptor: SubstrateDescriptor,
+    descriptor: SubstrateDescriptor | SubstrateDescriptorV2,
     sessions: list[Session],
     config: SimConfig,
 ) -> SimResult:
     """Run ``sessions`` against ``descriptor`` and return the step trace."""
+    descriptor, release_rule, dummy_mode, policy_name = _descriptor_rules(descriptor, config)
     if descriptor.prefill_cost_model is None:
         raise ValueError(
             "descriptor has no prefill cost model; prefill is not free, it is "
             "unmeasured, so a simulation would silently understate the cost"
         )
     prefill_model = descriptor.prefill_cost_model
-    policy_name = config.eviction_policy or descriptor.outer_eviction_policy
     if config.cache_granularity == "inner":
         pool = GranularPool(capacity=descriptor.inner_block_count,
                             block_tokens=descriptor.inner_block_tokens,
@@ -328,9 +395,9 @@ def simulate(
     else:
         pool = OuterBlockPool(capacity=descriptor.outer_slot_count,
                               policy=policy_name,
-                              immediate_release=config.release_rule == "immediate")
-    reserved_dummy = config.dummy_block or config.dummy_mode == "reserved"
-    pre_evict = config.dummy_mode == "pre_evict"
+                              immediate_release=release_rule == "immediate")
+    reserved_dummy = dummy_mode == "reserved"
+    pre_evict = dummy_mode == "pre_evict"
 
     def _padding_step(actual: int) -> None:
         # TASK63: the padding request exists only while the batch is partial.

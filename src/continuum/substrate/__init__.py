@@ -8,6 +8,16 @@ from .descriptor import (
     StepCostModel,
     SubstrateDescriptor,
 )
+from .v2 import (
+    NA,
+    Admission,
+    Grid,
+    Pipeline,
+    PoolLayer,
+    PrefillSpec,
+    Semantics,
+    SubstrateDescriptorV2,
+)
 
 __all__ = [
     "HitFormula",
@@ -16,4 +26,12 @@ __all__ = [
     "Provenance",
     "StepCostModel",
     "SubstrateDescriptor",
+    "NA",
+    "Admission",
+    "Grid",
+    "Pipeline",
+    "PoolLayer",
+    "PrefillSpec",
+    "Semantics",
+    "SubstrateDescriptorV2",
 ]

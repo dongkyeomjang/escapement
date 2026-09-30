@@ -21,7 +21,16 @@ from continuum.substrate import (  # noqa: E402
     PrefillCostModel,
     Provenance,
     StepCostModel,
-    SubstrateDescriptor,
+)
+from continuum.substrate.v2 import (  # noqa: E402
+    NA,
+    Admission,
+    Grid,
+    Pipeline,
+    PoolLayer,
+    PrefillSpec,
+    Semantics,
+    SubstrateDescriptorV2,
 )
 
 # Bucket-determined part of a decode step: model forward p50 + sampler p50,
@@ -52,105 +61,215 @@ PREFILL_COST = PrefillCostModel(
     drift_s_per_token=6.399e-07,
 )
 
-RBLN_CA25_VLLM_RBLN_0111 = SubstrateDescriptor(
+_NOTES = (
+    "Adding the prefill serialization term closes the TASK20 cost-model "
+    "gap: predicted/measured ITL sum moves from 0.57-0.86 to 0.97-1.04 "
+    "across every (N, arm) cell.",
+    "Reuse cliff observed at background_requests = 7 and reproduced 12/12 "
+    "in TASK15; survives_gap() encodes the law candidate that explains it.",
+    "vllm:prefix_cache_hits_total reports the inner-block layer and can "
+    "overstate actual reuse by 100%. Use vllm:prompt_tokens_cached_total "
+    "or vllm:request_prefill_kv_computed_tokens for the outer layer.",
+    "Measured with the TASK12 observation-only patch applied "
+    "(model_base.py sha256 70942d16...).",
+)
+
+# Descriptor v2 (TASK84, directive 06): the source of truth. The v1 object
+# every earlier script imports is derived from it below.
+RBLN_CA25_V2 = SubstrateDescriptorV2(
     name="RBLN-CA25 / vllm-rbln 0.11.1 / Qwen3-4B b8 s8192 d4 multi-bucket",
-    bucket_sizes=(1, 2, 4, 8),
-    step_cost_model=STEP_COST,
-    outer_slot_count=8,
-    outer_slot_tokens=8192,
-    inner_block_tokens=128,
-    inner_block_count=512,
-    outer_eviction_policy="fifo",
-    inner_eviction_policy="lru",
+    layers=(
+        PoolLayer(name="inner_block", unit_tokens=128, capacity_units=512,
+                  reserved_units=1, value_source="compile", eviction_order="release_lru"),
+        PoolLayer(name="outer_slot", unit_tokens=8192, capacity_units=8,
+                  reserved_units=0, value_source="compile", eviction_order="allocation_fifo"),
+    ),
+    reuse_layer=1,
+    semantics=Semantics(
+        evictable_when="immediate",
+        window_start="allocation",
+        intra_request_loss="all_or_nothing",
+        initial_free_order=NA,
+        active_pinned=True,
+        resume_allocates_first=True,
+        hit_protection=NA,
+        failed_admission_evicts=None,
+        cache_registration=None,
+        kv_tokens_held="computed",
+        cacheable_tokens="prefill_only",
+        dummy_mode="pre_evict",
+        dummy_ceiling=None,
+        preemption="none",
+    ),
+    admission=Admission(max_running=8, max_running_source="compile"),
+    grid=Grid(sizes=(1, 2, 4, 8), unit="requests", value_source="compile",
+              above_top="impossible", mixed_step_graph=NA),
     hit_formula=HIT_FORMULA,
-    kv_pool_tokens=8 * 8192,
-    prefill_cost_model=PREFILL_COST,
-    release_rule="immediate",
-    dummy_mode="pre_evict",
-    resume_allocates_first=True,
+    step_cost={"decode": STEP_COST},
+    step_cost_measurement="device model span p50 + sampler p50 per bucket; residual "
+                          "(end-to-end ITL minus both) regressed on actual count",
+    prefill=PrefillSpec(execution="exclusive", cost=PREFILL_COST, chunk_tokens=128),
+    pipeline=Pipeline(),
     provenance={
-        "release_rule": Provenance(
+        # -- pool layers
+        "layers[0].unit_tokens": Provenance(
+            "stack", "TASK08", "source-read",
+            "cache_config.block_size = prefill_chunk_size = 128 on non-CR NPUs",
+        ),
+        "layers[0].capacity_units": Provenance(
+            "stack", "TASK14", "source-read",
+            "num_gpu_blocks - 1; the null block is reserved",
+        ),
+        "layers[0].reserved_units": Provenance(
+            "stack", "TASK14", "source-read", "one null block",
+        ),
+        "layers[0].value_source": Provenance(
+            "stack", "TASK08", "source-read",
+            "num_gpu_blocks = batch_size * max_seq_len / 128 + 1, fixed by the compiled artifact",
+        ),
+        "layers[0].eviction_order": Provenance(
+            "class", "TASK14", "source-read",
+            "vLLM FreeKVCacheBlockQueue LRU ordering; shared by every vLLM build. "
+            "This layer reports the hit metrics but does not decide reuse (TASK14/15)",
+        ),
+        "layers[1].unit_tokens": Provenance(
+            "stack", "TASK08", "source-read",
+            "kvcache_block_size defaults to max_seq_len for eager attention",
+        ),
+        "layers[1].capacity_units": Provenance(
+            "stack", "TASK14", "source-read",
+            "num_ob = ceil((num_gpu_blocks-1) / block_ratio) = ceil(512/64) = batch_size",
+        ),
+        "layers[1].reserved_units": Provenance(
+            "stack", "TASK14", "derived",
+            "no outer slot is held by a non-request consumer permanently; the dummy "
+            "block is time-varying (semantics.dummy_mode)",
+        ),
+        "layers[1].value_source": Provenance(
+            "stack", "TASK08", "source-read",
+            "kvcache_num_blocks = batch_size at compile; changing it needs a recompile",
+        ),
+        "layers[1].eviction_order": Provenance(
+            "stack", "TASK14", "source-read",
+            "FIFOEvictionPolicy is hardcoded (LRUEvictionPolicy exists unused); the victim "
+            "is the earliest-allocated inactive slot (TASK63 15/15, TASK64 5/5)",
+        ),
+        "reuse_layer": Provenance(
+            "stack", "TASK15", "measured",
+            "reuse is decided by the outer slot (cliff at 7 background requests, 12/12); "
+            "the inner-block metric overstates reuse by up to 100 % (TASK14)",
+        ),
+        # -- semantics
+        "semantics.evictable_when": Provenance(
             "stack", "TASK72", "derived",
             "event replay of 1,298 re-arrivals: immediate 1.000 vs deferred 0.934; "
-            "consistent with TASK63 B.b0 (a just-released block evicted at the next "
-            "dummy check). Not read by the simulator unless its switch says so",
+            "consistent with TASK63 B.b0",
         ),
-        "dummy_mode": Provenance(
+        "semantics.window_start": Provenance(
+            "stack", "TASK14", "derived",
+            "queue position is fixed at allocation (TASK14 finding 5); MODEL_V0 B1 window",
+        ),
+        "semantics.intra_request_loss": Provenance(
+            "stack", "TASK15", "measured",
+            "one outer slot per request up to 8,192 tokens: the prefix survives whole or "
+            "not at all (cliff 1,920 -> 0, 12/12)",
+        ),
+        "semantics.initial_free_order": Provenance(
+            "stack", "MODEL_V0", "derived",
+            "with allocation-FIFO eviction the victim order is set by allocation, so the "
+            "order free slots are handed out does not enter any survival rule",
+        ),
+        "semantics.active_pinned": Provenance(
             "stack", "TASK63", "measured",
-            "padding request per decode step with 0<n<batch_size; the next admission "
-            "takes its slot (74/74). TASK72 replay: pre_evict 1.000 vs reserved 0.847",
+            "running slots are skipped by eviction (K_pin); TASK72 replay 1,298/1,298",
         ),
-        "resume_allocates_first": Provenance(
+        "semantics.resume_allocates_first": Provenance(
             "stack", "TASK15", "measured",
             "[PFX] ALLOC precedes MAPPING-SEARCH/CACHE-* for the same request; "
             "TASK72 R1 36/36 trials",
         ),
-        "bucket_sizes": Provenance(
+        "semantics.hit_protection": Provenance(
+            "stack", "TASK15", "derived",
+            "allocation precedes lookup, so no lookup result exists to protect",
+        ),
+        "semantics.kv_tokens_held": Provenance(
+            "stack", "TASK08", "derived",
+            "a request's slot holds the KV of every computed token (the slot is "
+            "max_seq_len long); only the slot count enters, and it is 1 below 8,192",
+        ),
+        "semantics.cacheable_tokens": Provenance(
+            "stack", "TASK24", "measured",
+            "outer layer caches prefill tokens only: 271/271 re-arrivals",
+        ),
+        "semantics.dummy_mode": Provenance(
+            "stack", "TASK63", "measured",
+            "padding request per decode step with 0<n<ceiling; the next admission "
+            "takes its slot (74/74). TASK72 replay: pre_evict 1.000 vs reserved 0.847",
+        ),
+        "semantics.preemption": Provenance(
+            "stack", "TASK08", "derived",
+            "one slot of max_seq_len per running request and slots = max_running, so a "
+            "running request never needs another unit; no preemption observed in any run",
+        ),
+        # -- admission, grid, costs
+        "admission.max_running": Provenance(
+            "stack", "TASK08", "source-read",
+            "max_num_seqs = compile batch_size",
+        ),
+        "admission.max_running_source": Provenance(
+            "stack", "TASK08", "source-read", "compile batch_size",
+        ),
+        "grid.sizes": Provenance(
             "stack", "TASK13", "measured",
             "decoder_batch_sizes=[8,4,2,1] at compile; mapping 1->1 2->2 3->4 "
             "4->4 5->8 6->8 7->8 8->8 observed over 4,088 decode steps",
         ),
-        "step_cost_model": Provenance(
-            "silicon", "TASK13", "measured",
-            "model+sampler p50 per bucket; residual slope 0.0413 ms/request. "
-            "Absolute values are hardware and model specific",
+        "grid.unit": Provenance(
+            "stack", "TASK13", "measured", "[BUCKET] request_nums -> padded_batch_size",
         ),
-        "outer_slot_count": Provenance(
-            "stack", "TASK14", "source-read",
-            "num_ob = ceil((num_gpu_blocks-1) / block_ratio) = ceil(512/64); "
-            "derived from compile batch_size, so it changes with the artifact",
+        "grid.value_source": Provenance(
+            "stack", "TASK23", "measured",
+            "changing the grid required a recompile (TASK23, TASK34, TASK81)",
         ),
-        "outer_slot_tokens": Provenance(
-            "stack", "TASK08", "source-read",
-            "kvcache_block_size defaults to max_seq_len for eager attention",
+        "grid.above_top": Provenance(
+            "stack", "TASK08", "derived",
+            "running <= batch_size = top grid size in every compiled artifact",
         ),
-        "inner_block_tokens": Provenance(
-            "stack", "TASK08", "source-read",
-            "cache_config.block_size = prefill_chunk_size = 128 on non-CR NPUs",
-        ),
-        "inner_block_count": Provenance(
-            "stack", "TASK14", "source-read",
-            "num_gpu_blocks - 1; the null block is reserved",
-        ),
-        "outer_eviction_policy": Provenance(
-            "stack", "TASK14", "source-read",
-            "FIFOEvictionPolicy is hardcoded; LRUEvictionPolicy exists unused",
-        ),
-        "inner_eviction_policy": Provenance(
-            "class", "TASK14", "source-read",
-            "vLLM FreeKVCacheBlockQueue LRU ordering; shared by every vLLM build",
+        "grid.mixed_step_graph": Provenance(
+            "stack", "TASK22", "measured", "prefill runs exclusively; no mixed step exists",
         ),
         "hit_formula": Provenance(
             "class", "TASK11", "measured",
             "floor(min(shared, query-1)/128)*128 matched 10/10 conditions. The "
             "shape is vLLM's; the block size is instance level",
         ),
-        "prefill_cost_model": Provenance(
-            "silicon", "TASK22", "measured",
-            "prefill stalls every concurrent decoder for its whole duration; "
-            "spike/prefill_time observed at 1.01-1.14 across three injection "
-            "sizes. Absolute timings are hardware and model specific",
+        "step_cost.decode": Provenance(
+            "silicon", "TASK13", "measured",
+            "model+sampler p50 per bucket; residual slope 0.0413 ms/request. "
+            "Absolute values are hardware and model specific",
         ),
-        "kv_pool_tokens": Provenance(
-            "stack", "TASK14", "derived",
-            "outer_slot_count * outer_slot_tokens. vLLM separately reports "
-            "'GPU KV cache size: 65,664 tokens', which is "
-            "max_concurrency * max_model_len and not the physical pool",
+        "step_cost_measurement": Provenance(
+            "stack", "TASK13", "measured", "channel definition of the decode curve",
+        ),
+        "prefill.execution": Provenance(
+            "stack", "TASK22", "measured",
+            "prefill stalls every concurrent decoder for its whole duration; "
+            "spike/prefill_time 1.01-1.14 across three injection sizes",
+        ),
+        "prefill.cost": Provenance(
+            "silicon", "TASK22", "measured",
+            "ceil(n/128)*(0.021206 + 6.399e-7*n) fitted on four points; worst residual "
+            "2.4 ms. Absolute timings are hardware and model specific",
+        ),
+        "prefill.chunk_tokens": Provenance(
+            "stack", "TASK22", "measured", "128-token prefill chunks",
         ),
     },
-    notes=(
-        "Adding the prefill serialization term closes the TASK20 cost-model "
-        "gap: predicted/measured ITL sum moves from 0.57-0.86 to 0.97-1.04 "
-        "across every (N, arm) cell.",
-        "Reuse cliff observed at background_requests = 7 and reproduced 12/12 "
-        "in TASK15; survives_gap() encodes the law candidate that explains it.",
-        "vllm:prefix_cache_hits_total reports the inner-block layer and can "
-        "overstate actual reuse by 100%. Use vllm:prompt_tokens_cached_total "
-        "or vllm:request_prefill_kv_computed_tokens for the outer layer.",
-        "Measured with the TASK12 observation-only patch applied "
-        "(model_base.py sha256 70942d16...).",
-    ),
+    notes=_NOTES,
 )
+
+# v1 view, field for field what every script before TASK84 imported.
+RBLN_CA25_VLLM_RBLN_0111 = RBLN_CA25_V2.legacy_view()
 
 
 # TASK13 observed median end-to-end ITL per actual request count, in ms.
