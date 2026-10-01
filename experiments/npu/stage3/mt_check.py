@@ -36,7 +36,7 @@ CONFIGS = {
 
 def plan_index() -> dict[str, dict]:
     out = {}
-    for f in ("INDEX.json", "INDEX_EXT.json"):
+    for f in ("INDEX.json", "INDEX_EXT.json", "INDEX_HI.json"):
         for e in json.loads((PLAN_DIR / f).read_text()):
             out[e["plan_id"]] = e
     return out

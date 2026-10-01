@@ -1,0 +1,276 @@
+{
+ "seed": 20261570,
+ "lifecycles": 30,
+ "order": [
+  {
+   "seq": 0,
+   "round": 0,
+   "n": 14,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n14.r0",
+   "plan_id": "main-n14-r0"
+  },
+  {
+   "seq": 1,
+   "round": 0,
+   "n": 14,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n14.r0",
+   "plan_id": "main-n14-r0"
+  },
+  {
+   "seq": 2,
+   "round": 0,
+   "n": 14,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n14.r0",
+   "plan_id": "main-n14-r0"
+  },
+  {
+   "seq": 3,
+   "round": 0,
+   "n": 16,
+   "rep": 0,
+   "config": "TUNED",
+   "tag": "TUNED.n16.r0",
+   "plan_id": "main-n16-r0"
+  },
+  {
+   "seq": 4,
+   "round": 0,
+   "n": 16,
+   "rep": 0,
+   "config": "BASE",
+   "tag": "BASE.n16.r0",
+   "plan_id": "main-n16-r0"
+  },
+  {
+   "seq": 5,
+   "round": 0,
+   "n": 16,
+   "rep": 0,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n16.r0",
+   "plan_id": "main-n16-r0"
+  },
+  {
+   "seq": 6,
+   "round": 1,
+   "n": 16,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n16.r1",
+   "plan_id": "main-n16-r1"
+  },
+  {
+   "seq": 7,
+   "round": 1,
+   "n": 16,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n16.r1",
+   "plan_id": "main-n16-r1"
+  },
+  {
+   "seq": 8,
+   "round": 1,
+   "n": 16,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n16.r1",
+   "plan_id": "main-n16-r1"
+  },
+  {
+   "seq": 9,
+   "round": 1,
+   "n": 14,
+   "rep": 1,
+   "config": "TUNED",
+   "tag": "TUNED.n14.r1",
+   "plan_id": "main-n14-r1"
+  },
+  {
+   "seq": 10,
+   "round": 1,
+   "n": 14,
+   "rep": 1,
+   "config": "BASE",
+   "tag": "BASE.n14.r1",
+   "plan_id": "main-n14-r1"
+  },
+  {
+   "seq": 11,
+   "round": 1,
+   "n": 14,
+   "rep": 1,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n14.r1",
+   "plan_id": "main-n14-r1"
+  },
+  {
+   "seq": 12,
+   "round": 2,
+   "n": 16,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n16.r2",
+   "plan_id": "main-n16-r2"
+  },
+  {
+   "seq": 13,
+   "round": 2,
+   "n": 16,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n16.r2",
+   "plan_id": "main-n16-r2"
+  },
+  {
+   "seq": 14,
+   "round": 2,
+   "n": 16,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n16.r2",
+   "plan_id": "main-n16-r2"
+  },
+  {
+   "seq": 15,
+   "round": 2,
+   "n": 14,
+   "rep": 2,
+   "config": "TUNED",
+   "tag": "TUNED.n14.r2",
+   "plan_id": "main-n14-r2"
+  },
+  {
+   "seq": 16,
+   "round": 2,
+   "n": 14,
+   "rep": 2,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n14.r2",
+   "plan_id": "main-n14-r2"
+  },
+  {
+   "seq": 17,
+   "round": 2,
+   "n": 14,
+   "rep": 2,
+   "config": "BASE",
+   "tag": "BASE.n14.r2",
+   "plan_id": "main-n14-r2"
+  },
+  {
+   "seq": 18,
+   "round": 3,
+   "n": 16,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n16.r3",
+   "plan_id": "main-n16-r3"
+  },
+  {
+   "seq": 19,
+   "round": 3,
+   "n": 16,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n16.r3",
+   "plan_id": "main-n16-r3"
+  },
+  {
+   "seq": 20,
+   "round": 3,
+   "n": 16,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n16.r3",
+   "plan_id": "main-n16-r3"
+  },
+  {
+   "seq": 21,
+   "round": 3,
+   "n": 14,
+   "rep": 3,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n14.r3",
+   "plan_id": "main-n14-r3"
+  },
+  {
+   "seq": 22,
+   "round": 3,
+   "n": 14,
+   "rep": 3,
+   "config": "TUNED",
+   "tag": "TUNED.n14.r3",
+   "plan_id": "main-n14-r3"
+  },
+  {
+   "seq": 23,
+   "round": 3,
+   "n": 14,
+   "rep": 3,
+   "config": "BASE",
+   "tag": "BASE.n14.r3",
+   "plan_id": "main-n14-r3"
+  },
+  {
+   "seq": 24,
+   "round": 4,
+   "n": 16,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n16.r4",
+   "plan_id": "main-n16-r4"
+  },
+  {
+   "seq": 25,
+   "round": 4,
+   "n": 16,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n16.r4",
+   "plan_id": "main-n16-r4"
+  },
+  {
+   "seq": 26,
+   "round": 4,
+   "n": 16,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n16.r4",
+   "plan_id": "main-n16-r4"
+  },
+  {
+   "seq": 27,
+   "round": 4,
+   "n": 14,
+   "rep": 4,
+   "config": "BATCHONLY",
+   "tag": "BATCHONLY.n14.r4",
+   "plan_id": "main-n14-r4"
+  },
+  {
+   "seq": 28,
+   "round": 4,
+   "n": 14,
+   "rep": 4,
+   "config": "BASE",
+   "tag": "BASE.n14.r4",
+   "plan_id": "main-n14-r4"
+  },
+  {
+   "seq": 29,
+   "round": 4,
+   "n": 14,
+   "rep": 4,
+   "config": "TUNED",
+   "tag": "TUNED.n14.r4",
+   "plan_id": "main-n14-r4"
+  }
+ ]
+}
