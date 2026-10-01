@@ -14,6 +14,12 @@ multi-turn experiment.
   every few decode steps.
 
 ``cycle_s`` = 1 s (stagger 1/n s); seeds ``20261800 + n`` and ``20261899``.
+
+Supplement (``--supplement``, TASK92 amendment): with 10 sessions per slot the
+n = 1 and n = 2 plans ran out before the evaluation window ended (one fast
+decoder finishes 10 x 512 tokens in about 55 s). ``op-decode-n{1,2}-s30`` are
+the same load with 30 sessions per slot, seeds ``20261820 + n``; listed in
+``INDEX_SUPP.json``.
 """
 
 from __future__ import annotations
@@ -35,11 +41,15 @@ NS = (1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16)
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out-dir", type=Path, default=HERE / "plans" / "stepcost")
+    ap.add_argument("--supplement", action="store_true")
     a = ap.parse_args()
     a.out_dir.mkdir(parents=True, exist_ok=True)
     index = []
-    specs = [(f"op-decode-n{n}", n, 20261800 + n, "fixed:128", "fixed:512", 10) for n in NS]
-    specs.append(("op-prefill", 4, 20261899, "uniform:64:4096", "fixed:32", 160))
+    if a.supplement:
+        specs = [(f"op-decode-n{n}-s30", n, 20261820 + n, "fixed:128", "fixed:512", 30) for n in (1, 2)]
+    else:
+        specs = [(f"op-decode-n{n}", n, 20261800 + n, "fixed:128", "fixed:512", 10) for n in NS]
+        specs.append(("op-prefill", 4, 20261899, "uniform:64:4096", "fixed:32", 160))
     for pid, n, seed, first, gen, sessions in specs:
         plan = MP.build(n=n, seed=seed, plan_id=pid, cycle_s=1.0, turns=1, sessions_per_slot=sessions,
                         first=first, later="fixed:8", generation=gen, gap="uniform:0:0")
@@ -50,7 +60,8 @@ def main() -> int:
                       "file_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                       "max_context": MP.max_context_tokens(plan)})
         print(pid, n, content[:12], index[-1]["max_context"])
-    (a.out_dir / "INDEX.json").write_text(json.dumps(index, indent=2) + "\n")
+    (a.out_dir / ("INDEX_SUPP.json" if a.supplement else "INDEX.json")).write_text(
+        json.dumps(index, indent=2) + "\n")
     return 0
 
 

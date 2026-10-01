@@ -26,3 +26,9 @@
 ## 4. 쓰는 곳
 
 작업 C(통합 시뮬레이터 blind cell)의 주 예측기 (1)이 이 비용으로 시뮬레이터의 **시간을 진행**한다(대기·batch 폭·축출 시점 등 동역학). 예측 비용(turn당 A′)의 **가격**은 관측 채널 A′의 정의와 같이 원래 비용 모형(TASK13 decode, TASK22 prefill)으로 매긴다 — 관측 m이 그 가격으로 계산되기 때문이다. **[TASK91](TASK91.md)의 관측 step 비율이나 TASK82·87에서 얻은 어떤 배율도 입력으로 쓰지 않는다.**
+
+## 개정 1 (2026-10-02, 보충 측정 시작 00:08:16 직후 commit)
+
+본 순서 실행(16:58:35–19:08:38)에서 **n = 1(4 artifact 전부)과 DP n = 2의 10-세션 plan이 평가 구간 끝 전에 소진**됐다(`exhausted_slots`, runner exit 3; BATCHONLY n = 2는 재실행에서 통과). 원인은 설계의 세션 수 계산 실수다 — 빠른 decoder 하나가 512 token 세션 10개를 약 55 s에 끝내 warm-up(약 11 s) + 평가 40 s를 채우지 못한다. 고침: 같은 부하에 세션만 30개로 늘린 `op-decode-n1-s30`·`op-decode-n2-s30`(seed 20261820 + n, `INDEX_SUPP.json`)으로 빠진 5개(BASE·BATCHONLY·TUNED·DP n = 1, DP n = 2)를 `run_stepcost_supp.sh`로 같은 run 디렉터리에 보충 측정한다. 분석은 유효 lifecycle만 쓰므로 소진된 lifecycle은 들어가지 않는다. 다른 설정은 바꾸지 않는다.
+
+기록: 보충 구동이 이 개정의 commit보다 먼저 시작됐다(문서 끝 공백 줄로 `git diff --check`가 실패해 commit이 빠진 채 구동이 시작됨; run의 `git-head.txt`는 6f0195a). 보충 plan 파일은 구동 전에 생성되어 이후 바뀌지 않았고, 그 content/file sha256이 `INDEX_SUPP.json`에 있다. 이 보충은 판정 없는 파라미터 측정이라 선등록 대상 기준·예측은 없다.
