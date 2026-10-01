@@ -1,0 +1,145 @@
+[
+  {
+    "plan_id": "op-decode-n1",
+    "n": 1,
+    "seed": 20261801,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "cc4b1f34e2e7b17f77315832986bc4e89bc7d750d9306aad500f47ae97df61b2",
+    "file_sha256": "de0366a5885bb38897e2c134b1231cea86f1faf932d45818d598d68848938fee",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n2",
+    "n": 2,
+    "seed": 20261802,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "64b0d2315887e2af503b2d3079a05776c5ad78322ff4505ce5de178fca3272d5",
+    "file_sha256": "dde5b508b4acdb1b6187860043e27c01677b932cab95d35749b80efe69362915",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n3",
+    "n": 3,
+    "seed": 20261803,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "400c5792b0fa6ce4fe6f53b8a67f1689eeedcde6d08303df78b035e00668b956",
+    "file_sha256": "9d7522cb79991ceed5259633519b1aacee1206f71372fafb67821a1c11647e08",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n4",
+    "n": 4,
+    "seed": 20261804,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "38da1a6e47a9df5e010078c63ffb1cfae87ce32b04fd72e54fcece7e6fb5ad38",
+    "file_sha256": "df293554998640e21c2167d34511cc12ea38283d44f8a1a53ce7ca91ac28c28f",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n5",
+    "n": 5,
+    "seed": 20261805,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "95290d7ceea23219c7db7e8f9f252dab88aa967091320f55cf0e1bf5f3c0a7ce",
+    "file_sha256": "6c88446af66c2637c1ad6d1e2e9ec49aaaee7ac2f3c9f56ed6472ed1bfd683d1",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n6",
+    "n": 6,
+    "seed": 20261806,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "7744da28d27b336e9b9771717f586e38f2a61d031987b733bf6ad7558d6d1ddc",
+    "file_sha256": "9795c625bfd6e631f500a7ee26050c7f5ce864ddb583baaeeb7aa510d53beef9",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n7",
+    "n": 7,
+    "seed": 20261807,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "2f4d5a68497c97cf99349b9fed74640c16f56a3a23084916b0a2daa332b05dc2",
+    "file_sha256": "4d3adb2dcfc6bb63c363a0617b1e87e44c86fd5abe63c72f7f7dc054967bf9ac",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n8",
+    "n": 8,
+    "seed": 20261808,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "c6ffbddb1cbd6f7a113d96c1963ea37e8e2990109cade563e0b761449e46d440",
+    "file_sha256": "d701b383794690a0353d5531094eae3d143b3a6dd5584b3d52de2a0815665a4c",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n10",
+    "n": 10,
+    "seed": 20261810,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "4b96e69d94f3408427c6264b2daacbb43c9d72fb1dcbc9f2e20800a2407cdf12",
+    "file_sha256": "a8a78b4265ac97db59d3eac96011965e68acccb83acea6da3b322f27b8189891",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n12",
+    "n": 12,
+    "seed": 20261812,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "5680006591c0f9b227464aac2aacd6a2513ef87b2d1178273c7be9ab6507f7a2",
+    "file_sha256": "77dcc9ba2b668b7ac62c10178f0f254f4e694902a054e98512f2aedca01266b3",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n14",
+    "n": 14,
+    "seed": 20261814,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "83c0a2fb2f8770e086bc08a9ba682f660fd1d4f74e8071c3f5079ee112998a2b",
+    "file_sha256": "98b7a93119bb395d5a23a316258e1ed3d921d84321564fc6c089940ccdd58111",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n16",
+    "n": 16,
+    "seed": 20261816,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 10,
+    "content_sha256": "d4a5fe8bd9fd2310621ae51a337d6985fff36f9ed3acac41c1fedb19f20b21fe",
+    "file_sha256": "6319e24356e9d18ef7cbd676b3e3bfb2d036212e941566f048af3a5d9a77f71e",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-prefill",
+    "n": 4,
+    "seed": 20261899,
+    "first": "uniform:64:4096",
+    "generation": "fixed:32",
+    "sessions_per_slot": 160,
+    "content_sha256": "f0e271895cfb71d4ec83bcc38d49cee2fdce5ec0eb3d949cb3ffc2c4794c4f28",
+    "file_sha256": "b8a6fb8a8ce28b1bf0bb044cd0b64e3fedec50afd6cc8f4ebaa7a6287b078142",
+    "max_context": 4115
+  }
+]
