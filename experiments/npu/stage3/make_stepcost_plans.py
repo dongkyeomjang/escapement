@@ -20,6 +20,16 @@ n = 1 and n = 2 plans ran out before the evaluation window ended (one fast
 decoder finishes 10 x 512 tokens in about 55 s). ``op-decode-n{1,2}-s30`` are
 the same load with 30 sessions per slot, seeds ``20261820 + n``; listed in
 ``INDEX_SUPP.json``.
+
+Supplement 2 (``--supplement2``, TASK92 amendment 2): every request of
+``op-prefill`` generated exactly 32 tokens, so the four slots ran in lock step
+(all prefills back to back, then 31 shared decode steps) and almost no decode
+interval held another request's prefill -- no samples for TUNED and DP.
+``op-prefill-mt`` breaks the lock step with variable generation and has the
+multi-turn shape of the experiment: 4 slots, 4 turns, first prompt
+U(64, 4096), later segment 8, generation U(8, 64), no gap -- fresh large
+prefills and small cache-hit continuations on a long context. Seed 20261830,
+``INDEX_SUPP2.json``.
 """
 
 from __future__ import annotations
@@ -42,16 +52,21 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out-dir", type=Path, default=HERE / "plans" / "stepcost")
     ap.add_argument("--supplement", action="store_true")
+    ap.add_argument("--supplement2", action="store_true")
     a = ap.parse_args()
     a.out_dir.mkdir(parents=True, exist_ok=True)
     index = []
-    if a.supplement:
+    turns = 1
+    if a.supplement2:
+        specs = [("op-prefill-mt", 4, 20261830, "uniform:64:4096", "uniform:8:64", 150)]
+        turns = 4
+    elif a.supplement:
         specs = [(f"op-decode-n{n}-s30", n, 20261820 + n, "fixed:128", "fixed:512", 30) for n in (1, 2)]
     else:
         specs = [(f"op-decode-n{n}", n, 20261800 + n, "fixed:128", "fixed:512", 10) for n in NS]
         specs.append(("op-prefill", 4, 20261899, "uniform:64:4096", "fixed:32", 160))
     for pid, n, seed, first, gen, sessions in specs:
-        plan = MP.build(n=n, seed=seed, plan_id=pid, cycle_s=1.0, turns=1, sessions_per_slot=sessions,
+        plan = MP.build(n=n, seed=seed, plan_id=pid, cycle_s=1.0, turns=turns, sessions_per_slot=sessions,
                         first=first, later="fixed:8", generation=gen, gap="uniform:0:0")
         path = a.out_dir / f"{pid}.json"
         content = MP.write(plan, path)
@@ -60,7 +75,8 @@ def main() -> int:
                       "file_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                       "max_context": MP.max_context_tokens(plan)})
         print(pid, n, content[:12], index[-1]["max_context"])
-    (a.out_dir / ("INDEX_SUPP.json" if a.supplement else "INDEX.json")).write_text(
+    name = "INDEX_SUPP2.json" if a.supplement2 else "INDEX_SUPP.json" if a.supplement else "INDEX.json"
+    (a.out_dir / name).write_text(
         json.dumps(index, indent=2) + "\n")
     return 0
 

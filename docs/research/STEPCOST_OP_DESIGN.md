@@ -32,3 +32,13 @@
 본 순서 실행(16:58:35–19:08:38)에서 **n = 1(4 artifact 전부)과 DP n = 2의 10-세션 plan이 평가 구간 끝 전에 소진**됐다(`exhausted_slots`, runner exit 3; BATCHONLY n = 2는 재실행에서 통과). 원인은 설계의 세션 수 계산 실수다 — 빠른 decoder 하나가 512 token 세션 10개를 약 55 s에 끝내 warm-up(약 11 s) + 평가 40 s를 채우지 못한다. 고침: 같은 부하에 세션만 30개로 늘린 `op-decode-n1-s30`·`op-decode-n2-s30`(seed 20261820 + n, `INDEX_SUPP.json`)으로 빠진 5개(BASE·BATCHONLY·TUNED·DP n = 1, DP n = 2)를 `run_stepcost_supp.sh`로 같은 run 디렉터리에 보충 측정한다. 분석은 유효 lifecycle만 쓰므로 소진된 lifecycle은 들어가지 않는다. 다른 설정은 바꾸지 않는다.
 
 기록: 보충 구동이 이 개정의 commit보다 먼저 시작됐다(문서 끝 공백 줄로 `git diff --check`가 실패해 commit이 빠진 채 구동이 시작됨; run의 `git-head.txt`는 6f0195a). 보충 plan 파일은 구동 전에 생성되어 이후 바뀌지 않았고, 그 content/file sha256이 `INDEX_SUPP.json`에 있다. 이 보충은 판정 없는 파라미터 측정이라 선등록 대상 기준·예측은 없다.
+
+## 개정 2 (2026-10-02, 보충 2 측정 전 commit)
+
+보충 1 뒤 첫 적합에서 **`op-prefill`이 설계대로 작동하지 않았음**을 확인했다: 모든 요청이 정확히 32 token을 생성해 4 slot이 같은 박자로 돈다(4개 prefill이 연달아 실행된 뒤 31개 decode step을 함께 진행). 그래서 다른 요청의 prefill이 낀 decode 간격이 거의 없다 — 배타 prefill 표본이 BASE·BATCHONLY 각 60개(대부분 2,049–4,096 token), **TUNED·DP 0개**. 이 결과로는 운영 조건의 작은 prefill(TASK91: ≤ 512 token에서 1.2–1.35배)을 잴 수 없다.
+
+고침: `op-prefill-mt`(seed 20261830, `INDEX_SUPP2.json`) — 4 slot, 세션당 4 turn, 첫 prompt U(64, 4096), 이후 segment 8 token, 생성 U(8, 64), gap 0, 세션 150개/slot, 최대 context 4,283. 생성 길이가 달라 같은 박자가 깨지고, multi-turn 실험과 같은 모양(새로 계산하는 큰 prefill + 긴 context 위 cache hit 뒤의 작은 prefill)이 된다. 4 artifact 각 1회, **평가 구간 120 s**(작은 크기 bin마다 표본 확보), `run_stepcost_supp2.sh`. prefill 적합은 `op-prefill-mt` 표본만 쓴다. `op-prefill` 표본 수는 기록만 한다. decode 적합은 바꾸지 않는다.
+
+함께 고친 것: `step_audit.lifecycle`의 평가 구간이 120 s로 고정돼 있었다. 인자 `eval_s`(기본 120, TASK91 경로는 그대로)를 추가했고, 이 분석은 각 lifecycle의 `windows.*.json` `eval_s`를 넘긴다. 첫 적합은 40 s 구간 뒤 runner 종료까지(약 0.5 s)의 요청 몇 개를 포함했다. 개정 후 decode 적합을 다시 계산한다.
+
+비용 형태 `ceil(c/128)·(a + d·c)`는 바꾸지 않는다. 이 형태는 cache된 context 길이 항이 없으므로 작은 cache-hit prefill과 큰 새 prefill의 차이는 적합 잔차로 보고한다.

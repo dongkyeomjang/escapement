@@ -1,0 +1,13 @@
+[
+  {
+    "plan_id": "op-prefill-mt",
+    "n": 4,
+    "seed": 20261830,
+    "first": "uniform:64:4096",
+    "generation": "uniform:8:64",
+    "sessions_per_slot": 150,
+    "content_sha256": "3dd3323707b76bfa8555eaeab5a65703eec208c13e07800f01b57b7e6db088f1",
+    "file_sha256": "871ca92fca657db68bc29d90b1c977401d8c0e37766bdf9655befdc1b9d3972a",
+    "max_context": 4283
+  }
+]

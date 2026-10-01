@@ -17,7 +17,7 @@ artifact, the cost forms the descriptor already uses:
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
+from collections import Counter, defaultdict
 import json
 import math
 from pathlib import Path
@@ -67,13 +67,15 @@ def main() -> int:
             use[base] = tag
     acc = defaultdict(list)
     pre_all: list = []
+    pre_lockstep: list = []
     stats = {"requests": 0, "skipped": 0, "lifecycles": 0}
     rep = {}
     for base, tag in sorted(use.items()):
         cfg = tag.split(".")[0]
         local = defaultdict(list)
         pre = []
-        SA.lifecycle(a.run, tag, cfg, local, pre, stats)
+        win = json.loads((a.run / "probe" / tag / f"windows.{tag}.json").read_text())
+        SA.lifecycle(a.run, tag, cfg, local, pre, stats, eval_s=float(win["eval_s"]))
         stats["lifecycles"] += 1
         if base.endswith(".rep2") or (base.startswith("TUNED.op-decode-n4") or base.startswith("TUNED.op-decode-n8")):
             rep[base] = {f"{k[1]}/{k[2]}": statistics.median(v) for k, v in local.items() if len(v) >= 50}
@@ -81,9 +83,12 @@ def main() -> int:
             continue                        # repeats are for reproducibility only
         for k, v in local.items():
             acc[k].extend(v)
-        if "op-prefill" in base:
+        if base.endswith("op-prefill-mt"):         # amendment 2: op-prefill ran in lock step
             pre_all.extend(pre)
-    out = {"stats": stats, "invalid": invalid, "artifacts": {}}
+        elif base.endswith("op-prefill"):
+            pre_lockstep.extend(pre)
+    out = {"stats": stats, "invalid": invalid, "artifacts": {},
+           "lockstep_prefill_samples": dict(sorted(Counter(p["cfg"] for p in pre_lockstep).items()))}
     for cfg in ("BASE", "BATCHONLY", "TUNED", "DP"):
         grid, batch = CONFIGS[cfg][1], CONFIGS[cfg][2]
         ctrl = P.descriptor(grid, batch)

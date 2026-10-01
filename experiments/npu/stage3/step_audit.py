@@ -50,13 +50,14 @@ from rbln_ca25_vllm_rbln_0111 import RBLN_CA25_VLLM_RBLN_0111 as D  # noqa: E402
 RUNS = [REPO / "results/npu/stage3/20260930-main", REPO / "results/npu/stage3/20261001-hiload"]
 
 
-def lifecycle(run: Path, tag: str, cfg: str, acc: dict, pre: list, stats: dict) -> None:
+def lifecycle(run: Path, tag: str, cfg: str, acc: dict, pre: list, stats: dict,
+              eval_s: float = 120.0) -> None:
     grid, batch = CONFIGS[cfg][1], CONFIGS[cfg][2]
     desc = P.descriptor(grid, batch)
     ev = R.parse_log(run / f"server-{tag}.log")
     rows = [json.loads(l) for l in (run / "probe" / tag / f"requests.{tag}.jsonl").read_text().splitlines() if l.strip()]
     win = json.loads((run / "probe" / tag / f"windows.{tag}.json").read_text())
-    w0, w1 = win["warmup_end_s"], win["warmup_end_s"] + 120.0
+    w0, w1 = win["warmup_end_s"], win["warmup_end_s"] + eval_s
     tok = {}
     with gzip.open(run / "probe" / tag / f"tokens.{tag}.jsonl.gz", "rt") as fh:
         for l in fh:
