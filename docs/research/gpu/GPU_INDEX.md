@@ -55,7 +55,7 @@
 | [GTASK09](GTASK09.md) | DONE | GPU multi-turn 본 실험 blind 예측·판정 기준 선등록, 파일럿 선등록 | plan 20(N 20·22·24 확증, 26 탐색)+파일럿 3. 세 예측기 × 두 bound. LRU−FIFO 재사용 차 0.08–0.17(9/9 cell) → 판별 가능. POOL/BASE 비 0.96–0.99(해상도 경계). §2.1 구간 영향 ≤ 0.04 %(재도착 혼합 step은 대부분 eager). 계기 점검에서 id join 오류 수정 |
 | [GTASK10](GTASK10.md) | DONE | GPU multi-turn 파일럿: runner·streaming·산포 | 12/12 유효, preemption 0, step mode 예측 불일치 0. streaming `EQUIVALENT`(중앙 1.0066, CI [0.994, 1.009]) → 본 실험 streaming. POOL/BASE 짝 ratio 산포 0.025–0.038. lifecycle 3.2–4.0분 |
 | [GTASK11](GTASK11.md) | DONE | GPU multi-turn 본 측정과 판정 | 개정 1 `721e4d0`(NPU 개정 2와 정렬) → 55/55 유효, 재실행 0. **LRU_SUPPORTED**(8/9, Σ오차 0.148 대 0.937, 부분 hit·고아 축출 0/958,078 일치). sim LRU §5.1·§5.2 PASS, 해석 v1 §5.1·§5.2 FAIL(N24 BASE 포화 근처), §5.3 PASS, §5.4 INCONCLUSIVE, §5.6 PASS(decode-only). N26 BASE 재사용 붕괴 0.450(세 예측기 모두 과소). **N = 26 plan(`gmain-n26-r*`)은 v1.1 blind 검증에 다시 쓰지 않는다** |
-| [GTASK12](GTASK12.md) | IN_PROGRESS | 사건 재생 검사(G-05 작업 A) | 선등록 [GPU_REPLAY_PREREG.md](GPU_REPLAY_PREREG.md) 계산 전 commit. 관측 사건 순서 위 GPU 정확 의미론 재생, lifecycle별 정확 일치율 ≥ 0.95·결정 불가 ≤ 5 % |
+| [GTASK12](GTASK12.md) | DONE | 사건 재생 검사(G-05 작업 A) | 선등록 `0973228` → 계산. **`PASS`: 55/55 lifecycle 정확 일치율 1.000, 16,794/16,794**(N24 BASE 1,477, N26 BASE 1,366 전부), 결정 불가 0. free 수 27,652건·KV 축출 순서열 958,078건 전부 일치. 반사실(FIFO 0.63–0.84 등)은 포화 cell에서 크게 틀림. **붕괴 과소 예측은 의미론이 아니라 동역학 오류** |
 
 ## 다음 작업
 
