@@ -66,6 +66,7 @@ def main() -> int:
         elif base not in use:
             use[base] = tag
     acc = defaultdict(list)
+    acc_prefill_life = defaultdict(list)       # clean steps inside prefill lifecycles (reported only)
     pre_all: list = []
     pre_lockstep: list = []
     stats = {"requests": 0, "skipped": 0, "lifecycles": 0}
@@ -81,8 +82,12 @@ def main() -> int:
             rep[base] = {f"{k[1]}/{k[2]}": statistics.median(v) for k, v in local.items() if len(v) >= 50}
         if ".rep2" in base:
             continue                        # repeats are for reproducibility only
-        for k, v in local.items():
-            acc[k].extend(v)
+        if "op-decode" in base:                   # decode fit and clean medians: decode lifecycles only
+            for k, v in local.items():
+                acc[k].extend(v)
+        else:
+            for k, v in local.items():
+                acc_prefill_life[k].extend(v)
         if base.endswith("op-prefill-mt"):         # amendment 2: op-prefill ran in lock step
             pre_all.extend(pre)
         elif base.endswith("op-prefill"):
@@ -136,7 +141,11 @@ def main() -> int:
                               "fit_ms": fit * 1e3, "controlled_ms": ctl * 1e3})
             pf = {"per_chunk_s": float(pa), "drift_s_per_token": float(pd), "samples": len(samples),
                   "bins": resid}
+        side = [{"n": k[2], "b": k[1], "obs_ms": statistics.median(v) * 1e3, "samples": len(v),
+                 "controlled_ms": ctrl.step_time_s(k[2]) * 1e3}
+                for k, v in sorted(acc_prefill_life.items()) if k[0] == cfg and len(v) >= 50]
         out["artifacts"][cfg] = {"grid": list(grid), "batch": batch,
+                                 "clean_steps_in_prefill_lifecycles": side,
                                  "decode": {"fixed_s_by_bucket": fixed, "marginal_s_per_request": beta,
                                             "points": rows},
                                  "prefill": pf}
