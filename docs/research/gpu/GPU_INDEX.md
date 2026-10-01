@@ -15,7 +15,13 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
-**G-05 진행 중(GTASK12–)**: GTASK11 데이터의 분석만(사건 재생·시간 척도·대기열·채널·정상성). 측정 없음.
+**G-05 완료(GTASK12–16), Advisor 검토 대기**: GTASK11 데이터의 분석만(측정 0).
+- **사건 재생 `PASS`**(GTASK12, 선등록 `0973228`): 16,794/16,794. 따라서 **붕괴 과소 예측은 동역학 오류**다.
+- **시간 척도(개발 집합, GTASK13)**: 운영 부하 step은 가격 채널의 1.21배(lag 1). 이를 넣으면 N26 BASE 오차가 +0.207 → +0.009(×1.210)·+0.033(mode_dist)로 줄어든다. 비용 비는 ×1.131이 가장 좋다(Σ 0.013).
+- **대기열(GTASK14)**: 재사용 오차와 가장 같이 움직이는 양은 idle 중 다른 요청의 할당량(ρ −0.87–−0.95)이다. 할당 속도는 sim과 관측이 같고, 다른 것은 대기 길이다.
+- **채널(GTASK15)**: 초과분의 89 %는 FULL decode(1.22배, decode 폭 비례)에서 나온다. idle 조각 0, small-p eager 5 %. 1.131은 lag 0 cap에 의한 과소 추정이다.
+- **정상성(GTASK16)**: h·재사용 모두 `NOT_NONSTATIONARY`(11 cell).
+- **v1.1(GPU)에 넘길 사항**: (1) 시간 척도는 가격 채널이 아니라 운영 부하 step 시간이다(FULL 16.5 ms, lag 1 귀속; 개발 집합 값). (2) 대기열 항은 대기 시간을 idle 길이에 더하고, 할당 속도(block/s) × idle 길이로 재조회 전 할당 수를 만든다. (3) 붕괴 cell의 miss → 할당 속도 증가(N26 BASE 200 대 172 block/s) 되먹임. (4) 붕괴 cell은 run 간 산포가 크다(60 s 창 재사용 |D| 0.20–0.22).
 
 **G-04 완료(GTASK11), Advisor 승인(G-05 §1)**: 본 측정 55/55 유효, LRU_SUPPORTED, sim LRU PASS / 해석 v1 FAIL(포화 근처). N=26 plan은 v1.1 blind 검증에 재사용 금지.
 
@@ -56,7 +62,11 @@
 | [GTASK10](GTASK10.md) | DONE | GPU multi-turn 파일럿: runner·streaming·산포 | 12/12 유효, preemption 0, step mode 예측 불일치 0. streaming `EQUIVALENT`(중앙 1.0066, CI [0.994, 1.009]) → 본 실험 streaming. POOL/BASE 짝 ratio 산포 0.025–0.038. lifecycle 3.2–4.0분 |
 | [GTASK11](GTASK11.md) | DONE | GPU multi-turn 본 측정과 판정 | 개정 1 `721e4d0`(NPU 개정 2와 정렬) → 55/55 유효, 재실행 0. **LRU_SUPPORTED**(8/9, Σ오차 0.148 대 0.937, 부분 hit·고아 축출 0/958,078 일치). sim LRU §5.1·§5.2 PASS, 해석 v1 §5.1·§5.2 FAIL(N24 BASE 포화 근처), §5.3 PASS, §5.4 INCONCLUSIVE, §5.6 PASS(decode-only). N26 BASE 재사용 붕괴 0.450(세 예측기 모두 과소). **N = 26 plan(`gmain-n26-r*`)은 v1.1 blind 검증에 다시 쓰지 않는다** |
 | [GTASK12](GTASK12.md) | DONE | 사건 재생 검사(G-05 작업 A) | 선등록 `0973228` → 계산. **`PASS`: 55/55 lifecycle 정확 일치율 1.000, 16,794/16,794**(N24 BASE 1,477, N26 BASE 1,366 전부), 결정 불가 0. free 수 27,652건·KV 축출 순서열 958,078건 전부 일치. 반사실(FIFO 0.63–0.84 등)은 포화 cell에서 크게 틀림. **붕괴 과소 예측은 의미론이 아니라 동역학 오류** |
+| [GTASK13](GTASK13.md) | DONE | 시간 척도 가설 — **개발 집합** (G-05 작업 B) | sim 시간 진행 = 가격 채널 `gpu_cost.step_ms`(client 지연 0) 확인. 변형 ×1.131 / ×1.210 / mode별 분포. N24·N26 BASE 오차 +0.084·+0.207 → ×1.210 +0.014·+0.009, mode_dist +0.026·+0.033. 발견 4 차이의 설명 비율 34–66 %(×1.131), 70–84 %(mode_dist), 83–96 %(×1.210). 비용 비 Σ는 ×1.131이 최선(0.013). **판정 없음, blind 검증은 새 붕괴 cell에서** |
+| [GTASK14](GTASK14.md) | DONE | 대기열 동역학 비교 (G-05 작업 C) | 원래 sim은 대기를 과소 재현한다(N20 대기 중앙 0.02 대 0.69 s, 대기열 평균 약 절반). ×1.210이면 관측과 거의 같다. 재사용 오차와 가장 같이 움직이는 양: idle 중 다른 요청의 할당량 평균(Spearman orig −0.95, 합산 −0.87). 할당 속도는 차이 없음 |
+| [GTASK15](GTASK15.md) | DONE | 직접 채널 대 가격 채널 분해 (G-05 작업 D) | lag 1 귀속 wall/price 1.210, idle 조각 0.0003 %, small-p eager 4.8 %, **FULL decode 89 %**(1.22배, d = 1 1.03 → d = 8 1.22, 대기열 무관). GTASK11 직접 채널 1.131은 lag 0 cap이 큰 prefill 시간을 자른 과소 추정. 계측 제안 3건(승인 대상) |
+| [GTASK16](GTASK16.md) | DONE | 정상성, 같은 길이 기준 (G-05 작업 E) | 방법 `f61b4fd` 계산 전 commit(NPU TASK83 방법). h(decode-only)·재사용 모두 `NOT_NONSTATIONARY`(q_h 중앙 0.43, q_Δ 0.44). 붕괴 cell은 60 s 창 재사용 산포 큼(\|D\| 0.20–0.22) |
 
 ## 다음 작업
 
-Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. 권고 후보: (1) GPU step 비용 측정 선등록(FULL·PIECEWISE·eager 세 곡선, 관측 수단 결정 선행), (2) GPU 생존 곡선 사전 예측 선등록(GTASK01·02로 확정된 파라미터로 [TASK29](../TASK29.md) 축 ①을 새로 계산).
+Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. G-05 결정 요청: (1) v1.1 + 시간 척도 변형의 blind 검증 cell(새 seed, N = 26·28 등)과 시간 척도 동결값(×1.210 / mode_dist), (2) FULL decode 22 % 초과의 원인 계측(GTASK15 제안 1–3, patch·측정은 승인 대상), (3) 붕괴 cell의 replicate 수(run 간 산포가 크다, GTASK16), (4) GTASK11 직접 채널(1.131) 기록의 정정 범위(시간 척도로는 1.21).
