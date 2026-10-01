@@ -1,0 +1,104 @@
+substrate,cell,N,config,max_running_M,N_over_M,queue_p_wait_gt0_b2v1,queue_E_wait_b2v1,queue_depth_source,queue_mean_obs,ttft_median_obs_s,mean_running_obs,predictor,reuse_error,ratio_error,population,source
+NPU,BASE.n6,6,BASE,8,0.750,,,기록 없음,,0.069,,analytic_v1,+0.0052,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n6,6,BASE,8,0.750,,,기록 없음,,0.069,,sim_default,+0.0068,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n6,6,BASE,8,0.750,,,기록 없음,,0.069,,sim_observed,+0.0068,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n6,6,BASE,8,0.750,,,기록 없음,,0.069,,v1.1,+0.0132,,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n6,6,BATCHONLY,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,analytic_v1,-0.0074,-0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n6,6,BATCHONLY,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,sim_default,-0.0064,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n6,6,BATCHONLY,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,sim_observed,-0.0064,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n6,6,BATCHONLY,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,v1.1,-0.0084,-0.0054,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n6,6,TUNED,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.067,,analytic_v1,-0.0058,+0.0051,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n6,6,TUNED,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.067,,sim_default,-0.0025,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n6,6,TUNED,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.067,,sim_observed,-0.0025,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n6,6,TUNED,16,0.375,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.067,,v1.1,-0.0068,+0.0065,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n8,8,BASE,8,1.000,,,기록 없음,,0.071,,analytic_v1,-0.0426,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n8,8,BASE,8,1.000,,,기록 없음,,0.071,,sim_default,+0.0016,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n8,8,BASE,8,1.000,,,기록 없음,,0.071,,sim_observed,+0.0001,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n8,8,BASE,8,1.000,,,기록 없음,,0.071,,v1.1,-0.0084,,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n8,8,BATCHONLY,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,analytic_v1,+0.0013,-0.0080,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n8,8,BATCHONLY,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,sim_default,-0.0019,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n8,8,BATCHONLY,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,sim_observed,-0.0019,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n8,8,BATCHONLY,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.069,,v1.1,+0.0016,-0.0015,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n8,8,TUNED,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.068,,analytic_v1,-0.0016,-0.0034,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n8,8,TUNED,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.068,,sim_default,-0.0030,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n8,8,TUNED,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.068,,sim_observed,-0.0030,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n8,8,TUNED,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.068,,v1.1,-0.0011,+0.0030,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,DP.n8,8,DP,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.070,,analytic_v1,+0.0023,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,DP.n8,8,DP,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.070,,sim_default,-0.0043,-0.0012,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,DP.n8,8,DP,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.070,,sim_observed,-0.0043,-0.0011,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,DP.n8,8,DP,16,0.500,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.070,,v1.1,+0.0028,-0.0012,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n10,10,BASE,8,1.250,,,기록 없음,,0.084,,analytic_v1,-0.0645,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n10,10,BASE,8,1.250,,,기록 없음,,0.084,,sim_default,-0.0018,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n10,10,BASE,8,1.250,,,기록 없음,,0.084,,sim_observed,-0.0021,,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n10,10,BASE,8,1.250,,,기록 없음,,0.084,,v1.1,-0.0013,,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n10,10,BATCHONLY,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,,analytic_v1,-0.0058,-0.0101,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n10,10,BATCHONLY,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,,sim_default,-0.0076,+0.0055,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n10,10,BATCHONLY,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,,sim_observed,-0.0076,+0.0015,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n10,10,BATCHONLY,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,,v1.1,-0.0043,+0.0026,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n10,10,TUNED,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.071,,analytic_v1,-0.0059,-0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n10,10,TUNED,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.071,,sim_default,-0.0016,+0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n10,10,TUNED,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.071,,sim_observed,-0.0016,+0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n10,10,TUNED,16,0.625,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.071,,v1.1,-0.0041,+0.0052,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n12,12,BASE,8,1.500,0.058,0.08,HILOAD_PREREG.md §2 @ f75c8e7,,0.286,5.316,analytic_v1,-0.0797,,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n12,12,BASE,8,1.500,0.058,0.08,HILOAD_PREREG.md §2 @ f75c8e7,,0.286,5.316,sim_default,+0.0012,,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n12,12,BASE,8,1.500,0.058,0.08,HILOAD_PREREG.md §2 @ f75c8e7,,0.286,5.316,sim_observed,+0.0231,,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n12,12,BASE,8,1.500,0.058,0.08,HILOAD_PREREG.md §2 @ f75c8e7,,0.286,5.316,v1.1,-0.0478,,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n12,12,BATCHONLY,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.074,5.167,analytic_v1,-0.0208,+0.0464,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n12,12,BATCHONLY,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.074,5.167,sim_default,+0.0061,+0.0314,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n12,12,BATCHONLY,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.074,5.167,sim_observed,+0.0061,+0.0387,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BATCHONLY.n12,12,BATCHONLY,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.074,5.167,v1.1,-0.0138,+0.0502,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n12,12,TUNED,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,5.043,analytic_v1,-0.0218,+0.0455,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n12,12,TUNED,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,5.043,sim_default,+0.0056,+0.0269,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n12,12,TUNED,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,5.043,sim_observed,+0.0056,+0.0341,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,TUNED.n12,12,TUNED,16,0.750,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.073,5.043,v1.1,-0.0165,+0.0497,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
+NPU,BASE.n14,14,BASE,8,1.750,0.27,0.50,HILOAD_PREREG.md §2 @ f75c8e7,,0.400,6.283,v1.1,-0.1246,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BASE.n14,14,BASE,8,1.750,0.27,0.50,HILOAD_PREREG.md §2 @ f75c8e7,,0.400,6.283,analytic_v1,+0.0310,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BASE.n14,14,BASE,8,1.750,0.27,0.50,HILOAD_PREREG.md §2 @ f75c8e7,,0.400,6.283,sim_descriptor,+0.0317,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n14,14,BATCHONLY,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.082,5.974,v1.1,+0.0125,+0.0057,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n14,14,BATCHONLY,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.082,5.974,analytic_v1,-0.0045,+0.0569,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n14,14,BATCHONLY,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.082,5.974,sim_descriptor,+0.0010,+0.0321,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n14,14,TUNED,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,5.886,v1.1,+0.0128,+0.0268,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n14,14,TUNED,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,5.886,analytic_v1,-0.0006,+0.0757,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n14,14,TUNED,16,0.875,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,5.886,sim_descriptor,+0.0019,+0.0516,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BASE.n16,16,BASE,8,2.000,0.51,1.24,HILOAD_PREREG.md §2 @ f75c8e7,,1.589,6.875,v1.1,-0.0968,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BASE.n16,16,BASE,8,2.000,0.51,1.24,HILOAD_PREREG.md §2 @ f75c8e7,,1.589,6.875,analytic_v1,+0.1401,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BASE.n16,16,BASE,8,2.000,0.51,1.24,HILOAD_PREREG.md §2 @ f75c8e7,,1.589,6.875,sim_descriptor,+0.0262,,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n16,16,BATCHONLY,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.085,6.900,v1.1,+0.0306,+0.0188,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n16,16,BATCHONLY,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.085,6.900,analytic_v1,-0.0024,+0.1046,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,BATCHONLY.n16,16,BATCHONLY,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.085,6.900,sim_descriptor,+0.0052,+0.0468,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n16,16,TUNED,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,6.812,v1.1,+0.0180,+0.0361,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n16,16,TUNED,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,6.812,analytic_v1,-0.0222,+0.1212,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+NPU,TUNED.n16,16,TUNED,16,1.000,0,0,"HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)",,0.084,6.812,sim_descriptor,+0.0106,+0.0589,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
+GPU,BASE.n20,20,BASE,8,2.500,,,GTASK14 관측 @ cc6a97e,2.35,0.760,,analytic_v1,-0.0123,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n20,20,BASE,8,2.500,,,GTASK14 관측 @ cc6a97e,2.35,0.760,,sim_lru,+0.0015,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n20,20,BASE,8,2.500,,,GTASK14 관측 @ cc6a97e,2.35,0.760,,sim_fifo,-0.0946,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n20,20,POOL,8,2.500,,,GTASK14 관측 @ cc6a97e,2.18,0.700,,analytic_v1,-0.0276,+0.0020,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n20,20,POOL,8,2.500,,,GTASK14 관측 @ cc6a97e,2.18,0.700,,sim_lru,-0.0015,-0.0022,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n20,20,POOL,8,2.500,,,GTASK14 관측 @ cc6a97e,2.18,0.700,,sim_fifo,-0.0862,+0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n20,20,POOL+GRID,8,2.500,,,기록 없음,,,,analytic_v1,-0.0317,+0.0053,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n20,20,POOL+GRID,8,2.500,,,기록 없음,,,,sim_lru,-0.0089,-0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n20,20,POOL+GRID,8,2.500,,,기록 없음,,,,sim_fifo,-0.0876,+0.0056,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n22,22,BASE,8,2.750,,,GTASK14 관측 @ cc6a97e,3.18,1.060,,analytic_v1,+0.0113,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n22,22,BASE,8,2.750,,,GTASK14 관측 @ cc6a97e,3.18,1.060,,sim_lru,+0.0322,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n22,22,BASE,8,2.750,,,GTASK14 관측 @ cc6a97e,3.18,1.060,,sim_fifo,-0.0824,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n22,22,POOL,8,2.750,,,GTASK14 관측 @ cc6a97e,2.93,0.980,,analytic_v1,-0.0375,+0.0219,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n22,22,POOL,8,2.750,,,GTASK14 관측 @ cc6a97e,2.93,0.980,,sim_lru,-0.0055,+0.0149,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n22,22,POOL,8,2.750,,,GTASK14 관측 @ cc6a97e,2.93,0.980,,sim_fifo,-0.1127,+0.0200,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n22,22,POOL+GRID,8,2.750,,,기록 없음,,,,analytic_v1,-0.0356,+0.0188,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n22,22,POOL+GRID,8,2.750,,,기록 없음,,,,sim_lru,-0.0056,+0.0120,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n22,22,POOL+GRID,8,2.750,,,기록 없음,,,,sim_fifo,-0.1101,+0.0118,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n24,24,BASE,8,3.000,,,GTASK14 관측 @ cc6a97e,5.57,2.030,,analytic_v1,+0.1378,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n24,24,BASE,8,3.000,,,GTASK14 관측 @ cc6a97e,5.57,2.030,,sim_lru,+0.0842,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n24,24,BASE,8,3.000,,,GTASK14 관측 @ cc6a97e,5.57,2.030,,sim_fifo,-0.0579,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n24,24,POOL,8,3.000,,,GTASK14 관측 @ cc6a97e,5.01,1.760,,analytic_v1,-0.0018,+0.0456,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n24,24,POOL,8,3.000,,,GTASK14 관측 @ cc6a97e,5.01,1.760,,sim_lru,+0.0089,+0.0181,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n24,24,POOL,8,3.000,,,GTASK14 관측 @ cc6a97e,5.01,1.760,,sim_fifo,-0.1354,+0.0262,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n24,24,POOL+GRID,8,3.000,,,기록 없음,,,,analytic_v1,-0.0038,+0.0528,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n24,24,POOL+GRID,8,3.000,,,기록 없음,,,,sim_lru,+0.0084,+0.0241,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL+GRID.n24,24,POOL+GRID,8,3.000,,,기록 없음,,,,sim_fifo,-0.1518,+0.0414,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n26,26,BASE,8,3.250,,,GTASK14 관측 @ cc6a97e,8.15,3.170,,analytic_v1,+0.3359,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n26,26,BASE,8,3.250,,,GTASK14 관측 @ cc6a97e,8.15,3.170,,sim_lru,+0.2072,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,BASE.n26,26,BASE,8,3.250,,,GTASK14 관측 @ cc6a97e,8.15,3.170,,sim_fifo,+0.1016,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n26,26,POOL,8,3.250,,,GTASK14 관측 @ cc6a97e,7.0,2.370,,analytic_v1,+0.0268,+0.0848,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n26,26,POOL,8,3.250,,,GTASK14 관측 @ cc6a97e,7.0,2.370,,sim_lru,+0.0292,+0.0403,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+GPU,POOL.n26,26,POOL,8,3.250,,,GTASK14 관측 @ cc6a97e,7.0,2.370,,sim_fifo,-0.1304,+0.0653,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4

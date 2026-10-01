@@ -121,3 +121,35 @@ done; done
 대조 합계 223건, 불일치 **0건**.
 
 생성 시각과 commit은 `manifest.json`에 있다.
+
+<!-- paper-tables:begin (make_paper_tables.py --all) -->
+
+## 논문 표·그림 데이터 (P·F 계열, 지시문 08 작업 D)
+
+```bash
+env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_tables.py --all
+```
+
+| 표 | 제목 | 파일 | 생성 명령 | 근거 | 대조 | 불일치 |
+|---|---|---|---|---|---|---|
+| P01 | 순차 생존: NPU 절벽(사후 재생)과 GPU 계단(blind) | `P01.md` / `P01.csv` | `make_paper_tables.py --table P01` | TASK14, TASK15, TASK72, GTASK04 | 4 | 0 |
+| P02 | NPU multi-turn 본 측정: 재사용·비용 비, 세 예측기와 영 | `P02.md` / `P02.csv` | `make_paper_tables.py --table P02` | TASK82 | 14 | 0 |
+| P03 | NPU 고부하 N = 14·16: v1.1·v1·sim | `P03.md` / `P03.csv` | `make_paper_tables.py --table P03` | TASK86, TASK87 | 11 | 0 |
+| P04 | GPU multi-turn: 해석 v1·sim LRU·sim FIFO | `P04.md` / `P04.csv` | `make_paper_tables.py --table P04` | GTASK11 | 63 | 1 |
+| P05 | 구성 순위 (§5.3), 두 기판 | `P05.md` / `P05.csv` | `make_paper_tables.py --table P05` | TASK82, TASK87, GTASK11 | 4 | 0 |
+| P06 | 사건 재생, 두 기판 | `P06.md` / `P06.csv` | `make_paper_tables.py --table P06` | TASK72, GTASK12 | 7 | 0 |
+| P07 | 운영 step 시간 척도 (개발 집합), 두 기판 | `P07.md` / `P07.csv` | `make_paper_tables.py --table P07` | GTASK13, TASK91 | 11 | 0 |
+| P08 | 같은 길이 정상성, 두 기판 | `P08.md` / `P08.csv` | `make_paper_tables.py --table P08` | TASK83, GTASK16 | 6 | 0 |
+| P09 | descriptor 규칙 field 7개와 두 기판 재현 | `P09.md` / `P09.csv` | `make_paper_tables.py --table P09` | TASK84, GTASK04 | 6 | 0 |
+| P10 | B2 진단 사다리와 v1.2 동결 전 점검 (개발 집합) | `P10.md` / `P10.csv` | `make_paper_tables.py --table P10` | TASK90 | 17 | 1 |
+
+| 그림 데이터 | 파일 | 행 | 생성 명령 |
+|---|---|---|---|
+| F_a_survival | `figures/F_a_survival.csv` | 133 | `make_paper_tables.py --all` |
+| F_b_reuse_ratio_vs_N | `figures/F_b_reuse_ratio_vs_N.csv` | 183 | `make_paper_tables.py --all` |
+| F_c_pred_vs_obs | `figures/F_c_pred_vs_obs.csv` | 222 | `make_paper_tables.py --all` |
+| F_d_applicability | `figures/F_d_applicability.csv` | 103 | `make_paper_tables.py --all` |
+
+생성 시각·commit·미생성 사유는 `paper_manifest.json`.
+
+<!-- paper-tables:end -->

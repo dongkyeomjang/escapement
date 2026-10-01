@@ -1,0 +1,19 @@
+기판,run / cell,요청,정확 일치,일치율,대안: RESERVED,대안: 지연 release,닫힌 형태 보조,판정 종류,출처
+NPU,TASK20,432,432,1.000,0.894,0.931,0.822,retro_check,TASK72 R5′
+NPU,TASK50,140,140,1.000,0.529,1.000,0.614,retro_check,TASK72 R5′
+NPU,TASK35,216,216,1.000,0.931,0.963,0.931,retro_check,TASK72 R5′
+NPU,TASK36,54,54,1.000,0.870,1.000,0.926,retro_check,TASK72 R5′
+NPU,TASK40,288,288,1.000,0.951,0.969,0.931,retro_check,TASK72 R5′
+NPU,TASK54-mb,84,84,1.000,0.667,0.738,0.690,retro_check,TASK72 R5′
+NPU,TASK54-mb6,84,84,1.000,0.738,0.798,0.750,retro_check,TASK72 R5′
+GPU,N20 BASE,"1,517","1,517",1.000,,,,retro_check,GTASK12
+GPU,N20 POOL,"1,538","1,538",1.000,,,,retro_check,GTASK12
+GPU,N20 POOL+GRID,"1,543","1,543",1.000,,,,retro_check,GTASK12
+GPU,N22 BASE,"1,499","1,499",1.000,,,,retro_check,GTASK12
+GPU,N22 POOL,"1,559","1,559",1.000,,,,retro_check,GTASK12
+GPU,N22 POOL+GRID,"1,562","1,562",1.000,,,,retro_check,GTASK12
+GPU,N24 BASE,"1,477","1,477",1.000,,,,retro_check,GTASK12
+GPU,N24 POOL,"1,596","1,596",1.000,,,,retro_check,GTASK12
+GPU,N24 POOL+GRID,"1,594","1,594",1.000,,,,retro_check,GTASK12
+GPU,N26 BASE,"1,366","1,366",1.000,,,,retro_check,GTASK12
+GPU,N26 POOL,"1,543","1,543",1.000,,,,retro_check,GTASK12
