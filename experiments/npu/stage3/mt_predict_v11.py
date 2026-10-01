@@ -35,7 +35,8 @@ def plan_gaps(plans) -> list[float]:
 
 
 def analytic_v11(n: int, grid: tuple[int, ...], batch: int, st: dict, gap_law,
-                 *, completion_order: str = "admission", iters: int = 30) -> dict:
+                 *, completion_order: str = "admission", rho: float | None = None,
+                 iters: int = 30) -> dict:
     d2 = descriptor_v2(grid, batch)
     V11.check_substrate(d2)
     m_run = d2.max_running
@@ -61,7 +62,7 @@ def analytic_v11(n: int, grid: tuple[int, ...], batch: int, st: dict, gap_law,
             completion_rate=lambda r, phi=phi, g=g: phi / (g * desc.step_time_s(min(r, m_run))),
             others_at_arrival=others, s_active=service,
             own_alloc=bool(d2.semantics.resume_allocates_first),
-            completion_order=completion_order)
+            completion_order=completion_order, rho=rho)
         new_ps = V11.survival_probability_v11(inp, idle)
         if abs(new_ps - p_s) < 1e-7:
             p_s = new_ps

@@ -146,14 +146,23 @@ class LoadChainInputs:
     own_alloc: bool = True
     completion_order: str = "random"
     """Which running request a completion is. ``random`` (exponential service:
-    any of the ``R`` running, so older than T with probability ``a / R``) or
+    any of the ``R`` running, so older than T with probability ``a / R``),
     ``admission`` (service lengths alike under processor sharing: requests
     admitted earlier finish earlier, so an older entry finishes first
-    whenever one runs)."""
+    whenever one runs) or ``pairwise`` (model v1.2: an older request finishes
+    before a newer one with probability ``rho``, so with ``a`` older among
+    ``R`` running the finisher is older with probability
+    ``a*rho / (a*rho + (R - a)*(1 - rho))``; ``rho`` = 1/2 is ``random``,
+    ``rho`` = 1 is ``admission``)."""
+    rho: float | None = None
+    """For ``pairwise``: P(an older running request finishes before a newer
+    one), from the plan's decode-length law (``pairwise_rho``)."""
 
     def __post_init__(self) -> None:
-        if self.completion_order not in ("random", "admission"):
+        if self.completion_order not in ("random", "admission", "pairwise"):
             raise ValueError(f"unknown completion_order {self.completion_order!r}")
+        if self.completion_order == "pairwise" and (self.rho is None or not 0.5 <= self.rho <= 1):
+            raise ValueError("pairwise completion needs rho in [0.5, 1]")
         if self.sessions < 1 or self.max_running < 1 or self.capacity < 1:
             raise ValueError("sessions, max_running and capacity must be positive")
         if len(self.others_at_arrival) != self.sessions:
@@ -199,6 +208,51 @@ def _compositions(total: int, parts: int):
             yield (first,) + rest
 
 
+def _p_older(inp: LoadChainInputs, a: int, run: int) -> float:
+    """P(the request that finishes is older than T), ``a`` older among ``run``."""
+    if inp.completion_order == "random":
+        return a / run
+    if inp.completion_order == "admission":
+        return float(a > 0)
+    num = a * inp.rho
+    den = num + (run - a) * (1 - inp.rho)
+    return num / den if den else 0.0
+
+
+def pairwise_rho(decode_lengths: Sequence[float]) -> float:
+    """P(an older running request finishes first) under processor sharing:
+    the older one's remaining work is the equilibrium residual of the
+    decode-length law, the newer one's is a fresh draw. 1/2 for an exponential
+    law, 1 for a constant one. A workload quantity (the plan's lengths)."""
+    xs = sorted(float(x) for x in decode_lengths)
+    n = len(xs)
+    mean = sum(xs) / n
+    pref = [0.0]
+    for x in xs:
+        pref.append(pref[-1] + x)
+    from bisect import bisect_right
+
+    def residual_cdf(y: float) -> float:
+        k = bisect_right(xs, y)
+        return (pref[k] + (n - k) * y) / n / mean
+    return sum(residual_cdf(y) for y in xs) / n
+
+
+def _expm(q, p):
+    """``expm_multiply`` with its 1-norm estimator's random start fixed.
+
+    SciPy's ``onenormest`` draws its start vectors from the global
+    ``np.random`` state, so the same call can choose a different evaluation
+    order and differ in the last digits from run to run (TASK90). The global
+    state is saved and restored."""
+    state = np.random.get_state()
+    try:
+        np.random.seed(20261001)
+        return expm_multiply(q, p)
+    finally:
+        np.random.set_state(state)
+
+
 def _evict(d: int, active: bool):
     if d > 0:
         return d - 1, False
@@ -237,7 +291,7 @@ def _generator(inp: LoadChainInputs, sp: _Space, active: bool) -> csr_matrix:
         # completions of running others
         if run > 0:
             rate = run * inp.completion_rate(run + (1 if active else 0))
-            p_old = a / run if inp.completion_order == "random" else float(a > 0)
+            p_old = _p_older(inp, a, run)
             for older, po in ((True, p_old), (False, 1 - p_old)):
                 if po <= 0:
                     continue
@@ -380,7 +434,7 @@ def _returning(inp: LoadChainInputs, sp: _Space, p: np.ndarray) -> float:
             nxt: dict = {}
             last = step == m - mm
             for (aa, dd), w in dist.items():
-                p_old = aa / mm if inp.completion_order == "random" else float(aa > 0)
+                p_old = _p_older(inp, aa, mm)
                 for older, q in ((True, p_old), (False, 1 - p_old)):
                     if q <= 0:
                         continue
@@ -401,7 +455,7 @@ def survival_probability_v11(inp: LoadChainInputs,
     sp = _Space(inp.sessions - 1, len(inp.gap.probs), inp.max_running, inp.capacity)
     p = _initial(inp, sp)
     if inp.s_active > 0:
-        p = np.clip(expm_multiply(_generator(inp, sp, active=True) * inp.s_active, p), 0.0, None)
+        p = np.clip(_expm(_generator(inp, sp, active=True) * inp.s_active, p), 0.0, None)
     p = _target_finishes(inp, sp, p)
     q_idle = _generator(inp, sp, active=False)
     tot_w = sum(w for _, w in idle_samples)
@@ -409,7 +463,7 @@ def survival_probability_v11(inp: LoadChainInputs,
     t_prev = 0.0
     for s_idle, w in sorted(idle_samples):
         if s_idle > t_prev:
-            p = np.clip(expm_multiply(q_idle * (s_idle - t_prev), p), 0.0, None)
+            p = np.clip(_expm(q_idle * (s_idle - t_prev), p), 0.0, None)
             t_prev = s_idle
         acc += w * _returning(inp, sp, p)
     return acc / tot_w
