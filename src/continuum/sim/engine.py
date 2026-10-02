@@ -68,6 +68,13 @@ class SimConfig:
     measured -- means peers are invisible, exactly as on hardware."""
     """Latency budget the policy is bounded by. Ignored when no policy is set."""
 
+    decode_cost_fn: object | None = None
+    """``(bucket, running, sum_ctx) -> seconds`` for a decode step, where
+    ``sum_ctx`` sums each running request's prompt plus generated tokens.
+    ``None`` -- the default and the setting of every judged prediction -- uses
+    ``descriptor.step_time_s(running)``. A post-hoc probe of a context-length
+    cost (TASK97); not read by the paged engine."""
+
     cache_granularity: str = "outer"
     """``outer`` reproduces the measured pool: one block per sequence, whole
     blocks evicted. ``inner`` is an ablation -- many small blocks reclaimed one
@@ -207,6 +214,13 @@ class SimConfig:
                     )
                 if at < 0:
                     raise ValueError(f"fixed arrival {at} is negative")
+
+
+def _decode_s(descriptor, config: "SimConfig", running: list, actual: int) -> float:
+    if config.decode_cost_fn is None:
+        return descriptor.step_time_s(actual)
+    ctx = sum(r["prompt_tokens"] + r["generation_tokens"] - r["remaining"] for r in running)
+    return config.decode_cost_fn(descriptor.bucket_for(actual), actual, ctx)
 
 
 @dataclass
@@ -650,7 +664,7 @@ def simulate(
                 actual = len(running)
                 _padding_step(actual)
                 bucket = descriptor.bucket_for(actual)
-                dur = descriptor.step_time_s(actual)
+                dur = _decode_s(descriptor, config, running, actual)
                 steps.append(StepRecord(kind="decode", start_s=t, duration_s=dur,
                                         running=actual, bucket=bucket))
                 t += dur
@@ -705,7 +719,7 @@ def simulate(
             actual = len(running)
             _padding_step(actual)
             bucket = descriptor.bucket_for(actual)
-            dur = descriptor.step_time_s(actual)
+            dur = _decode_s(descriptor, config, running, actual)
             steps.append(StepRecord(
                 kind="decode", start_s=t, duration_s=dur, running=actual, bucket=bucket,
             ))

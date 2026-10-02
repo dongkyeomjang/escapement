@@ -303,6 +303,22 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | t95_v1_out_of_scope | 재사용 −0.05 – −0.21, 비 +0.09 – +0.18 | v1 오차, batch 16 N17·20 (범위 밖, 참고) | docs/research/TASK95.md @ e3697b0 | exploratory | untagged | P11, F_d |
 | t95_prior_prediction | §5.2 사전 예측 빗나감 (FAIL 예측 → (1) PASS); 나머지 4항목 적중 | 사전 예측 대조 | docs/research/TASK95.md @ e3697b0 | blind_fail | untagged | — |
 
+
+## 17. context 길이 step 비용과 사후 재예측 (TASK97–98)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| t97_validity | 29/29 유효, 재실행 0; 재현성 +0.94 % / −0.55 % | lifecycle; TUNED n4 L1500 / n8 L3000 반복 | docs/research/TASK97.md (TASK97 commit) | exploratory | untagged | — |
+| t97_ctx_slope | c 0.145 (BASE) / 0.149 (TUNED) µs/token; β −0.005 / −0.017 ms | F1 `f(b) + βn + c·ΣL`, decode step | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
+| t97_fit_rms | F1 0.237 / 0.361 ms; F2 0.235 / 0.355; F3 0.240 / 0.396 | 형태별 RMS 잔차, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | untagged | — |
+| t97_ratio_L3000 | n8 1.249 / 1.249; n16 1.369 (TUNED) | L = 3,000 관측/통제, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
+| t97_ratio_L512 | 0.98–1.03 | L = 512 관측/통제 | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
+| t97_operational_check | TASK91 모집단 1.095 / 1.096 (관측 1.084 / 1.085); TASK92 op-prefill-mt 1.113 / 1.100 (관측 1.113 / 1.107) | context 비용/통제 비용, step 가중, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
+| t98_finding4_bias | Σ 0.262 → sim_op 0.185, sim_ctx 0.174, sim_ctx_op 0.111; 평균 +0.044 → +0.018 | 비 오차, batch 16 N12·14·16 6 cell | docs/research/TASK98.md (TASK98 commit) | post_hoc | stack | — |
+| t98_task95_cells | 비 Σ 0.102 → sim_ctx 0.041; 재사용 MAE 0.0132 → 0.0066 | TASK95 cell 사후 재예측 (판정 불변) | docs/research/TASK98.md (TASK98 commit) | post_hoc | untagged | — |
+| t98_task87_cells | 비 Σ 0.189 → sim_ctx 0.109, sim_ctx_op 0.081 | TASK87 cell 사후 재예측 | docs/research/TASK98.md (TASK98 commit) | post_hoc | untagged | — |
+| t98_regression | TASK93 `PREDICTIONS_SIM.json` byte 동일 | `decode_cost_fn` hook 추가 후 회귀 | docs/research/TASK98.md (TASK98 commit) | code_check | untagged | — |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |

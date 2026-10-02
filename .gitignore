@@ -29,3 +29,6 @@ models/
 
 # LaTeX 패키지 조립 산출물 (paper/latex/make_package.sh가 복사)
 paper/latex/figures/
+
+# 익명화 대상 전체 위치 목록 (tools/anon_export.py --report-only로 재생성, TASK99)
+tools/anon_occurrences.csv
