@@ -72,6 +72,7 @@
 | [GTASK16](GTASK16.md) | DONE | 정상성, 같은 길이 기준 (G-05 작업 E) | 방법 `f61b4fd` 계산 전 commit(NPU TASK83 방법). h(decode-only)·재사용 모두 `NOT_NONSTATIONARY`(q_h 중앙 0.43, q_Δ 0.44). 붕괴 cell은 60 s 창 재사용 산포 큼(\|D\| 0.20–0.22) |
 | [GTASK17](GTASK17.md) | DONE | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 `b59287c` 측정 전 commit. 16/16 유효. streaming·KV events·admission log 효과 모두 비 0.9998–0.9999 → **관찰자 효과 없음**. GTASK11 조건 / 가격 n = 8에서 1.009(운영 1.219), 기울기 0.0615 ms/요청 → 22 % 초과는 세 요인에서 오지 않는다. 예상(streaming 최대)은 빗나감. driver 자동 commit 실패(ignored `sequence.log`) 경위 기록·수정 |
 | [GTASK18](GTASK18.md) | IN_PROGRESS | context 길이 step 비용 (G-07 작업 B) | merge `5f69657`. 통제 부하 context: GTASK05 64–192, GTASK17 64–320, GTASK11 plan step 가중 평균 1,810(p05 1,102, 최대 3,273). 설계 [GPU_STEPCOST_CTX_PREREG.md](GPU_STEPCOST_CTX_PREREG.md) 측정 전 commit: s1k1a1, n {1,2,4,8} × L {64,512,1500,3000} + 혼합 2, r2 |
+| [GTASK19](GTASK19.md) | DONE | 정정 기록: N24 BASE sim LRU 0.752 / 0.753 (G-07 작업 D) | 측정 0. 0.753 = `lo`(`PREDICTIONS.json` 1,361/1,807), 0.752 = §5.5 판정이 쓰는 `lo`·`hi` 평균. GTASK11 발견 4("0.849, 0.752, 0.657")가 두 정의를 섞었고 GTASK12가 옮겼다 → `lo` 기준 0.753으로 읽는다. 판정 영향 없음. 본문은 고치지 않음 |
 
 ## 다음 작업
 
