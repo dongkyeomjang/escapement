@@ -8,9 +8,9 @@ is reported, never repaired.** Figure data go to ``results/tables/figures/``.
 
 Inputs are committed files or analysis outputs that already exist under
 ``results/``; nothing is measured and no simulator sweep is run. GPU values
-are read from the GPU branch with ``git show origin/gpu-a6000:<path>`` (never
-checked out); each GPU input is cited with that file's last commit on the
-branch. A table whose input is missing is recorded as not built, with the
+are read from main (``git show HEAD:<path>``; the gpu-a6000 branch was merged
+in af3dfe3, TASK104) and each GPU input is cited as ``<path> @ <its last
+commit>`` so the citation resolves in an export of main. A table whose input is missing is recorded as not built, with the
 reason, in ``results/tables/paper_manifest.json``.
 
     env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_tables.py --all
@@ -55,7 +55,7 @@ EXPLAIN = S3 / "step_audit/explain.json"
 B2_DIAG = S3 / "v12_dev/b2_diag.json"
 FREEZE = S3 / "v12_dev/freeze_check.json"
 
-GPU_BRANCH = "origin/gpu-a6000"
+GPU_MERGE = "af3dfe3"   # gpu-a6000 merged into main (TASK104); GPU files are read from main
 G_SURV_PRED = "experiments/gpu/survival/prediction/predictions.json"
 G_MT_PRED = "experiments/gpu/multiturn/plans/PREDICTIONS.json"
 G04 = "docs/research/gpu/GTASK04.md"
@@ -93,11 +93,12 @@ def _git(*args: str) -> str:
 
 
 def gpu_show(path: str) -> str:
-    return _git("show", f"{GPU_BRANCH}:{path}")
+    """GPU file as committed on main (merged from gpu-a6000 in af3dfe3, TASK104)."""
+    return _git("show", f"HEAD:{path}")
 
 
 def gpu_commit(path: str) -> str:
-    return _git("log", GPU_BRANCH, "--format=%h", "-1", "--", path).strip()
+    return _git("log", "--format=%h", "-1", "--", path).strip()
 
 
 def npu_commit(path: str) -> str:
@@ -105,7 +106,7 @@ def npu_commit(path: str) -> str:
 
 
 def gpu_ref(path: str) -> str:
-    return f"{GPU_BRANCH}:{path} @ {gpu_commit(path)}"
+    return f"{path} @ {gpu_commit(path)}"
 
 
 def npu_doc(task: str) -> str:
@@ -419,7 +420,7 @@ def p01_sequential_survival():
         rows.append(["GPU", "blind_confirm", f"({cond})", f"{bg:,}", str(m), str(g["n"]),
                      f"{g['pred']:,}", "" if g["obs"] is None else f"{g['obs']:,}",
                      "1" if g["obs"] == g["pred"] else "0",
-                     f"GTASK04; {GPU_BRANCH}:{G_SURV_PRED}"])
+                     f"GTASK04; {G_SURV_PRED}"])
     ck.eq("GPU trial 수", len(gp["trials"]), 60, source="GTASK04 판정 60/60")
     ck.eq("GPU 예측 = GTASK04 관측 표", match, 60, source="GTASK04 판정 60/60")
     notes = ["NPU 행: 생존 = target prefix 층 2 재사용(True/False), 같은 TASK·m의 trial을 묶었다.",
@@ -558,9 +559,8 @@ def p04_gpu_multiturn():
         ck.eq(f"POOL.n26 비 예측 {lab} (문장 3자리)", round(n26["pred"][lab]["ratio"], 3), rec, tol=5e-4,
               source="GTASK11 N = 26 탐색 문장")
     b24 = next(c for c in cells if c["cell"] == "BASE.n24")
-    ck.eq("BASE.n24 sim LRU 재사용 (§5.5·발견 4 문장의 값)", round(b24["pred"]["sim_lru"]["reuse"], 3),
-          0.752, tol=5e-4, source="GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» "
-          "(본문 미수정; GTASK19 정정 기록: `lo` 0.753, 0.752 = lo·hi 평균)")
+    ck.eq("BASE.n24 sim LRU 재사용 `lo` (3자리)", round(b24["pred"]["sim_lru"]["reuse"], 3),
+          0.753, tol=5e-4, source="GTASK19 정정 기록: `lo` 0.753 (GTASK11 §5.5·발견 4 문장의 0.752는 lo·hi 평균)")
     g19 = gpu_show(G19)
     g19_lo = re.search(r"`sim_lru/lo` \| ([\d.]+)", g19)
     g19_mean = re.search(r"`24/BASE.sim_lru` \| ([\d.]+)", g19)
@@ -1591,10 +1591,10 @@ def main() -> int:
     update_readme(a.out_dir, summary, figs)
     head = _git("rev-parse", "HEAD").strip()
     dirty = _git("status", "--porcelain").strip()
-    gpu_head = _git("rev-parse", "--short", GPU_BRANCH).strip()
+    gpu_head = _git("rev-parse", "--short", "HEAD").strip()
     (a.out_dir / "paper_manifest.json").write_text(json.dumps(
         {"generated_at": dt.datetime.now().astimezone().isoformat(), "git_head": head,
-         "git_dirty": dirty, "gpu_branch": GPU_BRANCH, "gpu_branch_head": gpu_head,
+         "git_dirty": dirty, "gpu_source": f"main (gpu-a6000 merged in {GPU_MERGE})", "gpu_source_head": gpu_head,
          "python": sys.version, "tables": summary, "figures": figs,
          "not_built_here": [
              {"id": "arXiv 세 기전 (padding·격자, prefill 직렬화, 재사용 절벽)",
