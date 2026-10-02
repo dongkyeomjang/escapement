@@ -45,7 +45,10 @@ F_b_reuse_ratio_vs_N.csv (2 x 2: rows reuse / cost ratio, columns NPU / GPU)
         predictor = sim_lru (GTASK11) and sim_lru_price (GTASK20), labelled
         "Simulator (short-context cost)". Solid.
       * Simulator (context-aware cost): predictor = sim_ctxcost (NPU TASK102, GPU
-        GTASK20), dash-dot, only at those N.
+        GTASK20), dash-dot, only at those N. On the GPU it is the main predictor for
+        N >= 25 (GTASK20); the short-context simulator line is drawn lighter after N = 24
+        in panels (b) and (d), and panel (d) also draws sim_ctxcost per configuration.
+      * hollow observed marker = exploratory cell (own legend entry).
       * Null predictor: predictor = null, dotted horizontal line.
       * not drawn: v1.1 (development model), sim_default (legacy semantics), sim_opcost
         and sim_ctxcost_origprefill (TASK95/102 secondary), sim_fifo, dev-set or
@@ -175,6 +178,18 @@ def poly(p: SP.Axes, pts, *, color: str, style: str = "solid", width: float = 1.
         p.line(pts, color=color, width=width, dash=DASH[style], opacity=opacity)
 
 
+def poly_split(p: SP.Axes, pts, split: float | None, *, color: str, style: str = "solid",
+               width: float = 1.1, faded: float = 0.35) -> None:
+    """Full opacity up to x = split, lighter from the last point at or before split on."""
+    if split is None:
+        poly(p, pts, color=color, style=style, width=width)
+        return
+    head = [pt for pt in pts if pt[0] <= split]
+    tail = ([head[-1]] if head else []) + [pt for pt in pts if pt[0] > split]
+    poly(p, head, color=color, style=style, width=width)
+    poly(p, tail, color=color, style=style, width=width, opacity=faded)
+
+
 def step(pts: list[tuple[float, float]], x_end: float) -> list[tuple[float, float]]:
     """Post-step path through sampled (x, y): y holds until the next sample."""
     out = []
@@ -279,7 +294,7 @@ def series(rows, sub, metric, config, pred_rule) -> list[tuple[float, float]]:
 
 def fig_b(out: Path) -> None:
     rows = [r for r in read("F_b_reuse_ratio_vs_N.csv") if r["cell_set"] != "GTASK13"]
-    H = 396.0
+    H = 422.0
     c = Canvas(H)
     cols = {"NPU": (52, 248, (5.5, 20.5), [6, 8, 10, 12, 14, 16, 18, 20], (10, 12), "queue forms", 12),
             "GPU": (300, 488, (19.5, 28.5), [20, 22, 24, 26, 28], (24, 25), "saturation", None)}
@@ -306,9 +321,12 @@ def fig_b(out: Path) -> None:
             poly(p, outside, color=OI["blue"], style="dash", opacity=0.35)
         else:
             poly(p, an, color=OI["blue"], style="dash", opacity=0.35)
-        poly(p, series(rows, sub, "reuse", "BASE", sim_rule), color=OI["vermillion"], style="solid")
+        # GPU: for N >= 25 the context-aware simulator is the main predictor (GTASK20); the
+        # short-context simulator is drawn lighter after N = 24
+        sim_split = 24 if sub == "GPU" else None
+        poly_split(p, series(rows, sub, "reuse", "BASE", sim_rule), sim_split, color=OI["vermillion"], style="solid")
         ctx = series(rows, sub, "reuse", "BASE", "sim_ctxcost")
-        poly(p, ctx, color=OI["green"], style="dashdot", width=1.3)
+        poly(p, ctx, color=OI["green"], style="dashdot", width=1.4)
         for r in rows:
             if r["substrate"] == sub and r["metric"] == "reuse" and r["config"] == "BASE" \
                     and r["predictor"] == "observed":
@@ -333,7 +351,9 @@ def fig_b(out: Path) -> None:
         ents = []
         for i, (cfg, (lab, col, shp, st)) in enumerate(CONF[sub].items()):
             off = -0.18 if i == 0 else 0.18
-            poly(q, series(rows, sub, "ratio_to_BASE", cfg, sim_rule), color=col, style=st)
+            poly_split(q, series(rows, sub, "ratio_to_BASE", cfg, sim_rule), sim_split, color=col, style=st)
+            if sub == "GPU":
+                poly(q, series(rows, sub, "ratio_to_BASE", cfg, "sim_ctxcost"), color=col, style="dashdot", width=1.4)
             for r in rr:
                 if r["config"] == cfg and r["predictor"] == "observed":
                     x, v = float(r["N"]) + off, float(r["value"])
@@ -342,11 +362,16 @@ def fig_b(out: Path) -> None:
                     mark(q, x, v, color=col, shape=shp, r=2.5)
             ents += [{"label": f"{lab}: observed median, 95% CI", "color": col, "shape": shp},
                      {"label": f"{lab}: simulator", "color": col, "style": st}]
+        if sub == "GPU":
+            ents += [{"label": f"{lab}: context-aware sim. (GPU)", "color": col,
+                      "style": "dashdot"} for _, (lab, col, _, _) in CONF[sub].items()]
         leg_ratio = (q, ents)
     p = leg_reuse
     legend(p, [{"label": "Observed, preregistered cell", "color": INK, "shape": "o"},
+               {"label": "Observed, exploratory cell", "color": INK, "shape": "o", "hollow": True},
                {"label": "Analytical model (lighter: outside scope)", "color": OI["blue"], "style": "dash"},
-               {"label": "Simulator (GPU: short-context cost)", "color": OI["vermillion"], "style": "solid"},
+               {"label": "Simulator (GPU: short-context; faded N >= 25)", "color": OI["vermillion"],
+                "style": "solid"},
                {"label": "Simulator (context-aware cost)", "color": OI["green"], "style": "dashdot"},
                {"label": "Null predictor", "color": OI["grey"], "style": "dot"}],
            x=40, y=342)

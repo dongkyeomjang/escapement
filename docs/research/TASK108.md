@@ -87,3 +87,10 @@ env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_figures.py
 ## 재현 정보
 
 - 위 명령, 입력 CSV는 HEAD `04b941a`의 `results/tables/figures/`.
+
+## 개정 1 (2026-10-03, 사용자 지시: F_b 수정 2건)
+
+1. GPU 패널 (b)·(d): N ≥ 25에서 문맥 반영 시뮬레이터(`sim_ctxcost`, GTASK20 주 예측기)를 주 예측기로 그렸다 — (d) 비용 비 패널에도 구성별 dash-dot 선을 추가했다. 짧은 문맥 비용 시뮬레이터 선은 N = 24 이후 옅게 그렸다.
+2. 범례에 "Observed, exploratory cell"(속 빈 마커) 항목을 추가했다.
+
+F_a·F_d는 바뀌지 않았다(SHA256 동일). F_b 새 SHA256 앞 16자리 `2487577c5ceea7a2`, 크기 496 × 422 pt, 재실행 byte 동일.
