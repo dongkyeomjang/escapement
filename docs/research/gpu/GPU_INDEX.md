@@ -71,6 +71,7 @@
 | [GTASK15](GTASK15.md) | DONE | 직접 채널 대 가격 채널 분해 (G-05 작업 D) | lag 1 귀속 wall/price 1.210, idle 조각 0.0003 %, small-p eager 4.8 %, **FULL decode 89 %**(1.22배, d = 1 1.03 → d = 8 1.22, 대기열 무관). GTASK11 직접 채널 1.131은 lag 0 cap이 큰 prefill 시간을 자른 과소 추정. 계측 제안 3건(승인 대상) |
 | [GTASK16](GTASK16.md) | DONE | 정상성, 같은 길이 기준 (G-05 작업 E) | 방법 `f61b4fd` 계산 전 commit(NPU TASK83 방법). h(decode-only)·재사용 모두 `NOT_NONSTATIONARY`(q_h 중앙 0.43, q_Δ 0.44). 붕괴 cell은 60 s 창 재사용 산포 큼(\|D\| 0.20–0.22) |
 | [GTASK17](GTASK17.md) | DONE | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 `b59287c` 측정 전 commit. 16/16 유효. streaming·KV events·admission log 효과 모두 비 0.9998–0.9999 → **관찰자 효과 없음**. GTASK11 조건 / 가격 n = 8에서 1.009(운영 1.219), 기울기 0.0615 ms/요청 → 22 % 초과는 세 요인에서 오지 않는다. 예상(streaming 최대)은 빗나감. driver 자동 commit 실패(ignored `sequence.log`) 경위 기록·수정 |
+| [GTASK18](GTASK18.md) | IN_PROGRESS | context 길이 step 비용 (G-07 작업 B) | merge `5f69657`. 통제 부하 context: GTASK05 64–192, GTASK17 64–320, GTASK11 plan step 가중 평균 1,810(p05 1,102, 최대 3,273). 설계 [GPU_STEPCOST_CTX_PREREG.md](GPU_STEPCOST_CTX_PREREG.md) 측정 전 commit: s1k1a1, n {1,2,4,8} × L {64,512,1500,3000} + 혼합 2, r2 |
 
 ## 다음 작업
 
