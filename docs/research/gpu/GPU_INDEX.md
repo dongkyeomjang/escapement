@@ -15,7 +15,9 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
-**G-06 진행 중(GTASK17–18)**: 운영 조건 step 비용 요인 분해(GTASK17) → 그 곡선으로 붕괴 영역 blind cell N 25·28(GTASK18).
+**G-07 진행 중**: GTASK17 마무리 → main 반영 → context 길이 step 비용(작업 B) → 붕괴 영역 blind N 25·28, 세 비용 입력(작업 C) → 정정 기록(작업 D).
+
+**G-06(GTASK17)**: **관측 수단에 의한 관찰자 효과 없음**(streaming·KV events·admission log 비 0.9998–0.9999). 통제 부하(context 64–320 token)에서 GTASK11 조건 step은 가격과 같다(n = 8에서 1.009 대 운영 1.219). 22 % 초과는 이 세 요인 밖에서 온다.
 
 **G-05 완료(GTASK12–16), Advisor 승인(G-06 §1)**: GTASK11 데이터의 분석만(측정 0).
 - **사건 재생 `PASS`**(GTASK12, 선등록 `0973228`): 16,794/16,794. 따라서 **붕괴 과소 예측은 동역학 오류**다.
@@ -68,7 +70,7 @@
 | [GTASK14](GTASK14.md) | DONE | 대기열 동역학 비교 (G-05 작업 C) | 원래 sim은 대기를 과소 재현한다(N20 대기 중앙 0.02 대 0.69 s, 대기열 평균 약 절반). ×1.210이면 관측과 거의 같다. 재사용 오차와 가장 같이 움직이는 양: idle 중 다른 요청의 할당량 평균(Spearman orig −0.95, 합산 −0.87). 할당 속도는 차이 없음 |
 | [GTASK15](GTASK15.md) | DONE | 직접 채널 대 가격 채널 분해 (G-05 작업 D) | lag 1 귀속 wall/price 1.210, idle 조각 0.0003 %, small-p eager 4.8 %, **FULL decode 89 %**(1.22배, d = 1 1.03 → d = 8 1.22, 대기열 무관). GTASK11 직접 채널 1.131은 lag 0 cap이 큰 prefill 시간을 자른 과소 추정. 계측 제안 3건(승인 대상) |
 | [GTASK16](GTASK16.md) | DONE | 정상성, 같은 길이 기준 (G-05 작업 E) | 방법 `f61b4fd` 계산 전 commit(NPU TASK83 방법). h(decode-only)·재사용 모두 `NOT_NONSTATIONARY`(q_h 중앙 0.43, q_Δ 0.44). 붕괴 cell은 60 s 창 재사용 산포 큼(\|D\| 0.20–0.22) |
-| [GTASK17](GTASK17.md) | IN_PROGRESS | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 [GPU_STEPCOST_OP_PREREG.md](GPU_STEPCOST_OP_PREREG.md) 측정 전 commit. streaming × KV events × admission log 8 조건 × r2, FULL n = 1–8, GTASK11 server 인자. 측정은 세션과 분리해 실행하고 driver가 요약을 자동 local commit |
+| [GTASK17](GTASK17.md) | DONE | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 `b59287c` 측정 전 commit. 16/16 유효. streaming·KV events·admission log 효과 모두 비 0.9998–0.9999 → **관찰자 효과 없음**. GTASK11 조건 / 가격 n = 8에서 1.009(운영 1.219), 기울기 0.0615 ms/요청 → 22 % 초과는 세 요인에서 오지 않는다. 예상(streaming 최대)은 빗나감. driver 자동 commit 실패(ignored `sequence.log`) 경위 기록·수정 |
 
 ## 다음 작업
 

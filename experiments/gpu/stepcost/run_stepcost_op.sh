@@ -41,20 +41,29 @@ env -u PYTHONPATH "$PY" "$D/stepcost_op_analyze.py" --run-dir "$RUN" --out "$RUN
 echo "$(date -u -Is) analyzed rc=$?" | tee -a "$RUN/sequence.log"
 OUT="$D/op_result"
 mkdir -p "$OUT"
+# sequence.log matches .gitignore (*.log): copy it for convenience but never stage it.
+# GTASK17 fix: the original `git add` listed it, add failed, `&&` skipped commit,
+# and rc=$? reported the redirect, not git (commit rc=0 with HEAD unchanged).
 cp "$RUN/summary.json" "$OUT/summary.json" && cp "$RUN/summary.md" "$OUT/summary.md" && \
   cp "$RUN/sequence.log" "$OUT/sequence.log"
 cd "$REPO"
 if [ "$(git branch --show-current)" = "gpu-a6000" ]; then
+  before=$(git rev-parse HEAD)
+  rc=0
   git add -- experiments/gpu/stepcost/op_result/summary.json experiments/gpu/stepcost/op_result/summary.md \
-    experiments/gpu/stepcost/op_result/sequence.log && \
-  git commit -m "exp(gpu): 운영 조건 step 비용 측정 자동 commit — 기계 생성 요약, 해석 전 (GTASK17 측정)
+    >> "$RUN/commit.log" 2>&1 || rc=$?
+  if [ "$rc" = 0 ]; then
+    git commit -m "exp(gpu): 운영 조건 step 비용 측정 자동 commit — 기계 생성 요약, 해석 전 (GTASK17 측정)
 
 run dir $RUN
 
 Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>" -- \
-    experiments/gpu/stepcost/op_result/summary.json experiments/gpu/stepcost/op_result/summary.md \
-    experiments/gpu/stepcost/op_result/sequence.log >> "$RUN/commit.log" 2>&1
-  echo "$(date -u -Is) commit rc=$? $(git rev-parse --short HEAD)" | tee -a "$RUN/sequence.log"
+      experiments/gpu/stepcost/op_result/summary.json experiments/gpu/stepcost/op_result/summary.md \
+      >> "$RUN/commit.log" 2>&1 || rc=$?
+  fi
+  after=$(git rev-parse HEAD)
+  [ "$before" = "$after" ] && [ "$rc" = 0 ] && rc=99   # HEAD did not move: report as failure
+  echo "$(date -u -Is) commit rc=$rc $(git rev-parse --short HEAD)" | tee -a "$RUN/sequence.log"
 else
   echo "$(date -u -Is) not on gpu-a6000, no commit" | tee -a "$RUN/sequence.log"
 fi
