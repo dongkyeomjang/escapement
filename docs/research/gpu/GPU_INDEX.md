@@ -15,6 +15,31 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
+**GPU 실험 종료 (G-08, 2026-10-02)**: GPU 실험은 G-07로 끝났다. 이후 새 측정은 하지 않는다. 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md)(GTASK01–20, 130행).
+
+**G-08 결정 (G-07 결정 요청에 대한 답)**:
+1. (1) ctx의 재사용 과대 예측(+0.005–0.049, 6 cell 같은 방향)은 추가 측정하지 않는다. 남은 계통 편향으로 기록한다. 원인 후보(혼합·eager step과 prefill의 context 의존)는 후속 연구로만 둔다.
+2. c·ΣL 항의 descriptor 도입은 NPU 에이전트 소관이다(`src/continuum/`). NPU 마지막 실험 뒤 통합 단계에서 두 장비의 context 비용을 descriptor에 넣고, GPU 예측이 통합 시뮬레이터로 재현되는지 확인한다. GPU 쪽 입력은 아래 표에 있다.
+3. 붕괴 cell의 replicate 산포(N28 BASE 0.03–0.59)는 반복 측정하지 않는다. 붕괴 근처에서 개별 run의 재사용이 크게 흔들린다는 관측으로 보고한다.
+
+**통합 확인용 GPU 입력** (`origin/gpu-a6000`):
+
+| 입력 | 값 | 파일 (SHA256 앞 16자리) |
+|---|---|---|
+| GTASK18 F1 적합 | c = 2.120 × 10⁻⁴ ms/token; a(n) = 13.432 / 13.285 / 13.265 / 13.414 ms (n = 1 / 2 / 4 / 8); 기준 context L_PRICE = 128 (GTASK05 가격 부하) | `experiments/gpu/stepcost/ctx_result/summary.json` (`bac058bfba4bb256`), commit `809a767` |
+| GTASK20 예측 | 네 예측기 × lo/hi × N 25·28 × 3 구성 | `experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json` (`ee6ddc0734aedc85`), 선등록 commit `f0d8000` |
+| GTASK20 plan·격자 | `gblind-n{25,28}-r0–4`, POOL+GRID (1,5,7,8,16) | `plans/blind/INDEX.json` (`8600bfcf5d48ff61`), `selection/blind_grids.json` (`89711af9fe437fd3`) |
+| GTASK20 판정 | 30/30 유효, (1) 네 항목 PASS | `experiments/gpu/multiturn/blind_result/verdict.json` (`a6609d1eae06d43f`), commit `bac3e63` |
+| 재현 경로 | `gpu_mt_sim.simulate(..., step_cost=)` + `predict_blind.StepCost("ctx")` | `experiments/gpu/multiturn/{gpu_mt_sim.py, predict_blind.py}` |
+
+**GPU 결과의 판정 종류** (상세는 요약표):
+- **확증(blind_confirm)**: Stage 0(GTASK02), 관문 G1(개정 1)·G2·G3(GTASK03), 순차 생존 60/60(GTASK04), 파일럿 streaming `EQUIVALENT`(GTASK10), multi-turn sim LRU §5.1·§5.2, `LRU_SUPPORTED`, 순위, h(GTASK11), 붕괴 영역 blind (1) ctx 네 항목과 추가 확증(GTASK20)
+- **blind 실패(blind_fail)**: 관문 G1 원 기준(GTASK03), GTASK05 선등록 분석, sim FIFO·해석 v1·h `reqs`(GTASK11), 가격 기준선(GTASK20), 사전 예측 빗나감(GTASK17·18·20)
+- **개발 집합(dev_set)**: 시간 척도 ×1.131 / ×1.210 / mode_dist(GTASK13)
+- **사후·회고(retro_check)**: 사건 재생(GTASK12), 정상성(GTASK16), 통제 부하 context 확인(GTASK18), 정정(GTASK19)
+- **탐색(exploratory)**: step 비용(GTASK05·17·18), 구성 선정과 예측(GTASK08·09), N = 26(GTASK11), 대기열·채널(GTASK14·15)
+- **보류(withheld)**: PIECEWISE 증분(GTASK05)
+
 **G-07 완료(GTASK17–20)**:
 - **관찰자 효과 없음**(GTASK17): streaming·KV events·admission log 비 0.9998–0.9999.
 - **context 길이 비용**(GTASK18): `t = a(n) + c·ΣL`, c = 0.212 µs/token. 짧은 context에서 a(n) = 가격. plan 평균 context만으로 GTASK15 운영 초과의 81–96 %를 재현한다.
@@ -78,11 +103,8 @@
 | [GTASK18](GTASK18.md) | DONE | context 길이 step 비용 (G-07 작업 B) | merge `5f69657`. 설계 `b64eff3` 측정 전 commit → 2/2 유효, 결과 자동 commit `809a767`. 통제 부하 context GTASK05 64–192·GTASK17 64–320, 운영 plan 평균 1,810. **`t = a(n) + c·ΣL`, c = 0.212 µs/token**, 잔차 ≤ 0.7 %, 혼합 cell이 ΣL 형태(n·max L 아님)를 가름. n = 8, L = 3,000은 가격의 1.364배. plan 평균 L만으로 GTASK15 운영 비율의 81–96 % 재현(d = 8 1.210 대 1.219). 짧은 context에서 a(n) = 가격 |
 | [GTASK19](GTASK19.md) | DONE | 정정 기록: N24 BASE sim LRU 0.752 / 0.753 (G-07 작업 D) | 측정 0. 0.753 = `lo`(`PREDICTIONS.json` 1,361/1,807), 0.752 = §5.5 판정이 쓰는 `lo`·`hi` 평균. GTASK11 발견 4("0.849, 0.752, 0.657")가 두 정의를 섞었고 GTASK12가 옮겼다 → `lo` 기준 0.753으로 읽는다. 판정 영향 없음. 본문은 고치지 않음 |
 | [GTASK20](GTASK20.md) | DONE | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 `f0d8000` → 30/30 유효, 재실행 0, 판정 자동 commit `bac3e63`. **주 예측기 (1) ctx: §5.1·§5.2·§5.3·§5.6 모두 PASS**(재사용 MAE 0.022, 비 기본 4/4, h TVD 0.049). (3) 가격은 §5.1·§5.2 FAIL(N25 BASE +0.22). **추가 확증 (1) < (3) `CONFIRMED`**. 보고: 재사용은 보정 (2)가 더 가까움(BASE Σ 0.031 대 0.075), 비는 같음 |
+| [GTASK21](GTASK21.md) | DONE | GPU 작업 마무리 기록 (G-08) | 측정 0. GPU 실험 종료, G-08 결정 3건, 통합 확인용 입력(SHA256), 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md) 130행(blind_confirm 32, blind_fail 10, dev_set 5, retro_check 12, exploratory 51, code_check 19, withheld 1). merge 준비: GPU 쪽 141 파일 모두 GPU 영역 안, main 쪽 36 파일은 GPU 영역 밖, 충돌 0(merge 안 함) |
 
 ## 다음 작업
 
-Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. G-07 결정 요청:
-1. 주 예측기 (1)의 재사용 과대(+0.02, 6/6 cell 같은 방향)를 다룰지. 후보: 혼합·eager step과 prefill의 context 의존 측정(GTASK18 범위 밖)
-2. context 길이 비용 형태(`c·ΣL`)를 `SubstrateDescriptor`·NPU 비용 형태에 도입할지(`src/continuum/`은 이 branch에서 수정 금지)
-3. 붕괴 cell의 replicate 산포(같은 plan 반복 여부)
-4. 지난 결정 대기 항목(step 단위 격자 관측 수단, descriptor 확장, GPU 간섭 통제)은 그대로다
+GPU 실험은 종료됐다(G-08). 새 GPU 측정·예측은 하지 않는다. 남은 일은 NPU 에이전트의 통합 단계(context 비용 descriptor 도입과 GPU 예측 재현 확인)와 `gpu-a6000` → `main` merge(Advisor 지시 시)다. merge 준비 확인은 [GTASK21](GTASK21.md)에 있다.
