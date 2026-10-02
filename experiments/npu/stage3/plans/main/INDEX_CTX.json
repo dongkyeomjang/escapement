@@ -1,0 +1,102 @@
+[
+  {
+    "plan_id": "main-n15-r0",
+    "n": 15,
+    "rep": 0,
+    "seed": 20261550,
+    "cycle_s": 6.25,
+    "content_sha256": "a0b68b86662f187ee7a79151878902a5344b7fefbc3553cf6992cc58c88bccf8",
+    "file_sha256": "3fa4a743258ef61dcd72031e34a332344204cee9bcac346e55084b8a16ba3132",
+    "max_context": 3160
+  },
+  {
+    "plan_id": "main-n15-r1",
+    "n": 15,
+    "rep": 1,
+    "seed": 20261551,
+    "cycle_s": 6.197,
+    "content_sha256": "4b1a26273821a601ccff07207329e2faced2748abc2836548da96e90cd060819",
+    "file_sha256": "1e36d9581e033f37b4307f35abbbb0f4173c0bf90630048056f80c61569bb350",
+    "max_context": 3125
+  },
+  {
+    "plan_id": "main-n15-r2",
+    "n": 15,
+    "rep": 2,
+    "seed": 20261552,
+    "cycle_s": 6.182,
+    "content_sha256": "b4354e806a7c947845b50b45fdfd8ff4d8ddd45177ae5df9c416dfc09e4b949c",
+    "file_sha256": "16781bb43625f4778502b3ec3ba5ee7296715bc37b748f238e9a7fa3887ed392",
+    "max_context": 3236
+  },
+  {
+    "plan_id": "main-n15-r3",
+    "n": 15,
+    "rep": 3,
+    "seed": 20261553,
+    "cycle_s": 6.223,
+    "content_sha256": "2ff1373cbc83f847127eb3d955c4e4de4685083372f61d2f5f484d053dc42b7f",
+    "file_sha256": "354db51e69043e1d7c6ee425ca3cfaaf2bbb43666cefb55667539c08909fa027",
+    "max_context": 3090
+  },
+  {
+    "plan_id": "main-n15-r4",
+    "n": 15,
+    "rep": 4,
+    "seed": 20261554,
+    "cycle_s": 6.313,
+    "content_sha256": "c47b34f68709d60fb85b08264859343b45c62280e94351f4a3c8ce9169706d84",
+    "file_sha256": "d6b2da4b0c3ddb82963498e656b760b7b1c1f196b6dc0ec1876be6365845ca3e",
+    "max_context": 3085
+  },
+  {
+    "plan_id": "main-n18-r0",
+    "n": 18,
+    "rep": 0,
+    "seed": 20261580,
+    "cycle_s": 7.253,
+    "content_sha256": "437849fd28c17808129ec337b1b1e09a929b525bfdf36f8f821de7e41c076e22",
+    "file_sha256": "f920a4d38a777ff3f6212e8be64c602906aab99437165274c23906b9b0c08d3a",
+    "max_context": 3143
+  },
+  {
+    "plan_id": "main-n18-r1",
+    "n": 18,
+    "rep": 1,
+    "seed": 20261581,
+    "cycle_s": 7.244,
+    "content_sha256": "de14c1289418de7c785c491a5405add847a4db86f9be95d9677f3bca7a68d8b1",
+    "file_sha256": "7d422bf067ec99e649ef5849430f9cacebf849d354db45697f50e33a42789c7b",
+    "max_context": 3186
+  },
+  {
+    "plan_id": "main-n18-r2",
+    "n": 18,
+    "rep": 2,
+    "seed": 20261582,
+    "cycle_s": 7.238,
+    "content_sha256": "28ca0dc688595d08fa99c98e506b1d0ba261f20b206f793d0ac382935640ce6e",
+    "file_sha256": "a0c771c56f2ab906fc058c073afb3afd56c1f6a25183763f1a9461953b5a307c",
+    "max_context": 3077
+  },
+  {
+    "plan_id": "main-n18-r3",
+    "n": 18,
+    "rep": 3,
+    "seed": 20261583,
+    "cycle_s": 7.259,
+    "content_sha256": "11e4020af4caf164f1c1a336dfbf8b0cf4966166ba2a091bc66305bd94b9bc29",
+    "file_sha256": "51fa24ca7cd377c46cc6effa2f22ed203482dba3ccab574f6b9af18ee1c9d2ae",
+    "max_context": 3260
+  },
+  {
+    "plan_id": "main-n18-r4",
+    "n": 18,
+    "rep": 4,
+    "seed": 20261584,
+    "cycle_s": 7.313,
+    "content_sha256": "55c293b093e2b835d841c69f8d41fd98a4154fbf1b54205ef2e5b69b5e389b5e",
+    "file_sha256": "788990e6b9a4c5e59431facdb12d1e4b4a5437139d1b92cf7e2d897350717b51",
+    "max_context": 3176
+  }
+]

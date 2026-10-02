@@ -33,12 +33,19 @@ def main() -> int:
                      "beta_s": f1["beta_ms"] / 1e3, "c_s_per_token": f1["c_ms_per_token"][0] / 1e3,
                      "rule": "TASK97 F1 fit"}
     b, t = arts["BASE"], arts["TUNED"]
-    arts["BATCHONLY"] = {"f_s_by_bucket": {"1": t["f_s_by_bucket"]["1"], "2": b["f_s_by_bucket"]["2"],
-                                           "4": t["f_s_by_bucket"]["4"], "8": t["f_s_by_bucket"]["8"],
-                                           "16": t["f_s_by_bucket"]["16"]},
-                         "beta_s": (b["beta_s"] + t["beta_s"]) / 2, "c_s_per_token": (b["c_s_per_token"] + t["c_s_per_token"]) / 2,
-                         "rule": "not measured: f(b) TUNED for 1,4,8,16, BASE for 2; beta, c = mean of BASE and TUNED"}
-    out = {"origin": "TASK97", "form": "F1", "source": str(a.source), "source_sha256": hashlib.sha256(raw).hexdigest(),
+    if "BATCHONLY" in src["artifacts"]:          # measured in TASK100: its own fit, no rule
+        f1 = src["artifacts"]["BATCHONLY"]["fits"]["F1"]
+        arts["BATCHONLY"] = {"f_s_by_bucket": {k: v / 1e3 for k, v in f1["f_by_bucket_ms"].items()},
+                             "beta_s": f1["beta_ms"] / 1e3, "c_s_per_token": f1["c_ms_per_token"][0] / 1e3,
+                             "rule": "TASK100 F1 fit"}
+    else:
+        arts["BATCHONLY"] = {"f_s_by_bucket": {"1": t["f_s_by_bucket"]["1"], "2": b["f_s_by_bucket"]["2"],
+                                               "4": t["f_s_by_bucket"]["4"], "8": t["f_s_by_bucket"]["8"],
+                                               "16": t["f_s_by_bucket"]["16"]},
+                             "beta_s": (b["beta_s"] + t["beta_s"]) / 2,
+                             "c_s_per_token": (b["c_s_per_token"] + t["c_s_per_token"]) / 2,
+                             "rule": "not measured: f(b) TUNED for 1,4,8,16, BASE for 2; beta, c = mean of BASE and TUNED"}
+    out = {"origin": "TASK97, TASK100", "form": "F1", "source": str(a.source), "source_sha256": hashlib.sha256(raw).hexdigest(),
            "artifacts": arts}
     a.output.write_text(json.dumps(out, indent=1) + "\n")
     print(json.dumps(out["artifacts"], indent=1))

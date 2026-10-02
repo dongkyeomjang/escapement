@@ -47,7 +47,7 @@ S3 = REPO / "results/npu/stage3"
 STEPCOST_RUN = S3 / "20261001-stepcost-op"
 MT_RUNS = {"TASK82": (S3 / "20260930-main", (6, 8, 10, 12)), "TASK87": (S3 / "20261001-hiload", (14, 16)),
            "TASK95": (S3 / "20261002-simblind", (13, 17, 20))}
-ARTS = ("BASE", "TUNED")
+ARTS = ("BASE", "BATCHONLY", "TUNED")   # BATCHONLY: TASK100 (CTXCOST_DESIGN amendment 1)
 BIN = 64
 MIN_SAMPLES = 30
 
@@ -126,12 +126,14 @@ def fit(points, form: str):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", type=Path, required=True)
+    ap.add_argument("--run", type=Path, required=True, nargs="+", help="one or more ctx run dirs")
     ap.add_argument("--output", type=Path, required=True)
     a = ap.parse_args()
     use, invalid = {}, []
-    for d in sorted((a.run / "probe").iterdir()):
+    run_of = {}
+    for d in sorted(p for run in a.run for p in (run / "probe").iterdir()):
         tag = d.name
+        run_of[tag] = d.parent.parent
         lc = (d / "lifecycle.txt").read_text()
         win = json.loads((d / f"windows.{tag}.json").read_text())
         if "runner_exit=0" not in lc or win["stopped_by"] != "window" or win["exhausted_slots"]:
@@ -144,7 +146,7 @@ def main() -> int:
         cfg, pid = tag.split(".")[0], tag.split(".")[1]
         L = int(pid.split("-L")[1])
         n = int(pid.split("-n")[1].split("-")[0])
-        st = [s for s in steps_of(a.run, tag) if s["clean"]]
+        st = [s for s in steps_of(run_of[tag], tag) if s["clean"]]
         stats["lifecycles"] += 1
         stats["steps"] += len(st)
         per_cell[(cfg, n, L, ".rep2" in base)].extend(st)
