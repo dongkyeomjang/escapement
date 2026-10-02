@@ -319,6 +319,23 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | t98_task87_cells | 비 Σ 0.189 → sim_ctx 0.109, sim_ctx_op 0.081 | TASK87 cell 사후 재예측 | docs/research/TASK98.md (TASK98 commit) | post_hoc | untagged | — |
 | t98_regression | TASK93 `PREDICTIONS_SIM.json` byte 동일 | `decode_cost_fn` hook 추가 후 회귀 | docs/research/TASK98.md (TASK98 commit) | code_check | untagged | — |
 
+
+## 18. BATCHONLY context 비용과 context 비용 시뮬레이터 blind cell N = 15·18 (TASK100–102)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| t100_batchonly_ctx | c 0.146 µs/token; β −0.069 ms; F1 RMS 0.461 ms; 재현성 +0.07 % | BATCHONLY decode step, F1 | docs/research/TASK100.md @ cb1eec4 | exploratory | stack | — |
+| t100_rule_diff | ±0.15 ms (약 1 %) | TASK98 규칙값 − 실측, 대표 n·L step 시간 | docs/research/TASK100.md @ cb1eec4 | exploratory | untagged | — |
+| t102_validity | 30/30 유효, 재실행 0 | lifecycle | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_s51 | PASS; 6/6; MAE 0.0090 ≤ 0.5 × 0.2571 | 재사용률, sim_ctx_op(주), 6 cell | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_s52 | PASS; 기본 4/4, 강화 4/4; Σ 0.0491 ≤ 0.5 × 1.1086 | 비용 비, sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_s53 | PASS; 해소 5쌍 일치 (N18 BATCHONLY/TUNED 1.0286 [0.9978, 1.0608] 미해소) | 구성 순위 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_s56 | PASS; TVD 중앙 0.034, 최대 0.046 (sim 0.073); 영 0.588 | h(n), sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_main_vs_sim | PASS; 재사용 MAE 0.0090 < 0.0093; 비 Σ 0.0491 < 0.0542 | context 비용 sim 대 원래 비용 sim | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_sim_orig | §5.1 PASS (MAE 0.0093), §5.2 PASS (Σ 0.0542), §5.6 PASS (0.073) | 원래 비용 sim (2) | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_base_reuse | N15 관측 0.128 vs (1) 0.110 / (2) 0.156; N18 0.026 vs 0.045 / 0.026 | BASE 재사용 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_prior_prediction | §5.2 (2) 사전 예측 빗나감 (FAIL 예측 → PASS); 나머지 적중 | 사전 예측 대조 | docs/research/TASK102.md @ 15742d7 | blind_fail | untagged | — |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |
