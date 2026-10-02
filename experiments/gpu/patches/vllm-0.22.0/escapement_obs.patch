@@ -1,0 +1,71 @@
+--- a/vllm/v1/core/sched/scheduler.py	2026-09-29 09:20:32.432841435 +0000
++++ b/vllm/v1/core/sched/scheduler.py	2026-09-29 09:20:32.464842404 +0000
+@@ -59,6 +59,8 @@
+ from vllm.v1.utils import record_function_or_nullcontext
+ 
+ logger = init_logger(__name__)
++# ESCAPEMENT observation-only patch (GTASK03): log lines only, gated by env.
++_ESC_OBS = __import__("os").environ.get("ESCAPEMENT_OBS") == "1"
+ 
+ 
+ class Scheduler(SchedulerInterface):
+@@ -593,6 +595,14 @@
+                     new_computed_blocks, num_new_local_computed_tokens = (
+                         self.kv_cache_manager.get_computed_blocks(request)
+                     )
++                    if _ESC_OBS:
++                        logger.info(
++                            "[GPFX] LOOKUP req=%s t=%.6f wall=%.6f num_tokens=%d "
++                            "hit=%d free=%d",
++                            request_id, time.perf_counter(), time.time(),
++                            request.num_tokens, num_new_local_computed_tokens,
++                            self.kv_cache_manager.block_pool.get_num_free_blocks(),
++                        )
+ 
+                     # Get externally-cached tokens if using a KVConnector.
+                     if self.connector is not None:
+@@ -729,6 +739,17 @@
+                     num_encoder_tokens=num_encoder_tokens,
+                     full_sequence_must_fit=self.scheduler_reserve_full_isl,
+                 )
++                if _ESC_OBS:
++                    logger.info(
++                        "[GPFX] %s req=%s t=%.6f wall=%.6f new_blocks=%d "
++                        "scheduled=%d computed=%d free=%d",
++                        "ALLOC" if new_blocks is not None else "ALLOC_FAIL",
++                        request_id, time.perf_counter(), time.time(),
++                        sum(len(g) for g in new_blocks.blocks)
++                        if new_blocks is not None else -1,
++                        num_new_tokens, num_computed_tokens,
++                        self.kv_cache_manager.block_pool.get_num_free_blocks(),
++                    )
+ 
+                 if new_blocks is None:
+                     # The request cannot be scheduled.
+--- a/vllm/v1/worker/gpu/model_runner.py	2026-09-29 09:20:32.432841435 +0000
++++ b/vllm/v1/worker/gpu/model_runner.py	2026-09-29 09:20:32.464842404 +0000
+@@ -105,6 +105,8 @@
+ from vllm.v1.worker.lora_model_runner_mixin import LoRAModelRunnerMixin
+ 
+ logger = init_logger(__name__)
++# ESCAPEMENT observation-only patch (GTASK03): log lines only, gated by env.
++_ESC_OBS = __import__("os").environ.get("ESCAPEMENT_OBS") == "1"
+ 
+ 
+ class GPUModelRunner(LoRAModelRunnerMixin):
+@@ -1054,6 +1056,15 @@
+             empty_output = self.kv_connector.no_forward(scheduler_output)
+             return empty_output
+ 
++        if _ESC_OBS and not dummy_run:
++            logger.info(
++                "[GSTEP] t=%.6f wall=%.6f reqs=%d toks=%d maxq=%d uniform=%s "
++                "padded=%d mode=%s",
++                time.perf_counter(), time.time(), num_reqs, num_toks,
++                max_query_len, uniform_tok_count, batch_desc.num_tokens,
++                batch_desc.cg_mode.name,
++            )
++
+         if not dummy_run:
+             # Common case.
+             # Prepare all the inputs and copy to the input buffers.

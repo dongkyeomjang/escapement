@@ -1,0 +1,212 @@
+[
+ {
+  "tag": "n25.BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r0.json",
+  "config": "BASE",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r0.json",
+  "config": "POOL",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL+GRID.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r0.json",
+  "config": "POOL+GRID",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n28.BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r0.json",
+  "config": "BASE",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL+GRID.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r0.json",
+  "config": "POOL+GRID",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r0.json",
+  "config": "POOL",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL+GRID.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r1.json",
+  "config": "POOL+GRID",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r1.json",
+  "config": "POOL",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r1.json",
+  "config": "BASE",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r1.json",
+  "config": "POOL",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL+GRID.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r1.json",
+  "config": "POOL+GRID",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r1.json",
+  "config": "BASE",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL+GRID.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r2.json",
+  "config": "POOL+GRID",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r2.json",
+  "config": "BASE",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r2.json",
+  "config": "POOL",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n28.BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r2.json",
+  "config": "BASE",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r2.json",
+  "config": "POOL",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL+GRID.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r2.json",
+  "config": "POOL+GRID",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r3.json",
+  "config": "POOL",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r3.json",
+  "config": "BASE",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL+GRID.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r3.json",
+  "config": "POOL+GRID",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r3.json",
+  "config": "POOL",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r3.json",
+  "config": "BASE",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL+GRID.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r3.json",
+  "config": "POOL+GRID",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL+GRID.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r4.json",
+  "config": "POOL+GRID",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.POOL.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r4.json",
+  "config": "POOL",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n28.BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n28-r4.json",
+  "config": "BASE",
+  "n": 28,
+  "stream": true
+ },
+ {
+  "tag": "n25.BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r4.json",
+  "config": "BASE",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL+GRID.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r4.json",
+  "config": "POOL+GRID",
+  "n": 25,
+  "stream": true
+ },
+ {
+  "tag": "n25.POOL.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/blind/gblind-n25-r4.json",
+  "config": "POOL",
+  "n": 25,
+  "stream": true
+ }
+]

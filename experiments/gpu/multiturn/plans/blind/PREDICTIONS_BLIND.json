@@ -1,0 +1,2357 @@
+{
+ "inputs": {
+  "C_CTX_ms_per_token": 0.000212,
+  "L_PRICE": 128,
+  "X_CAL": 1.21,
+  "obs_sha256": "200c08be40b545f6a675b9e2bdd0609968a2e745f1303404883d4d079ed6a560",
+  "obs_wall_over_price_lag1": 1.2098614982004614,
+  "selection_sha256": "11eecd582d250c865fdcd4da87507e9401b7402fa47255550b2ab846cdc7065c"
+ },
+ "plans": [
+  {
+   "plan_id": "gblind-n25-r0",
+   "n": 25,
+   "rep": 0,
+   "seed": 20263000,
+   "cycle_s": 6.974,
+   "content_sha256": "75a3e657c199babc9e22e393c4e9620f43ebc9181ead55e2117c4010cb46af03",
+   "file_sha256": "ce4ac8dfa6b4bedd7161bc7e8024a3a3ef514218f5b817e7ecc863cec7c1c7be",
+   "max_context": 3142,
+   "preemption_blocks_needed": 1577
+  },
+  {
+   "plan_id": "gblind-n25-r1",
+   "n": 25,
+   "rep": 1,
+   "seed": 20263001,
+   "cycle_s": 6.832,
+   "content_sha256": "262d665fc3a532501957eceae83363e10dfffa23d2f3a5f6b27a2ca232ade983",
+   "file_sha256": "5ea50b5411ecea6fa925afad1638c92958ccea950bab421e2ff1a270e2f406fb",
+   "max_context": 3124,
+   "preemption_blocks_needed": 1569
+  },
+  {
+   "plan_id": "gblind-n25-r2",
+   "n": 25,
+   "rep": 2,
+   "seed": 20263002,
+   "cycle_s": 6.9,
+   "content_sha256": "e41ab191c6cdd383592f1a30bef0a24e245db77b147671c59e10a64d854dee3b",
+   "file_sha256": "74e0829006fb29c02886aae0f64af8d1c86572a74e23602ba483ffaaef9cc27c",
+   "max_context": 3134,
+   "preemption_blocks_needed": 1569
+  },
+  {
+   "plan_id": "gblind-n25-r3",
+   "n": 25,
+   "rep": 3,
+   "seed": 20263003,
+   "cycle_s": 6.841,
+   "content_sha256": "5494c286b849080a9ed340d5c5391a98d01352840f3805e17209ee9074a7f99e",
+   "file_sha256": "750225c88de4574c18ac452c1502ec6dd77bb2ec3c4ca5fd2b6f8f645ebe4ca8",
+   "max_context": 3094,
+   "preemption_blocks_needed": 1553
+  },
+  {
+   "plan_id": "gblind-n25-r4",
+   "n": 25,
+   "rep": 4,
+   "seed": 20263004,
+   "cycle_s": 6.938,
+   "content_sha256": "1efdaa6f4fb0b15250ad06d33969fb3e4ade8a68403c1a0f5205e51bdeedc735",
+   "file_sha256": "11e1e61620f30f247b5adaa5991a40f8a57c1f0d85bed40ef2f4662527457b24",
+   "max_context": 3146,
+   "preemption_blocks_needed": 1577
+  },
+  {
+   "plan_id": "gblind-n28-r0",
+   "n": 28,
+   "rep": 0,
+   "seed": 20263005,
+   "cycle_s": 7.712,
+   "content_sha256": "fc1acc480e6dd0d14830b63ec884724dc046e6aba2cdc1b394524b7ce1e69eba",
+   "file_sha256": "799802797a909d25f33b3f44760093238936d6473674d0c889041045506c8595",
+   "max_context": 3109,
+   "preemption_blocks_needed": 1561
+  },
+  {
+   "plan_id": "gblind-n28-r1",
+   "n": 28,
+   "rep": 1,
+   "seed": 20263006,
+   "cycle_s": 7.747,
+   "content_sha256": "97a9ae865bc74b91cbe09cc145f0958d74ecf76c85480d7fab36cd1eb2849745",
+   "file_sha256": "9d22319240ebcf02d6e93a2136dd1922ddec3dff81d746169469e14c71e91f0e",
+   "max_context": 3108,
+   "preemption_blocks_needed": 1561
+  },
+  {
+   "plan_id": "gblind-n28-r2",
+   "n": 28,
+   "rep": 2,
+   "seed": 20263007,
+   "cycle_s": 7.696,
+   "content_sha256": "7fb64a8ff59361ed417b8bbc4b6cc9921185c07f8a3e0d9860819dfcb0d05c2d",
+   "file_sha256": "e224fcabaaa5c535c95bab92eebe871770fbbc43245b34cd320eb09701cbe7fd",
+   "max_context": 3254,
+   "preemption_blocks_needed": 1633
+  },
+  {
+   "plan_id": "gblind-n28-r3",
+   "n": 28,
+   "rep": 3,
+   "seed": 20263008,
+   "cycle_s": 7.728,
+   "content_sha256": "191463c068ba6e2b8dcb1b1d272b78452d355713504e6349baa839b29afd744b",
+   "file_sha256": "b61af54cff665ddf982cccebd1b294250f706d241f431b295816ab80e70b7a0d",
+   "max_context": 3189,
+   "preemption_blocks_needed": 1601
+  },
+  {
+   "plan_id": "gblind-n28-r4",
+   "n": 28,
+   "rep": 4,
+   "seed": 20263009,
+   "cycle_s": 7.76,
+   "content_sha256": "452e41137147aef107ad30852f6c2b141e13dc2199355a29b986f9dabc206ad1",
+   "file_sha256": "7c755bfff64d2bbf9cd4e8bf34076b93570f091969ff56667ab0853c61effbb2",
+   "max_context": 3168,
+   "preemption_blocks_needed": 1585
+  }
+ ],
+ "grids": {
+  "25": {
+   "grid": [
+    1,
+    5,
+    7,
+    8,
+    16
+   ],
+   "h": {
+    "1": 3.6750930630056706e-05,
+    "2": 0.0002710438382155116,
+    "3": 0.001265464086983055,
+    "4": 0.004246838090595804,
+    "5": 0.010916692736200346,
+    "6": 0.022514914167420907,
+    "7": 0.037925468758225875,
+    "8": 0.9228228273917285
+   }
+  },
+  "28": {
+   "grid": [
+    1,
+    5,
+    7,
+    8,
+    16
+   ],
+   "h": {
+    "1": 7.416783688642987e-06,
+    "2": 5.9202271937872584e-05,
+    "3": 0.0003006029317137531,
+    "4": 0.001102872885054846,
+    "5": 0.003117036081869554,
+    "6": 0.007112428594115972,
+    "7": 0.013345864196437617,
+    "8": 0.9749545762551818
+   }
+  }
+ },
+ "cells": {
+  "ctx/lo": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      735,
+      1431
+     ],
+     "reuse_rate": 0.5136268343815513,
+     "price_per_turn_s": 0.31680555869736604,
+     "per_rep": [
+      {
+       "reuse_rate": 0.6114864864864865,
+       "price_per_turn_s": 0.30295014424638367,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7245901639344262,
+       "price_per_turn_s": 0.298071478012352,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.19622641509433963,
+       "price_per_turn_s": 0.34535545636565096,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5435540069686411,
+       "price_per_turn_s": 0.3162208932246853,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.44964028776978415,
+       "price_per_turn_s": 0.3252856917273529,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.368477784889009e-05,
+      "6": 0.001515815003200054,
+      "7": 0.05968942634823323,
+      "8": 0.9387610738707178
+     },
+     "wall_over_price": 1.1621178555697358,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1196,
+      1554
+     ],
+     "reuse_rate": 0.7696267696267697,
+     "price_per_turn_s": 0.28662398857757043,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8380952380952381,
+       "price_per_turn_s": 0.2805026972716986,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8868501529051988,
+       "price_per_turn_s": 0.2713948040238948,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4412811387900356,
+       "price_per_turn_s": 0.3207071989802151,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8115015974440895,
+       "price_per_turn_s": 0.28408994408273996,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8301886792452831,
+       "price_per_turn_s": 0.2805433873321132,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00043049106731035333,
+      "6": 0.004827649826266105,
+      "7": 0.05682482088496664,
+      "8": 0.9379170382214569
+     },
+     "wall_over_price": 1.1810061621608745,
+     "ratio_to_base": 0.9047315639160641,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1200,
+      1554
+     ],
+     "reuse_rate": 0.7722007722007722,
+     "price_per_turn_s": 0.2863587365650494,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8370607028753994,
+       "price_per_turn_s": 0.2814699910503365,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8837920489296636,
+       "price_per_turn_s": 0.2722599683906251,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4432624113475177,
+       "price_per_turn_s": 0.3193584653325779,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8201892744479495,
+       "price_per_turn_s": 0.28047141941446924,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8380952380952381,
+       "price_per_turn_s": 0.28206068775573395,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 0.0005522997146451474,
+      "5": 0.0007057163020465773,
+      "6": 0.0036206314626737444,
+      "7": 0.06081433524592679,
+      "8": 0.9343070172747078
+     },
+     "wall_over_price": 1.1811888557521488,
+     "ratio_to_base": 0.9038942932140863,
+     "rank": 1
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      564,
+      1400
+     ],
+     "reuse_rate": 0.40285714285714286,
+     "price_per_turn_s": 0.3258894378525524,
+     "per_rep": [
+      {
+       "reuse_rate": 0.2076923076923077,
+       "price_per_turn_s": 0.35830663378081073,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5310344827586206,
+       "price_per_turn_s": 0.3106523728593972,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5234657039711191,
+       "price_per_turn_s": 0.3239486486231293,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.05725190839694656,
+       "price_per_turn_s": 0.3550468055149739,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6302250803858521,
+       "price_per_turn_s": 0.2906347506751362,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.0002083260997882018,
+      "6": 0.0018054928648310823,
+      "7": 0.06312280823582514,
+      "8": 0.9348633727995556
+     },
+     "wall_over_price": 1.1547901522644821,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1040,
+      1536
+     ],
+     "reuse_rate": 0.6770833333333334,
+     "price_per_turn_s": 0.292281901249637,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5445205479452054,
+       "price_per_turn_s": 0.3135528918025343,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7328990228013029,
+       "price_per_turn_s": 0.2891400459734688,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6824324324324325,
+       "price_per_turn_s": 0.30043932946423085,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5857605177993528,
+       "price_per_turn_s": 0.2938991460583947,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.822289156626506,
+       "price_per_turn_s": 0.26791039812653017,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00022315735781688344,
+      "6": 0.0027735271614384087,
+      "7": 0.06050752359092068,
+      "8": 0.936495791889824
+     },
+     "wall_over_price": 1.1717687974188031,
+     "ratio_to_base": 0.8968744221218945,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1046,
+      1533
+     ],
+     "reuse_rate": 0.6823222439660795,
+     "price_per_turn_s": 0.29346863133231704,
+     "per_rep": [
+      {
+       "reuse_rate": 0.552901023890785,
+       "price_per_turn_s": 0.31238332093436516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7326732673267327,
+       "price_per_turn_s": 0.29186209563225635,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.697986577181208,
+       "price_per_turn_s": 0.2986322373987399,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5993485342019544,
+       "price_per_turn_s": 0.29766178352940315,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8132530120481928,
+       "price_per_turn_s": 0.269857205298817,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.193867773874162e-05,
+      "6": 0.0032577451293516447,
+      "7": 0.05937400191632066,
+      "8": 0.9373363142765889
+     },
+     "wall_over_price": 1.1713389071100926,
+     "ratio_to_base": 0.9005159334592977,
+     "rank": 2
+    }
+   }
+  },
+  "ctx/hi": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      744,
+      1418
+     ],
+     "reuse_rate": 0.5246826516220028,
+     "price_per_turn_s": 0.3197108145596751,
+     "per_rep": [
+      {
+       "reuse_rate": 0.6075085324232082,
+       "price_per_turn_s": 0.3062810943544185,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7181208053691275,
+       "price_per_turn_s": 0.3050292029597277,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.2196969696969697,
+       "price_per_turn_s": 0.34551644338961784,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5804195804195804,
+       "price_per_turn_s": 0.31605448782767187,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4620938628158845,
+       "price_per_turn_s": 0.3287535354924096,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.381462820816285e-05,
+      "6": 0.0017245460386163054,
+      "7": 0.06100158928752578,
+      "8": 0.9372400500456497
+     },
+     "wall_over_price": 1.1612386458717063,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1208,
+      1552
+     ],
+     "reuse_rate": 0.7783505154639175,
+     "price_per_turn_s": 0.28743515275814,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8380952380952381,
+       "price_per_turn_s": 0.2811029554045821,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8861538461538462,
+       "price_per_turn_s": 0.2747712511126846,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4676258992805755,
+       "price_per_turn_s": 0.32326800875091444,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8121019108280255,
+       "price_per_turn_s": 0.2843219536979219,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.846875,
+       "price_per_turn_s": 0.27807014505751376,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.0009272710413253794,
+      "6": 0.0034309028529039037,
+      "7": 0.05965443699193274,
+      "8": 0.9359873891138379
+     },
+     "wall_over_price": 1.1796119080524905,
+     "ratio_to_base": 0.8990473254838531,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1209,
+      1551
+     ],
+     "reuse_rate": 0.7794970986460348,
+     "price_per_turn_s": 0.28769067030159917,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8375796178343949,
+       "price_per_turn_s": 0.28159675264154665,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8957055214723927,
+       "price_per_turn_s": 0.273886402637977,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4714285714285714,
+       "price_per_turn_s": 0.32120245601482983,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8158730158730159,
+       "price_per_turn_s": 0.28334176665362265,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8386075949367089,
+       "price_per_turn_s": 0.2822692152370053,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 0.00024718059632318864,
+      "5": 0.0010505175343735516,
+      "6": 0.005499768268190947,
+      "7": 0.06000308975745404,
+      "8": 0.9331994438436583
+     },
+     "wall_over_price": 1.1797463471235405,
+     "ratio_to_base": 0.8998465400609735,
+     "rank": 2
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      555,
+      1384
+     ],
+     "reuse_rate": 0.40101156069364163,
+     "price_per_turn_s": 0.3292709886877756,
+     "per_rep": [
+      {
+       "reuse_rate": 0.1867704280155642,
+       "price_per_turn_s": 0.36229529973830726,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5140845070422535,
+       "price_per_turn_s": 0.31759044260975683,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.49264705882352944,
+       "price_per_turn_s": 0.329740632015963,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.08461538461538462,
+       "price_per_turn_s": 0.35540469088641274,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6591639871382636,
+       "price_per_turn_s": 0.29063152614182586,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.5045910142286394e-05,
+      "6": 0.001682203686829747,
+      "7": 0.062066306861989204,
+      "8": 0.9362164435410387
+     },
+     "wall_over_price": 1.1531136793367964,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1018,
+      1513
+     ],
+     "reuse_rate": 0.6728354263053536,
+     "price_per_turn_s": 0.29768531166036405,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5363321799307958,
+       "price_per_turn_s": 0.31725065810819825,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.72,
+       "price_per_turn_s": 0.2957040558978227,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6689419795221843,
+       "price_per_turn_s": 0.3049510749982537,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6270627062706271,
+       "price_per_turn_s": 0.3013648136057674,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7957317073170732,
+       "price_per_turn_s": 0.27255231604979885,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 3.232166521219173e-05,
+      "5": 3.232166521219173e-05,
+      "6": 0.0018423349170949288,
+      "7": 0.06302724716377388,
+      "8": 0.9350657745887068
+     },
+     "wall_over_price": 1.1687785615818702,
+     "ratio_to_base": 0.904073914457851,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1010,
+      1515
+     ],
+     "reuse_rate": 0.6666666666666666,
+     "price_per_turn_s": 0.2977047327582222,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5381944444444444,
+       "price_per_turn_s": 0.31907826242509135,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6946308724832215,
+       "price_per_turn_s": 0.29742028243193874,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6825938566552902,
+       "price_per_turn_s": 0.305611852515874,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6103896103896104,
+       "price_per_turn_s": 0.29753162271906297,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7926829268292683,
+       "price_per_turn_s": 0.2725066876650511,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 6.452861844227915e-05,
+      "6": 0.0015486868426146997,
+      "7": 0.06104407304639608,
+      "8": 0.937342711492547
+     },
+     "wall_over_price": 1.1691080667498561,
+     "ratio_to_base": 0.9041328965684083,
+     "rank": 2
+    }
+   }
+  },
+  "x1.210/lo": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      681,
+      1379
+     ],
+     "reuse_rate": 0.4938361131254532,
+     "price_per_turn_s": 0.31587886897013967,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5699300699300699,
+       "price_per_turn_s": 0.303322417889621,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6827586206896552,
+       "price_per_turn_s": 0.30238333441220694,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.21875,
+       "price_per_turn_s": 0.3396481347211264,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.49454545454545457,
+       "price_per_turn_s": 0.3189006959202933,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.47058823529411764,
+       "price_per_turn_s": 0.3179688723597089,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.0005269074048053955,
+      "6": 0.002704791344667697,
+      "7": 0.061753547843192355,
+      "8": 0.9350147534073345
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1177,
+      1528
+     ],
+     "reuse_rate": 0.7702879581151832,
+     "price_per_turn_s": 0.28557037994044676,
+     "per_rep": [
+      {
+       "reuse_rate": 0.832258064516129,
+       "price_per_turn_s": 0.27939659168819775,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8792569659442725,
+       "price_per_turn_s": 0.2709695630911961,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4767025089605735,
+       "price_per_turn_s": 0.31285749253357503,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7843137254901961,
+       "price_per_turn_s": 0.28623040148431483,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8451612903225807,
+       "price_per_turn_s": 0.28175376524905543,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 3.1474254060178776e-05,
+      "5": 0.0014478156867682235,
+      "6": 0.0041546015359435985,
+      "7": 0.06354651894750095,
+      "8": 0.9308195895757271
+     },
+     "wall_over_price": 1.2100000000000002,
+     "ratio_to_base": 0.9040502800060425,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1197,
+      1530
+     ],
+     "reuse_rate": 0.7823529411764706,
+     "price_per_turn_s": 0.28467390510220114,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8392282958199357,
+       "price_per_turn_s": 0.2785844259383275,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8892307692307693,
+       "price_per_turn_s": 0.26952367701154833,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5107142857142857,
+       "price_per_turn_s": 0.3099441959217493,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.814935064935065,
+       "price_per_turn_s": 0.2833562379865036,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.826797385620915,
+       "price_per_turn_s": 0.28501249403305723,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 6.276872861940181e-05,
+      "5": 0.0014436807582462418,
+      "6": 0.0044565797319775285,
+      "7": 0.06339641590559583,
+      "8": 0.930640554875561
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.9012122464232061,
+     "rank": 1
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      462,
+      1308
+     ],
+     "reuse_rate": 0.3532110091743119,
+     "price_per_turn_s": 0.33039015188050613,
+     "per_rep": [
+      {
+       "reuse_rate": 0.1598360655737705,
+       "price_per_turn_s": 0.3554621444561951,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.45925925925925926,
+       "price_per_turn_s": 0.3209898209361203,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4576923076923077,
+       "price_per_turn_s": 0.3306022413352739,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.012345679012345678,
+       "price_per_turn_s": 0.35296100196578883,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6082474226804123,
+       "price_per_turn_s": 0.2987744308648531,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.7042524818491625e-05,
+      "6": 0.002296636538746481,
+      "7": 0.061157208475329676,
+      "8": 0.9365091124611054
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      971,
+      1478
+     ],
+     "reuse_rate": 0.6569688768606224,
+     "price_per_turn_s": 0.2958746339145368,
+     "per_rep": [
+      {
+       "reuse_rate": 0.4708029197080292,
+       "price_per_turn_s": 0.32304469560514243,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7,
+       "price_per_turn_s": 0.29782239713419656,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6586206896551724,
+       "price_per_turn_s": 0.29872702675978224,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6146179401993356,
+       "price_per_turn_s": 0.2934165031233997,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8142414860681114,
+       "price_per_turn_s": 0.2709949609408214,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 9.951899154088573e-05,
+      "6": 0.003947586664455134,
+      "7": 0.06249792668767623,
+      "8": 0.9334549676563277
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.895531032721421,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      976,
+      1474
+     ],
+     "reuse_rate": 0.6621438263229308,
+     "price_per_turn_s": 0.2962848958872178,
+     "per_rep": [
+      {
+       "reuse_rate": 0.4852941176470588,
+       "price_per_turn_s": 0.32546823444674944,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7322033898305085,
+       "price_per_turn_s": 0.2925608891305629,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6586206896551724,
+       "price_per_turn_s": 0.29872523480577284,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5958904109589042,
+       "price_per_turn_s": 0.3014421950902072,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8092307692307692,
+       "price_per_turn_s": 0.26879052209617466,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00013275804845668768,
+      "6": 0.0026883504812479256,
+      "7": 0.0614669764354464,
+      "8": 0.935711915034849
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.8967727827262134,
+     "rank": 2
+    }
+   }
+  },
+  "x1.210/hi": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      637,
+      1340
+     ],
+     "reuse_rate": 0.4753731343283582,
+     "price_per_turn_s": 0.32475187696332236,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5830388692579506,
+       "price_per_turn_s": 0.30705472267337747,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6476868327402135,
+       "price_per_turn_s": 0.31090240042216144,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.21285140562248997,
+       "price_per_turn_s": 0.34920664870410684,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4774436090225564,
+       "price_per_turn_s": 0.32842821397215827,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.421455938697318,
+       "price_per_turn_s": 0.331704234492524,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00014355955927215303,
+      "6": 0.0020098338298101424,
+      "7": 0.060905143021210924,
+      "8": 0.9369414635897068
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1180,
+      1519
+     ],
+     "reuse_rate": 0.7768268597761685,
+     "price_per_turn_s": 0.2868199785221253,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8456591639871383,
+       "price_per_turn_s": 0.2778093843203115,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8847352024922118,
+       "price_per_turn_s": 0.27322536136142783,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.44074074074074077,
+       "price_per_turn_s": 0.32102391596134994,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.803921568627451,
+       "price_per_turn_s": 0.28746081850845445,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8617363344051447,
+       "price_per_turn_s": 0.27938764526966553,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 9.521995810321844e-05,
+      "5": 0.0008252396368945597,
+      "6": 0.0034913984637846758,
+      "7": 0.05802069447089443,
+      "8": 0.9375674474703232
+     },
+     "wall_over_price": 1.2100000000000002,
+     "ratio_to_base": 0.8831972926657446,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1186,
+      1523
+     ],
+     "reuse_rate": 0.7787261982928431,
+     "price_per_turn_s": 0.28570598059544233,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8461538461538461,
+       "price_per_turn_s": 0.2770226453003581,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8819875776397516,
+       "price_per_turn_s": 0.2709664713147861,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.42857142857142855,
+       "price_per_turn_s": 0.32627064825132807,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8205128205128205,
+       "price_per_turn_s": 0.2809657013917951,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8617363344051447,
+       "price_per_turn_s": 0.27963542854997353,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 9.520484910031418e-05,
+      "5": 0.0007616387928025134,
+      "6": 0.0036812541652121483,
+      "7": 0.059090476341595,
+      "8": 0.9363714258512901
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.8797669878524216,
+     "rank": 1
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      457,
+      1290
+     ],
+     "reuse_rate": 0.35426356589147284,
+     "price_per_turn_s": 0.3343934893138197,
+     "per_rep": [
+      {
+       "reuse_rate": 0.1875,
+       "price_per_turn_s": 0.3580288202331402,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4944649446494465,
+       "price_per_turn_s": 0.32098133943105667,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.3952569169960474,
+       "price_per_turn_s": 0.3408254629976945,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.02109704641350211,
+       "price_per_turn_s": 0.3619806536964865,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5986159169550173,
+       "price_per_turn_s": 0.29875126120015605,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "6": 0.0020950243172465394,
+      "7": 0.061803217358772915,
+      "8": 0.9361017583239806
+     },
+     "wall_over_price": 1.2100000000000002,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      931,
+      1450
+     ],
+     "reuse_rate": 0.6420689655172414,
+     "price_per_turn_s": 0.30169269797080095,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5074074074074074,
+       "price_per_turn_s": 0.32734493413219745,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6805555555555556,
+       "price_per_turn_s": 0.30052757264017077,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6597222222222222,
+       "price_per_turn_s": 0.30144089584235784,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5298245614035088,
+       "price_per_turn_s": 0.31022710220202726,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8056426332288401,
+       "price_per_turn_s": 0.2739681050107738,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.3784925166390757e-05,
+      "6": 0.0017906010338187102,
+      "7": 0.059765532619345245,
+      "8": 0.9384100814216697
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.9022086482301996,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      930,
+      1449
+     ],
+     "reuse_rate": 0.6418219461697723,
+     "price_per_turn_s": 0.3018249243791783,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5111111111111111,
+       "price_per_turn_s": 0.3273500144730075,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6923076923076923,
+       "price_per_turn_s": 0.3014485683799607,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6468531468531469,
+       "price_per_turn_s": 0.3042313283252805,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5226480836236934,
+       "price_per_turn_s": 0.30801580361315,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.809375,
+       "price_per_turn_s": 0.2732072054412832,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.376211215773659e-05,
+      "6": 0.0017893919443600392,
+      "7": 0.059455079509774134,
+      "8": 0.9387217664337081
+     },
+     "wall_over_price": 1.21,
+     "ratio_to_base": 0.9026040698296114,
+     "rank": 2
+    }
+   }
+  },
+  "mode_dist/lo": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      679,
+      1387
+     ],
+     "reuse_rate": 0.48954578226387885,
+     "price_per_turn_s": 0.31881681246743243,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5664335664335665,
+       "price_per_turn_s": 0.30642921445741433,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6791808873720137,
+       "price_per_turn_s": 0.3019541106647939,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.22178988326848248,
+       "price_per_turn_s": 0.3426635572444597,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5035971223021583,
+       "price_per_turn_s": 0.323181258135078,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4432234432234432,
+       "price_per_turn_s": 0.3227284512586588,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.476930565696603e-05,
+      "6": 0.0017036959771913355,
+      "7": 0.06074197698271965,
+      "8": 0.9375195577344321
+     },
+     "wall_over_price": 1.1914652589862296,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1182,
+      1525
+     ],
+     "reuse_rate": 0.7750819672131147,
+     "price_per_turn_s": 0.28584652186318626,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8376623376623377,
+       "price_per_turn_s": 0.2800479316541028,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8885448916408669,
+       "price_per_turn_s": 0.2699259657103983,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4673913043478261,
+       "price_per_turn_s": 0.3200958141717257,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8006535947712419,
+       "price_per_turn_s": 0.2855977332194753,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.842948717948718,
+       "price_per_turn_s": 0.2779186450563252,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 0.00012600806451612903,
+      "5": 0.0002205141129032258,
+      "6": 0.0034652217741935483,
+      "7": 0.06042086693548387,
+      "8": 0.9357673891129032
+     },
+     "wall_over_price": 1.2070731898160876,
+     "ratio_to_base": 0.8965854706686331,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1178,
+      1522
+     ],
+     "reuse_rate": 0.7739816031537451,
+     "price_per_turn_s": 0.286344003765727,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8419354838709677,
+       "price_per_turn_s": 0.2796801463881107,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8808777429467085,
+       "price_per_turn_s": 0.2729451669635678,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.44525547445255476,
+       "price_per_turn_s": 0.31975943350084524,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8155339805825242,
+       "price_per_turn_s": 0.2828235379425407,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8451612903225807,
+       "price_per_turn_s": 0.28044940765080917,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00034602076124567473,
+      "6": 0.003397294746775716,
+      "7": 0.06055363321799308,
+      "8": 0.9357030512739856
+     },
+     "wall_over_price": 1.2078099962631057,
+     "ratio_to_base": 0.8981458711339994,
+     "rank": 2
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      510,
+      1344
+     ],
+     "reuse_rate": 0.3794642857142857,
+     "price_per_turn_s": 0.3287907217052592,
+     "per_rep": [
+      {
+       "reuse_rate": 0.15725806451612903,
+       "price_per_turn_s": 0.3597529841742244,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5036231884057971,
+       "price_per_turn_s": 0.31762606072676236,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4907749077490775,
+       "price_per_turn_s": 0.3235457004734454,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.047619047619047616,
+       "price_per_turn_s": 0.35435181565611434,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6296296296296297,
+       "price_per_turn_s": 0.2963838690328157,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.588860178007465e-05,
+      "6": 0.0019020958943439564,
+      "7": 0.06180017226528854,
+      "8": 0.9362618432385874
+     },
+     "wall_over_price": 1.1875195425539575,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      977,
+      1488
+     ],
+     "reuse_rate": 0.6565860215053764,
+     "price_per_turn_s": 0.2962076014037768,
+     "per_rep": [
+      {
+       "reuse_rate": 0.4946236559139785,
+       "price_per_turn_s": 0.32028302561684824,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7016949152542373,
+       "price_per_turn_s": 0.29551519998745157,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6712328767123288,
+       "price_per_turn_s": 0.29969864961691955,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5864406779661017,
+       "price_per_turn_s": 0.3021077024032232,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8042813455657493,
+       "price_per_turn_s": 0.26797245515788704,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 6.589134517181169e-05,
+      "6": 0.00214146871808388,
+      "7": 0.06065298323065265,
+      "8": 0.9371396567060917
+     },
+     "wall_over_price": 1.2007735974245624,
+     "ratio_to_base": 0.9009001223255588,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      988,
+      1490
+     ],
+     "reuse_rate": 0.6630872483221476,
+     "price_per_turn_s": 0.2955227649769044,
+     "per_rep": [
+      {
+       "reuse_rate": 0.4746376811594203,
+       "price_per_turn_s": 0.324078592763023,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7220338983050848,
+       "price_per_turn_s": 0.29366525393075865,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6632302405498282,
+       "price_per_turn_s": 0.3001022870082398,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.627906976744186,
+       "price_per_turn_s": 0.296326072829962,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8012232415902141,
+       "price_per_turn_s": 0.26844694049953016,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 0.00013146650890685598,
+      "6": 0.0016104647341089857,
+      "7": 0.06027739433379346,
+      "8": 0.9379806744231907
+     },
+     "wall_over_price": 1.2000066026034313,
+     "ratio_to_base": 0.8988172277009158,
+     "rank": 1
+    }
+   }
+  },
+  "mode_dist/hi": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      619,
+      1359
+     ],
+     "reuse_rate": 0.4554819720382634,
+     "price_per_turn_s": 0.3270878094843082,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5567375886524822,
+       "price_per_turn_s": 0.31323093687091474,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6148409893992933,
+       "price_per_turn_s": 0.313851446311782,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.20392156862745098,
+       "price_per_turn_s": 0.34906858854997436,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.43333333333333335,
+       "price_per_turn_s": 0.33272715025064664,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4423791821561338,
+       "price_per_turn_s": 0.3289540180283862,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "6": 0.0018847795163584636,
+      "7": 0.06148648648648649,
+      "8": 0.9366287339971551
+     },
+     "wall_over_price": 1.1891750533494336,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1159,
+      1507
+     ],
+     "reuse_rate": 0.7690776376907764,
+     "price_per_turn_s": 0.29033817293013964,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8371335504885994,
+       "price_per_turn_s": 0.2815298691107009,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8962264150943396,
+       "price_per_turn_s": 0.27508928286696765,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4528985507246377,
+       "price_per_turn_s": 0.3203335341895223,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7906976744186046,
+       "price_per_turn_s": 0.29241109256537307,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8327868852459016,
+       "price_per_turn_s": 0.2857893055077658,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 6.362739795756052e-05,
+      "6": 0.0024178411223873,
+      "7": 0.06054146915661884,
+      "8": 0.9369770623230363
+     },
+     "wall_over_price": 1.206686027937252,
+     "ratio_to_base": 0.8876459608442496,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1151,
+      1509
+     ],
+     "reuse_rate": 0.7627567925778661,
+     "price_per_turn_s": 0.29004496191591783,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8446601941747572,
+       "price_per_turn_s": 0.2808364308022655,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8819875776397516,
+       "price_per_turn_s": 0.27062967422964274,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4489051094890511,
+       "price_per_turn_s": 0.3227598443485422,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.761744966442953,
+       "price_per_turn_s": 0.29532359436743705,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8366013071895425,
+       "price_per_turn_s": 0.28521316349935544,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 6.374298827129016e-05,
+      "5": 0.0009561448240693524,
+      "6": 0.004971953085160632,
+      "7": 0.061798827129015806,
+      "8": 0.9322093319734829
+     },
+     "wall_over_price": 1.2056233106964456,
+     "ratio_to_base": 0.8867495317945578,
+     "rank": 1
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      463,
+      1319
+     ],
+     "reuse_rate": 0.3510235026535254,
+     "price_per_turn_s": 0.33530252669193517,
+     "per_rep": [
+      {
+       "reuse_rate": 0.17142857142857143,
+       "price_per_turn_s": 0.36393726928243914,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.48905109489051096,
+       "price_per_turn_s": 0.32207250769362344,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.4263565891472868,
+       "price_per_turn_s": 0.3396291719840401,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.008064516129032258,
+       "price_per_turn_s": 0.35913219373426974,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5952380952380952,
+       "price_per_turn_s": 0.2996213304600245,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "6": 0.0016870828137607275,
+      "7": 0.06271546981588792,
+      "8": 0.9355974473703513
+     },
+     "wall_over_price": 1.1853155806301112,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      965,
+      1470
+     ],
+     "reuse_rate": 0.6564625850340136,
+     "price_per_turn_s": 0.29955547487991613,
+     "per_rep": [
+      {
+       "reuse_rate": 0.4963235294117647,
+       "price_per_turn_s": 0.3289080966081889,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7244897959183674,
+       "price_per_turn_s": 0.29526011548568887,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6643598615916955,
+       "price_per_turn_s": 0.3029577370621686,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5448275862068965,
+       "price_per_turn_s": 0.30700077576203083,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8215384615384616,
+       "price_per_turn_s": 0.2694063553606781,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "6": 0.0015375873249323128,
+      "7": 0.059899054049537055,
+      "8": 0.9385633586255306
+     },
+     "wall_over_price": 1.1994525466801949,
+     "ratio_to_base": 0.8933886595943781,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      974,
+      1474
+     ],
+     "reuse_rate": 0.66078697421981,
+     "price_per_turn_s": 0.2988678581683431,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5109489051094891,
+       "price_per_turn_s": 0.32739525334853675,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6825938566552902,
+       "price_per_turn_s": 0.2963272539686596,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6689895470383276,
+       "price_per_turn_s": 0.30503479641889136,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6127946127946128,
+       "price_per_turn_s": 0.30017777073921625,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.804953560371517,
+       "price_per_turn_s": 0.2706299748919169,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "5": 3.318400530944085e-05,
+      "6": 0.00155964824954372,
+      "7": 0.05953210552513689,
+      "8": 0.9388750622200099
+     },
+     "wall_over_price": 1.1993252865988804,
+     "ratio_to_base": 0.8913379243423745,
+     "rank": 1
+    }
+   }
+  },
+  "price/lo": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      1238,
+      1780
+     ],
+     "reuse_rate": 0.6955056179775281,
+     "price_per_turn_s": 0.296481471570303,
+     "per_rep": [
+      {
+       "reuse_rate": 0.7843137254901961,
+       "price_per_turn_s": 0.2963054218969388,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7952127659574468,
+       "price_per_turn_s": 0.27845338112231766,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.31347962382445144,
+       "price_per_turn_s": 0.3306128783142492,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7762803234501348,
+       "price_per_turn_s": 0.2857268339785719,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7591036414565826,
+       "price_per_turn_s": 0.2964040746351641,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 8.05845062855915e-05,
+      "4": 0.0008058450628559149,
+      "5": 0.009106049210271838,
+      "6": 0.012732351993123456,
+      "7": 0.07083378102503492,
+      "8": 0.9064413882024283
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1505,
+      1853
+     ],
+     "reuse_rate": 0.8121964382083109,
+     "price_per_turn_s": 0.28357195826791126,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8463687150837989,
+       "price_per_turn_s": 0.2919927791665253,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8788659793814433,
+       "price_per_turn_s": 0.26967170055369805,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.631578947368421,
+       "price_per_turn_s": 0.3061546877244451,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8350785340314136,
+       "price_per_turn_s": 0.2771445758719445,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8511749347258486,
+       "price_per_turn_s": 0.2758829557943178,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 0.0008973668692151886,
+      "4": 0.003025408301925493,
+      "5": 0.006999461579878471,
+      "6": 0.019049816680768147,
+      "7": 0.080250237161244,
+      "8": 0.8897777094069687
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.9564576051447093,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1505,
+      1852
+     ],
+     "reuse_rate": 0.812634989200864,
+     "price_per_turn_s": 0.28386876316440424,
+     "per_rep": [
+      {
+       "reuse_rate": 0.850828729281768,
+       "price_per_turn_s": 0.2891771564438666,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8785529715762274,
+       "price_per_turn_s": 0.27089303181291735,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6228070175438597,
+       "price_per_turn_s": 0.3069289421258498,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8390501319261213,
+       "price_per_turn_s": 0.27923854777535617,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8534031413612565,
+       "price_per_turn_s": 0.2758681388450875,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 0.00015357051446122344,
+      "4": 0.004555925262349629,
+      "5": 0.008216022523675454,
+      "6": 0.020015357051446123,
+      "7": 0.07796263117481443,
+      "8": 0.8890964934732531
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.9574586960220616,
+     "rank": 2
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      822,
+      1665
+     ],
+     "reuse_rate": 0.4936936936936937,
+     "price_per_turn_s": 0.3164566363137336,
+     "per_rep": [
+      {
+       "reuse_rate": 0.25732899022801303,
+       "price_per_turn_s": 0.34711577682256667,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6235294117647059,
+       "price_per_turn_s": 0.30640962125983795,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6275659824046921,
+       "price_per_turn_s": 0.3077039043765214,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.1488673139158576,
+       "price_per_turn_s": 0.34483465809377023,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7364130434782609,
+       "price_per_turn_s": 0.2852651426347094,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 0.00023183701857594112,
+      "4": 0.0004926536644738749,
+      "5": 0.008143275277479932,
+      "6": 0.01909757440519315,
+      "7": 0.09308256295824036,
+      "8": 0.8789520966760368
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1402,
+      1834
+     ],
+     "reuse_rate": 0.7644492911668485,
+     "price_per_turn_s": 0.2872355456747596,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5857142857142857,
+       "price_per_turn_s": 0.3022841319266077,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8131868131868132,
+       "price_per_turn_s": 0.2884792186889449,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8070652173913043,
+       "price_per_turn_s": 0.28370881752430294,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7783783783783784,
+       "price_per_turn_s": 0.2870817146416777,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8272251308900523,
+       "price_per_turn_s": 0.27588945524622305,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "2": 0.0002623432499081799,
+      "3": 0.001915105724329713,
+      "4": 0.0048008814733196915,
+      "5": 0.008499921297025028,
+      "6": 0.0202791332179023,
+      "7": 0.08266435804606748,
+      "8": 0.8815782569914477
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.9076616278951902,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1385,
+      1835
+     ],
+     "reuse_rate": 0.7547683923705722,
+     "price_per_turn_s": 0.2871353964919233,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5722543352601156,
+       "price_per_turn_s": 0.30535682732281183,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8136986301369863,
+       "price_per_turn_s": 0.28777197692919393,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8059299191374663,
+       "price_per_turn_s": 0.28170265784730897,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7452574525745257,
+       "price_per_turn_s": 0.28801113098122677,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8229166666666666,
+       "price_per_turn_s": 0.2746015040930333,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "2": 0.0003419972640218878,
+      "3": 0.0020782910659791643,
+      "4": 0.0037356624223929286,
+      "5": 0.0076291697358728825,
+      "6": 0.019967378722508682,
+      "7": 0.084683784068189,
+      "8": 0.8815637167210355
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.9073451574175827,
+     "rank": 1
+    }
+   }
+  },
+  "price/hi": {
+   "25": {
+    "BASE": {
+     "reuse": [
+      1166,
+      1741
+     ],
+     "reuse_rate": 0.6697300402067777,
+     "price_per_turn_s": 0.303088605838818,
+     "per_rep": [
+      {
+       "reuse_rate": 0.7535410764872521,
+       "price_per_turn_s": 0.2992561031056669,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8085106382978723,
+       "price_per_turn_s": 0.27864611030970804,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.30392156862745096,
+       "price_per_turn_s": 0.34385112856435246,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6894586894586895,
+       "price_per_turn_s": 0.3022956562747527,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7352112676056338,
+       "price_per_turn_s": 0.2985120628407147,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 0.00032930845225027445,
+      "4": 0.0019484083424807903,
+      "5": 0.00433589462129528,
+      "6": 0.013721185510428101,
+      "7": 0.07697585071350165,
+      "8": 0.9026893523600439
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1507,
+      1845
+     ],
+     "reuse_rate": 0.8168021680216803,
+     "price_per_turn_s": 0.28518392194999087,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8516483516483516,
+       "price_per_turn_s": 0.2884815144686279,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8762886597938144,
+       "price_per_turn_s": 0.2702787107364462,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6441176470588236,
+       "price_per_turn_s": 0.309285980638618,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8404255319148937,
+       "price_per_turn_s": 0.28103207035093786,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8541114058355438,
+       "price_per_turn_s": 0.27974652603546674,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "2": 7.7269800386349e-05,
+      "3": 0.000489375402446877,
+      "4": 0.00334835801674179,
+      "5": 0.009478428847392145,
+      "6": 0.016020605280103028,
+      "7": 0.07554410817772055,
+      "8": 0.8950418544752092
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.9409259089787465,
+     "rank": 2
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1496,
+      1845
+     ],
+     "reuse_rate": 0.810840108401084,
+     "price_per_turn_s": 0.2849788539392347,
+     "per_rep": [
+      {
+       "reuse_rate": 0.8571428571428571,
+       "price_per_turn_s": 0.28777158489178206,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8704663212435233,
+       "price_per_turn_s": 0.270887502347465,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6176470588235294,
+       "price_per_turn_s": 0.3085033566943866,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.843501326259947,
+       "price_per_turn_s": 0.2797260828835543,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8465608465608465,
+       "price_per_turn_s": 0.2807272351520259,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "2": 0.0001545993300695697,
+      "3": 0.0004637979902087091,
+      "4": 0.003040453491368204,
+      "5": 0.008193764493687195,
+      "6": 0.018835351713475907,
+      "7": 0.06972429786137593,
+      "8": 0.8995877351198145
+     },
+     "wall_over_price": 1.0000000000000002,
+     "ratio_to_base": 0.9402493147194915,
+     "rank": 1
+    }
+   },
+   "28": {
+    "BASE": {
+     "reuse": [
+      809,
+      1647
+     ],
+     "reuse_rate": 0.4911961141469338,
+     "price_per_turn_s": 0.32070570297745665,
+     "per_rep": [
+      {
+       "reuse_rate": 0.28104575163398693,
+       "price_per_turn_s": 0.3509029064566371,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6035502958579881,
+       "price_per_turn_s": 0.3092800456336642,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6,
+       "price_per_turn_s": 0.3174853449909248,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.1291390728476821,
+       "price_per_turn_s": 0.35401653066543365,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7601078167115903,
+       "price_per_turn_s": 0.283042109091128,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "4": 2.940657531023937e-05,
+      "5": 0.0026759983532317825,
+      "6": 0.015114979709463036,
+      "7": 0.09139563606422396,
+      "8": 0.890783979297771
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "POOL": {
+     "reuse": [
+      1397,
+      1829
+     ],
+     "reuse_rate": 0.7638053581191908,
+     "price_per_turn_s": 0.28853939942062257,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5843023255813954,
+       "price_per_turn_s": 0.3079004856127057,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8224043715846995,
+       "price_per_turn_s": 0.2877717899475106,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8027027027027027,
+       "price_per_turn_s": 0.28453738586420474,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7683923705722071,
+       "price_per_turn_s": 0.28846173706807654,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8272251308900523,
+       "price_per_turn_s": 0.27587371389152526,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "2": 0.0010858625986545898,
+      "3": 0.002277663011812066,
+      "4": 0.0019333651146776843,
+      "5": 0.006170877694793156,
+      "6": 0.018618570898882355,
+      "7": 0.08136024153821707,
+      "8": 0.888553419142963
+     },
+     "wall_over_price": 1.0,
+     "ratio_to_base": 0.8997014918718326,
+     "rank": 1
+    },
+    "POOL+GRID": {
+     "reuse": [
+      1387,
+      1819
+     ],
+     "reuse_rate": 0.7625068719076415,
+     "price_per_turn_s": 0.2894503773393698,
+     "per_rep": [
+      {
+       "reuse_rate": 0.5964391691394659,
+       "price_per_turn_s": 0.31332334045401977,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8104395604395604,
+       "price_per_turn_s": 0.28779759595853815,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7994579945799458,
+       "price_per_turn_s": 0.2843629643228164,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7683923705722071,
+       "price_per_turn_s": 0.28848153850655806,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8219895287958116,
+       "price_per_turn_s": 0.27587748127116557,
+       "max_running": 8
+      }
+     ],
+     "h_decode": {
+      "3": 0.00034413384159254554,
+      "4": 0.0034413384159254555,
+      "5": 0.009821050402371877,
+      "6": 0.022395171537484118,
+      "7": 0.07946844557390936,
+      "8": 0.8845298602287166
+     },
+     "wall_over_price": 1.0000000000000002,
+     "ratio_to_base": 0.9025420335593973,
+     "rank": 2
+    }
+   }
+  }
+ }
+}

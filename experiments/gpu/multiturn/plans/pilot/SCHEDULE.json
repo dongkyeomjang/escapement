@@ -1,0 +1,86 @@
+[
+ {
+  "tag": "BASE.nostream.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r0.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "BASE.stream.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r0.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": true
+ },
+ {
+  "tag": "POOL.stream.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r0.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": true
+ },
+ {
+  "tag": "POOL.nostream.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r0.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "POOL.nostream.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r1.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "POOL.stream.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r1.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": true
+ },
+ {
+  "tag": "BASE.stream.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r1.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": true
+ },
+ {
+  "tag": "BASE.nostream.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r1.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "BASE.stream.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r2.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": true
+ },
+ {
+  "tag": "BASE.nostream.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r2.json",
+  "config": "BASE",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "POOL.nostream.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r2.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": false
+ },
+ {
+  "tag": "POOL.stream.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/multiturn/plans/pilot/gpilot-n22-r2.json",
+  "config": "POOL",
+  "n": 22,
+  "stream": true
+ }
+]

@@ -1,0 +1,4506 @@
+{
+ "selection_sha256": "11eecd582d250c865fdcd4da87507e9401b7402fa47255550b2ab846cdc7065c",
+ "confirmatory_n": [
+  20,
+  22,
+  24
+ ],
+ "exploratory_n": [
+  26
+ ],
+ "cells": {
+  "20": {
+   "BASE": {
+    "config": {
+     "num_gpu_blocks": 1900,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8436811986674051,
+     "token_reuse_ratio": 0.8390356460038704,
+     "h": {
+      "1": 0.0010438492417125529,
+      "2": 0.0057401370290648245,
+      "3": 0.019753685644034638,
+      "4": 0.0482459854070638,
+      "5": 0.08899347695946913,
+      "6": 0.12964911910719873,
+      "7": 0.15155685685667564,
+      "8": 0.5550168897547808
+     },
+     "padding": 0.09075802758168133,
+     "decode_per_turn_s": 0.2776367264150714,
+     "prefill_per_turn_s": 0.028285922703842226,
+     "device_per_turn_s": 0.30592264911891365,
+     "interference_per_turn_s": 0.19067193832208398,
+     "throughput_per_s": 3.2685358999645437,
+     "cycle_s": 6.1189476304105925,
+     "mean_running": 6.995832263454755,
+     "phi": 0.9075464461796128,
+     "bound": "lo",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1474,
+      1719
+     ],
+     "reuse_rate": 0.8574752763234439,
+     "token_reuse_ratio": 0.8523614919041953,
+     "hit_shape_share": {
+      "zero": 0.14252472367655614,
+      "partial": 0.011052937754508435,
+      "full": 0.8464223385689355
+     },
+     "h": {
+      "1": 2.4837932490499493e-05,
+      "2": 0.002061548396711458,
+      "3": 0.014480514641961203,
+      "4": 0.038374605697821716,
+      "5": 0.08896947418096918,
+      "6": 0.14855567422567745,
+      "7": 0.14741312933111447,
+      "8": 0.560120215593254
+     },
+     "padding": 0.026039123466885885,
+     "device_per_turn_s": 0.30551237035090545,
+     "interference_per_turn_s": 0.17232891200694533,
+     "piecewise_mixed_steps_per_turn": 0.0814663951120163,
+     "eager_mixed_steps_per_turn": 0.9439918533604889,
+     "mode_counts": {
+      "MIXED_NONE": 1854,
+      "DECODE_FULL": 38247,
+      "MIXED_PIECEWISE": 160
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8587570621468926,
+       "token_reuse_ratio": 0.8591251585308234,
+       "device_per_turn_s": 0.29559124849634755,
+       "requests_in_window": 406,
+       "warmup_end_s": 65.0295397869581,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8875379939209727,
+       "token_reuse_ratio": 0.8848983359122621,
+       "device_per_turn_s": 0.3191547074159452,
+       "requests_in_window": 376,
+       "warmup_end_s": 30.842565723527056,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8322784810126582,
+       "token_reuse_ratio": 0.8297808053617536,
+       "device_per_turn_s": 0.3333336952394884,
+       "requests_in_window": 360,
+       "warmup_end_s": 44.399525145532195,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8512396694214877,
+       "token_reuse_ratio": 0.8384544111386573,
+       "device_per_turn_s": 0.28916185111065856,
+       "requests_in_window": 415,
+       "warmup_end_s": 54.80468851686118,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8571428571428571,
+       "token_reuse_ratio": 0.8500288068936149,
+       "device_per_turn_s": 0.29486923831480777,
+       "requests_in_window": 407,
+       "warmup_end_s": 69.58906872273975,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1964,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1273,
+      1672
+     ],
+     "reuse_rate": 0.7613636363636364,
+     "token_reuse_ratio": 0.6990437231047123,
+     "hit_shape_share": {
+      "zero": 0.23863636363636365,
+      "partial": 0.12320574162679426,
+      "full": 0.6381578947368421
+     },
+     "h": {
+      "2": 0.0038390744149355773,
+      "3": 0.00809886931369971,
+      "4": 0.03294767288982382,
+      "5": 0.06962924007362609,
+      "6": 0.11435708651064949,
+      "7": 0.13244806731527742,
+      "8": 0.6386799894819879
+     },
+     "padding": 0.014241147703604686,
+     "device_per_turn_s": 0.3138274420784136,
+     "interference_per_turn_s": 0.2857174777515364,
+     "piecewise_mixed_steps_per_turn": 0.060669456066945605,
+     "eager_mixed_steps_per_turn": 0.9916317991631799,
+     "mode_counts": {
+      "MIXED_NONE": 1896,
+      "DECODE_FULL": 36018,
+      "MIXED_PIECEWISE": 116
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7828571428571428,
+       "token_reuse_ratio": 0.7296461178601071,
+       "device_per_turn_s": 0.29926763855369454,
+       "requests_in_window": 401,
+       "warmup_end_s": 65.06610672121502,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7836990595611285,
+       "token_reuse_ratio": 0.7051901953659968,
+       "device_per_turn_s": 0.32789219167744593,
+       "requests_in_window": 366,
+       "warmup_end_s": 31.059170610322543,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.755700325732899,
+       "token_reuse_ratio": 0.7063805759457933,
+       "device_per_turn_s": 0.3448528056208201,
+       "requests_in_window": 348,
+       "warmup_end_s": 44.399549959551344,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7385057471264368,
+       "token_reuse_ratio": 0.6660441872698579,
+       "device_per_turn_s": 0.3022990760622277,
+       "requests_in_window": 397,
+       "warmup_end_s": 54.980177023886405,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7471264367816092,
+       "token_reuse_ratio": 0.6877866095995109,
+       "device_per_turn_s": 0.3000042362180008,
+       "requests_in_window": 400,
+       "warmup_end_s": 68.66659365300734,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1912,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.843685246573838,
+     "token_reuse_ratio": 0.8390215251382376,
+     "h": {
+      "1": 0.0009992339140505726,
+      "2": 0.0055287880735812095,
+      "3": 0.019144063178945403,
+      "4": 0.047046298453648286,
+      "5": 0.08731739098758116,
+      "6": 0.1279942452122283,
+      "7": 0.15054792039017595,
+      "8": 0.5614220597897892
+     },
+     "padding": 0.08936014108118007,
+     "decode_per_turn_s": 0.27691266046518903,
+     "prefill_per_turn_s": 0.03009969752179535,
+     "device_per_turn_s": 0.3070123579869844,
+     "interference_per_turn_s": 0.20349950373143805,
+     "throughput_per_s": 3.2569489276274877,
+     "cycle_s": 6.1407164940006975,
+     "mean_running": 7.014504813298549,
+     "phi": 0.901966822435152,
+     "bound": "hi",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1476,
+      1723
+     ],
+     "reuse_rate": 0.8566453859547302,
+     "token_reuse_ratio": 0.8516645531120802,
+     "hit_shape_share": {
+      "zero": 0.1433546140452699,
+      "partial": 0.011607661056297156,
+      "full": 0.845037724898433
+     },
+     "h": {
+      "1": 2.498001598721023e-05,
+      "2": 0.0020983213429256594,
+      "3": 0.010941247002398081,
+      "4": 0.045938249400479615,
+      "5": 0.099095723421263,
+      "6": 0.12115307753796963,
+      "7": 0.14243605115907274,
+      "8": 0.5783123501199041
+     },
+     "padding": 0.0247671899860768,
+     "device_per_turn_s": 0.304923756227172,
+     "interference_per_turn_s": 0.18383002582531438,
+     "piecewise_mixed_steps_per_turn": 0.07723577235772358,
+     "eager_mixed_steps_per_turn": 0.9369918699186992,
+     "mode_counts": {
+      "MIXED_NONE": 1844,
+      "DECODE_FULL": 38036,
+      "MIXED_PIECEWISE": 152
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.856338028169014,
+       "token_reuse_ratio": 0.8563068759453495,
+       "device_per_turn_s": 0.2948671207755507,
+       "requests_in_window": 407,
+       "warmup_end_s": 66.01144605329813,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8810975609756098,
+       "token_reuse_ratio": 0.8803693514558876,
+       "device_per_turn_s": 0.31917115212362873,
+       "requests_in_window": 376,
+       "warmup_end_s": 30.753920480649697,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.83125,
+       "token_reuse_ratio": 0.8256646771568096,
+       "device_per_turn_s": 0.32968265127278096,
+       "requests_in_window": 364,
+       "warmup_end_s": 44.24795924055137,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.859504132231405,
+       "token_reuse_ratio": 0.8476412026614638,
+       "device_per_turn_s": 0.29001423285822325,
+       "requests_in_window": 414,
+       "warmup_end_s": 54.951902499930384,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8543417366946778,
+       "token_reuse_ratio": 0.8486261407270732,
+       "device_per_turn_s": 0.2948410403792244,
+       "requests_in_window": 407,
+       "warmup_end_s": 69.43257741118545,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1968,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1234,
+      1651
+     ],
+     "reuse_rate": 0.7474258025439128,
+     "token_reuse_ratio": 0.6838539929191731,
+     "hit_shape_share": {
+      "zero": 0.2525741974560872,
+      "partial": 0.12477286493034524,
+      "full": 0.6226529376135675
+     },
+     "h": {
+      "2": 0.00040049126929032945,
+      "3": 0.015085171143269077,
+      "4": 0.029956746942916643,
+      "5": 0.06888449831793667,
+      "6": 0.0937149570139371,
+      "7": 0.11731724248411385,
+      "8": 0.6746408928285363
+     },
+     "padding": 0.013061186459525942,
+     "device_per_turn_s": 0.31751042329862095,
+     "interference_per_turn_s": 0.3179423429553158,
+     "piecewise_mixed_steps_per_turn": 0.05238095238095238,
+     "eager_mixed_steps_per_turn": 1.0052910052910053,
+     "mode_counts": {
+      "MIXED_NONE": 1900,
+      "DECODE_FULL": 35455,
+      "MIXED_PIECEWISE": 99
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.760932944606414,
+       "token_reuse_ratio": 0.7043444730077121,
+       "device_per_turn_s": 0.30458216884236233,
+       "requests_in_window": 394,
+       "warmup_end_s": 65.25793335109309,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8006230529595015,
+       "token_reuse_ratio": 0.7539788166139855,
+       "device_per_turn_s": 0.32711585561922446,
+       "requests_in_window": 367,
+       "warmup_end_s": 31.23212887907735,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7524752475247525,
+       "token_reuse_ratio": 0.6930917003063357,
+       "device_per_turn_s": 0.347901871669652,
+       "requests_in_window": 345,
+       "warmup_end_s": 45.3846752333424,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6929824561403509,
+       "token_reuse_ratio": 0.6043888323240983,
+       "device_per_turn_s": 0.306905426952294,
+       "requests_in_window": 391,
+       "warmup_end_s": 54.9900697867613,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7339181286549707,
+       "token_reuse_ratio": 0.6661749100603049,
+       "device_per_turn_s": 0.3053731268037419,
+       "requests_in_window": 393,
+       "warmup_end_s": 68.7174673797134,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1890,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    }
+   },
+   "POOL": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8774232038325411,
+     "token_reuse_ratio": 0.8738256249700577,
+     "h": {
+      "1": 0.001141278410624869,
+      "2": 0.00619661343866358,
+      "3": 0.021055162880369526,
+      "4": 0.05077500455599244,
+      "5": 0.09247520175961682,
+      "6": 0.13301940645456414,
+      "7": 0.15353215573301698,
+      "8": 0.5418051767671517
+     },
+     "padding": 0.0936486122844664,
+     "decode_per_turn_s": 0.2791612424957831,
+     "prefill_per_turn_s": 0.024555021207149915,
+     "device_per_turn_s": 0.30371626370293303,
+     "interference_per_turn_s": 0.1645020680819546,
+     "throughput_per_s": 3.292248215161246,
+     "cycle_s": 6.074876100743957,
+     "mean_running": 6.9568329002941915,
+     "phi": 0.9191587752583976,
+     "bound": "lo",
+     "ratio_to_base": 0.9927877670308648,
+     "rank": 2
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1573,
+      1741
+     ],
+     "reuse_rate": 0.903503733486502,
+     "token_reuse_ratio": 0.8997049093285411,
+     "hit_shape_share": {
+      "zero": 0.09649626651349799,
+      "partial": 0.009190120620333142,
+      "full": 0.8943136128661688
+     },
+     "h": {
+      "1": 0.0006584081154896606,
+      "2": 0.0014875146312914554,
+      "3": 0.008851931330472103,
+      "4": 0.049014826375341394,
+      "5": 0.10471127584861491,
+      "6": 0.1559939523995318,
+      "7": 0.14787358564182598,
+      "8": 0.5314085056574327
+     },
+     "padding": 0.03260570303252699,
+     "device_per_turn_s": 0.3020152835742177,
+     "interference_per_turn_s": 0.13626756497114054,
+     "piecewise_mixed_steps_per_turn": 0.08555611474584801,
+     "eager_mixed_steps_per_turn": 0.9169602415702064,
+     "mode_counts": {
+      "MIXED_NONE": 1822,
+      "DECODE_FULL": 39016,
+      "MIXED_PIECEWISE": 170
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8947368421052632,
+       "token_reuse_ratio": 0.8905550146056476,
+       "device_per_turn_s": 0.2912759744106156,
+       "requests_in_window": 412,
+       "warmup_end_s": 65.91137716708188,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9311377245508982,
+       "token_reuse_ratio": 0.9306448157669237,
+       "device_per_turn_s": 0.3143652678268899,
+       "requests_in_window": 382,
+       "warmup_end_s": 30.25398714072537,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.890282131661442,
+       "token_reuse_ratio": 0.8880570604088966,
+       "device_per_turn_s": 0.3305787503315255,
+       "requests_in_window": 363,
+       "warmup_end_s": 44.653943536449404,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9058171745152355,
+       "token_reuse_ratio": 0.9014615036914269,
+       "device_per_turn_s": 0.28985676697850415,
+       "requests_in_window": 414,
+       "warmup_end_s": 54.8173951784711,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8961748633879781,
+       "token_reuse_ratio": 0.8893942728584354,
+       "device_per_turn_s": 0.28848641056605917,
+       "requests_in_window": 416,
+       "warmup_end_s": 68.74398842877086,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1987,
+     "ratio_to_base": 0.9885533709398704,
+     "per_rep_ratio_to_base": [
+      0.9854012116133902,
+      0.984993360656237,
+      0.9917351742493852,
+      1.0024032072874636,
+      0.9783537008294702
+     ],
+     "rank": 2
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1378,
+      1683
+     ],
+     "reuse_rate": 0.8187759952465835,
+     "token_reuse_ratio": 0.762215843130633,
+     "hit_shape_share": {
+      "zero": 0.18122400475341652,
+      "partial": 0.09803921568627451,
+      "full": 0.720736779560309
+     },
+     "h": {
+      "1": 0.00010271686097272867,
+      "2": 0.0039545991474500535,
+      "3": 0.007575368496738739,
+      "4": 0.03684967387396641,
+      "5": 0.07773098454111242,
+      "6": 0.12364542139592213,
+      "7": 0.14216013558625648,
+      "8": 0.607981100097581
+     },
+     "padding": 0.01841765778921969,
+     "device_per_turn_s": 0.31187398981565584,
+     "interference_per_turn_s": 0.2400989827771732,
+     "piecewise_mixed_steps_per_turn": 0.062370062370062374,
+     "eager_mixed_steps_per_turn": 0.9807692307692307,
+     "mode_counts": {
+      "MIXED_NONE": 1887,
+      "DECODE_FULL": 36935,
+      "MIXED_PIECEWISE": 120
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8333333333333334,
+       "token_reuse_ratio": 0.7771847729859618,
+       "device_per_turn_s": 0.3000194075131983,
+       "requests_in_window": 400,
+       "warmup_end_s": 65.81879250884764,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8738461538461538,
+       "token_reuse_ratio": 0.8358597626161564,
+       "device_per_turn_s": 0.3226127199130805,
+       "requests_in_window": 372,
+       "warmup_end_s": 30.791297294274607,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7967213114754098,
+       "token_reuse_ratio": 0.7401064371850762,
+       "device_per_turn_s": 0.34585999305357257,
+       "requests_in_window": 347,
+       "warmup_end_s": 44.55769144495064,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7806267806267806,
+       "token_reuse_ratio": 0.7041339967178097,
+       "device_per_turn_s": 0.2992610393563197,
+       "requests_in_window": 401,
+       "warmup_end_s": 54.80076479669728,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8107344632768362,
+       "token_reuse_ratio": 0.7554868391281394,
+       "device_per_turn_s": 0.2970514040121353,
+       "requests_in_window": 404,
+       "warmup_end_s": 69.10504404463792,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1924,
+     "ratio_to_base": 0.9937753937328728,
+     "per_rep_ratio_to_base": [
+      1.0025120289087617,
+      0.983898757279469,
+      1.0029206299509128,
+      0.9899502282789556,
+      0.9901573649656074
+     ],
+     "rank": 2
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8775126771233633,
+     "token_reuse_ratio": 0.8738938204011485,
+     "h": {
+      "1": 0.0010979910871456455,
+      "2": 0.005994633670907223,
+      "3": 0.02048178867367986,
+      "4": 0.04966612506163124,
+      "5": 0.09095710425137801,
+      "6": 0.13156106331182968,
+      "7": 0.15269075706376042,
+      "8": 0.5475505368796678
+     },
+     "padding": 0.09239039307147386,
+     "decode_per_turn_s": 0.2784930608102447,
+     "prefill_per_turn_s": 0.026176027752573574,
+     "device_per_turn_s": 0.30466908856281827,
+     "interference_per_turn_s": 0.17583629489539998,
+     "throughput_per_s": 3.281966462191207,
+     "cycle_s": 6.0939074882096715,
+     "mean_running": 6.9738736017387435,
+     "phi": 0.9140911548034903,
+     "bound": "hi",
+     "ratio_to_base": 0.9923675078113127,
+     "rank": 2
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1571,
+      1736
+     ],
+     "reuse_rate": 0.9049539170506913,
+     "token_reuse_ratio": 0.8997535595530257,
+     "hit_shape_share": {
+      "zero": 0.09504608294930876,
+      "partial": 0.012672811059907835,
+      "full": 0.8922811059907834
+     },
+     "h": {
+      "2": 0.0017905761730726778,
+      "3": 0.01699820942382693,
+      "4": 0.05543427604307194,
+      "5": 0.09539110598739238,
+      "6": 0.13193848267065664,
+      "7": 0.14564988103706247,
+      "8": 0.552797468664917
+     },
+     "padding": 0.02979067406379526,
+     "device_per_turn_s": 0.3025954345657899,
+     "interference_per_turn_s": 0.14888093819634865,
+     "piecewise_mixed_steps_per_turn": 0.08623298033282904,
+     "eager_mixed_steps_per_turn": 0.9142713061018659,
+     "mode_counts": {
+      "MIXED_NONE": 1813,
+      "DECODE_FULL": 38785,
+      "MIXED_PIECEWISE": 171
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.9022346368715084,
+       "token_reuse_ratio": 0.8987475442043222,
+       "device_per_turn_s": 0.2927009907764811,
+       "requests_in_window": 410,
+       "warmup_end_s": 66.07933351292162,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.933933933933934,
+       "token_reuse_ratio": 0.9341416959519274,
+       "device_per_turn_s": 0.31498476727866814,
+       "requests_in_window": 381,
+       "warmup_end_s": 31.125689313545312,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8867924528301887,
+       "token_reuse_ratio": 0.8811167735218368,
+       "device_per_turn_s": 0.3315055096158612,
+       "requests_in_window": 362,
+       "warmup_end_s": 44.04002223271809,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9035812672176309,
+       "token_reuse_ratio": 0.8907447288025242,
+       "device_per_turn_s": 0.2891870734407084,
+       "requests_in_window": 415,
+       "warmup_end_s": 54.836357451147464,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8983516483516484,
+       "token_reuse_ratio": 0.8948220858895706,
+       "device_per_turn_s": 0.28918678128577324,
+       "requests_in_window": 415,
+       "warmup_end_s": 68.73507243309962,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1983,
+     "ratio_to_base": 0.992364249705597,
+     "per_rep_ratio_to_base": [
+      0.9926538774707321,
+      0.9868835738533819,
+      1.0055291303198481,
+      0.9971478661258696,
+      0.9808226864001748
+     ],
+     "rank": 1
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1395,
+      1688
+     ],
+     "reuse_rate": 0.8264218009478673,
+     "token_reuse_ratio": 0.7691328543325724,
+     "hit_shape_share": {
+      "zero": 0.1735781990521327,
+      "partial": 0.09893364928909952,
+      "full": 0.7274881516587678
+     },
+     "h": {
+      "2": 0.00012905557132901428,
+      "3": 0.00895645665023359,
+      "4": 0.03205740391812715,
+      "5": 0.07154840874480552,
+      "6": 0.13434684975350386,
+      "7": 0.14789768474305034,
+      "8": 0.6050641406189505
+     },
+     "padding": 0.018915022635322395,
+     "device_per_turn_s": 0.3107728671108319,
+     "interference_per_turn_s": 0.2477447813885697,
+     "piecewise_mixed_steps_per_turn": 0.06576903158984981,
+     "eager_mixed_steps_per_turn": 0.9761781460383221,
+     "mode_counts": {
+      "MIXED_NONE": 1885,
+      "DECODE_FULL": 36731,
+      "MIXED_PIECEWISE": 127
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8547008547008547,
+       "token_reuse_ratio": 0.7977877548972886,
+       "device_per_turn_s": 0.2977903370203892,
+       "requests_in_window": 403,
+       "warmup_end_s": 65.09958962867174,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8765432098765432,
+       "token_reuse_ratio": 0.8247817345561707,
+       "device_per_turn_s": 0.32348160002227117,
+       "requests_in_window": 371,
+       "warmup_end_s": 31.404012629860116,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8076923076923077,
+       "token_reuse_ratio": 0.7591505620466249,
+       "device_per_turn_s": 0.3380320387532345,
+       "requests_in_window": 355,
+       "warmup_end_s": 43.97159391516314,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7926136363636364,
+       "token_reuse_ratio": 0.7190798024434625,
+       "device_per_turn_s": 0.2986978917267161,
+       "requests_in_window": 402,
+       "warmup_end_s": 55.029082483583,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8022922636103151,
+       "token_reuse_ratio": 0.7468489530392356,
+       "device_per_turn_s": 0.3000082518299971,
+       "requests_in_window": 400,
+       "warmup_end_s": 68.95572682580946,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1931,
+     "ratio_to_base": 0.9787800472255604,
+     "per_rep_ratio_to_base": [
+      0.9777011508986652,
+      0.9888900047658231,
+      0.971630411561024,
+      0.9732571192791137,
+      0.9824317384116359
+     ],
+     "rank": 1
+    }
+   },
+   "POOL+GRID": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      5,
+      7,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8773323979523647,
+     "token_reuse_ratio": 0.8737377711727387,
+     "h": {
+      "1": 0.001159491510035102,
+      "2": 0.006296206418513359,
+      "3": 0.02135959989259075,
+      "4": 0.051484048407445915,
+      "5": 0.09372102068519168,
+      "6": 0.13369372758873646,
+      "7": 0.15347708534184137,
+      "8": 0.5388088201556452
+     },
+     "padding": 0.03434193243177945,
+     "decode_per_turn_s": 0.2788819001228563,
+     "prefill_per_turn_s": 0.02456444069777035,
+     "device_per_turn_s": 0.30344634082062666,
+     "interference_per_turn_s": 0.16433859534107875,
+     "throughput_per_s": 3.295171302881931,
+     "cycle_s": 6.069487186450111,
+     "mean_running": 6.949151078360681,
+     "phi": 0.919055959942241,
+     "bound": "lo",
+     "ratio_to_base": 0.9919054430738653,
+     "rank": 1
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1577,
+      1752
+     ],
+     "reuse_rate": 0.9001141552511416,
+     "token_reuse_ratio": 0.8985976541286219,
+     "hit_shape_share": {
+      "zero": 0.09988584474885845,
+      "partial": 0.007420091324200913,
+      "full": 0.8926940639269406
+     },
+     "h": {
+      "1": 0.0012164266251459713,
+      "2": 0.002165239392759829,
+      "3": 0.014183534449202024,
+      "4": 0.04551868431296224,
+      "5": 0.10604807318022577,
+      "6": 0.1378941222265473,
+      "7": 0.1668450759050214,
+      "8": 0.5261288439081354
+     },
+     "padding": 0.009555978305319037,
+     "device_per_turn_s": 0.30049995417058917,
+     "interference_per_turn_s": 0.13723323289817538,
+     "piecewise_mixed_steps_per_turn": 0.085628442663996,
+     "eager_mixed_steps_per_turn": 0.9183775663495243,
+     "mode_counts": {
+      "MIXED_NONE": 1834,
+      "DECODE_FULL": 39099,
+      "MIXED_PIECEWISE": 171
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8928571428571429,
+       "token_reuse_ratio": 0.8905704026797118,
+       "device_per_turn_s": 0.28917835142108683,
+       "requests_in_window": 415,
+       "warmup_end_s": 65.97116215323366,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9285714285714286,
+       "token_reuse_ratio": 0.9298713063867203,
+       "device_per_turn_s": 0.3134155064856294,
+       "requests_in_window": 383,
+       "warmup_end_s": 30.363088082748757,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8871473354231975,
+       "token_reuse_ratio": 0.8855797239539379,
+       "device_per_turn_s": 0.3306111694934834,
+       "requests_in_window": 363,
+       "warmup_end_s": 44.63758347423434,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8989071038251366,
+       "token_reuse_ratio": 0.8981835326815226,
+       "device_per_turn_s": 0.286478051716386,
+       "requests_in_window": 419,
+       "warmup_end_s": 54.79846094051734,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8937329700272479,
+       "token_reuse_ratio": 0.8901581722319859,
+       "device_per_turn_s": 0.28778200350028593,
+       "requests_in_window": 417,
+       "warmup_end_s": 68.74022718703021,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1997,
+     "ratio_to_base": 0.9835934100653302,
+     "per_rep_ratio_to_base": [
+      0.9783048479686639,
+      0.982017495600226,
+      0.9918324316296647,
+      0.9907186947933685,
+      0.9759648213729389
+     ],
+     "rank": 1
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1384,
+      1685
+     ],
+     "reuse_rate": 0.8213649851632048,
+     "token_reuse_ratio": 0.7667501251877816,
+     "hit_shape_share": {
+      "zero": 0.17863501483679525,
+      "partial": 0.10148367952522255,
+      "full": 0.7198813056379822
+     },
+     "h": {
+      "2": 0.0011510717757200594,
+      "3": 0.009489947306492046,
+      "4": 0.03171842226428608,
+      "5": 0.08947664603263927,
+      "6": 0.13150355553281834,
+      "7": 0.1460837980252724,
+      "8": 0.5905765590627717
+     },
+     "padding": 0.0057737619131247725,
+     "device_per_turn_s": 0.31138192549221294,
+     "interference_per_turn_s": 0.2385727996572149,
+     "piecewise_mixed_steps_per_turn": 0.06175402179553711,
+     "eager_mixed_steps_per_turn": 0.975609756097561,
+     "mode_counts": {
+      "MIXED_NONE": 1880,
+      "DECODE_FULL": 37095,
+      "MIXED_PIECEWISE": 119
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8233618233618234,
+       "token_reuse_ratio": 0.7692944392886704,
+       "device_per_turn_s": 0.2977696075618911,
+       "requests_in_window": 403,
+       "warmup_end_s": 65.03599305626199,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8672839506172839,
+       "token_reuse_ratio": 0.8331959102902374,
+       "device_per_turn_s": 0.3234695032462221,
+       "requests_in_window": 371,
+       "warmup_end_s": 31.304646100939884,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8116883116883117,
+       "token_reuse_ratio": 0.7716615125105426,
+       "device_per_turn_s": 0.34191321426084503,
+       "requests_in_window": 351,
+       "warmup_end_s": 44.54185373453927,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7869318181818182,
+       "token_reuse_ratio": 0.7077202543142598,
+       "device_per_turn_s": 0.29851966694456017,
+       "requests_in_window": 402,
+       "warmup_end_s": 54.84007012008206,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.82,
+       "token_reuse_ratio": 0.7561043778743298,
+       "device_per_turn_s": 0.300020471386085,
+       "requests_in_window": 400,
+       "warmup_end_s": 69.09098913090102,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1927,
+     "ratio_to_base": 0.9922074482396933,
+     "per_rep_ratio_to_base": [
+      0.9949943435279432,
+      0.9865117604399237,
+      0.9914758084839035,
+      0.9874977814457839,
+      1.0000541164627834
+     ],
+     "rank": 1
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.877413441450463,
+     "token_reuse_ratio": 0.8738066648873923,
+     "h": {
+      "1": 0.0011155639102470973,
+      "2": 0.006091291683712823,
+      "3": 0.020779117914138043,
+      "4": 0.050362843209137885,
+      "5": 0.09218879013969038,
+      "6": 0.13223782384720653,
+      "7": 0.15264822552339552,
+      "8": 0.5445763437724717
+     },
+     "padding": 0.033675714517567554,
+     "decode_per_turn_s": 0.27821576534842923,
+     "prefill_per_turn_s": 0.026185831716155492,
+     "device_per_turn_s": 0.30440159706458475,
+     "interference_per_turn_s": 0.17566399710410407,
+     "throughput_per_s": 3.284845307125957,
+     "cycle_s": 6.088566775614406,
+     "mean_running": 6.9663274298505495,
+     "phi": 0.9139835935748151,
+     "bound": "hi",
+     "ratio_to_base": 0.9914962350717155,
+     "rank": 1
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1569,
+      1737
+     ],
+     "reuse_rate": 0.9032815198618307,
+     "token_reuse_ratio": 0.8987022553237201,
+     "hit_shape_share": {
+      "zero": 0.09671848013816926,
+      "partial": 0.010362694300518135,
+      "full": 0.8929188255613126
+     },
+     "h": {
+      "1": 2.4458847988259752e-05,
+      "2": 0.002201296318943378,
+      "3": 0.013158860217683747,
+      "4": 0.0511679099914394,
+      "5": 0.09832456891280421,
+      "6": 0.14252170722758958,
+      "7": 0.14736455912926502,
+      "8": 0.5452366393542865
+     },
+     "padding": 0.009926597274637801,
+     "device_per_turn_s": 0.3026326432554718,
+     "interference_per_turn_s": 0.14685250533145014,
+     "piecewise_mixed_steps_per_turn": 0.08472012102874432,
+     "eager_mixed_steps_per_turn": 0.9218356026222895,
+     "mode_counts": {
+      "MIXED_NONE": 1828,
+      "DECODE_FULL": 38889,
+      "MIXED_PIECEWISE": 168
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8966480446927374,
+       "token_reuse_ratio": 0.8896827735219014,
+       "device_per_turn_s": 0.292713489554128,
+       "requests_in_window": 410,
+       "warmup_end_s": 65.19083694686974,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.933933933933934,
+       "token_reuse_ratio": 0.9313948814149806,
+       "device_per_turn_s": 0.3141576472035837,
+       "requests_in_window": 382,
+       "warmup_end_s": 31.126367530044845,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8808777429467085,
+       "token_reuse_ratio": 0.8804380397177803,
+       "device_per_turn_s": 0.33151342504801923,
+       "requests_in_window": 362,
+       "warmup_end_s": 44.637144060738976,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.90633608815427,
+       "token_reuse_ratio": 0.896675,
+       "device_per_turn_s": 0.28935967879589036,
+       "requests_in_window": 415,
+       "warmup_end_s": 54.816838286196315,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8983516483516484,
+       "token_reuse_ratio": 0.8962224785842272,
+       "device_per_turn_s": 0.289873558113434,
+       "requests_in_window": 414,
+       "warmup_end_s": 68.90315755423998,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1983,
+     "ratio_to_base": 0.9924862759135327,
+     "per_rep_ratio_to_base": [
+      0.9926962653016101,
+      0.9842921113431232,
+      1.0055531395667026,
+      0.9977430277959741,
+      0.9831519985840466
+     ],
+     "rank": 2
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1375,
+      1681
+     ],
+     "reuse_rate": 0.817965496728138,
+     "token_reuse_ratio": 0.7637351898707432,
+     "hit_shape_share": {
+      "zero": 0.182034503271862,
+      "partial": 0.09339678762641285,
+      "full": 0.7245687091017252
+     },
+     "h": {
+      "2": 0.0008778724502969275,
+      "3": 0.012470952749806351,
+      "4": 0.03501161890007746,
+      "5": 0.07658146139943196,
+      "6": 0.12662019106635683,
+      "7": 0.14252517428350117,
+      "8": 0.6059127291505293
+     },
+     "padding": 0.005772207664499358,
+     "device_per_turn_s": 0.31190385363139816,
+     "interference_per_turn_s": 0.25279022528038103,
+     "piecewise_mixed_steps_per_turn": 0.06444906444906445,
+     "eager_mixed_steps_per_turn": 0.9745322245322245,
+     "mode_counts": {
+      "MIXED_NONE": 1875,
+      "DECODE_FULL": 36731,
+      "MIXED_PIECEWISE": 124
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8319088319088319,
+       "token_reuse_ratio": 0.7847114275685704,
+       "device_per_turn_s": 0.2977980232076887,
+       "requests_in_window": 403,
+       "warmup_end_s": 64.93112813086972,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8803680981595092,
+       "token_reuse_ratio": 0.8385108481262328,
+       "device_per_turn_s": 0.3210537896714065,
+       "requests_in_window": 374,
+       "warmup_end_s": 31.391925827179364,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7947882736156352,
+       "token_reuse_ratio": 0.7573081264108352,
+       "device_per_turn_s": 0.3428721943211151,
+       "requests_in_window": 350,
+       "warmup_end_s": 44.433279774347135,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7863247863247863,
+       "token_reuse_ratio": 0.7093471578179544,
+       "device_per_turn_s": 0.300022235426806,
+       "requests_in_window": 400,
+       "warmup_end_s": 54.93597862112028,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7976878612716763,
+       "token_reuse_ratio": 0.7317441235900453,
+       "device_per_turn_s": 0.3022723715715183,
+       "requests_in_window": 397,
+       "warmup_end_s": 69.16136119642826,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1924,
+     "ratio_to_base": 0.9823420925556521,
+     "per_rep_ratio_to_base": [
+      0.977726386083406,
+      0.9814681378365394,
+      0.9855428275668698,
+      0.9775722717130123,
+      0.989846011452683
+     ],
+     "rank": 2
+    }
+   }
+  },
+  "22": {
+   "BASE": {
+    "config": {
+     "num_gpu_blocks": 1900,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8283133040684388,
+     "token_reuse_ratio": 0.8219137484933864,
+     "h": {
+      "1": 0.0004005307024785291,
+      "2": 0.0024240128414886293,
+      "3": 0.009229267104860026,
+      "4": 0.025086141508965428,
+      "5": 0.051836099417035625,
+      "6": 0.08522172134560624,
+      "7": 0.11336975253895824,
+      "8": 0.7124324745406072
+     },
+     "padding": 0.05717379604997103,
+     "decode_per_turn_s": 0.2628698640855274,
+     "prefill_per_turn_s": 0.030060942580091198,
+     "device_per_turn_s": 0.2929308066656186,
+     "interference_per_turn_s": 0.21669035439802953,
+     "throughput_per_s": 3.4136800088209243,
+     "cycle_s": 6.444657947772539,
+     "mean_running": 7.401530959595441,
+     "phi": 0.897381561268948,
+     "bound": "lo",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1504,
+      1771
+     ],
+     "reuse_rate": 0.8492377188029362,
+     "token_reuse_ratio": 0.8413866568336739,
+     "hit_shape_share": {
+      "zero": 0.1507622811970638,
+      "partial": 0.0220214568040655,
+      "full": 0.8272162619988707
+     },
+     "h": {
+      "1": 0.00010017279807668227,
+      "2": 0.002153715158648669,
+      "3": 0.013924018932658837,
+      "4": 0.026295359495129098,
+      "5": 0.060379154040720244,
+      "6": 0.08802684630988455,
+      "7": 0.1321529638626631,
+      "8": 0.6769677694022188
+     },
+     "padding": 0.017546469006423013,
+     "device_per_turn_s": 0.2957526691471526,
+     "interference_per_turn_s": 0.18626993639492978,
+     "piecewise_mixed_steps_per_turn": 0.07195662888122227,
+     "eager_mixed_steps_per_turn": 0.9428289797930015,
+     "mode_counts": {
+      "MIXED_NONE": 1913,
+      "DECODE_FULL": 37872,
+      "MIXED_PIECEWISE": 146
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8831908831908832,
+       "token_reuse_ratio": 0.8795985765853409,
+       "device_per_turn_s": 0.29939470176493693,
+       "requests_in_window": 401,
+       "warmup_end_s": 45.500661661314574,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.821917808219178,
+       "token_reuse_ratio": 0.8061315354280626,
+       "device_per_turn_s": 0.2877827737136921,
+       "requests_in_window": 417,
+       "warmup_end_s": 31.795158263080975,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8337801608579088,
+       "token_reuse_ratio": 0.8266637615900453,
+       "device_per_turn_s": 0.2797376880012455,
+       "requests_in_window": 429,
+       "warmup_end_s": 66.34300260536403,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8654434250764526,
+       "token_reuse_ratio": 0.8632550109255712,
+       "device_per_turn_s": 0.320857030008262,
+       "requests_in_window": 374,
+       "warmup_end_s": 23.439547906243295,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8450704225352113,
+       "token_reuse_ratio": 0.8333549676782886,
+       "device_per_turn_s": 0.2941457751901934,
+       "requests_in_window": 408,
+       "warmup_end_s": 22.687547527368977,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2029,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1251,
+      1703
+     ],
+     "reuse_rate": 0.7345860246623606,
+     "token_reuse_ratio": 0.670688223773842,
+     "hit_shape_share": {
+      "zero": 0.26541397533763944,
+      "partial": 0.1315325895478567,
+      "full": 0.6030534351145038
+     },
+     "h": {
+      "1": 0.002606313661870695,
+      "2": 0.001223371718837265,
+      "3": 0.009494428339671818,
+      "4": 0.021861120714874605,
+      "5": 0.05303050450785883,
+      "6": 0.07156724555198,
+      "7": 0.09693891119917024,
+      "8": 0.7432781043057366
+     },
+     "padding": 0.009541255583107476,
+     "device_per_turn_s": 0.30849480998312473,
+     "interference_per_turn_s": 0.30585682783680107,
+     "piecewise_mixed_steps_per_turn": 0.049357326478149104,
+     "eager_mixed_steps_per_turn": 0.9922879177377892,
+     "mode_counts": {
+      "MIXED_NONE": 1930,
+      "DECODE_FULL": 35575,
+      "MIXED_PIECEWISE": 96
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7522388059701492,
+       "token_reuse_ratio": 0.6920259607357337,
+       "device_per_turn_s": 0.31579120311989844,
+       "requests_in_window": 380,
+       "warmup_end_s": 45.69635070135182,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6991404011461319,
+       "token_reuse_ratio": 0.6126166977860763,
+       "device_per_turn_s": 0.3030391585865375,
+       "requests_in_window": 396,
+       "warmup_end_s": 31.31363936191744,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7232876712328767,
+       "token_reuse_ratio": 0.6622384344268356,
+       "device_per_turn_s": 0.2871057435558743,
+       "requests_in_window": 418,
+       "warmup_end_s": 67.04920121432924,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7531645569620253,
+       "token_reuse_ratio": 0.696425584118664,
+       "device_per_turn_s": 0.3314996230097444,
+       "requests_in_window": 362,
+       "warmup_end_s": 24.54979110350894,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7485207100591716,
+       "token_reuse_ratio": 0.6925248357852452,
+       "device_per_turn_s": 0.3084965992171323,
+       "requests_in_window": 389,
+       "warmup_end_s": 21.485344613306594,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1945,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8282288001141889,
+     "token_reuse_ratio": 0.8218011295474632,
+     "h": {
+      "1": 0.0003786908652926289,
+      "2": 0.002307259689251156,
+      "3": 0.008843849077727183,
+      "4": 0.024200287228310982,
+      "5": 0.05034212135293788,
+      "6": 0.0833224526855183,
+      "7": 0.11158902611194609,
+      "8": 0.7190163129890158
+     },
+     "padding": 0.05579999783972573,
+     "decode_per_turn_s": 0.26230445654177725,
+     "prefill_per_turn_s": 0.03196314749260606,
+     "device_per_turn_s": 0.2942676040343833,
+     "interference_per_turn_s": 0.2309947790814175,
+     "throughput_per_s": 3.398178743938072,
+     "cycle_s": 6.474056151179587,
+     "mean_running": 7.4177969797665515,
+     "phi": 0.8913835116020645,
+     "bound": "hi",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1493,
+      1761
+     ],
+     "reuse_rate": 0.8478137421919364,
+     "token_reuse_ratio": 0.83716107386004,
+     "hit_shape_share": {
+      "zero": 0.1521862578080636,
+      "partial": 0.02328222600795003,
+      "full": 0.8245315161839863
+     },
+     "h": {
+      "1": 0.0005806467900330716,
+      "2": 0.0027265153618944234,
+      "3": 0.016106637045265205,
+      "4": 0.02688647092979223,
+      "5": 0.04784024639620307,
+      "6": 0.08805634798414581,
+      "7": 0.1334225341445558,
+      "8": 0.6843806013481104
+     },
+     "padding": 0.016197722895327824,
+     "device_per_turn_s": 0.2973437247778193,
+     "interference_per_turn_s": 0.20257878532175264,
+     "piecewise_mixed_steps_per_turn": 0.06987115956392467,
+     "eager_mixed_steps_per_turn": 0.9474727452923687,
+     "mode_counts": {
+      "MIXED_NONE": 1912,
+      "DECODE_FULL": 37558,
+      "MIXED_PIECEWISE": 141
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8793103448275862,
+       "token_reuse_ratio": 0.8677365083473534,
+       "device_per_turn_s": 0.3015323508193984,
+       "requests_in_window": 398,
+       "warmup_end_s": 45.852116481868805,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8154269972451791,
+       "token_reuse_ratio": 0.797378104875805,
+       "device_per_turn_s": 0.28986519005581163,
+       "requests_in_window": 414,
+       "warmup_end_s": 32.069741818755354,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.839142091152815,
+       "token_reuse_ratio": 0.8310590508392707,
+       "device_per_turn_s": 0.27972271085170713,
+       "requests_in_window": 429,
+       "warmup_end_s": 66.48353554717978,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8658536585365854,
+       "token_reuse_ratio": 0.8634884783953107,
+       "device_per_turn_s": 0.32003043225481226,
+       "requests_in_window": 375,
+       "warmup_end_s": 23.602814188005254,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8424068767908309,
+       "token_reuse_ratio": 0.8279159203455906,
+       "device_per_turn_s": 0.29854009264048703,
+       "requests_in_window": 402,
+       "warmup_end_s": 23.017779982959055,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2018,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1213,
+      1676
+     ],
+     "reuse_rate": 0.7237470167064439,
+     "token_reuse_ratio": 0.6510847540053495,
+     "hit_shape_share": {
+      "zero": 0.2762529832935561,
+      "partial": 0.1360381861575179,
+      "full": 0.587708830548926
+     },
+     "h": {
+      "2": 0.0006764252279553018,
+      "3": 0.0071430504072079876,
+      "4": 0.027976947428231282,
+      "5": 0.045915744473605885,
+      "6": 0.06913065829703184,
+      "7": 0.08796233664330745,
+      "8": 0.7611948375226603
+     },
+     "padding": 0.008368212333427567,
+     "device_per_turn_s": 0.31300398795696616,
+     "interference_per_turn_s": 0.3426650504582763,
+     "piecewise_mixed_steps_per_turn": 0.051643192488262914,
+     "eager_mixed_steps_per_turn": 1.0046948356807512,
+     "mode_counts": {
+      "MIXED_NONE": 1926,
+      "DECODE_FULL": 34934,
+      "MIXED_PIECEWISE": 99
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7006172839506173,
+       "token_reuse_ratio": 0.6089148906532943,
+       "device_per_turn_s": 0.32520747191448385,
+       "requests_in_window": 369,
+       "warmup_end_s": 46.251269742899,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7093023255813954,
+       "token_reuse_ratio": 0.641105372738826,
+       "device_per_turn_s": 0.30537469175211784,
+       "requests_in_window": 393,
+       "warmup_end_s": 31.58243171685985,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7067039106145251,
+       "token_reuse_ratio": 0.619234149403641,
+       "device_per_turn_s": 0.2934067555741724,
+       "requests_in_window": 409,
+       "warmup_end_s": 67.19929336261825,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7697160883280757,
+       "token_reuse_ratio": 0.7149410587188612,
+       "device_per_turn_s": 0.33058251444831627,
+       "requests_in_window": 363,
+       "warmup_end_s": 23.736260374134822,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7357357357357357,
+       "token_reuse_ratio": 0.6745617409463098,
+       "device_per_turn_s": 0.31334208392663687,
+       "requests_in_window": 383,
+       "warmup_end_s": 21.70127321834381,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1917,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    }
+   },
+   "POOL": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8624802475518236,
+     "token_reuse_ratio": 0.858038987297875,
+     "h": {
+      "1": 0.00044861228820998765,
+      "2": 0.0026780531279195796,
+      "3": 0.010057740041070837,
+      "4": 0.026965965719584022,
+      "5": 0.05496210323655327,
+      "6": 0.08913130197861087,
+      "7": 0.11695695860912866,
+      "8": 0.6987992649989228
+     },
+     "padding": 0.060025766092798034,
+     "decode_per_turn_s": 0.26406174685833184,
+     "prefill_per_turn_s": 0.026192548943010995,
+     "device_per_turn_s": 0.2902542958013428,
+     "interference_per_turn_s": 0.18779451053180132,
+     "throughput_per_s": 3.4451438703653627,
+     "cycle_s": 6.385800079131926,
+     "mean_running": 7.367470057829812,
+     "phi": 0.9097629005603001,
+     "bound": "lo",
+     "ratio_to_base": 0.9908629928864702,
+     "rank": 2
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1611,
+      1801
+     ],
+     "reuse_rate": 0.8945030538589672,
+     "token_reuse_ratio": 0.8899150016113438,
+     "hit_shape_share": {
+      "zero": 0.10549694614103276,
+      "partial": 0.009439200444197668,
+      "full": 0.8850638534147696
+     },
+     "h": {
+      "1": 2.455072179122066e-05,
+      "2": 0.0026514779534518315,
+      "3": 0.010826868309928312,
+      "4": 0.032848865756653245,
+      "5": 0.05511637042129039,
+      "6": 0.10038790140430129,
+      "7": 0.13608465088873614,
+      "8": 0.6620593145438476
+     },
+     "padding": 0.02062184898280978,
+     "device_per_turn_s": 0.29098850031169626,
+     "interference_per_turn_s": 0.14767979105256576,
+     "piecewise_mixed_steps_per_turn": 0.07613967022308439,
+     "eager_mixed_steps_per_turn": 0.9282250242483027,
+     "mode_counts": {
+      "MIXED_NONE": 1914,
+      "DECODE_FULL": 38661,
+      "MIXED_PIECEWISE": 157
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.9178470254957507,
+       "token_reuse_ratio": 0.9158918973993224,
+       "device_per_turn_s": 0.2977909582784967,
+       "requests_in_window": 403,
+       "warmup_end_s": 45.78682248848562,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8839050131926122,
+       "token_reuse_ratio": 0.8767659574468085,
+       "device_per_turn_s": 0.27778098052877875,
+       "requests_in_window": 432,
+       "warmup_end_s": 30.391204334570602,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8763157894736842,
+       "token_reuse_ratio": 0.8681517876308823,
+       "device_per_turn_s": 0.2746042725884982,
+       "requests_in_window": 437,
+       "warmup_end_s": 66.19378201688428,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9,
+       "token_reuse_ratio": 0.9005298651252408,
+       "device_per_turn_s": 0.31830412824061594,
+       "requests_in_window": 377,
+       "warmup_end_s": 23.0889192801064,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8969359331476323,
+       "token_reuse_ratio": 0.8908590959319508,
+       "device_per_turn_s": 0.290567613559722,
+       "requests_in_window": 413,
+       "warmup_end_s": 20.996187552029312,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2062,
+     "ratio_to_base": 0.9838913750155002,
+     "per_rep_ratio_to_base": [
+      0.9946433805375108,
+      0.9652453374611509,
+      0.9816491819553308,
+      0.9920434912472377,
+      0.9878354138244624
+     ],
+     "rank": 2
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1351,
+      1716
+     ],
+     "reuse_rate": 0.7872960372960373,
+     "token_reuse_ratio": 0.7254856369823923,
+     "hit_shape_share": {
+      "zero": 0.2127039627039627,
+      "partial": 0.11421911421911422,
+      "full": 0.6730769230769231
+     },
+     "h": {
+      "2": 0.0008606076411526927,
+      "3": 0.007823705828660842,
+      "4": 0.026444125700873646,
+      "5": 0.05601773373321163,
+      "6": 0.08126222454035728,
+      "7": 0.10580258182292346,
+      "8": 0.7217890207328205
+     },
+     "padding": 0.011552661286121695,
+     "device_per_turn_s": 0.30510888482262777,
+     "interference_per_turn_s": 0.26836165913152965,
+     "piecewise_mixed_steps_per_turn": 0.05338078291814947,
+     "eager_mixed_steps_per_turn": 0.9867819013726487,
+     "mode_counts": {
+      "MIXED_NONE": 1941,
+      "DECODE_FULL": 36299,
+      "MIXED_PIECEWISE": 105
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8160237388724035,
+       "token_reuse_ratio": 0.7616286872265614,
+       "device_per_turn_s": 0.31250172925087977,
+       "requests_in_window": 384,
+       "warmup_end_s": 45.03762722173205,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7393767705382436,
+       "token_reuse_ratio": 0.6656955380577427,
+       "device_per_turn_s": 0.2977685416887924,
+       "requests_in_window": 403,
+       "warmup_end_s": 31.41146351014603,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7989130434782609,
+       "token_reuse_ratio": 0.7610166168325082,
+       "device_per_turn_s": 0.28304467534512145,
+       "requests_in_window": 424,
+       "warmup_end_s": 66.52059212096627,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7949526813880127,
+       "token_reuse_ratio": 0.7241915768418713,
+       "device_per_turn_s": 0.3305943371893483,
+       "requests_in_window": 363,
+       "warmup_end_s": 23.53773921835153,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7888563049853372,
+       "token_reuse_ratio": 0.7127639491923087,
+       "device_per_turn_s": 0.3056771078043837,
+       "requests_in_window": 393,
+       "warmup_end_s": 21.248715862576187,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1967,
+     "ratio_to_base": 0.9890243691273698,
+     "per_rep_ratio_to_base": [
+      0.989583389795156,
+      0.9826074725051086,
+      0.9858551481400004,
+      0.9972691196081104,
+      0.9908605429690194
+     ],
+     "rank": 2
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8625533960932182,
+     "token_reuse_ratio": 0.8581096146966981,
+     "h": {
+      "1": 0.0004269565311463375,
+      "2": 0.002564125254564346,
+      "3": 0.009687863385964586,
+      "4": 0.026130705147745452,
+      "5": 0.05358041175773629,
+      "6": 0.08741390175369754,
+      "7": 0.1153941714313439,
+      "8": 0.7048018647378016
+     },
+     "padding": 0.05876886585646393,
+     "decode_per_turn_s": 0.26353342530221596,
+     "prefill_per_turn_s": 0.027884610761079856,
+     "device_per_turn_s": 0.2914180360632958,
+     "interference_per_turn_s": 0.20040109188767066,
+     "throughput_per_s": 3.431392726597825,
+     "cycle_s": 6.411390870380691,
+     "mean_running": 7.382530134002443,
+     "phi": 0.9043169494509171,
+     "bound": "hi",
+     "ratio_to_base": 0.990316406114638,
+     "rank": 2
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1611,
+      1792
+     ],
+     "reuse_rate": 0.8989955357142857,
+     "token_reuse_ratio": 0.8927211589512806,
+     "hit_shape_share": {
+      "zero": 0.10100446428571429,
+      "partial": 0.012276785714285714,
+      "full": 0.88671875
+     },
+     "h": {
+      "2": 0.0007886629698089957,
+      "3": 0.012963647566235366,
+      "4": 0.033937153419593344,
+      "5": 0.05486136783733826,
+      "6": 0.09821318545902649,
+      "7": 0.13222427603203943,
+      "8": 0.6670117067159581
+     },
+     "padding": 0.020430712029285723,
+     "device_per_turn_s": 0.29241829311624895,
+     "interference_per_turn_s": 0.15447609658926503,
+     "piecewise_mixed_steps_per_turn": 0.07456140350877193,
+     "eager_mixed_steps_per_turn": 0.9293372319688109,
+     "mode_counts": {
+      "MIXED_NONE": 1907,
+      "DECODE_FULL": 38515,
+      "MIXED_PIECEWISE": 153
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.9235127478753541,
+       "token_reuse_ratio": 0.9177617310096706,
+       "device_per_turn_s": 0.29778949677771316,
+       "requests_in_window": 403,
+       "warmup_end_s": 45.514585793890475,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8859416445623343,
+       "token_reuse_ratio": 0.8796792097606299,
+       "device_per_turn_s": 0.27844921758749225,
+       "requests_in_window": 431,
+       "warmup_end_s": 30.35858289423768,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8835978835978836,
+       "token_reuse_ratio": 0.8762273346233785,
+       "device_per_turn_s": 0.2765216907142022,
+       "requests_in_window": 434,
+       "warmup_end_s": 66.24505663165982,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9027355623100304,
+       "token_reuse_ratio": 0.8985499477337908,
+       "device_per_turn_s": 0.3191562557875352,
+       "requests_in_window": 376,
+       "warmup_end_s": 23.207330685617134,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9014084507042254,
+       "token_reuse_ratio": 0.893370036616719,
+       "device_per_turn_s": 0.29413821457558414,
+       "requests_in_window": 408,
+       "warmup_end_s": 21.098122952690318,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2052,
+     "ratio_to_base": 0.983435225797179,
+     "per_rep_ratio_to_base": [
+      0.9875872222946751,
+      0.9606162697006795,
+      0.9885564524676655,
+      0.9972684583115489,
+      0.9852553202286174
+     ],
+     "rank": 2
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1351,
+      1710
+     ],
+     "reuse_rate": 0.7900584795321638,
+     "token_reuse_ratio": 0.7295113709305224,
+     "hit_shape_share": {
+      "zero": 0.20994152046783626,
+      "partial": 0.1064327485380117,
+      "full": 0.683625730994152
+     },
+     "h": {
+      "1": 0.0002886836027713626,
+      "2": 0.00152214990552173,
+      "3": 0.008240604660927986,
+      "4": 0.02406571488557632,
+      "5": 0.049784799496115896,
+      "6": 0.08545034642032333,
+      "7": 0.11507978165022045,
+      "8": 0.7155679193785429
+     },
+     "padding": 0.0115136150511958,
+     "device_per_turn_s": 0.3060291300312681,
+     "interference_per_turn_s": 0.2811488101524653,
+     "piecewise_mixed_steps_per_turn": 0.05966343702192759,
+     "eager_mixed_steps_per_turn": 0.9821519632840388,
+     "mode_counts": {
+      "MIXED_NONE": 1926,
+      "DECODE_FULL": 36061,
+      "MIXED_PIECEWISE": 117
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8173652694610778,
+       "token_reuse_ratio": 0.7625484194273641,
+       "device_per_turn_s": 0.3149949402831894,
+       "requests_in_window": 381,
+       "warmup_end_s": 45.49461444508529,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7542857142857143,
+       "token_reuse_ratio": 0.6787957490790555,
+       "device_per_turn_s": 0.30078295386632775,
+       "requests_in_window": 399,
+       "warmup_end_s": 31.421159996189388,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8010899182561307,
+       "token_reuse_ratio": 0.7609662595532402,
+       "device_per_turn_s": 0.2836978871168407,
+       "requests_in_window": 423,
+       "warmup_end_s": 66.48303542772607,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7760252365930599,
+       "token_reuse_ratio": 0.7042171352372486,
+       "device_per_turn_s": 0.33060248821814,
+       "requests_in_window": 363,
+       "warmup_end_s": 23.783051887732483,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8011695906432749,
+       "token_reuse_ratio": 0.7382425742574258,
+       "device_per_turn_s": 0.30401200930923616,
+       "requests_in_window": 395,
+       "warmup_end_s": 21.361698669487193,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1961,
+     "ratio_to_base": 0.9777163927807302,
+     "per_rep_ratio_to_base": [
+      0.9685968727250526,
+      0.9849635938739896,
+      0.9669098673671223,
+      1.0000604199222607,
+      0.9702239976817632
+     ],
+     "rank": 1
+    }
+   },
+   "POOL+GRID": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      5,
+      7,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8623689227903202,
+     "token_reuse_ratio": 0.8579186810396584,
+     "h": {
+      "1": 0.00045673650585426886,
+      "2": 0.0027268468826946663,
+      "3": 0.010224694644165925,
+      "4": 0.027400125485040366,
+      "5": 0.05581968001149902,
+      "6": 0.08977118872318975,
+      "7": 0.11716000520926738,
+      "8": 0.6964407225382886
+     },
+     "padding": 0.019436647569080825,
+     "decode_per_turn_s": 0.2638748948952185,
+     "prefill_per_turn_s": 0.026205428160349882,
+     "device_per_turn_s": 0.29008032305556836,
+     "interference_per_turn_s": 0.1877228170626241,
+     "throughput_per_s": 3.447207888215233,
+     "cycle_s": 6.381976577394739,
+     "mean_running": 7.362659864602192,
+     "phi": 0.9096644413321393,
+     "bound": "lo",
+     "ratio_to_base": 0.9902690889958048,
+     "rank": 1
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1609,
+      1803
+     ],
+     "reuse_rate": 0.8924015529672767,
+     "token_reuse_ratio": 0.8914167684351773,
+     "hit_shape_share": {
+      "zero": 0.10759844703272324,
+      "partial": 0.004437049362174155,
+      "full": 0.8879645036051026
+     },
+     "h": {
+      "2": 0.004185841574463918,
+      "3": 0.011260158621364928,
+      "4": 0.026730637422892393,
+      "5": 0.06002154117301479,
+      "6": 0.10954176050132185,
+      "7": 0.135709389993146,
+      "8": 0.6525506707137961
+     },
+     "padding": 0.007141545742720822,
+     "device_per_turn_s": 0.29085900010221893,
+     "interference_per_turn_s": 0.14507077022710405,
+     "piecewise_mixed_steps_per_turn": 0.07949587978671838,
+     "eager_mixed_steps_per_turn": 0.9258361609306834,
+     "mode_counts": {
+      "MIXED_NONE": 1910,
+      "DECODE_FULL": 38778,
+      "MIXED_PIECEWISE": 164
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.9178470254957507,
+       "token_reuse_ratio": 0.9159328073301094,
+       "device_per_turn_s": 0.29779543251031226,
+       "requests_in_window": 403,
+       "warmup_end_s": 45.76912784195755,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8812664907651715,
+       "token_reuse_ratio": 0.8816908940638826,
+       "device_per_turn_s": 0.2784322405700773,
+       "requests_in_window": 431,
+       "warmup_end_s": 30.39358037010592,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8743455497382199,
+       "token_reuse_ratio": 0.8724588921006492,
+       "device_per_turn_s": 0.2733712872853068,
+       "requests_in_window": 439,
+       "warmup_end_s": 66.17262863753164,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8975903614457831,
+       "token_reuse_ratio": 0.900106269925611,
+       "device_per_turn_s": 0.31664253882793614,
+       "requests_in_window": 379,
+       "warmup_end_s": 23.076768043588675,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8935574229691877,
+       "token_reuse_ratio": 0.8890898287131527,
+       "device_per_turn_s": 0.29199208002306826,
+       "requests_in_window": 411,
+       "warmup_end_s": 20.970671048874223,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2063,
+     "ratio_to_base": 0.9834535084364739,
+     "per_rep_ratio_to_base": [
+      0.9946583247960069,
+      0.9675083639546911,
+      0.9772415338046608,
+      0.9868648937496637,
+      0.9926781366629095
+     ],
+     "rank": 1
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1360,
+      1726
+     ],
+     "reuse_rate": 0.7879490150637312,
+     "token_reuse_ratio": 0.7291766250820748,
+     "hit_shape_share": {
+      "zero": 0.21205098493626884,
+      "partial": 0.11471610660486674,
+      "full": 0.6732329084588644
+     },
+     "h": {
+      "2": 0.0012470771628994544,
+      "3": 0.00992465575474149,
+      "4": 0.03543777604572616,
+      "5": 0.04915562483762016,
+      "6": 0.07944920758638607,
+      "7": 0.11327617563003378,
+      "8": 0.7115094829825929
+     },
+     "padding": 0.0037246522771447665,
+     "device_per_turn_s": 0.3033491874160528,
+     "interference_per_turn_s": 0.26262916398943065,
+     "piecewise_mixed_steps_per_turn": 0.0621840242669363,
+     "eager_mixed_steps_per_turn": 0.9706774519716885,
+     "mode_counts": {
+      "MIXED_NONE": 1920,
+      "DECODE_FULL": 36447,
+      "MIXED_PIECEWISE": 123
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8254437869822485,
+       "token_reuse_ratio": 0.7705685618729097,
+       "device_per_turn_s": 0.3117118968797583,
+       "requests_in_window": 385,
+       "warmup_end_s": 45.02023106194893,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7464788732394366,
+       "token_reuse_ratio": 0.6866812796826888,
+       "device_per_turn_s": 0.29704820140379073,
+       "requests_in_window": 404,
+       "warmup_end_s": 31.413575072191122,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7901907356948229,
+       "token_reuse_ratio": 0.7315635667100513,
+       "device_per_turn_s": 0.2836894150919759,
+       "requests_in_window": 423,
+       "warmup_end_s": 66.5958617140812,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7912772585669782,
+       "token_reuse_ratio": 0.7220560388594638,
+       "device_per_turn_s": 0.3260893786215956,
+       "requests_in_window": 368,
+       "warmup_end_s": 23.59223682323653,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7884057971014493,
+       "token_reuse_ratio": 0.7356735433658511,
+       "device_per_turn_s": 0.3015241837348268,
+       "requests_in_window": 398,
+       "warmup_end_s": 21.2231993594211,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1978,
+     "ratio_to_base": 0.983320229707095,
+     "per_rep_ratio_to_base": [
+      0.9870822676507828,
+      0.9802304190300345,
+      0.9881008006959863,
+      0.9836794855480431,
+      0.9773987282193732
+     ],
+     "rank": 1
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8624314995543934,
+     "token_reuse_ratio": 0.857973196725665,
+     "h": {
+      "1": 0.0004346772427092789,
+      "2": 0.0026108077467787627,
+      "3": 0.00984866690617354,
+      "4": 0.02655171735093112,
+      "5": 0.054417723427562195,
+      "6": 0.0880446486183463,
+      "7": 0.11560013276652788,
+      "8": 0.702491625940971
+     },
+     "padding": 0.018917294855488303,
+     "decode_per_turn_s": 0.2633484722439628,
+     "prefill_per_turn_s": 0.02790020838418656,
+     "device_per_turn_s": 0.29124868062814935,
+     "interference_per_turn_s": 0.20034310359297158,
+     "throughput_per_s": 3.4333859888074536,
+     "cycle_s": 6.407668718786099,
+     "mean_running": 7.3778708740946355,
+     "phi": 0.9042078154494193,
+     "bound": "hi",
+     "ratio_to_base": 0.989740891063628,
+     "rank": 1
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1612,
+      1798
+     ],
+     "reuse_rate": 0.896551724137931,
+     "token_reuse_ratio": 0.890789851748421,
+     "hit_shape_share": {
+      "zero": 0.10344827586206896,
+      "partial": 0.010567296996662959,
+      "full": 0.8859844271412681
+     },
+     "h": {
+      "2": 0.0006894513936767458,
+      "3": 0.014158376834433172,
+      "4": 0.032699694671525656,
+      "5": 0.05390032502708559,
+      "6": 0.10681571949177583,
+      "7": 0.13003545750024623,
+      "8": 0.6617009750812568
+     },
+     "padding": 0.007112146867837417,
+     "device_per_turn_s": 0.29159286320856914,
+     "interference_per_turn_s": 0.15552430276379525,
+     "piecewise_mixed_steps_per_turn": 0.07482993197278912,
+     "eager_mixed_steps_per_turn": 0.9339164237123421,
+     "mode_counts": {
+      "MIXED_NONE": 1922,
+      "DECODE_FULL": 38536,
+      "MIXED_PIECEWISE": 154
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.923728813559322,
+       "token_reuse_ratio": 0.9191363682656075,
+       "device_per_turn_s": 0.29713162423531514,
+       "requests_in_window": 404,
+       "warmup_end_s": 45.736512597155624,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.883289124668435,
+       "token_reuse_ratio": 0.8754889497359671,
+       "device_per_turn_s": 0.2790839711212289,
+       "requests_in_window": 430,
+       "warmup_end_s": 30.184119901791078,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8792650918635171,
+       "token_reuse_ratio": 0.8696940250752494,
+       "device_per_turn_s": 0.2746292529817368,
+       "requests_in_window": 437,
+       "warmup_end_s": 66.22035557823777,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8966565349544073,
+       "token_reuse_ratio": 0.8977397645923264,
+       "device_per_turn_s": 0.31922326994721667,
+       "requests_in_window": 376,
+       "warmup_end_s": 23.18301856862879,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.9019607843137255,
+       "token_reuse_ratio": 0.8944948203260223,
+       "device_per_turn_s": 0.29199487994371554,
+       "requests_in_window": 411,
+       "warmup_end_s": 21.08760455001638,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2058,
+     "ratio_to_base": 0.980659213260521,
+     "per_rep_ratio_to_base": [
+      0.9854054579147992,
+      0.9628060929547737,
+      0.981791046374241,
+      0.99747785764651,
+      0.9780759339930484
+     ],
+     "rank": 1
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1357,
+      1712
+     ],
+     "reuse_rate": 0.7926401869158879,
+     "token_reuse_ratio": 0.7272549268643763,
+     "hit_shape_share": {
+      "zero": 0.20735981308411214,
+      "partial": 0.1185747663551402,
+      "full": 0.6740654205607477
+     },
+     "h": {
+      "2": 0.0004460537363560034,
+      "3": 0.00850125944584383,
+      "4": 0.026317170445004198,
+      "5": 0.051112510495382034,
+      "6": 0.08543240973971453,
+      "7": 0.11841414777497901,
+      "8": 0.7097764483627204
+     },
+     "padding": 0.0034338767149180577,
+     "device_per_turn_s": 0.3060380169931634,
+     "interference_per_turn_s": 0.28275913812906367,
+     "piecewise_mixed_steps_per_turn": 0.05864354920958695,
+     "eager_mixed_steps_per_turn": 0.98419173890872,
+     "mode_counts": {
+      "MIXED_NONE": 1930,
+      "DECODE_FULL": 36067,
+      "MIXED_PIECEWISE": 115
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8108108108108109,
+       "token_reuse_ratio": 0.7373315619662175,
+       "device_per_turn_s": 0.3158172403815778,
+       "requests_in_window": 380,
+       "warmup_end_s": 45.22492753734398,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7705382436260623,
+       "token_reuse_ratio": 0.7005213108741781,
+       "device_per_turn_s": 0.29879150292625506,
+       "requests_in_window": 402,
+       "warmup_end_s": 31.409794653411346,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7940379403794038,
+       "token_reuse_ratio": 0.7373121218036307,
+       "device_per_turn_s": 0.28369774369126066,
+       "requests_in_window": 423,
+       "warmup_end_s": 66.36598582370847,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7987421383647799,
+       "token_reuse_ratio": 0.7361953001743752,
+       "device_per_turn_s": 0.32878351719134713,
+       "requests_in_window": 365,
+       "warmup_end_s": 23.76051717444853,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7905604719764012,
+       "token_reuse_ratio": 0.7249082755809213,
+       "device_per_turn_s": 0.30691991418412856,
+       "requests_in_window": 391,
+       "warmup_end_s": 21.351180266813255,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1961,
+     "ratio_to_base": 0.9777447852684852,
+     "per_rep_ratio_to_base": [
+      0.9711254127169154,
+      0.9784422579746505,
+      0.9669093785386366,
+      0.9945580991784416,
+      0.9795042859802645
+     ],
+     "rank": 2
+    }
+   }
+  },
+  "24": {
+   "BASE": {
+    "config": {
+     "num_gpu_blocks": 1900,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8067813558021456,
+     "token_reuse_ratio": 0.8000934649018228,
+     "h": {
+      "1": 9.4893634437899e-05,
+      "2": 0.0006513103765791765,
+      "3": 0.0028245954361178927,
+      "4": 0.008786822858538846,
+      "5": 0.020889645968810978,
+      "6": 0.039746328615677985,
+      "7": 0.06159418450920835,
+      "8": 0.8654122186006288
+     },
+     "padding": 0.025988279964456386,
+     "decode_per_turn_s": 0.25168416166143187,
+     "prefill_per_turn_s": 0.03243859393365536,
+     "device_per_turn_s": 0.28412275559508726,
+     "interference_per_turn_s": 0.24750544026431037,
+     "throughput_per_s": 3.5195851027722718,
+     "cycle_s": 6.818985561990225,
+     "mean_running": 7.744466812800981,
+     "phi": 0.8858296080370865,
+     "bound": "lo",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1361,
+      1807
+     ],
+     "reuse_rate": 0.7531820697288323,
+     "token_reuse_ratio": 0.7284299089444076,
+     "hit_shape_share": {
+      "zero": 0.2468179302711677,
+      "partial": 0.05644714997232983,
+      "full": 0.6967349197565025
+     },
+     "h": {
+      "2": 0.000184002313171937,
+      "3": 0.003942906710827222,
+      "4": 0.01800594064611098,
+      "5": 0.02394658675709066,
+      "6": 0.03348842099729254,
+      "7": 0.04655258523250007,
+      "8": 0.8738795573430066
+     },
+     "padding": 0.005091762690126153,
+     "device_per_turn_s": 0.2899221375681679,
+     "interference_per_turn_s": 0.2724550507803064,
+     "piecewise_mixed_steps_per_turn": 0.04154589371980676,
+     "eager_mixed_steps_per_turn": 0.9985507246376811,
+     "mode_counts": {
+      "MIXED_NONE": 2067,
+      "DECODE_FULL": 35890,
+      "MIXED_PIECEWISE": 86
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7979002624671916,
+       "token_reuse_ratio": 0.7914838097497331,
+       "device_per_turn_s": 0.276136076221162,
+       "requests_in_window": 435,
+       "warmup_end_s": 48.54868743236462,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8010752688172043,
+       "token_reuse_ratio": 0.7818758344459279,
+       "device_per_turn_s": 0.282362142205004,
+       "requests_in_window": 425,
+       "warmup_end_s": 57.2876013853923,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7428571428571429,
+       "token_reuse_ratio": 0.7196702924068132,
+       "device_per_turn_s": 0.2992620130697297,
+       "requests_in_window": 401,
+       "warmup_end_s": 28.91073916967026,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8297297297297297,
+       "token_reuse_ratio": 0.8204599410086089,
+       "device_per_turn_s": 0.2810524790101687,
+       "requests_in_window": 427,
+       "warmup_end_s": 71.19434450801268,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5748502994011976,
+       "token_reuse_ratio": 0.5082422622323558,
+       "device_per_turn_s": 0.31414200365044975,
+       "requests_in_window": 382,
+       "warmup_end_s": 52.17670244404793,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2070,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1045,
+      1710
+     ],
+     "reuse_rate": 0.6111111111111112,
+     "token_reuse_ratio": 0.5424820591929372,
+     "hit_shape_share": {
+      "zero": 0.3888888888888889,
+      "partial": 0.13801169590643275,
+      "full": 0.47309941520467835
+     },
+     "h": {
+      "3": 0.0009593138084758197,
+      "4": 0.010383161221150048,
+      "5": 0.02144348513063597,
+      "6": 0.02590147282884713,
+      "7": 0.033575983296653684,
+      "8": 0.9077365837142374
+     },
+     "padding": 0.0027974876664367517,
+     "device_per_turn_s": 0.30693062343248395,
+     "interference_per_turn_s": 0.4142796550801231,
+     "piecewise_mixed_steps_per_turn": 0.029156010230179028,
+     "eager_mixed_steps_per_turn": 1.0562659846547315,
+     "mode_counts": {
+      "MIXED_NONE": 2065,
+      "DECODE_FULL": 33320,
+      "MIXED_PIECEWISE": 57
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.6023054755043228,
+       "token_reuse_ratio": 0.5286830126215601,
+       "device_per_turn_s": 0.3015206617397068,
+       "requests_in_window": 398,
+       "warmup_end_s": 49.20266760994988,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6062322946175638,
+       "token_reuse_ratio": 0.5448242706409251,
+       "device_per_turn_s": 0.29779234710322694,
+       "requests_in_window": 403,
+       "warmup_end_s": 57.19559577046515,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6477611940298508,
+       "token_reuse_ratio": 0.5972491865139045,
+       "device_per_turn_s": 0.3149890978065983,
+       "requests_in_window": 381,
+       "warmup_end_s": 28.607849155952728,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6771428571428572,
+       "token_reuse_ratio": 0.5996476657858312,
+       "device_per_turn_s": 0.29928436010718773,
+       "requests_in_window": 401,
+       "warmup_end_s": 70.91234019504574,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5169230769230769,
+       "token_reuse_ratio": 0.43995720780957476,
+       "device_per_turn_s": 0.32260740561345747,
+       "requests_in_window": 372,
+       "warmup_end_s": 52.22661034083451,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1955,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8065740491099531,
+     "token_reuse_ratio": 0.7998558275660009,
+     "h": {
+      "1": 8.821929184120969e-05,
+      "2": 0.000609823845996842,
+      "3": 0.0026635605677798524,
+      "4": 0.00834503405702338,
+      "5": 0.019981000952934317,
+      "6": 0.03828891837751726,
+      "7": 0.059759328311091195,
+      "8": 0.870264114595816
+     },
+     "padding": 0.025019052544110916,
+     "decode_per_turn_s": 0.251357362022483,
+     "prefill_per_turn_s": 0.03442251921632836,
+     "device_per_turn_s": 0.2857798812388114,
+     "interference_per_turn_s": 0.2630901076594543,
+     "throughput_per_s": 3.4991780962017436,
+     "cycle_s": 6.858753495871303,
+     "mean_running": 7.754724757192538,
+     "phi": 0.8795494747428423,
+     "bound": "hi",
+     "ratio_to_base": 1.0,
+     "rank": 3
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1347,
+      1793
+     ],
+     "reuse_rate": 0.7512548800892359,
+     "token_reuse_ratio": 0.7251592356687898,
+     "hit_shape_share": {
+      "zero": 0.2487451199107641,
+      "partial": 0.049079754601226995,
+      "full": 0.702175125488009
+     },
+     "h": {
+      "3": 0.0005843448697176552,
+      "4": 0.009402640176365907,
+      "5": 0.024356556615049537,
+      "6": 0.046933517490504395,
+      "7": 0.052564477144147255,
+      "8": 0.8661584637042152
+     },
+     "padding": 0.005769585348950989,
+     "device_per_turn_s": 0.2923155242081573,
+     "interference_per_turn_s": 0.29257458603644054,
+     "piecewise_mixed_steps_per_turn": 0.04578665367754506,
+     "eager_mixed_steps_per_turn": 1.0019483682415977,
+     "mode_counts": {
+      "MIXED_NONE": 2057,
+      "DECODE_FULL": 35498,
+      "MIXED_PIECEWISE": 94
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7978723404255319,
+       "token_reuse_ratio": 0.7841717968449403,
+       "device_per_turn_s": 0.2790922289298135,
+       "requests_in_window": 430,
+       "warmup_end_s": 48.99799020089149,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7756756756756756,
+       "token_reuse_ratio": 0.7619584783391335,
+       "device_per_turn_s": 0.284387960657507,
+       "requests_in_window": 422,
+       "warmup_end_s": 57.601692911338404,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7398843930635838,
+       "token_reuse_ratio": 0.7124858325206253,
+       "device_per_turn_s": 0.30236388000243014,
+       "requests_in_window": 397,
+       "warmup_end_s": 29.063077272081284,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8265582655826558,
+       "token_reuse_ratio": 0.8188522424271542,
+       "device_per_turn_s": 0.28249127391156775,
+       "requests_in_window": 425,
+       "warmup_end_s": 70.78123482797061,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5993975903614458,
+       "token_reuse_ratio": 0.5309755394174553,
+       "device_per_turn_s": 0.31663625748991603,
+       "requests_in_window": 379,
+       "warmup_end_s": 52.24821161164056,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2053,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1033,
+      1698
+     ],
+     "reuse_rate": 0.6083627797408716,
+     "token_reuse_ratio": 0.5342606010963392,
+     "hit_shape_share": {
+      "zero": 0.3916372202591284,
+      "partial": 0.14546525323910484,
+      "full": 0.4628975265017668
+     },
+     "h": {
+      "3": 0.002916869227029655,
+      "4": 0.010151848780348308,
+      "5": 0.016071377505790845,
+      "6": 0.02988361119849009,
+      "7": 0.02951185335582945,
+      "8": 0.9114644399325117
+     },
+     "padding": 0.002578551019265756,
+     "device_per_turn_s": 0.3096995190034114,
+     "interference_per_turn_s": 0.43998132102501775,
+     "piecewise_mixed_steps_per_turn": 0.03199174406604747,
+     "eager_mixed_steps_per_turn": 1.0510835913312693,
+     "mode_counts": {
+      "MIXED_NONE": 2037,
+      "DECODE_FULL": 32870,
+      "MIXED_PIECEWISE": 62
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.6017441860465116,
+       "token_reuse_ratio": 0.5295918367346939,
+       "device_per_turn_s": 0.3053610371818341,
+       "requests_in_window": 393,
+       "warmup_end_s": 49.87293209130453,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5797101449275363,
+       "token_reuse_ratio": 0.4980597092150877,
+       "device_per_turn_s": 0.3048154175836687,
+       "requests_in_window": 394,
+       "warmup_end_s": 57.412379387822064,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6706231454005934,
+       "token_reuse_ratio": 0.6052236974835737,
+       "device_per_turn_s": 0.31351343086603234,
+       "requests_in_window": 383,
+       "warmup_end_s": 28.901758947816877,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6752873563218391,
+       "token_reuse_ratio": 0.5948088673433318,
+       "device_per_turn_s": 0.30076362509815185,
+       "requests_in_window": 399,
+       "warmup_end_s": 71.07868729119076,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5092592592592593,
+       "token_reuse_ratio": 0.4424690960770118,
+       "device_per_turn_s": 0.32523895732339303,
+       "requests_in_window": 369,
+       "warmup_end_s": 51.24026449068403,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1938,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 3
+    }
+   },
+   "POOL": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8501655825299,
+     "token_reuse_ratio": 0.8457117087037165,
+     "h": {
+      "1": 0.0001135114675063324,
+      "2": 0.0007654266877487831,
+      "3": 0.0032612553265564132,
+      "4": 0.00996720440526592,
+      "5": 0.023280136295906733,
+      "6": 0.0435175465930196,
+      "7": 0.06625521063136047,
+      "8": 0.8528397085926357
+     },
+     "padding": 0.02850674237871987,
+     "decode_per_turn_s": 0.2525442780984509,
+     "prefill_per_turn_s": 0.027547671031791253,
+     "device_per_turn_s": 0.28009194913024216,
+     "interference_per_turn_s": 0.20925902777263183,
+     "throughput_per_s": 3.5702305501551144,
+     "cycle_s": 6.722254953243084,
+     "mean_running": 7.717595740485543,
+     "phi": 0.9016484632972954,
+     "bound": "lo",
+     "ratio_to_base": 0.9858131515851214,
+     "rank": 2
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1622,
+      1884
+     ],
+     "reuse_rate": 0.8609341825902336,
+     "token_reuse_ratio": 0.8590447511660382,
+     "hit_shape_share": {
+      "zero": 0.13906581740976645,
+      "partial": 0.008492569002123142,
+      "full": 0.8524416135881104
+     },
+     "h": {
+      "2": 0.000425563872130573,
+      "3": 0.005532330337697449,
+      "4": 0.014894735524570055,
+      "5": 0.030240068090219542,
+      "6": 0.03664855934112699,
+      "7": 0.05439707612586677,
+      "8": 0.8578616667083886
+     },
+     "padding": 0.007671963059695123,
+     "device_per_turn_s": 0.27783455069790425,
+     "interference_per_turn_s": 0.17833646200538916,
+     "piecewise_mixed_steps_per_turn": 0.05,
+     "eager_mixed_steps_per_turn": 0.9671296296296297,
+     "mode_counts": {
+      "MIXED_NONE": 2089,
+      "DECODE_FULL": 37750,
+      "MIXED_PIECEWISE": 108
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8600508905852418,
+       "token_reuse_ratio": 0.8585389408816022,
+       "device_per_turn_s": 0.26668809100532626,
+       "requests_in_window": 450,
+       "warmup_end_s": 48.31592076528711,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8694516971279374,
+       "token_reuse_ratio": 0.8653654465796611,
+       "device_per_turn_s": 0.2739929664054081,
+       "requests_in_window": 438,
+       "warmup_end_s": 56.49525269163583,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8579234972677595,
+       "token_reuse_ratio": 0.8612109413996206,
+       "device_per_turn_s": 0.28639709301085703,
+       "requests_in_window": 419,
+       "warmup_end_s": 27.317635397427797,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8807588075880759,
+       "token_reuse_ratio": 0.8708343409915357,
+       "device_per_turn_s": 0.28237498891603285,
+       "requests_in_window": 425,
+       "warmup_end_s": 71.04942240869161,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8364611260053619,
+       "token_reuse_ratio": 0.8396319653614458,
+       "device_per_turn_s": 0.2805941986183285,
+       "requests_in_window": 428,
+       "warmup_end_s": 49.76764909233173,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2160,
+     "ratio_to_base": 0.9583074718900292,
+     "per_rep_ratio_to_base": [
+      0.9657850385030144,
+      0.9703601349166716,
+      0.9570111825189284,
+      1.0047055621445569,
+      0.8932081522296192
+     ],
+     "rank": 2
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1267,
+      1768
+     ],
+     "reuse_rate": 0.7166289592760181,
+     "token_reuse_ratio": 0.655982873617191,
+     "hit_shape_share": {
+      "zero": 0.2833710407239819,
+      "partial": 0.1255656108597285,
+      "full": 0.5910633484162896
+     },
+     "h": {
+      "2": 0.00021657326944421885,
+      "3": 0.0016513711795121688,
+      "4": 0.004818755245133869,
+      "5": 0.02333576978261458,
+      "6": 0.047970979181894476,
+      "7": 0.04280029237391375,
+      "8": 0.8792062589674869
+     },
+     "padding": 0.00468910682868832,
+     "device_per_turn_s": 0.2966046749508045,
+     "interference_per_turn_s": 0.32950980708377103,
+     "piecewise_mixed_steps_per_turn": 0.0365793376173999,
+     "eager_mixed_steps_per_turn": 1.0261987147800296,
+     "mode_counts": {
+      "MIXED_NONE": 2076,
+      "DECODE_FULL": 34789,
+      "MIXED_PIECEWISE": 74
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7292817679558011,
+       "token_reuse_ratio": 0.6731277752831413,
+       "device_per_turn_s": 0.28917128379096596,
+       "requests_in_window": 415,
+       "warmup_end_s": 48.724830581212395,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6814404432132964,
+       "token_reuse_ratio": 0.610487539556962,
+       "device_per_turn_s": 0.291290431702387,
+       "requests_in_window": 412,
+       "warmup_end_s": 56.60949239393579,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7478510028653295,
+       "token_reuse_ratio": 0.6930097544391851,
+       "device_per_turn_s": 0.3015201547610814,
+       "requests_in_window": 398,
+       "warmup_end_s": 28.363404986017837,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7888888888888889,
+       "token_reuse_ratio": 0.7280860868712619,
+       "device_per_turn_s": 0.29126773964217445,
+       "requests_in_window": 412,
+       "warmup_end_s": 70.69562680587337,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6309523809523809,
+       "token_reuse_ratio": 0.5727239659114529,
+       "device_per_turn_s": 0.31089685612268636,
+       "requests_in_window": 386,
+       "warmup_end_s": 51.64390767157631,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2023,
+     "ratio_to_base": 0.966357386023585,
+     "per_rep_ratio_to_base": [
+      0.9590430125833245,
+      0.9781662777298098,
+      0.9572399707186477,
+      0.9732140347656585,
+      0.9637003079067488
+     ],
+     "rank": 1
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.850252660963823,
+     "token_reuse_ratio": 0.8457684039886746,
+     "h": {
+      "1": 0.00010663969187691693,
+      "2": 0.0007235662012409017,
+      "3": 0.003102094342371966,
+      "4": 0.009539796125131597,
+      "5": 0.02242057652295276,
+      "6": 0.042171707803436896,
+      "7": 0.06460592564822236,
+      "8": 0.8573296936647666
+     },
+     "padding": 0.027606200036383595,
+     "decode_per_turn_s": 0.25223490068743337,
+     "prefill_per_turn_s": 0.029255633046761778,
+     "device_per_turn_s": 0.28149053373419514,
+     "interference_per_turn_s": 0.22258562721273334,
+     "throughput_per_s": 3.552493710846998,
+     "cycle_s": 6.75581773071678,
+     "mean_running": 7.727239910736927,
+     "phi": 0.8960695475950593,
+     "bound": "hi",
+     "ratio_to_base": 0.9849907296272131,
+     "rank": 2
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1619,
+      1876
+     ],
+     "reuse_rate": 0.8630063965884861,
+     "token_reuse_ratio": 0.8585809431117727,
+     "hit_shape_share": {
+      "zero": 0.13699360341151387,
+      "partial": 0.014392324093816631,
+      "full": 0.8486140724946695
+     },
+     "h": {
+      "2": 7.558959887119532e-05,
+      "3": 0.004107034872001612,
+      "4": 0.013606127796815158,
+      "5": 0.03207518645434388,
+      "6": 0.03295706510784116,
+      "7": 0.04648760330578512,
+      "8": 0.8706913928643418
+     },
+     "padding": 0.007266692407759339,
+     "device_per_turn_s": 0.2792173573284153,
+     "interference_per_turn_s": 0.18994608711628228,
+     "piecewise_mixed_steps_per_turn": 0.05444392740809679,
+     "eager_mixed_steps_per_turn": 0.962308050255933,
+     "mode_counts": {
+      "MIXED_NONE": 2068,
+      "DECODE_FULL": 37503,
+      "MIXED_PIECEWISE": 117
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.8575129533678757,
+       "token_reuse_ratio": 0.8517780538690546,
+       "device_per_turn_s": 0.27213227993019773,
+       "requests_in_window": 441,
+       "warmup_end_s": 48.61217317940971,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8645833333333334,
+       "token_reuse_ratio": 0.8638319529912553,
+       "device_per_turn_s": 0.27397444192839,
+       "requests_in_window": 438,
+       "warmup_end_s": 56.99389432982686,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.863013698630137,
+       "token_reuse_ratio": 0.8573107310731073,
+       "device_per_turn_s": 0.2870992010310413,
+       "requests_in_window": 418,
+       "warmup_end_s": 27.562157915767973,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8787061994609164,
+       "token_reuse_ratio": 0.8727924546460709,
+       "device_per_turn_s": 0.2810597852567311,
+       "requests_in_window": 427,
+       "warmup_end_s": 70.88450655191176,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8513513513513513,
+       "token_reuse_ratio": 0.8472759185028819,
+       "device_per_turn_s": 0.2823693307042658,
+       "requests_in_window": 425,
+       "warmup_end_s": 50.35386981086313,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2149,
+     "ratio_to_base": 0.9551916822918551,
+     "per_rep_ratio_to_base": [
+      0.9750621899208592,
+      0.9633827019081931,
+      0.9495155341594831,
+      0.9949326269975872,
+      0.8917782598326045
+     ],
+     "rank": 1
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1230,
+      1742
+     ],
+     "reuse_rate": 0.7060849598163031,
+     "token_reuse_ratio": 0.6422543438494371,
+     "hit_shape_share": {
+      "zero": 0.2939150401836969,
+      "partial": 0.134902411021814,
+      "full": 0.571182548794489
+     },
+     "h": {
+      "1": 5.499793757734085e-05,
+      "2": 0.0001099958751546817,
+      "3": 0.003519868004949814,
+      "4": 0.007699711260827719,
+      "5": 0.02257665337549842,
+      "6": 0.030111370823594115,
+      "7": 0.048260690224116595,
+      "8": 0.8876667124982813
+     },
+     "padding": 0.003896491891249788,
+     "device_per_turn_s": 0.30080874112667777,
+     "interference_per_turn_s": 0.36235007508615286,
+     "piecewise_mixed_steps_per_turn": 0.039097744360902256,
+     "eager_mixed_steps_per_turn": 1.032080200501253,
+     "mode_counts": {
+      "MIXED_NONE": 2059,
+      "DECODE_FULL": 34228,
+      "MIXED_PIECEWISE": 78
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7202216066481995,
+       "token_reuse_ratio": 0.6722760411465095,
+       "device_per_turn_s": 0.29058405009242494,
+       "requests_in_window": 413,
+       "warmup_end_s": 49.59007622285511,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6788732394366197,
+       "token_reuse_ratio": 0.5988001310781175,
+       "device_per_turn_s": 0.2963268076338701,
+       "requests_in_window": 405,
+       "warmup_end_s": 57.49025764044867,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7550432276657061,
+       "token_reuse_ratio": 0.7128595511537246,
+       "device_per_turn_s": 0.3022934843156731,
+       "requests_in_window": 397,
+       "warmup_end_s": 28.688417519675294,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7478753541076487,
+       "token_reuse_ratio": 0.6769288483181193,
+       "device_per_turn_s": 0.296490027568224,
+       "requests_in_window": 405,
+       "warmup_end_s": 70.94400130098917,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6226993865030674,
+       "token_reuse_ratio": 0.5476806529915442,
+       "device_per_turn_s": 0.32000238487834737,
+       "requests_in_window": 375,
+       "warmup_end_s": 51.72857778885536,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1995,
+     "ratio_to_base": 0.9712922451241014,
+     "per_rep_ratio_to_base": [
+      0.9516081448183913,
+      0.9721516384666843,
+      0.964212230017177,
+      0.9857908431296065,
+      0.9838993074872061
+     ],
+     "rank": 2
+    }
+   },
+   "POOL+GRID": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      5,
+      7,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8502468992550234,
+     "token_reuse_ratio": 0.8457791676727455,
+     "h": {
+      "1": 0.00011588216159874698,
+      "2": 0.0007814210406153546,
+      "3": 0.003323780423138535,
+      "4": 0.010152316980374637,
+      "5": 0.023698583873909614,
+      "6": 0.04392802249226831,
+      "7": 0.06651223270824118,
+      "8": 0.8514877603198536
+     },
+     "padding": 0.008112300293965915,
+     "decode_per_turn_s": 0.2524504532323027,
+     "prefill_per_turn_s": 0.027540439911765677,
+     "device_per_turn_s": 0.2799908931440684,
+     "interference_per_turn_s": 0.20911570753985637,
+     "throughput_per_s": 3.571518583539125,
+     "cycle_s": 6.719830637481291,
+     "mean_running": 7.715379083996389,
+     "phi": 0.9016388070569022,
+     "bound": "lo",
+     "ratio_to_base": 0.9854574743850952,
+     "rank": 1
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1629,
+      1889
+     ],
+     "reuse_rate": 0.8623610375860243,
+     "token_reuse_ratio": 0.8579279240867337,
+     "hit_shape_share": {
+      "zero": 0.13763896241397564,
+      "partial": 0.012175754367390153,
+      "full": 0.8501852832186342
+     },
+     "h": {
+      "2": 7.50168787977295e-05,
+      "3": 0.0041009227076092124,
+      "4": 0.013603060688654947,
+      "5": 0.028981520842189492,
+      "6": 0.04566027356155135,
+      "7": 0.04996124127928784,
+      "8": 0.8576179640419094
+     },
+     "padding": 0.002359517460756108,
+     "device_per_turn_s": 0.2774081151667203,
+     "interference_per_turn_s": 0.17668268560917993,
+     "piecewise_mixed_steps_per_turn": 0.050855293573740176,
+     "eager_mixed_steps_per_turn": 0.9593157651410079,
+     "mode_counts": {
+      "DECODE_FULL": 37806,
+      "MIXED_NONE": 2075,
+      "MIXED_PIECEWISE": 110
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.853904282115869,
+       "token_reuse_ratio": 0.8445126805413397,
+       "device_per_turn_s": 0.2655003480921128,
+       "requests_in_window": 452,
+       "warmup_end_s": 48.52873285431757,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8720626631853786,
+       "token_reuse_ratio": 0.8644488234612264,
+       "device_per_turn_s": 0.2746202665211476,
+       "requests_in_window": 437,
+       "warmup_end_s": 56.745641928624245,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8579234972677595,
+       "token_reuse_ratio": 0.8618710063897763,
+       "device_per_turn_s": 0.2857259032669874,
+       "requests_in_window": 420,
+       "warmup_end_s": 27.306641576924793,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8766756032171582,
+       "token_reuse_ratio": 0.870414711234556,
+       "device_per_turn_s": 0.2797510826859616,
+       "requests_in_window": 429,
+       "warmup_end_s": 71.00947695787782,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8513513513513513,
+       "token_reuse_ratio": 0.8491282172933222,
+       "device_per_turn_s": 0.28235398930312305,
+       "requests_in_window": 425,
+       "warmup_end_s": 50.1845244837903,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2163,
+     "ratio_to_base": 0.9568366096276272,
+     "per_rep_ratio_to_base": [
+      0.9614837428176866,
+      0.9725817504308509,
+      0.9547683661421192,
+      0.9953695611268384,
+      0.8988100477556714
+     ],
+     "rank": 1
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1231,
+      1753
+     ],
+     "reuse_rate": 0.7022247575584712,
+     "token_reuse_ratio": 0.6351700288771525,
+     "hit_shape_share": {
+      "zero": 0.2977752424415288,
+      "partial": 0.13861950941243584,
+      "full": 0.5636052481460354
+     },
+     "h": {
+      "2": 0.0003540497848466692,
+      "3": 0.0025328176915954026,
+      "4": 0.00819761424914211,
+      "5": 0.01612288250994063,
+      "6": 0.0473609673729506,
+      "7": 0.04346641973963723,
+      "8": 0.8819652486518874
+     },
+     "padding": 0.0013539319251225966,
+     "device_per_turn_s": 0.2989793853994645,
+     "interference_per_turn_s": 0.3445144390804061,
+     "piecewise_mixed_steps_per_turn": 0.03238664673642252,
+     "eager_mixed_steps_per_turn": 1.0403587443946187,
+     "mode_counts": {
+      "MIXED_NONE": 2088,
+      "DECODE_FULL": 34565,
+      "MIXED_PIECEWISE": 65
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7229916897506925,
+       "token_reuse_ratio": 0.6633712802077092,
+       "device_per_turn_s": 0.28986504381978806,
+       "requests_in_window": 414,
+       "warmup_end_s": 48.703424672837826,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6787709497206704,
+       "token_reuse_ratio": 0.6090285771482908,
+       "device_per_turn_s": 0.29486129331235206,
+       "requests_in_window": 407,
+       "warmup_end_s": 56.55402686875035,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7413793103448276,
+       "token_reuse_ratio": 0.6890637293469709,
+       "device_per_turn_s": 0.30152223325583966,
+       "requests_in_window": 398,
+       "warmup_end_s": 28.352336543828592,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7401129943502824,
+       "token_reuse_ratio": 0.6541242768801117,
+       "device_per_turn_s": 0.2956353050943469,
+       "requests_in_window": 406,
+       "warmup_end_s": 70.68232250840539,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6234939759036144,
+       "token_reuse_ratio": 0.5590466440927108,
+       "device_per_turn_s": 0.31414965778292336,
+       "requests_in_window": 382,
+       "warmup_end_s": 51.332480400993745,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2007,
+     "ratio_to_base": 0.9740943476278167,
+     "per_rep_ratio_to_base": [
+      0.9613438831930506,
+      0.9901573904790144,
+      0.9572465693430849,
+      0.9878073982498319,
+      0.9737831566065535
+     ],
+     "rank": 2
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.8502534762355621,
+     "token_reuse_ratio": 0.8457728293872063,
+     "h": {
+      "1": 0.00010884443190574819,
+      "2": 0.0007385525946518264,
+      "3": 0.003161079009102759,
+      "4": 0.00971571781118066,
+      "5": 0.02282121784283483,
+      "6": 0.04256618934013859,
+      "7": 0.06485319015971443,
+      "8": 0.8560352088104712
+     },
+     "padding": 0.00781492483892765,
+     "decode_per_turn_s": 0.2521422092257181,
+     "prefill_per_turn_s": 0.029255137543379706,
+     "device_per_turn_s": 0.28139734676909783,
+     "interference_per_turn_s": 0.22249241685805837,
+     "throughput_per_s": 3.553669641262736,
+     "cycle_s": 6.753582190457076,
+     "mean_running": 7.7251454115980245,
+     "phi": 0.8960369058616502,
+     "bound": "hi",
+     "ratio_to_base": 0.9846646501121215,
+     "rank": 1
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1616,
+      1874
+     ],
+     "reuse_rate": 0.8623265741728922,
+     "token_reuse_ratio": 0.8591669731958171,
+     "hit_shape_share": {
+      "zero": 0.1376734258271078,
+      "partial": 0.013340448239060833,
+      "full": 0.8489861259338314
+     },
+     "h": {
+      "2": 2.516482963410338e-05,
+      "3": 0.002063516029996477,
+      "4": 0.010896371231566762,
+      "5": 0.02926669686446223,
+      "6": 0.044290100156021944,
+      "7": 0.05551361417283205,
+      "8": 0.8579445367154864
+     },
+     "padding": 0.002063186327265225,
+     "device_per_turn_s": 0.27973321618862346,
+     "interference_per_turn_s": 0.18925640177465763,
+     "piecewise_mixed_steps_per_turn": 0.053613053613053616,
+     "eager_mixed_steps_per_turn": 0.965034965034965,
+     "mode_counts": {
+      "MIXED_NONE": 2070,
+      "DECODE_FULL": 37553,
+      "MIXED_PIECEWISE": 115
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.865979381443299,
+       "token_reuse_ratio": 0.8524781341107872,
+       "device_per_turn_s": 0.2714959743154887,
+       "requests_in_window": 442,
+       "warmup_end_s": 48.68906970675867,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8612565445026178,
+       "token_reuse_ratio": 0.8633773001139879,
+       "device_per_turn_s": 0.275886659127842,
+       "requests_in_window": 435,
+       "warmup_end_s": 57.006369466825205,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8571428571428571,
+       "token_reuse_ratio": 0.8560828257000326,
+       "device_per_turn_s": 0.28778010770185675,
+       "requests_in_window": 417,
+       "warmup_end_s": 27.55141851352702,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8756756756756757,
+       "token_reuse_ratio": 0.8718921400439752,
+       "device_per_turn_s": 0.2817104535908468,
+       "requests_in_window": 426,
+       "warmup_end_s": 71.31024098797556,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8513513513513513,
+       "token_reuse_ratio": 0.8521081696015926,
+       "device_per_turn_s": 0.2823597016827415,
+       "requests_in_window": 425,
+       "warmup_end_s": 50.670627007347335,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2145,
+     "ratio_to_base": 0.956956415319995,
+     "per_rep_ratio_to_base": [
+      0.9727822783047281,
+      0.9701066757185856,
+      0.9517674786404507,
+      0.9972359488846887,
+      0.8917478494759364
+     ],
+     "rank": 2
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1208,
+      1744
+     ],
+     "reuse_rate": 0.6926605504587156,
+     "token_reuse_ratio": 0.6237691697176067,
+     "hit_shape_share": {
+      "zero": 0.3073394495412844,
+      "partial": 0.1404816513761468,
+      "full": 0.5521788990825688
+     },
+     "h": {
+      "1": 5.534340583319497e-05,
+      "2": 0.00016603021749958492,
+      "3": 0.0033206043499916984,
+      "4": 0.0056726990979024845,
+      "5": 0.01737782943162322,
+      "6": 0.028833914439094582,
+      "7": 0.046848193037799545,
+      "8": 0.8977253860202556
+     },
+     "padding": 0.0009080505792708534,
+     "device_per_turn_s": 0.30063450032741706,
+     "interference_per_turn_s": 0.3743747114169746,
+     "piecewise_mixed_steps_per_turn": 0.03857715430861723,
+     "eager_mixed_steps_per_turn": 1.034068136272545,
+     "mode_counts": {
+      "MIXED_NONE": 2064,
+      "DECODE_FULL": 33997,
+      "MIXED_PIECEWISE": 77
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7078651685393258,
+       "token_reuse_ratio": 0.6423453758322996,
+       "device_per_turn_s": 0.2941503932983399,
+       "requests_in_window": 408,
+       "warmup_end_s": 49.560949908249434,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6732394366197183,
+       "token_reuse_ratio": 0.5831318016928658,
+       "device_per_turn_s": 0.296297349078185,
+       "requests_in_window": 405,
+       "warmup_end_s": 57.45125857695258,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7298850574712644,
+       "token_reuse_ratio": 0.691118066331764,
+       "device_per_turn_s": 0.3015922350656815,
+       "requests_in_window": 398,
+       "warmup_end_s": 28.677454252375636,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7159090909090909,
+       "token_reuse_ratio": 0.6354190196521347,
+       "device_per_turn_s": 0.29705350220155563,
+       "requests_in_window": 404,
+       "warmup_end_s": 70.81710784768978,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6336336336336337,
+       "token_reuse_ratio": 0.5676587509153678,
+       "device_per_turn_s": 0.3149851741878404,
+       "requests_in_window": 381,
+       "warmup_end_s": 51.65333724015622,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1996,
+     "ratio_to_base": 0.9707296326931186,
+     "per_rep_ratio_to_base": [
+      0.9632872484749305,
+      0.972054994550446,
+      0.9619754861301464,
+      0.9876643231195745,
+      0.9684730783177458
+     ],
+     "rank": 1
+    }
+   }
+  },
+  "26": {
+   "BASE": {
+    "config": {
+     "num_gpu_blocks": 1900,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.7858842497650683,
+     "token_reuse_ratio": 0.7780734909679108,
+     "h": {
+      "1": 4.3516294748798016e-05,
+      "2": 0.0003113269424241551,
+      "3": 0.001412456983554305,
+      "4": 0.004614887270463397,
+      "5": 0.011573233028553039,
+      "6": 0.023339311366663923,
+      "7": 0.03853806691163447,
+      "8": 0.9201672012019579
+     },
+     "padding": 0.015218602538345487,
+     "decode_per_turn_s": 0.2468514702226232,
+     "prefill_per_turn_s": 0.03482572756883878,
+     "device_per_turn_s": 0.28167719779146194,
+     "interference_per_turn_s": 0.2708978115004986,
+     "throughput_per_s": 3.55015416136916,
+     "cycle_s": 7.323625628125621,
+     "mean_running": 7.853552479459848,
+     "phi": 0.8763632983492677,
+     "bound": "lo",
+     "ratio_to_base": 1.0,
+     "rank": 2
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1137,
+      1730
+     ],
+     "reuse_rate": 0.6572254335260116,
+     "token_reuse_ratio": 0.627716910655388,
+     "hit_shape_share": {
+      "zero": 0.34277456647398846,
+      "partial": 0.061849710982658956,
+      "full": 0.5953757225433526
+     },
+     "h": {
+      "4": 8.239494644328481e-05,
+      "5": 0.002416918429003021,
+      "6": 0.015133205163416643,
+      "7": 0.023070585004119747,
+      "8": 0.9592968964570173
+     },
+     "padding": 0.0012360517564463124,
+     "device_per_turn_s": 0.3028983150822663,
+     "interference_per_turn_s": 0.3647056133966037,
+     "piecewise_mixed_steps_per_turn": 0.03230691569914185,
+     "eager_mixed_steps_per_turn": 1.03886925795053,
+     "mode_counts": {
+      "MIXED_NONE": 2058,
+      "DECODE_FULL": 34288,
+      "MIXED_PIECEWISE": 64
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.5727002967359051,
+       "token_reuse_ratio": 0.5517327074416678,
+       "device_per_turn_s": 0.3109088821817205,
+       "requests_in_window": 386,
+       "warmup_end_s": 22.337457735032675,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6094674556213018,
+       "token_reuse_ratio": 0.5699491621163623,
+       "device_per_turn_s": 0.31088815433374206,
+       "requests_in_window": 386,
+       "warmup_end_s": 28.076374963267618,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7060518731988472,
+       "token_reuse_ratio": 0.6621885376796532,
+       "device_per_turn_s": 0.30382947679456596,
+       "requests_in_window": 395,
+       "warmup_end_s": 61.46306966899037,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.800524934383202,
+       "token_reuse_ratio": 0.8053488698582059,
+       "device_per_turn_s": 0.27462035766273024,
+       "requests_in_window": 437,
+       "warmup_end_s": 49.025739359256825,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5749235474006116,
+       "token_reuse_ratio": 0.5171256243006468,
+       "device_per_turn_s": 0.3183187439006212,
+       "requests_in_window": 377,
+       "warmup_end_s": 71.42936956705353,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1981,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 2
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      919,
+      1666
+     ],
+     "reuse_rate": 0.5516206482593037,
+     "token_reuse_ratio": 0.48878103678694523,
+     "hit_shape_share": {
+      "zero": 0.44837935174069626,
+      "partial": 0.13145258103241297,
+      "full": 0.42016806722689076
+     },
+     "h": {
+      "5": 0.0008051298271846335,
+      "6": 0.006527302527532565,
+      "7": 0.016533916093970154,
+      "8": 0.9761336515513126
+     },
+     "padding": 0.000508477314214457,
+     "device_per_turn_s": 0.314316221496229,
+     "interference_per_turn_s": 0.4586876755837889,
+     "piecewise_mixed_steps_per_turn": 0.029334730225248823,
+     "eager_mixed_steps_per_turn": 1.071765322158198,
+     "mode_counts": {
+      "DECODE_FULL": 32675,
+      "MIXED_NONE": 2046,
+      "MIXED_PIECEWISE": 56
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.5645645645645646,
+       "token_reuse_ratio": 0.5084551847304387,
+       "device_per_turn_s": 0.3141364389605771,
+       "requests_in_window": 382,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5582089552238806,
+       "token_reuse_ratio": 0.49050212719833075,
+       "device_per_turn_s": 0.3141648120283466,
+       "requests_in_window": 382,
+       "warmup_end_s": 26.791892340157105,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5382262996941896,
+       "token_reuse_ratio": 0.48746360401164673,
+       "device_per_turn_s": 0.3226073756683287,
+       "requests_in_window": 372,
+       "warmup_end_s": 61.11576858443073,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5873925501432665,
+       "token_reuse_ratio": 0.5213920899314735,
+       "device_per_turn_s": 0.29850957880410756,
+       "requests_in_window": 402,
+       "warmup_end_s": 48.56867580018382,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5062111801242236,
+       "token_reuse_ratio": 0.4335359591417548,
+       "device_per_turn_s": 0.323471144287501,
+       "requests_in_window": 371,
+       "warmup_end_s": 71.40752434663825,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1909,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 2
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.7854048844814447,
+     "token_reuse_ratio": 0.7775180995136117,
+     "h": {
+      "1": 3.982752139328355e-05,
+      "2": 0.0002871340528072724,
+      "3": 0.0013127434177563739,
+      "4": 0.004322174936095452,
+      "5": 0.010922764399617986,
+      "6": 0.022197421607982624,
+      "7": 0.03693525009691929,
+      "8": 0.9239826839674277
+     },
+     "padding": 0.014470782664939296,
+     "decode_per_turn_s": 0.2466167568049902,
+     "prefill_per_turn_s": 0.0369629659749903,
+     "device_per_turn_s": 0.2835797227799805,
+     "interference_per_turn_s": 0.2878999974545003,
+     "throughput_per_s": 3.5263371983902263,
+     "cycle_s": 7.373089564965315,
+     "mean_running": 7.861166133532857,
+     "phi": 0.8696561181199409,
+     "bound": "hi",
+     "ratio_to_base": 1.0,
+     "rank": 2
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1093,
+      1716
+     ],
+     "reuse_rate": 0.6369463869463869,
+     "token_reuse_ratio": 0.6119674711437566,
+     "hit_shape_share": {
+      "zero": 0.36305361305361306,
+      "partial": 0.051864801864801864,
+      "full": 0.585081585081585
+     },
+     "h": {
+      "4": 0.0005845999665942877,
+      "5": 0.004760314013696342,
+      "6": 0.005762485385000835,
+      "7": 0.021073436891041703,
+      "8": 0.9678191637436668
+     },
+     "padding": 0.0009928477268483405,
+     "device_per_turn_s": 0.3055607118199451,
+     "interference_per_turn_s": 0.39209452631050307,
+     "piecewise_mixed_steps_per_turn": 0.032586558044806514,
+     "eager_mixed_steps_per_turn": 1.0341140529531567,
+     "mode_counts": {
+      "MIXED_NONE": 2031,
+      "DECODE_FULL": 33827,
+      "MIXED_PIECEWISE": 64
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.5649546827794562,
+       "token_reuse_ratio": 0.5454263915087699,
+       "device_per_turn_s": 0.31602082630117984,
+       "requests_in_window": 380,
+       "warmup_end_s": 22.7107874819318,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5952380952380952,
+       "token_reuse_ratio": 0.5617235499499282,
+       "device_per_turn_s": 0.3125196283571124,
+       "requests_in_window": 384,
+       "warmup_end_s": 28.594960349169227,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6580459770114943,
+       "token_reuse_ratio": 0.6332058070891079,
+       "device_per_turn_s": 0.3030549511042764,
+       "requests_in_window": 396,
+       "warmup_end_s": 59.69241038437035,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.7754010695187166,
+       "token_reuse_ratio": 0.7655609570107711,
+       "device_per_turn_s": 0.2803874330166811,
+       "requests_in_window": 428,
+       "warmup_end_s": 48.96772191960335,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5718654434250765,
+       "token_reuse_ratio": 0.5284869622081142,
+       "device_per_turn_s": 0.31917607649563745,
+       "requests_in_window": 376,
+       "warmup_end_s": 71.38052237728783,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1964,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 2
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      908,
+      1652
+     ],
+     "reuse_rate": 0.549636803874092,
+     "token_reuse_ratio": 0.49531337857092167,
+     "hit_shape_share": {
+      "zero": 0.45036319612590797,
+      "partial": 0.12469733656174334,
+      "full": 0.42493946731234866
+     },
+     "h": {
+      "5": 0.0008129373167261853,
+      "6": 0.005690561217083297,
+      "7": 0.00786807188688558,
+      "8": 0.985628429579305
+     },
+     "padding": 0.0003636307922220691,
+     "device_per_turn_s": 0.3171842517683534,
+     "interference_per_turn_s": 0.4822058205055414,
+     "piecewise_mixed_steps_per_turn": 0.0306553911205074,
+     "eager_mixed_steps_per_turn": 1.0761099365750528,
+     "mode_counts": {
+      "DECODE_FULL": 32349,
+      "MIXED_NONE": 2036,
+      "MIXED_PIECEWISE": 58
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.5623100303951368,
+       "token_reuse_ratio": 0.5122399886797793,
+       "device_per_turn_s": 0.31746160296896286,
+       "requests_in_window": 378,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5495495495495496,
+       "token_reuse_ratio": 0.4887080477347825,
+       "device_per_turn_s": 0.31602819147525046,
+       "requests_in_window": 380,
+       "warmup_end_s": 27.33146587454195,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5109717868338558,
+       "token_reuse_ratio": 0.4541757724971645,
+       "device_per_turn_s": 0.33061281666322534,
+       "requests_in_window": 363,
+       "warmup_end_s": 61.16527390475274,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5706051873198847,
+       "token_reuse_ratio": 0.5236656596173213,
+       "device_per_turn_s": 0.30151505985318794,
+       "requests_in_window": 398,
+       "warmup_end_s": 49.291520735487744,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.5524691358024691,
+       "token_reuse_ratio": 0.4962174355588567,
+       "device_per_turn_s": 0.3217317946180749,
+       "requests_in_window": 373,
+       "warmup_end_s": 71.32077531845295,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1892,
+     "ratio_to_base": 1.0,
+     "per_rep_ratio_to_base": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "rank": 2
+    }
+   },
+   "POOL": {
+    "config": {
+     "num_gpu_blocks": 2300,
+     "max_num_seqs": 8,
+     "capture_sizes": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "budget": 2048
+    },
+    "analytic/lo": {
+     "reuse_rate": 0.8307573718915422,
+     "token_reuse_ratio": 0.8263771821849885,
+     "h": {
+      "1": 5.3897178717247675e-05,
+      "2": 0.00037840842885601916,
+      "3": 0.001684803661963491,
+      "4": 0.005402131315279941,
+      "5": 0.013295011283322743,
+      "6": 0.026311888664975275,
+      "7": 0.042636729458093166,
+      "8": 0.9102371300087921
+     },
+     "padding": 0.017170318299789385,
+     "decode_per_turn_s": 0.24747093135642587,
+     "prefill_per_turn_s": 0.029650525151502738,
+     "device_per_turn_s": 0.27712145650792863,
+     "interference_per_turn_s": 0.22985475347375048,
+     "throughput_per_s": 3.6085143542901292,
+     "cycle_s": 7.205181259453448,
+     "mean_running": 7.833528037231296,
+     "phi": 0.8930056543794204,
+     "bound": "lo",
+     "ratio_to_base": 0.9838263753003318,
+     "rank": 1
+    },
+    "sim_lru/lo": {
+     "reuse": [
+      1538,
+      1846
+     ],
+     "reuse_rate": 0.8331527627302275,
+     "token_reuse_ratio": 0.8262172138921177,
+     "hit_shape_share": {
+      "zero": 0.1668472372697725,
+      "partial": 0.02112676056338028,
+      "full": 0.8120260021668473
+     },
+     "h": {
+      "3": 0.000861850443599493,
+      "4": 0.009024081115335867,
+      "5": 0.01873257287705957,
+      "6": 0.023624841571609632,
+      "7": 0.03683143219264892,
+      "8": 0.9109252217997466
+     },
+     "padding": 0.004308446955069072,
+     "device_per_turn_s": 0.284510405632025,
+     "interference_per_turn_s": 0.2062949522128008,
+     "piecewise_mixed_steps_per_turn": 0.05026078710289237,
+     "eager_mixed_steps_per_turn": 0.9791370317686107,
+     "mode_counts": {
+      "DECODE_FULL": 37279,
+      "MIXED_NONE": 2065,
+      "MIXED_PIECEWISE": 106
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7983193277310925,
+       "token_reuse_ratio": 0.7829326985276994,
+       "device_per_turn_s": 0.29412051380410337,
+       "requests_in_window": 408,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8619791666666666,
+       "token_reuse_ratio": 0.8551411840015174,
+       "device_per_turn_s": 0.2733603649838776,
+       "requests_in_window": 439,
+       "warmup_end_s": 24.82090239100457,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8314917127071824,
+       "token_reuse_ratio": 0.8286709059696801,
+       "device_per_turn_s": 0.29269700838574575,
+       "requests_in_window": 410,
+       "warmup_end_s": 59.632260736348144,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8415584415584415,
+       "token_reuse_ratio": 0.8460629373870325,
+       "device_per_turn_s": 0.2721316314372922,
+       "requests_in_window": 441,
+       "warmup_end_s": 49.26356557787446,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8296089385474861,
+       "token_reuse_ratio": 0.8136763172269951,
+       "device_per_turn_s": 0.29199574870059064,
+       "requests_in_window": 411,
+       "warmup_end_s": 69.47158861773995,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2109,
+     "ratio_to_base": 0.9392934574586618,
+     "per_rep_ratio_to_base": [
+      0.946002287680528,
+      0.8792884552636318,
+      0.9633594853064654,
+      0.9909375756166827,
+      0.9173061728081945
+     ],
+     "rank": 1
+    },
+    "sim_fifo/lo": {
+     "reuse": [
+      1164,
+      1728
+     ],
+     "reuse_rate": 0.6736111111111112,
+     "token_reuse_ratio": 0.6086406184074133,
+     "hit_shape_share": {
+      "zero": 0.3263888888888889,
+      "partial": 0.1394675925925926,
+      "full": 0.5341435185185185
+     },
+     "h": {
+      "3": 0.00024783829927851517,
+      "4": 0.0013768794404361955,
+      "5": 0.0066916340805199094,
+      "6": 0.00917001707330506,
+      "7": 0.013851407170788126,
+      "8": 0.9686622239356721
+     },
+     "padding": 0.001009441962234998,
+     "device_per_turn_s": 0.3031046763201872,
+     "interference_per_turn_s": 0.3699525825333412,
+     "piecewise_mixed_steps_per_turn": 0.03080808080808081,
+     "eager_mixed_steps_per_turn": 1.0424242424242425,
+     "mode_counts": {
+      "DECODE_FULL": 34189,
+      "MIXED_NONE": 2064,
+      "MIXED_PIECEWISE": 61
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.6443148688046647,
+       "token_reuse_ratio": 0.5737123999134387,
+       "device_per_turn_s": 0.30535654541235857,
+       "requests_in_window": 393,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6925287356321839,
+       "token_reuse_ratio": 0.6264369314182937,
+       "device_per_turn_s": 0.30001740839978597,
+       "requests_in_window": 400,
+       "warmup_end_s": 26.127361444682418,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6763848396501457,
+       "token_reuse_ratio": 0.6141994266994267,
+       "device_per_turn_s": 0.30691599908176365,
+       "requests_in_window": 391,
+       "warmup_end_s": 61.501626031123905,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6815642458100558,
+       "token_reuse_ratio": 0.6265377195399995,
+       "device_per_turn_s": 0.2927014454351721,
+       "requests_in_window": 410,
+       "warmup_end_s": 49.74353531502901,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6726190476190477,
+       "token_reuse_ratio": 0.600063726401317,
+       "device_per_turn_s": 0.31120058325805494,
+       "requests_in_window": 386,
+       "warmup_end_s": 71.02654854474243,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1980,
+     "ratio_to_base": 0.9643303641069754,
+     "per_rep_ratio_to_base": [
+      0.972050700080291,
+      0.9549682106750894,
+      0.9513607630511917,
+      0.9805428911453896,
+      0.9620659794663476
+     ],
+     "rank": 1
+    },
+    "analytic/hi": {
+     "reuse_rate": 0.830712229907494,
+     "token_reuse_ratio": 0.8263164515538978,
+     "h": {
+      "1": 4.9986139303655056e-05,
+      "2": 0.0003532965843333242,
+      "3": 0.0015835180179687065,
+      "4": 0.005111330020671952,
+      "5": 0.012663465470534336,
+      "6": 0.025229634411887,
+      "7": 0.04115644864426689,
+      "8": 0.9138523207110341
+     },
+     "padding": 0.016458879862892774,
+     "decode_per_turn_s": 0.24724397870572165,
+     "prefill_per_turn_s": 0.03147513579727706,
+     "device_per_turn_s": 0.2787191145029987,
+     "interference_per_turn_s": 0.24430335296301825,
+     "throughput_per_s": 3.587830820248637,
+     "cycle_s": 7.246718505583883,
+     "mean_running": 7.840852714506051,
+     "phi": 0.8870725377157272,
+     "bound": "hi",
+     "ratio_to_base": 0.9828598172347005,
+     "rank": 1
+    },
+    "sim_lru/hi": {
+     "reuse": [
+      1532,
+      1835
+     ],
+     "reuse_rate": 0.8348773841961853,
+     "token_reuse_ratio": 0.8273163330233468,
+     "hit_shape_share": {
+      "zero": 0.1651226158038147,
+      "partial": 0.02452316076294278,
+      "full": 0.8103542234332425
+     },
+     "h": {
+      "2": 0.00012747947580439548,
+      "3": 0.003594921217683953,
+      "4": 0.007087858854724389,
+      "5": 0.014379684870735812,
+      "6": 0.02404262913670899,
+      "7": 0.03164040589465096,
+      "8": 0.9191270205496915
+     },
+     "padding": 0.003943675754866217,
+     "device_per_turn_s": 0.28613974708127654,
+     "interference_per_turn_s": 0.21729745630942268,
+     "piecewise_mixed_steps_per_turn": 0.051979017644253694,
+     "eager_mixed_steps_per_turn": 0.9794945159752027,
+     "mode_counts": {
+      "DECODE_FULL": 37059,
+      "MIXED_NONE": 2054,
+      "MIXED_PIECEWISE": 109
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.7899159663865546,
+       "token_reuse_ratio": 0.7771165390188367,
+       "device_per_turn_s": 0.2934039243842671,
+       "requests_in_window": 409,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8514588859416445,
+       "token_reuse_ratio": 0.8442220772001063,
+       "device_per_turn_s": 0.277796928911368,
+       "requests_in_window": 432,
+       "warmup_end_s": 25.263131652435053,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8402203856749312,
+       "token_reuse_ratio": 0.8379697885196374,
+       "device_per_turn_s": 0.29198249805985516,
+       "requests_in_window": 411,
+       "warmup_end_s": 60.328722724214316,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.8404255319148937,
+       "token_reuse_ratio": 0.844547673784751,
+       "device_per_turn_s": 0.2784582848989212,
+       "requests_in_window": 431,
+       "warmup_end_s": 49.210922161036976,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.850828729281768,
+       "token_reuse_ratio": 0.8291053756047249,
+       "device_per_turn_s": 0.2898653231220416,
+       "requests_in_window": 414,
+       "warmup_end_s": 69.05321970149312,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 2097,
+     "ratio_to_base": 0.9364415515888949,
+     "per_rep_ratio_to_base": [
+      0.9284322423252005,
+      0.888894340402622,
+      0.9634638767521361,
+      0.9931197054839289,
+      0.9081674488407452
+     ],
+     "rank": 1
+    },
+    "sim_fifo/hi": {
+     "reuse": [
+      1123,
+      1705
+     ],
+     "reuse_rate": 0.6586510263929619,
+     "token_reuse_ratio": 0.5887884019407532,
+     "hit_shape_share": {
+      "zero": 0.34134897360703814,
+      "partial": 0.14486803519061583,
+      "full": 0.513782991202346
+     },
+     "h": {
+      "5": 0.000729312762973352,
+      "6": 0.00788218793828892,
+      "7": 0.020308555399719496,
+      "8": 0.9710799438990182
+     },
+     "padding": 0.0007051929324469017,
+     "device_per_turn_s": 0.3075832282383049,
+     "interference_per_turn_s": 0.4077729317987971,
+     "piecewise_mixed_steps_per_turn": 0.02972834443874936,
+     "eager_mixed_steps_per_turn": 1.063044592516658,
+     "mode_counts": {
+      "DECODE_FULL": 33518,
+      "MIXED_NONE": 2074,
+      "MIXED_PIECEWISE": 58
+     },
+     "per_rep": [
+      {
+       "reuse_rate": 0.6548672566371682,
+       "token_reuse_ratio": 0.5866998986606776,
+       "device_per_turn_s": 0.30909129369551175,
+       "requests_in_window": 388,
+       "warmup_end_s": 21.516,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6772334293948127,
+       "token_reuse_ratio": 0.6123132473377116,
+       "device_per_turn_s": 0.3038091485835773,
+       "requests_in_window": 395,
+       "warmup_end_s": 26.895839846254734,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6479289940828402,
+       "token_reuse_ratio": 0.5785920174504662,
+       "device_per_turn_s": 0.3125251435201428,
+       "requests_in_window": 384,
+       "warmup_end_s": 60.46242842525793,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6818181818181818,
+       "token_reuse_ratio": 0.6198321891685736,
+       "device_per_turn_s": 0.2966630279876852,
+       "requests_in_window": 405,
+       "warmup_end_s": 48.969209629305844,
+       "max_running": 8
+      },
+      {
+       "reuse_rate": 0.6291793313069909,
+       "token_reuse_ratio": 0.5439715542044405,
+       "device_per_turn_s": 0.3166349899784008,
+       "requests_in_window": 379,
+       "warmup_end_s": 70.9956746053634,
+       "max_running": 8
+      }
+     ],
+     "requests_in_window": 1951,
+     "ratio_to_base": 0.9697304532727548,
+     "per_rep_ratio_to_base": [
+      0.9736336325553379,
+      0.9613355921361526,
+      0.9452904659727475,
+      0.9839078291218181,
+      0.9841582189732772
+     ],
+     "rank": 1
+    }
+   }
+  }
+ },
+ "piecewise_interval_impact": {
+  "20/BASE": {
+   "piecewise_mixed_steps_per_turn": 0.0814663951120163,
+   "max_piecewise_ms_per_turn": 0.12219959266802444,
+   "share_of_device_per_turn": 0.0003999824705221213,
+   "hi_minus_lo_device_ms": -0.5886141237334552
+  },
+  "20/POOL": {
+   "piecewise_mixed_steps_per_turn": 0.08555611474584801,
+   "max_piecewise_ms_per_turn": 0.12833417211877202,
+   "share_of_device_per_turn": 0.0004249260851967281,
+   "hi_minus_lo_device_ms": 0.5801509915722147
+  },
+  "20/POOL+GRID": {
+   "piecewise_mixed_steps_per_turn": 0.085628442663996,
+   "max_piecewise_ms_per_turn": 0.128442663995994,
+   "share_of_device_per_turn": 0.0004274298954570858,
+   "hi_minus_lo_device_ms": 2.132689084882622
+  },
+  "22/BASE": {
+   "piecewise_mixed_steps_per_turn": 0.07195662888122227,
+   "max_piecewise_ms_per_turn": 0.1079349433218334,
+   "share_of_device_per_turn": 0.0003649500227101249,
+   "hi_minus_lo_device_ms": 1.5910556306666934
+  },
+  "22/POOL": {
+   "piecewise_mixed_steps_per_turn": 0.07613967022308439,
+   "max_piecewise_ms_per_turn": 0.1142095053346266,
+   "share_of_device_per_turn": 0.0003924880371983413,
+   "hi_minus_lo_device_ms": 1.4297928045526875
+  },
+  "22/POOL+GRID": {
+   "piecewise_mixed_steps_per_turn": 0.07949587978671838,
+   "max_piecewise_ms_per_turn": 0.11924381968007756,
+   "share_of_device_per_turn": 0.0004099712219259873,
+   "hi_minus_lo_device_ms": 0.7338631063502077
+  },
+  "24/BASE": {
+   "piecewise_mixed_steps_per_turn": 0.04154589371980676,
+   "max_piecewise_ms_per_turn": 0.06231884057971014,
+   "share_of_device_per_turn": 0.00021495026596600418,
+   "hi_minus_lo_device_ms": 2.393386639989392
+  },
+  "24/POOL": {
+   "piecewise_mixed_steps_per_turn": 0.05,
+   "max_piecewise_ms_per_turn": 0.07500000000000001,
+   "share_of_device_per_turn": 0.0002699448279978295,
+   "hi_minus_lo_device_ms": 1.3828066305110465
+  },
+  "24/POOL+GRID": {
+   "piecewise_mixed_steps_per_turn": 0.050855293573740176,
+   "max_piecewise_ms_per_turn": 0.07628294036061026,
+   "share_of_device_per_turn": 0.000274984530696821,
+   "hi_minus_lo_device_ms": 2.325101021903142
+  },
+  "26/BASE": {
+   "piecewise_mixed_steps_per_turn": 0.03230691569914185,
+   "max_piecewise_ms_per_turn": 0.04846037354871277,
+   "share_of_device_per_turn": 0.00015998891752022813,
+   "hi_minus_lo_device_ms": 2.6623967376788182
+  },
+  "26/POOL": {
+   "piecewise_mixed_steps_per_turn": 0.05026078710289237,
+   "max_piecewise_ms_per_turn": 0.07539118065433856,
+   "share_of_device_per_turn": 0.0002649856706887784,
+   "hi_minus_lo_device_ms": 1.6293414492515312
+  }
+ }
+}
