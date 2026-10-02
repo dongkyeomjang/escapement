@@ -25,7 +25,7 @@ Advisor 지시문 10 작업 C. SIGMETRICS 저자 익명 심사에 대비해, 제
 ## 수행 내용
 
 1. 저자를 드러내는 문자열 목록: tracked 파일(`HEAD`), `origin/gpu-a6000`의 GPU 영역(읽기 전용, `git grep`/`git archive`), 비추적 `results/`를 scan. 88 대상(`tools/anon_targets.json`), 위치 표 `tools/ANON_TARGETS.md`(대상별 처음 20개 위치 + 총 수), 전체 위치 `tools/anon_occurrences.csv`(9,487행 — **추적하지 않음**, `anon_export.py --report-only`로 다시 만든다).
-2. `tools/anon_export.py`: `git archive <commit>`(tracked만, 이력 없음) → 치환(텍스트만; binary는 보고만) → 전체 재scan(대상 + 일반 검사 `/home/`, email, `github.com/<owner>`) → `ANON_MANIFEST.json`. 옵션 `--gpu-ref`(GPU 영역을 다른 ref에서 읽기 전용으로 추가, branch 통합 없음), `--rename-package NAME`(기본 꺼짐), `--include-results LIST`(기본 없음), `--apply/--keep ID`(결정 필요 대상), `--exclude PATH`, `--report-only`. 종료 코드 0 통과, 1 실패, 2 결정 필요 대상만 남음. 대상 파일 자신과 `.idea/`는 export에서 뺀다. 출력 위치는 저장소 밖이어야 한다.
+2. `tools/anon_export.py`: `git archive <commit>`(tracked만, 이력 없음) → 치환(텍스트만; binary는 보고만) → 전체 재scan(대상 + 일반 검사: home 디렉터리 절대 경로, email, GitHub 소유자 URL) → `ANON_MANIFEST.json`. 옵션 `--gpu-ref`(GPU 영역을 다른 ref에서 읽기 전용으로 추가, branch 통합 없음), `--rename-package NAME`(기본 꺼짐), `--include-results LIST`(기본 없음), `--apply/--keep ID`(결정 필요 대상), `--exclude PATH`, `--report-only`. 종료 코드 0 통과, 1 실패, 2 결정 필요 대상만 남음. 대상 파일 자신과 `.idea/`는 export에서 뺀다. 출력 위치는 저장소 밖이어야 한다.
 3. `tools/results_sizes.{md,csv}`: `results/` 크기·파일 수(57 단위, 651.8 MiB) — 포함 여부 결정은 하지 않음. TASK97 측정 종료 뒤 다시 만들었다.
 4. `tools/ARTIFACT_COMMANDS.md`: 명령·입력 경로·산출 경로 표(표 생성 24행, TASK 162행, GTASK 15행; TASK 문서의 "실험 또는 검증 방법"에서 기계적으로 뽑았고 다시 실행하지 않았다). 기계 경로는 `<REPO>` 등 자리표시.
 
