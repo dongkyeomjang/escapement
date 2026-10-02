@@ -183,7 +183,11 @@ def _fed(r: Req) -> int:
 
 
 def simulate(plan: MultiTurnPlan, cfg: GpuConfig, *, eviction: str = "lru",
-             bound: str = "lo", horizon_s: float | None = None) -> dict:
+             bound: str = "lo", horizon_s: float | None = None, step_cost=None) -> dict:
+    """``step_cost`` (G-07 C, optional): a callable that replaces the step
+    duration; it gets ``gpu_cost.step_ms``'s keywords plus ``decode_ctx`` =
+    the summed context (KV-computed tokens) of the step's decoding requests.
+    ``None`` keeps the original timing exactly."""
     sessions, start, succ, slot_of = to_sim_inputs(plan)
     grid = tuple(sorted(cfg.capture_sizes))
     pool = BlockPool(cfg.num_gpu_blocks, eviction)
@@ -231,6 +235,7 @@ def simulate(plan: MultiTurnPlan, cfg: GpuConfig, *, eviction: str = "lru",
         budget = cfg.budget
         decodes = 0
         pre_tok = 0
+        dctx = 0               # summed context of this step's decoders (step_cost only)
         sched: list[tuple[Req, int]] = []
         for r in running:
             if budget <= 0:
@@ -241,6 +246,7 @@ def simulate(plan: MultiTurnPlan, cfg: GpuConfig, *, eviction: str = "lru",
             else:
                 n = 1
                 decodes += 1
+                dctx += r.computed
             budget -= n
             sched.append((r, n))
         waiting.sort(key=lambda r: (r.arrival_s, r.idx))
@@ -273,7 +279,11 @@ def simulate(plan: MultiTurnPlan, cfg: GpuConfig, *, eviction: str = "lru",
             for j in range(min(r.computed, _fed(r)) // BLOCK):
                 pool.register(r.blocks[j], (r.session, j))
         reqs = len(sched)
-        dur = C.step_ms(decodes=decodes, prefill_tokens=pre_tok, grid=grid, bound=bound) / 1e3
+        if step_cost is None:
+            dur = C.step_ms(decodes=decodes, prefill_tokens=pre_tok, grid=grid, bound=bound) / 1e3
+        else:
+            dur = step_cost(decodes=decodes, prefill_tokens=pre_tok, grid=grid, bound=bound,
+                            decode_ctx=dctx) / 1e3
         steps.append(Step(start_s=now, duration_s=dur, decodes=decodes, prefill_tokens=pre_tok,
                           reqs=reqs, mode=C.mode(decodes, pre_tok, grid),
                           padded=C.padded(grid, decodes + pre_tok)))

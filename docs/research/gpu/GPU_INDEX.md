@@ -73,6 +73,7 @@
 | [GTASK17](GTASK17.md) | DONE | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 `b59287c` 측정 전 commit. 16/16 유효. streaming·KV events·admission log 효과 모두 비 0.9998–0.9999 → **관찰자 효과 없음**. GTASK11 조건 / 가격 n = 8에서 1.009(운영 1.219), 기울기 0.0615 ms/요청 → 22 % 초과는 세 요인에서 오지 않는다. 예상(streaming 최대)은 빗나감. driver 자동 commit 실패(ignored `sequence.log`) 경위 기록·수정 |
 | [GTASK18](GTASK18.md) | DONE | context 길이 step 비용 (G-07 작업 B) | merge `5f69657`. 설계 `b64eff3` 측정 전 commit → 2/2 유효, 결과 자동 commit `809a767`. 통제 부하 context GTASK05 64–192·GTASK17 64–320, 운영 plan 평균 1,810. **`t = a(n) + c·ΣL`, c = 0.212 µs/token**, 잔차 ≤ 0.7 %, 혼합 cell이 ΣL 형태(n·max L 아님)를 가름. n = 8, L = 3,000은 가격의 1.364배. plan 평균 L만으로 GTASK15 운영 비율의 81–96 % 재현(d = 8 1.210 대 1.219). 짧은 context에서 a(n) = 가격 |
 | [GTASK19](GTASK19.md) | DONE | 정정 기록: N24 BASE sim LRU 0.752 / 0.753 (G-07 작업 D) | 측정 0. 0.753 = `lo`(`PREDICTIONS.json` 1,361/1,807), 0.752 = §5.5 판정이 쓰는 `lo`·`hi` 평균. GTASK11 발견 4("0.849, 0.752, 0.657")가 두 정의를 섞었고 GTASK12가 옮겼다 → `lo` 기준 0.753으로 읽는다. 판정 영향 없음. 본문은 고치지 않음 |
+| [GTASK20](GTASK20.md) | IN_PROGRESS | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 [GPU_BLIND_COLLAPSE_PREREG.md](GPU_BLIND_COLLAPSE_PREREG.md): plan `gblind-n{25,28}-r0–4`(seed 20263000+), 3 구성 × 5 = 30 lifecycle. 예측 (1) ctx 주 / (2) ×1.210·mode_dist / (3) 가격. (1) BASE 재사용 N25 0.514, N28 0.403(가격 0.696, 0.494), 비 약 0.90. 판정 개정 1 §5.1·5.2·5.3·5.6 + 추가 확증 (1) < (3) |
 
 ## 다음 작업
 
