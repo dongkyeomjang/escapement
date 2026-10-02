@@ -42,6 +42,7 @@ RUNS = {  # run directory, N values, configurations, source TASK
     "TASK82": (REPO / "results/npu/stage3/20260930-main", (6, 8, 10, 12), ("BASE", "BATCHONLY", "TUNED")),
     "TASK87": (REPO / "results/npu/stage3/20261001-hiload", (14, 16), ("BASE", "BATCHONLY", "TUNED")),
     "TASK95": (REPO / "results/npu/stage3/20261002-simblind", (13, 17, 20), ("BASE", "BATCHONLY", "TUNED")),
+    "TASK102": (REPO / "results/npu/stage3/20261002-ctxblind", (15, 18), ("BASE", "BATCHONLY", "TUNED")),
 }
 REPS = range(5)
 EXTRA = [("TASK82", 8, "DP", range(10))]   # TASK82 §5.4: DP grid at N = 8, 10 replicates

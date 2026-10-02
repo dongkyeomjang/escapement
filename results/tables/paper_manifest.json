@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-02T15:32:49.844884+09:00",
-  "git_head": "e3697b0f6746f78d9a4dc04b9292fe8efc339fce",
-  "git_dirty": "M docs/research/INDEX.md\n M docs/research/TASK90.md\n M experiments/npu/analysis/make_paper_tables.py\n M paper/RESULTS_INDEX.md\n M results/tables/P04.md\n M results/tables/P10.md\n M results/tables/README.md\n M results/tables/figures/F_b_reuse_ratio_vs_N.csv\n M results/tables/figures/F_c_pred_vs_obs.csv\n M results/tables/figures/F_d_applicability.csv\n M results/tables/paper_manifest.json\n?? .idea/\n?? experiments/npu/analysis/queue_depth_obs.py\n?? results/tables/P11.csv\n?? results/tables/P11.md",
+  "generated_at": "2026-10-02T21:38:39.984138+09:00",
+  "git_head": "29dbdd37de81f142806c30c53509f0e60764b21e",
+  "git_dirty": "M experiments/npu/analysis/make_paper_tables.py\n M experiments/npu/analysis/queue_depth_obs.py\n M results/tables/P04.md\n M results/tables/README.md\n M results/tables/figures/F_b_reuse_ratio_vs_N.csv\n M results/tables/figures/F_c_pred_vs_obs.csv\n M results/tables/figures/F_d_applicability.csv\n M results/tables/paper_manifest.json\n?? .idea/\n?? results/tables/P12.csv\n?? results/tables/P12.md\n?? results/tables/P13.csv\n?? results/tables/P13.md\n?? results/tables/P14.csv\n?? results/tables/P14.md",
   "gpu_branch": "origin/gpu-a6000",
-  "gpu_branch_head": "e820f48",
+  "gpu_branch_head": "614a4c4",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
   "tables": [
     {
@@ -47,13 +47,14 @@
     {
       "id": "P04",
       "title": "GPU multi-turn: 해석 v1·sim LRU·sim FIFO",
-      "tasks": "GTASK11",
+      "tasks": "GTASK11, GTASK19",
       "inputs": [
         "origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4",
-        "origin/gpu-a6000:experiments/gpu/multiturn/plans/PREDICTIONS.json @ 2bef619"
+        "origin/gpu-a6000:experiments/gpu/multiturn/plans/PREDICTIONS.json @ 2bef619",
+        "origin/gpu-a6000:docs/research/gpu/GTASK19.md @ a99f23c"
       ],
       "rows": 11,
-      "checks": 63,
+      "checks": 65,
       "mismatches": [
         {
           "항목": "BASE.n24 sim LRU 재사용 (§5.5·발견 4 문장의 값)",
@@ -61,7 +62,7 @@
           "기록": 0.752,
           "허용차": 0.0005,
           "일치": false,
-          "출처": "GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» — GPU 쪽 정정 대기"
+          "출처": "GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» (본문 미수정; GTASK19 정정 기록: `lo` 0.753, 0.752 = lo·hi 평균)"
         }
       ],
       "built": true
@@ -161,6 +162,79 @@
       "checks": 10,
       "mismatches": [],
       "built": true
+    },
+    {
+      "id": "P12",
+      "title": "두 장비 context 비용 비교",
+      "tasks": "TASK92, TASK97, TASK100, TASK102, GTASK18, GTASK20",
+      "inputs": [
+        "results/npu/stage3/ctxcost/ctxcost.json",
+        "results/npu/stage3/ctxcost/ctxcost_v2.json",
+        "results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json",
+        "origin/gpu-a6000:experiments/gpu/stepcost/ctx_result/summary.json @ 809a767",
+        "origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000",
+        "origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63",
+        "docs/research/TASK97.md @ 8b54b5a",
+        "docs/research/TASK100.md @ cb1eec4",
+        "docs/research/TASK102.md @ 15742d7"
+      ],
+      "rows": 29,
+      "checks": 72,
+      "mismatches": [
+        {
+          "항목": "GPU d = 1 설명 몫 %",
+          "재계산": 90,
+          "기록": 89.0,
+          "허용차": 0.5,
+          "일치": false,
+          "출처": "GTASK18 결과 4 표"
+        },
+        {
+          "항목": "GPU d = 5 설명 몫 %",
+          "재계산": 89,
+          "기록": 90.0,
+          "허용차": 0.5,
+          "일치": false,
+          "출처": "GTASK18 결과 4 표"
+        }
+      ],
+      "built": true
+    },
+    {
+      "id": "P13",
+      "title": "NPU context 비용 시뮬레이터 blind N = 15·18",
+      "tasks": "TASK101, TASK102",
+      "inputs": [
+        "results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json",
+        "results/npu/stage3/queue_obs/queue_obs.json"
+      ],
+      "rows": 6,
+      "checks": 81,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P14",
+      "title": "GPU 붕괴 영역 blind N = 25·28: ctx·보정·가격",
+      "tasks": "GTASK20",
+      "inputs": [
+        "origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63",
+        "origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000",
+        "origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8"
+      ],
+      "rows": 6,
+      "checks": 72,
+      "mismatches": [
+        {
+          "항목": "BASE.n28 TTFT",
+          "재계산": 3.11,
+          "기록": 3.12,
+          "허용차": 0.005,
+          "일치": false,
+          "출처": "GTASK20 cell별 재사용 표"
+        }
+      ],
+      "built": true
     }
   ],
   "figures": [
@@ -185,7 +259,7 @@
     {
       "id": "F_b_reuse_ratio_vs_N",
       "built": true,
-      "rows": 228,
+      "rows": 300,
       "columns": [
         "substrate",
         "N",
@@ -203,7 +277,7 @@
     {
       "id": "F_c_pred_vs_obs",
       "built": true,
-      "rows": 282,
+      "rows": 382,
       "columns": [
         "substrate",
         "cell",
@@ -222,7 +296,7 @@
     {
       "id": "F_d_applicability",
       "built": true,
-      "rows": 130,
+      "rows": 178,
       "columns": [
         "substrate",
         "cell",

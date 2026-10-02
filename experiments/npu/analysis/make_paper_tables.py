@@ -42,6 +42,9 @@ S3 = REPO / "results/npu/stage3"
 MAIN_VERDICT = S3 / "20260930-main/main_verdict.json"
 HI_VERDICT = S3 / "20261001-hiload/hiload_verdict.json"
 SIM_VERDICT = S3 / "20261002-simblind/simblind_verdict.json"
+CTX_VERDICT = S3 / "20261002-ctxblind/ctxblind_verdict.json"
+CTXCOST_V1 = S3 / "ctxcost/ctxcost.json"
+CTXCOST_V2 = S3 / "ctxcost/ctxcost_v2.json"
 QUEUE_OBS = S3 / "queue_obs/queue_obs.json"
 STATIONARITY = S3 / "20260930-main/stationarity.json"
 R1 = S3 / "model_v0_retro/r1.json"
@@ -61,6 +64,13 @@ G12 = "docs/research/gpu/GTASK12.md"
 G13 = "docs/research/gpu/GTASK13.md"
 G14 = "docs/research/gpu/GTASK14.md"
 G16 = "docs/research/gpu/GTASK16.md"
+G18 = "docs/research/gpu/GTASK18.md"
+G19 = "docs/research/gpu/GTASK19.md"
+G20 = "docs/research/gpu/GTASK20.md"
+G18_SUMMARY = "experiments/gpu/stepcost/ctx_result/summary.json"
+G_BLIND_PRED = "experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json"
+G_BLIND_VERDICT = "experiments/gpu/multiturn/blind_result/verdict.json"
+G_SELECTION = "experiments/gpu/multiturn/selection/selection.json"
 
 #: GPU null reuse predictor fixed in GPU_MULTITURN_PREREG revision 1 (GTASK11:
 #: "NPU 영 재사용 0.84718(TASK82 확증 10 cell 합산 5,771/6,812)").
@@ -237,12 +247,35 @@ def npu_cells():
             for p, lab in names.items():
                 row["pred"][lab]["ratio"] = r[p]["pred"]
         out.append(row)
+    cv = load(CTX_VERDICT)
+    for key, c in cv["cells"].items():
+        cfg, n = key.split(".n")
+        n = int(n)
+        row = {"substrate": "NPU", "cell": key, "N": n, "config": cfg,
+               "reuse_obs": c["reuse_obs"], "reuse_k": c["reuse"],
+               "ttft_s": c.get("ttft_turn_ge1_median_s"),
+               "mean_running_obs": c.get("mean_running_obs"),
+               "pred": {}, "population": "blind_confirm_cell", "source": "TASK102",
+               "src_file": rel(CTX_VERDICT)}
+        names = {"sim_ctx_op": "sim_ctxcost", "sim": "sim_descriptor",
+                 "sim_ctx": "sim_ctxcost_origprefill", "v1": "analytic_v1"}
+        for p, lab in names.items():
+            row["pred"][lab] = {"reuse": c["pred"][p]["reuse"], "ratio": c["pred"][p]["ratio"]}
+        row["pred"]["sim_ctxcost_origprefill"]["population"] = "reported_only"
+        row["pred"]["analytic_v1"]["population"] = (
+            "reference_in_scope" if c["v1_in_scope"] else "reference_out_of_scope")
+        if key in cv["5.2"]["cells"]:
+            r = cv["5.2"]["cells"][key]
+            row["ratio_obs"], row["ratio_ci"] = r["m"], r["ci"]
+            for p, lab in names.items():
+                row["pred"][lab]["ratio"] = r[p]["pred"]
+        out.append(row)
     return out
 
 
 def with_cell_set(header, rows):
     """Append ``cell_set`` = the TASK/GTASK that owns the row (blind cell set
-    TASK82 / TASK87 / TASK95 on NPU, GTASK11 on GPU; GTASK13 rows are dev set)."""
+    TASK82 / TASK87 / TASK95 / TASK102 on NPU, GTASK11 / GTASK20 on GPU; GTASK13 rows are dev set)."""
     i = header.index("source")
     return header + ["cell_set"], [r + [str(r[i]).split(";")[0]] for r in rows]
 
@@ -288,6 +321,39 @@ def gpu_cells():
             # digits as recorded: 4 in the §5.2 table, 3 in the N = 26 sentence
             row["ratio_dp"] = 3 if n == 26 else 4
         row["reuse_dp"] = 3
+        out.append(row)
+    out += gpu_blind_cells()
+    return out
+
+
+#: GTASK20 predictor labels (PREDICTIONS_BLIND.json key -> figure label, population override).
+#: (2) x1.210 and (2') mode_dist are calibrated on GTASK11 observations (GTASK20 "보정 예측").
+G20_PREDICTORS = (("ctx", "sim_ctxcost", None), ("x1.210", "sim_lru_x1.210", "dev_calibrated"),
+                  ("mode_dist", "sim_lru_mode_dist", "dev_calibrated"), ("price", "sim_lru_price", None))
+
+
+def gpu_blind_cells():
+    """GTASK20 cells (N = 25, 28): observed from blind_result/verdict.json, predictions from
+    PREDICTIONS_BLIND.json (lo bound, as P04 does for GTASK11)."""
+    bv = json.loads(gpu_show(G_BLIND_VERDICT))
+    bp = json.loads(gpu_show(G_BLIND_PRED))
+    obs52 = bv["5.2"]["lo"]["observed"]
+    out = []
+    for key, o in bv["observed"].items():
+        n, cfg = key.split("/")
+        n = int(n)
+        row = {"substrate": "GPU", "cell": f"{cfg}.n{n}", "N": n, "config": cfg,
+               "reuse_obs": o["reuse_rate"], "reuse_k": o["reuse"],
+               "ttft_s": o.get("ttft_turn_ge1_median_s"),
+               "population": "blind_confirm_cell", "source": "GTASK20",
+               "src_file": f"{gpu_ref(G_BLIND_VERDICT)}; pred {gpu_ref(G_BLIND_PRED)}", "pred": {}}
+        for b, lab, pop in G20_PREDICTORS:
+            pc = bp["cells"][f"{b}/lo"][str(n)][cfg]
+            row["pred"][lab] = {"reuse": pc["reuse_rate"], "ratio": pc["ratio_to_base"]}
+            if pop:
+                row["pred"][lab]["population"] = pop
+        if key in obs52:
+            row["ratio_obs"], row["ratio_ci"] = obs52[key]["m"], obs52[key]["ci"]
         out.append(row)
     return out
 
@@ -450,7 +516,7 @@ def p03_npu_hiload():
 
 def p04_gpu_multiturn():
     """GTASK11 cells: observed (GTASK11 tables) vs PREDICTIONS.json (lo)."""
-    cells = gpu_cells()
+    cells = [c for c in gpu_cells() if c["source"] == "GTASK11"]
     header = ["cell", "판정 종류", "재사용 관측", "해석 v1", "sim LRU", "sim FIFO", "영",
               "비 m", "95 % CI", "비 해석", "비 sim LRU", "비 sim FIFO"]
     rows = []
@@ -493,12 +559,21 @@ def p04_gpu_multiturn():
               source="GTASK11 N = 26 탐색 문장")
     b24 = next(c for c in cells if c["cell"] == "BASE.n24")
     ck.eq("BASE.n24 sim LRU 재사용 (§5.5·발견 4 문장의 값)", round(b24["pred"]["sim_lru"]["reuse"], 3),
-          0.752, tol=5e-4, source="GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» — GPU 쪽 정정 대기")
+          0.752, tol=5e-4, source="GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» "
+          "(본문 미수정; GTASK19 정정 기록: `lo` 0.753, 0.752 = lo·hi 평균)")
+    g19 = gpu_show(G19)
+    g19_lo = re.search(r"`sim_lru/lo` \| ([\d.]+)", g19)
+    g19_mean = re.search(r"`24/BASE.sim_lru` \| ([\d.]+)", g19)
+    hi24 = json.loads(gpu_show(G_MT_PRED))["cells"]["24"]["BASE"]["sim_lru/hi"]["reuse_rate"]
+    ck.eq("BASE.n24 sim LRU 재사용 `lo` (5자리)", round(b24["pred"]["sim_lru"]["reuse"], 5),
+          float(g19_lo.group(1)), tol=5e-6, source="GTASK19 결과 표 `PREDICTIONS.json` `sim_lru/lo`")
+    ck.eq("BASE.n24 sim LRU lo·hi 평균 (5자리)", round((b24["pred"]["sim_lru"]["reuse"] + hi24) / 2, 5),
+          float(g19_mean.group(1)), tol=5e-6, source="GTASK19 결과 표 §5.5 `24/BASE.sim_lru`")
     notes = ["관측은 GTASK11 문서 표(재사용 3자리, 비 4자리)에서 읽었다 — GPU raw는 이 host에 없다.",
              "예측은 PREDICTIONS.json `lo` bound. 영 = GPU 선등록 개정 1의 NPU 영 재사용 0.84718.",
              "N=26은 탐색 cell. N26 POOL 비 m·CI는 GTASK11 본문 문장에서 읽었다."]
-    inputs = [gpu_ref(G11), gpu_ref(G_MT_PRED)]
-    return header, rows, notes, ck, inputs, "GTASK11"
+    inputs = [gpu_ref(G11), gpu_ref(G_MT_PRED), gpu_ref(G19)]
+    return header, rows, notes, ck, inputs, "GTASK11, GTASK19"
 
 
 def p05_ranking():
@@ -878,6 +953,7 @@ def fig_d_applicability():
     gq = gpu_queue()
     qo = load(QUEUE_OBS)["cells"]
     gpred = json.loads(gpu_show(G_MT_PRED))
+    gsel = json.loads(gpu_show(G_SELECTION))
     for c in npu_cells() + gpu_cells():
         if c["substrate"] == "NPU":
             M = 8 if c["config"] == "BASE" else 16
@@ -896,14 +972,17 @@ def fig_d_applicability():
             qosrc = (f"queue_depth_obs.py: client in-flight − [BUCKET] request_nums, 평가 구간 decode "
                      f"step 가중 ({q['steps']} step, {c['source']} 로그)")
         else:
-            M = gpred["cells"][str(c["N"])][c["config"]]["config"]["max_num_seqs"]
+            if str(c["N"]) in gpred["cells"]:
+                M = gpred["cells"][str(c["N"])][c["config"]]["config"]["max_num_seqs"]
+            else:   # GTASK20 cells: same selection (configs.py: max_num_seqs common to all N)
+                M = gsel["max_num_seqs"]
             pw = ew = None
             q = gq.get((c["N"], c["config"]))
             qsrc = f"GTASK14 관측 @ {gpu_commit(G14)}" if q else "기록 없음"
             qobs = q["queue_mean_obs"] if q else ""
             qp = ""
             qosrc = f"GTASK14 관측 @ {gpu_commit(G14)}" if q else "기록 없음"
-            ttft = q["ttft_median_obs_s"] if q else None
+            ttft = q["ttft_median_obs_s"] if q else c.get("ttft_s")
         for lab, p in c["pred"].items():
             re_ = p["reuse"] - c["reuse_obs"]
             ra = (p["ratio"] - c["ratio_obs"]) if (c["config"] != "BASE" and "ratio_obs" in c
@@ -970,6 +1049,439 @@ def p11_npu_simblind():
 
 
 TABLES["P11"] = (p11_npu_simblind, "NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1")
+
+
+# -- context cost: both substrates (TASK97/100/102, GTASK18/20) -------------------
+
+def npu_operational_context():
+    """Per-request decode context in the TASK82/87/95 runs, per artifact.
+
+    Same population as ``ctxcost_analyze.py``'s operational-ratio check: clean
+    decode steps in the evaluation window whose running requests are all
+    attributed (TASK91 attribution); one value per (running request, step) =
+    prompt tokens + tokens generated so far + 1. Read from the run logs; nothing
+    is measured or simulated.
+    """
+    import gzip
+    from collections import defaultdict
+    sys.path.insert(0, str(REPO / "experiments/npu/stage3"))
+    import ctxcost_analyze as C  # noqa: E402
+
+    def per_request(run: Path, tag: str) -> list[int]:
+        ev = C.R.parse_log(run / f"server-{tag}.log")
+        probe = run / "probe" / tag
+        reqs = [json.loads(ln) for ln in (probe / f"requests.{tag}.jsonl").read_text().splitlines()
+                if ln.strip()]
+        win = json.loads((probe / f"windows.{tag}.json").read_text())
+        w0 = win["warmup_end_s"]
+        w1 = w0 + float(win["eval_s"])
+        tok = {}
+        with gzip.open(probe / f"tokens.{tag}.jsonl.gz", "rt") as fh:
+            for ln in fh:
+                x = json.loads(ln)
+                tok[x["request_id"]] = x["t"]
+        pos_a, pos_f = {}, {}
+        for i, e in enumerate(ev):
+            if e[0] == "alloc":
+                pos_a.setdefault(e[1], i)
+            elif e[0] == "free":
+                pos_f.setdefault(e[1], i)
+        sid = {}
+        for s in pos_a:
+            sid.setdefault(s.rsplit("-", 2)[0], s)
+        ctxs = defaultdict(list)
+        iv = {}
+        for r in reqs:
+            s = sid.get(r["request_id"])
+            t = tok.get(r["request_id"], [])
+            if s is None or s not in pos_f:
+                continue
+            bpos = [i for i in range(pos_a[s], pos_f[s]) if ev[i][0] == "bucket"]
+            if len(bpos) != r["completion_tokens"] - 1 or len(t) != r["completion_tokens"]:
+                continue
+            for k, i in enumerate(bpos):
+                ctxs[i].append(r["prompt_tokens"] + k + 1)
+                if k >= 1 and i not in iv and w0 <= r["sent_s"] < w1:
+                    clean = not any(e[0] == "alloc" for e in ev[bpos[k - 1] + 1:i])
+                    iv[i] = (clean, 0.5 * (t[k] + t[k + 1]))
+        out = []
+        for i, (clean, at) in iv.items():
+            if clean and len(ctxs[i]) == ev[i][1] and w0 <= at < w1:
+                out += ctxs[i]
+        return out
+
+    res = {}
+    for cfg in C.ARTS:
+        vals, per_task = [], {}
+        for task, (run, ns) in C.MT_RUNS.items():
+            v = []
+            for n in ns:
+                for r in range(5):
+                    tag = C.A.chosen_tag(run, cfg, n, r)[0]
+                    if tag is not None:
+                        v += per_request(run, tag)
+            per_task[task] = (len(v), statistics.fmean(v))
+            vals += v
+        vals.sort()
+        q = statistics.quantiles(vals, n=20, method="inclusive")
+        res[cfg] = {"samples": len(vals), "mean": statistics.fmean(vals), "p05": q[0],
+                    "p50": statistics.median(vals), "p95": q[-1], "max": vals[-1], "per_task": per_task}
+    return res
+
+
+def p12_ctxcost_two_substrates():
+    """Context-length decode cost on both substrates: c, context ranges, operational ratio
+    reproduction, blind difference against the original cost."""
+    v1, v2 = load(CTXCOST_V1), load(CTXCOST_V2)
+    cv = load(CTX_VERDICT)
+    opc = npu_operational_context()
+    gs = json.loads(gpu_show(G18_SUMMARY))
+    g18 = gpu_show(G18)
+    bv = json.loads(gpu_show(G_BLIND_VERDICT))
+    t97, t100, t102 = npu_doc("TASK97"), npu_doc("TASK100"), npu_doc("TASK102")
+    s_g18, s_g18j, s_g20 = gpu_ref(G18), gpu_ref(G18_SUMMARY), gpu_ref(G_BLIND_VERDICT)
+    header = ["장비", "구성", "항목", "값", "모집단/단위", "출처"]
+    rows = []
+    ck = Check()
+    # c (µs/token), F1
+    c_src = {"BASE": ("TASK97", t97), "TUNED": ("TASK97", t97), "BATCHONLY": ("TASK100", t100)}
+    c_rec = {"BASE": 0.145, "TUNED": 0.149, "BATCHONLY": 0.146}
+    for cfg in ("BASE", "BATCHONLY", "TUNED"):
+        f1 = v2["artifacts"][cfg]["fits"]["F1"]
+        c = f1["c_ms_per_token"][0] * 1000
+        rows.append(["NPU (RBLN-CA25)", cfg, "c", f"{c:.3f}",
+                     f"µs/token, F1 `f(b) + βn + c·ΣL`, decode step; β {f1['beta_ms']:+.3f} ms, "
+                     f"RMS {f1['rms_ms']:.3f} ms",
+                     f"{c_src[cfg][0]}; {rel(CTXCOST_V2)}; {c_src[cfg][1]}"])
+        ck.eq(f"NPU {cfg} c (µs/token)", round(c, 3), c_rec[cfg], tol=5e-4,
+              source=f"{c_src[cfg][0]} 형태 표 F1")
+        if cfg != "BATCHONLY":
+            c1 = v1["artifacts"][cfg]["fits"]["F1"]["c_ms_per_token"][0] * 1000
+            ck.eq(f"NPU {cfg} c: ctxcost.json(TASK97) = ctxcost_v2.json", round(c1, 4), round(c, 4),
+                  tol=5e-5, source="TASK97 산출 대 TASK100 재분석")
+    gc = gs["F1"]["c_ms_per_token"] * 1000
+    rows.append(["GPU (A6000)", "GTASK18 통제 구성", "c", f"{gc:.3f}",
+                 "µs/token, F1 `t = a(n) + c·ΣL`, 균일 16 cell; a(n) n = 1/2/4/8 "
+                 + " / ".join(f"{gs['F1']['a_ms'][k]:.3f}" for k in ("1", "2", "4", "8")) + " ms",
+                 f"GTASK18; {s_g18j}; {s_g18}"])
+    ck.eq("GPU c (µs/token)", round(gc, 3), 0.212, tol=5e-4, source="GTASK18 형태 F1")
+    for k, rec in zip(("1", "2", "4", "8"), (13.432, 13.285, 13.265, 13.414)):
+        ck.eq(f"GPU a(n = {k}) ms", round(gs["F1"]["a_ms"][k], 3), rec, tol=5e-4, source="GTASK18 형태 F1")
+    # control-measurement context range
+    for cfg in ("BASE", "BATCHONLY", "TUNED"):
+        task, src = c_src[cfg]
+        rows.append(["NPU (RBLN-CA25)", cfg, "통제 측정 context 범위",
+                     "L ∈ {512, 1,500, 3,000} + 생성 ≤ 255 (512–3,255); 짧은 context 128–640",
+                     f"decode 중 요청 context (token); 짧은 context = TASK92 `op-decode` (prompt 128 + 생성 512)",
+                     f"{task}; docs/research/CTXCOST_DESIGN.md @ {npu_commit('docs/research/CTXCOST_DESIGN.md')}; "
+                     f"{npu_doc('TASK92')}"])
+    rows.append(["GPU (A6000)", "GTASK18 통제 구성", "통제 측정 context 범위",
+                 "L ∈ {64, 512, 1,500, 3,000} (+ 혼합 512·3,000); 이전 통제 GTASK05 64–192 (평균 128), "
+                 "GTASK17 64–320 (평균 192)",
+                 "decode 중 요청 context (token)", f"GTASK18; {s_g18}"])
+    # operational context
+    for cfg in ("BASE", "BATCHONLY", "TUNED"):
+        o = opc[cfg]
+        per = " / ".join(f"{o['per_task'][t][1]:,.0f}" for t in ("TASK82", "TASK87", "TASK95"))
+        rows.append(["NPU (RBLN-CA25)", cfg, "운영 context",
+                     f"평균 {o['mean']:,.0f}; p05 {o['p05']:,.0f}, 중앙 {o['p50']:,.0f}, p95 {o['p95']:,.0f}, "
+                     f"최대 {o['max']:,}; run별 평균 TASK82 / 87 / 95 {per}",
+                     f"run 기록, 요청당 context, decode step 가중 (운영 비율 재현 검사와 같은 깨끗한 step "
+                     f"모집단, {o['samples']:,} 요청·step)",
+                     "TASK82, TASK87, TASK95 run 로그; make_paper_tables.py npu_operational_context()"])
+        ck.eq(f"NPU {cfg} 운영 context 표본 = 운영 비율 재현 검사 표본",
+              o["samples"], sum(v2["operational_ratio_check"][cfg][t]["samples"]
+                                for t in ("TASK82", "TASK87", "TASK95")),
+              source="ctxcost_v2.json operational_ratio_check samples (같은 모집단)")
+    pc = gs["plan_context"]
+    rows.append(["GPU (A6000)", "GTASK11 plan", "운영 context",
+                 f"평균 {pc['mean']:,.0f}; p05 {pc['p05']:,}, 중앙 {pc['p50']:,}, p95 {pc['p95']:,}, "
+                 f"최대 {pc['max']:,}",
+                 f"GTASK11 plan, 요청당 context, decode step 가중 ({pc['steps']:,} step)",
+                 f"GTASK18; {s_g18j}; {s_g18}"])
+    b1 = table_after(g18, "### 1. 통제 부하의 context 길이")
+    cell = next(r for r in b1 if r[0].startswith("GTASK11"))[1]
+    for lab, val in (("평균", round(pc["mean"])), ("p05", pc["p05"]), ("중앙", pc["p50"]), ("p95", pc["p95"]),
+                     ("최대", pc["max"])):
+        ck.eq(f"GPU 운영 context {lab}", float(val), num(cell.split(lab, 1)[1]), tol=0.5,
+              source="GTASK18 결과 1 표")
+    # operational ratio reproduction
+    orc = v2["operational_ratio_check"]
+    rec97 = {("BASE", "TASK82"): 1.084, ("BASE", "TASK87"): 1.115, ("BASE", "TASK95"): 1.116,
+             ("BASE", "TASK92_prefill_mt"): 1.113, ("TUNED", "TASK82"): 1.083, ("TUNED", "TASK87"): 1.114,
+             ("TUNED", "TASK95"): 1.122, ("TUNED", "TASK92_prefill_mt"): 1.100,
+             ("BATCHONLY", "TASK82"): 1.085, ("BATCHONLY", "TASK87"): 1.112, ("BATCHONLY", "TASK95"): 1.120,
+             ("BATCHONLY", "TASK92_prefill_mt"): 1.101}
+    obs_doc = {"BASE": ("1.095", "1.084", "1.113"), "TUNED": ("1.096", "1.085", "1.107"),
+               "BATCHONLY": ("", "", "")}
+    for cfg in ("BASE", "BATCHONLY", "TUNED"):
+        task, src = c_src[cfg]
+        o = orc[cfg]
+        rows.append(["NPU (RBLN-CA25)", cfg, "운영 비율 재현: F1 / 통제 (run 구조)",
+                     " / ".join(f"{o[t]['F1']:.3f}" for t in ("TASK82", "TASK87", "TASK95", "TASK92_prefill_mt")),
+                     "step 가중, TASK82 / TASK87 / TASK95 / TASK92 `op-prefill-mt`",
+                     f"{task}; {rel(CTXCOST_V2)}; {src}"])
+        for t in ("TASK82", "TASK87", "TASK95", "TASK92_prefill_mt"):
+            ck.eq(f"NPU {cfg} F1 운영 비 {t}", round(o[t]["F1"], 3), rec97[(cfg, t)], tol=5e-4,
+                  source=f"{task} 운영 비율 재현 검사")
+        f1_9192, obs91, obs92 = obs_doc[cfg]
+        if f1_9192:
+            rows.append(["NPU (RBLN-CA25)", cfg, "운영 비율 재현: F1 대 관측",
+                         f"TASK91 모집단 F1 {f1_9192} 대 관측 {obs91}; TASK92 `op-prefill-mt` F1 "
+                         f"{o['TASK92_prefill_mt']['F1']:.3f} 대 관측 {obs92}",
+                         "context 비용/통제 비용, step 가중 (TASK91 모집단 = TASK82 + 87 run 구조)",
+                         f"TASK97; {t97}"])
+            w = {t: o[t]["samples"] for t in ("TASK82", "TASK87")}
+            approx = sum(o[t]["F1"] * w[t] for t in w) / sum(w.values())
+            ck.eq(f"NPU {cfg} TASK91 모집단 F1 (TASK82·87 표본 가중 결합, 근사)", round(approx, 3),
+                  float(f1_9192), tol=1e-3, source="TASK97 운영 비율 재현 표 (문서 값)")
+        else:
+            rows.append(["NPU (RBLN-CA25)", cfg, "운영 비율 재현: F1 대 관측", "기록 없음",
+                         "BATCHONLY 관측 비교값은 TASK100에 없음", f"TASK100; {t100}"])
+    rep = gs["reproduction"]
+    ds = [str(d) for d in range(1, 9)]
+    share = [(rep[d]["F1"] - 1) / (rep[d]["gtask15"] - 1) for d in ds]
+    rows.append(["GPU (A6000)", "GTASK11 운영", "운영 비율 재현: F1 대 관측",
+                 "F1 " + " / ".join(f"{rep[d]['F1']:.3f}" for d in ds) + "; 운영 "
+                 + " / ".join(f"{rep[d]['gtask15']:.3f}" for d in ds)
+                 + f"; 설명 몫 {min(share) * 100:.0f}–{max(share) * 100:.0f} %",
+                 "decode 폭 d = 1–8, F1(plan 평균 L̄ 1,810만 입력) / 가격 대 GTASK15 운영 (합/가격)",
+                 f"GTASK18; {s_g18j}; {s_g18}"])
+    g18rep = table_after(g18, "### 4. GTASK15 운영 비율 재현")
+    for r in g18rep:
+        d = r[0]
+        ck.eq(f"GPU d = {d} F1", round(rep[d]["F1"], 3), num(r[2]), tol=5e-4, source="GTASK18 결과 4 표")
+        ck.eq(f"GPU d = {d} 운영", round(rep[d]["gtask15"], 3), num(r[1]), tol=5e-4, source="GTASK18 결과 4 표")
+        ck.eq(f"GPU d = {d} 설명 몫 %", round((rep[d]["F1"] - 1) / (rep[d]["gtask15"] - 1) * 100), num(r[5]),
+              tol=0.5, source="GTASK18 결과 4 표")
+    # blind difference against the original cost
+    s51, s52, s56 = cv["5.1"], cv["5.2"], cv["5.6"]
+    base = ("BASE.n15", "BASE.n18")
+    be = {p: sum(abs(s51[p]["errors"][k]) for k in base) for p in ("sim_ctx_op", "sim")}
+    npu_src = f"TASK102; {rel(CTX_VERDICT)}; {t102}"
+    pop = "TASK102 blind 6 cell (N = 15·18 × 세 구성)"
+    rows += [
+        ["NPU (RBLN-CA25)", "세 구성", "blind: 재사용 MAE (context 비용 sim 대 원래 비용 sim)",
+         f"{s51['sim_ctx_op']['MAE']:.4f} 대 {s51['sim']['MAE']:.4f}", pop, npu_src],
+        ["NPU (RBLN-CA25)", "세 구성", "blind: BASE 재사용 |오차| Σ (context 비용 sim 대 원래 비용 sim)",
+         f"{be['sim_ctx_op']:.4f} 대 {be['sim']:.4f}", "BASE N15 + N18", npu_src],
+        ["NPU (RBLN-CA25)", "세 구성", "blind: 비 Σ|오차| (context 비용 sim 대 원래 비용 sim)",
+         f"{s52['sim_ctx_op']['sum_abs_err']:.4f} 대 {s52['sim']['sum_abs_err']:.4f}",
+         "BATCHONLY·TUNED N15·18, 4 cell", npu_src],
+        ["NPU (RBLN-CA25)", "세 구성", "blind: h TVD 중앙 (context 비용 sim 대 원래 비용 sim)",
+         f"{s56['sim_ctx_op']['median']:.3f} 대 {s56['sim']['median']:.3f}", pop, npu_src],
+        ["NPU (RBLN-CA25)", "세 구성", "blind: 원래 비용 sim §5.1 / §5.2 / §5.6",
+         f"{s51['sim']['verdict']} / {s52['sim']['verdict']} / {s56['sim']['verdict']}", pop, npu_src],
+    ]
+    ck.eq("NPU 재사용 MAE context 비용 sim", round(s51["sim_ctx_op"]["MAE"], 4), 0.0090, tol=5e-5,
+          source="TASK102 판정 표")
+    ck.eq("NPU 재사용 MAE 원래 비용 sim", round(s51["sim"]["MAE"], 4), 0.0093, tol=5e-5, source="TASK102 판정 표")
+    ck.eq("NPU 비 Σ context 비용 sim", round(s52["sim_ctx_op"]["sum_abs_err"], 4), 0.0491, tol=5e-5,
+          source="TASK102 판정 표")
+    ck.eq("NPU 비 Σ 원래 비용 sim", round(s52["sim"]["sum_abs_err"], 4), 0.0542, tol=5e-5, source="TASK102 판정 표")
+    ck.eq("NPU h TVD 중앙 context 비용 sim", round(s56["sim_ctx_op"]["median"], 3), 0.034, tol=5e-4,
+          source="TASK102 판정 표")
+    ck.eq("NPU h TVD 중앙 원래 비용 sim", round(s56["sim"]["median"], 3), 0.073, tol=5e-4,
+          source="TASK102 판정 표")
+    ad = bv["additional"]
+    m51 = bv["5.1"]
+    g52 = {b: bv["5.2"][b]["by_predictor"] for b in ("lo", "hi")}
+    g56 = {b: bv["5.6"][b]["h_decode"]["by_predictor"] for b in ("lo", "hi")}
+    gpop = "GTASK20 blind 6 cell (N = 25·28 × 세 구성), lo / hi"
+
+    def lohi(f, dp):
+        return " / ".join(f"{f(b):.{dp}f}" for b in ("lo", "hi"))
+    rows += [
+        ["GPU (A6000)", "세 구성", "blind: 재사용 MAE (context 비용 sim 대 가격 sim)",
+         f"{lohi(lambda b: m51['ctx'][b]['mae'], 3)} 대 {lohi(lambda b: m51['price'][b]['mae'], 3)}",
+         gpop, f"GTASK20; {s_g20}"],
+        ["GPU (A6000)", "세 구성", "blind: BASE 재사용 |오차| Σ (context 비용 sim 대 가격 sim)",
+         f"{lohi(lambda b: ad[b]['errors']['ctx']['base_reuse_abs_err'], 3)} 대 "
+         f"{lohi(lambda b: ad[b]['errors']['price']['base_reuse_abs_err'], 3)}",
+         "BASE N25 + N28, lo / hi", f"GTASK20; {s_g20}"],
+        ["GPU (A6000)", "세 구성", "blind: 비 Σ|오차| (context 비용 sim 대 가격 sim)",
+         f"{lohi(lambda b: ad[b]['errors']['ctx']['ratio_sum_abs_err'], 3)} 대 "
+         f"{lohi(lambda b: ad[b]['errors']['price']['ratio_sum_abs_err'], 3)}",
+         "POOL·POOL+GRID N25·28, 4 cell, lo / hi", f"GTASK20; {s_g20}"],
+        ["GPU (A6000)", "세 구성", "blind: h TVD 중앙 (context 비용 sim 대 가격 sim)",
+         f"{lohi(lambda b: g56[b]['ctx']['median'], 3)} 대 {lohi(lambda b: g56[b]['price']['median'], 3)}",
+         gpop + ", decode-only", f"GTASK20; {s_g20}"],
+        ["GPU (A6000)", "세 구성", "blind: 가격 sim §5.1 / §5.2 / §5.6",
+         f"{bv['summary']['5.1']['price']} / {bv['summary']['5.2']['price']} / {bv['summary']['5.6']['price']}",
+         gpop, f"GTASK20; {s_g20}"],
+    ]
+    for b, rc, rp, sc, sp in (("lo", 0.075, 0.348, 0.040, 0.135), ("hi", 0.084, 0.319, 0.028, 0.110)):
+        e = ad[b]["errors"]
+        ck.eq(f"GPU BASE 재사용 오차 ctx ({b})", round(e["ctx"]["base_reuse_abs_err"], 3), rc, tol=5e-4,
+              source="GTASK20 판정 표 추가 확증")
+        ck.eq(f"GPU BASE 재사용 오차 가격 ({b})", round(e["price"]["base_reuse_abs_err"], 3), rp, tol=5e-4,
+              source="GTASK20 판정 표 추가 확증")
+        ck.eq(f"GPU 비 Σ ctx ({b})", round(e["ctx"]["ratio_sum_abs_err"], 3), sc, tol=5e-4,
+              source="GTASK20 판정 표 추가 확증")
+        ck.eq(f"GPU 비 Σ 가격 ({b})", round(e["price"]["ratio_sum_abs_err"], 3), sp, tol=5e-4,
+              source="GTASK20 판정 표 추가 확증")
+    ck.eq("GPU 가격 재사용 MAE (lo)", round(m51["price"]["lo"]["mae"], 3), 0.108, tol=5e-4,
+          source="GTASK20 판정 표 §5.1 (3) 가격")
+    ck.eq("GPU 가격 §5.1 / §5.2", f"{bv['summary']['5.1']['price']}/{bv['summary']['5.2']['price']}",
+          "FAIL/FAIL", source="GTASK20 판정 표")
+    notes = ["NPU 운영 context = run 로그 재계산(TASK82·87·95, 깨끗한 decode step, 측정·시뮬레이션 없음). "
+             "GPU 운영 context = GTASK18 plan 기준값(GTASK11 plan, decode step 가중).",
+             "원래 비용: NPU = 통제 측정 descriptor 비용(`sim`), GPU = 가격(짧은 context 통제 측정, (3)).",
+             "GPU 열의 lo / hi는 GTASK20 두 bound. NPU 재사용 MAE·비 Σ는 TASK102 §5.1·§5.2 정의."]
+    inputs = [rel(CTXCOST_V1), rel(CTXCOST_V2), rel(CTX_VERDICT), gpu_ref(G18_SUMMARY), gpu_ref(G18),
+              gpu_ref(G_BLIND_VERDICT), t97, t100, t102]
+    return header, rows, notes, ck, inputs, "TASK92, TASK97, TASK100, TASK102, GTASK18, GTASK20"
+
+
+def p13_npu_ctxblind():
+    """TASK102 cells: sim_ctx_op (main), sim, sim_ctx (reported only), v1 (reference)."""
+    cv = load(CTX_VERDICT)
+    qo = load(QUEUE_OBS)["cells"]
+    doc = (REPO / "docs/research/TASK102.md").read_text()
+    header = ["cell", "판정 종류", "재사용 관측", "sim_ctx_op", "sim", "sim_ctx (보고만)", "v1", "영",
+              "비 m", "95 % CI", "비 sim_ctx_op", "비 sim", "비 sim_ctx", "비 v1", "v1 범위",
+              "평균 running 관측", "관측 대기 Q 평균", "TTFT 중앙 (s)"]
+    null = 0.6763527054108216
+    P = ("sim_ctx_op", "sim", "sim_ctx", "v1")
+    rows = []
+    for key, c in cv["cells"].items():
+        r = cv["5.2"]["cells"].get(key)
+        rows.append([key, "blind_confirm", f3(c["reuse_obs"]), *[f3(c["pred"][p]["reuse"]) for p in P], f3(null),
+                     f4(r["m"]) if r else "", f"[{r['ci'][0]:.4f}, {r['ci'][1]:.4f}]" if r else "",
+                     *[f4(r[p]["pred"]) if r else "" for p in P], "안" if c["v1_in_scope"] else "밖",
+                     f"{c['mean_running_obs']:.2f}", f"{qo[key]['mean_q']:.3f}",
+                     f3(c["ttft_turn_ge1_median_s"])])
+    ck = Check()
+    src = "TASK102 cell별 표"
+    for r in table_after(doc, "### cell별 예측 대 관측"):
+        cfg, n = r[0].split(" N")
+        key = f"{cfg}.n{n}"
+        c = cv["cells"][key]
+        ck.eq(f"{key} 재사용 관측", round(c["reuse_obs"], 3), num(r[1]), tol=5e-4, source=src)
+        for p, v in zip(("sim_ctx_op", "sim", "v1"), nums(r[2])):
+            ck.eq(f"{key} 재사용 {p}", round(c["pred"][p]["reuse"], 3), v, tol=5e-4, source=src)
+        if key in cv["5.2"]["cells"]:
+            q = cv["5.2"]["cells"][key]
+            m, lo, hi = nums(r[3])[:3]
+            ck.eq(f"{key} 비 m [CI]", [round(q["m"], 4), round(q["ci"][0], 4), round(q["ci"][1], 4)],
+                  [m, lo, hi], source=src)
+            for p, v in zip(("sim_ctx_op", "sim", "v1"), nums(r[4])):
+                ck.eq(f"{key} 비 {p}", round(q[p]["pred"], 4), v, tol=5e-5, source=src)
+        ck.eq(f"{key} running 평균", round(c["mean_running_obs"], 2), num(r[5]), tol=5e-3, source=src)
+        ck.eq(f"{key} TTFT", round(c["ttft_turn_ge1_median_s"], 3), num(r[6]), tol=5e-4, source=src)
+    m = re.search(r"`sim_ctx`\(context 비용 \+ 원래 prefill\): 재사용 ([\d. /]+), 비 ([\d. /]+)\.", doc)
+    keys = list(cv["cells"])
+    for key, v in zip(keys, nums(m.group(1))):
+        ck.eq(f"{key} 재사용 sim_ctx", round(cv["cells"][key]["pred"]["sim_ctx"]["reuse"], 3), v, tol=5e-4,
+              source="TASK102 표 각주")
+    for key, v in zip([k for k in keys if k in cv["5.2"]["cells"]], nums(m.group(2))):
+        ck.eq(f"{key} 비 sim_ctx", round(cv["5.2"]["cells"][key]["sim_ctx"]["pred"], 4), v, tol=5e-5,
+              source="TASK102 표 각주")
+    s51, s52, s56 = cv["5.1"], cv["5.2"], cv["5.6"]
+    src = "TASK102 판정 표"
+    for p, rec in (("sim_ctx_op", 0.0090), ("sim", 0.0093), ("sim_ctx", 0.0072)):
+        ck.eq(f"재사용 MAE {p}", round(s51[p]["MAE"], 4), rec, tol=5e-5, source=src)
+    ck.eq("재사용 MAE v1", round(s51["v1"]["MAE"], 3), 0.126, tol=5e-4, source=src)
+    ck.eq("영 MAE", round(s51["MAE_null"], 4), 0.2571, tol=5e-5, source=src)
+    for p, rec in (("sim_ctx_op", 0.0491), ("sim", 0.0542), ("sim_ctx", 0.0298)):
+        ck.eq(f"Σ|오차| {p}", round(s52[p]["sum_abs_err"], 4), rec, tol=5e-5, source=src)
+    ck.eq("Σ|오차| v1", round(s52["v1"]["sum_abs_err"], 3), 0.466, tol=5e-4, source=src)
+    ck.eq("Σ|1 − m|", round(s52["sum_abs_1_minus_m"], 4), 1.1086, tol=5e-5, source=src)
+    for p, med, mx in (("sim_ctx_op", 0.034, 0.046), ("sim", 0.073, 0.102), ("sim_ctx", 0.026, 0.062),
+                       ("v1", 0.065, 0.155)):
+        ck.eq(f"h TVD 중앙 / 최대 {p}", [round(s56[p]["median"], 3), round(s56[p]["max"], 3)], [med, mx],
+              source=src)
+    ck.eq("h TVD 영 중앙", round(s56["null_median"], 3), 0.588, tol=5e-4, source=src)
+    bt = next(q for q in cv["5.3"]["per_n"]["18"]["pairs"] if q["pair"] == "BATCHONLY/TUNED")
+    ck.eq("N18 BATCHONLY/TUNED m [CI]", [round(bt["m"], 4), round(bt["ci"][0], 4), round(bt["ci"][1], 4)],
+          [1.0286, 0.9978, 1.0608], source=src)
+    ck.eq("§5.3 해소 쌍", sum(q["resolved"] for pn in cv["5.3"]["per_n"].values() for q in pn["pairs"]), 5,
+          source=src)
+    ck.eq("(1) 대 (2)", cv["main_vs_sim"]["verdict"], "PASS", source=src)
+    ck.eq("유효 lifecycle", cv["validity"]["lifecycles_run"] - len(cv["validity"]["invalid"]), 30,
+          source="TASK102 유효성")
+    notes = ["주 예측기 sim_ctx_op(context 비용 시뮬레이터). sim = 원래 비용. sim_ctx = context 비용 + 원래 "
+             "prefill(보고만). v1 = 참고(N > 동시 실행 상한이면 범위 밖). 영 = NULL_PREDICTORS.json 0.676.",
+             "관측 대기 Q = `queue_depth_obs.py` (P11과 같은 정의)."]
+    return header, rows, notes, ck, [rel(CTX_VERDICT), rel(QUEUE_OBS)], "TASK101, TASK102"
+
+
+def p14_gpu_blind_collapse():
+    """GTASK20 cells: observed (verdict.json) vs PREDICTIONS_BLIND.json (lo)."""
+    cells = gpu_blind_cells()
+    bv = json.loads(gpu_show(G_BLIND_VERDICT))
+    doc = gpu_show(G20)
+    labs = [lab for _, lab, _ in G20_PREDICTORS]
+    header = ["cell", "판정 종류", "재사용 관측", "ctx", "×1.210 (보정)", "mode_dist (보정)", "가격", "영",
+              "비 m", "95 % CI", "비 ctx", "비 ×1.210", "비 mode_dist", "비 가격", "TTFT 중앙 (s)"]
+    rows = []
+    for c in cells:
+        b = c["config"] == "BASE"
+        rows.append([c["cell"], "blind_confirm", f3(c["reuse_obs"]), *[f3(c["pred"][x]["reuse"]) for x in labs],
+                     f"{GPU_REUSE_NULL:.5f}", "" if b else f4(c["ratio_obs"]),
+                     "" if b else f"[{c['ratio_ci'][0]:.4f}, {c['ratio_ci'][1]:.4f}]",
+                     *["" if b else f4(c["pred"][x]["ratio"]) for x in labs], f"{c['ttft_s']:.2f}"])
+    ck = Check()
+    by = {c["cell"]: c for c in cells}
+    src = "GTASK20 cell별 재사용 표"
+    for r in table_after(doc, "### cell별 재사용"):
+        n, cfg = r[0].split(" ", 1)
+        c = by[f"{cfg}.n{n[1:]}"]
+        k = nums(r[1])
+        if len(k) >= 3:
+            ck.eq(f"{c['cell']} 재사용 관측 (k/total)", [round(c["reuse_obs"], 3), *c["reuse_k"]],
+                  [k[0], int(k[1]), int(k[2])], source=src)
+        else:
+            ck.eq(f"{c['cell']} 재사용 관측", round(c["reuse_obs"], 3), k[0], tol=5e-4, source=src)
+        for x, cell in zip(labs, (r[3], r[4], r[5], r[6])):
+            ck.eq(f"{c['cell']} 재사용 {x}", round(c["pred"][x]["reuse"], 3), num(cell), tol=5e-4, source=src)
+        ck.eq(f"{c['cell']} TTFT", round(c["ttft_s"], 2), num(r[7]), tol=5e-3, source=src)
+    src = "GTASK20 BASE 대비 비용 비 표"
+    for r in table_after(doc, "### BASE 대비 비용 비"):
+        n, cfg = r[0].split(" ", 1)
+        c = by[f"{cfg}.n{n[1:]}"]
+        m, lo, hi = nums(r[1])[:3]
+        ck.eq(f"{c['cell']} 비 m [CI]", [round(c["ratio_obs"], 4), round(c["ratio_ci"][0], 4),
+                                          round(c["ratio_ci"][1], 4)], [m, lo, hi], source=src)
+        for x, cell in zip(labs, r[2:6]):
+            ck.eq(f"{c['cell']} 비 {x}", round(c["pred"][x]["ratio"], 4), num(cell), tol=5e-5, source=src)
+        vp = bv["5.2"]["lo"]["by_predictor"]["ctx"]["cells"][f"{n[1:]}/{cfg}"]["pred"]
+        ck.eq(f"{c['cell']} 비 ctx: verdict.json = PREDICTIONS_BLIND.json", round(vp, 6),
+              round(c["pred"]["sim_ctxcost"]["ratio"], 6), tol=5e-7, source="GTASK20 판정 입력")
+    m51 = bv["5.1"]
+    for b, rec in (("lo", 0.022), ("hi", 0.023)):
+        ck.eq(f"§5.1 MAE ctx ({b})", round(m51["ctx"][b]["mae"], 3), rec, tol=5e-4, source="GTASK20 판정 표")
+    mae = statistics.mean(abs(c["pred"]["sim_ctxcost"]["reuse"] - c["reuse_obs"]) for c in cells)
+    ck.eq("§5.1 MAE ctx (lo, 셀 값으로 재계산)", round(mae, 4), round(m51["ctx"]["lo"]["mae"], 4), tol=5e-5,
+          source="verdict.json §5.1")
+    ck.eq("§5.1 영 MAE (0.84718로 재계산)", round(statistics.mean(abs(GPU_REUSE_NULL - c["reuse_obs"])
+                                                         for c in cells), 3), 0.233, tol=5e-4,
+          source="GTASK20 판정 표 «0.5 × 0.233»")
+    for b, rec in (("lo", 0.392), ("hi", 0.406)):
+        ck.eq(f"§5.2 Σ|1 − m| ({b})", round(bv["5.2"][b]["sum_abs_1_minus_m"], 3), rec, tol=5e-4,
+              source="GTASK20 판정 표")
+    for b, med, mx in (("lo", 0.049, 0.052), ("hi", 0.048, 0.051)):
+        t = bv["5.6"][b]["h_decode"]["by_predictor"]["ctx"]
+        ck.eq(f"§5.6 TVD 중앙 / 최대 ctx ({b})", [round(t["median"], 3), round(t["max"], 3)], [med, mx],
+              source="GTASK20 판정 표")
+    ck.eq("§5.6 균등 중앙 (lo)", round(bv["5.6"]["lo"]["h_decode"]["median_uniform"], 3), 0.763, tol=5e-4,
+          source="GTASK20 판정 표")
+    ck.eq("추가 확증", bv["additional_overall"], "CONFIRMED", source="GTASK20 판정 표")
+    ck.eq("직접/가격 중앙", round(bv["direct_vs_price"]["median"], 3), 1.049, tol=5e-4,
+          source="GTASK20 결과 (30 lifecycle)")
+    ck.eq("유효 lifecycle", sum(all(x["valid"] for x in v) for v in bv["validity"].values()), 30,
+          source="GTASK20 유효성 30/30")
+    notes = ["관측은 `blind_result/verdict.json`(GTASK20 측정 자동 commit), 예측은 PREDICTIONS_BLIND.json `lo` bound.",
+             "ctx = context 비용 시뮬레이터(주), 가격 = 짧은 context 통제 측정(기준선). ×1.210·mode_dist는 GTASK11 "
+             "관측으로 맞춘 보정 예측(population dev_calibrated).",
+             "영 = GPU 선등록 개정 1의 NPU 영 재사용 0.84718(GTASK11과 같음). GPU 대기열 깊이 관측 기록 없음."]
+    inputs = [gpu_ref(G_BLIND_VERDICT), gpu_ref(G_BLIND_PRED), gpu_ref(G20)]
+    return header, rows, notes, ck, inputs, "GTASK20"
+
+
+TABLES["P12"] = (p12_ctxcost_two_substrates, "두 장비 context 비용 비교")
+TABLES["P13"] = (p13_npu_ctxblind, "NPU context 비용 시뮬레이터 blind N = 15·18")
+TABLES["P14"] = (p14_gpu_blind_collapse, "GPU 붕괴 영역 blind N = 25·28: ctx·보정·가격")
 
 
 def write_csv(path: Path, header, rows) -> None:

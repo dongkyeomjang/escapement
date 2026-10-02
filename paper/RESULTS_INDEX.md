@@ -181,7 +181,7 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | t85_known_cells | 재사용 MAE 0.0142 → 0.0052; 비 Σ\|예측 − m\| 0.0483 → 0.0254 | N = 6·8·10 사후 대조 (blind 아님) | docs/research/TASK85.md @ ffd716f | post_hoc | untagged | F_c |
 | t90_v12_not_frozen | 초과 cell v1.2 후보 8 (v1 8, v1.1 7, sim 6) | 동결 전 점검, 9 cell | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
 | t90_v12_metrics | 재사용 MAE 0.054; 비 Σ\|편향\| 0.132 | v1.2 후보 | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
-| t90_v11_freeze_mae | 0.0415 (원 표 0.042는 반올림 오기, 정정 기록) | 재사용 MAE v1.1, 동결 전 점검 9 cell | docs/research/TASK90.md 정정 절 (TASK96 commit), `freeze_check.json` | dev_set | untagged | P10 |
+| t90_v11_freeze_mae | 0.0415 (원 표 0.042는 반올림 오기, 정정 기록) | 재사용 MAE v1.1, 동결 전 점검 9 cell | docs/research/TASK90.md @ f6ffd8f (정정 절), `freeze_check.json` | dev_set | untagged | P10 |
 | t90_v12_base_bias | −0.130 / −0.162 / −0.109 | BASE 재사용 편향 v1.2 후보, N12 / 14 / 16 | docs/research/TASK90.md @ 338d3de | dev_set | stack | P10 |
 | t90_rho | 0.733–0.743 | 완료 순서 ρ | docs/research/TASK90.md @ 338d3de | dev_set | stack | — |
 | t90_sim_dev_mae | 0.012 | 재사용 MAE, sim, 9 cell | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
@@ -275,9 +275,9 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | h86_batch16_no_queue | 대기 0 (N ≤ 16) | batch 16 구성 | docs/research/HILOAD_PREREG.md @ f75c8e7 | exploratory | untagged | F_d |
 | t82_n12_ttft | 0.286 s (다른 cell 0.068–0.084 s) | BASE N = 12 turn ≥ 1 TTFT 중앙 | docs/research/TASK82.md @ 074aedc | exploratory | untagged | F_d |
 | t87_base_n16_ttft | 1.589 s | BASE N16 turn ≥ 1 TTFT 중앙 | docs/research/TASK87.md @ a210be2 | exploratory | untagged | F_d |
-| q96_obs_base | N6 0.013, N8 0.018, N10 0.044, N12 0.280, N13 0.420, N14 0.761, N16 1.802, N17 3.528, N20 6.820 | 관측 대기 Q 평균(client in-flight − `[BUCKET]` request_nums, decode step 가중), BASE | docs/research/TASK96.md (TASK96 commit), `queue_depth_obs.py` | exploratory | untagged | F_d, P11 |
-| q96_obs_floor | N ≤ 8 전 구성 0.013–0.018; batch 16 N10–16 0.022–0.040 | 관측 Q, 구조적 대기 0 cell — 전송·응답 종료 시간의 바닥값(요청률과 함께 증가) | docs/research/TASK96.md (TASK96 commit) | exploratory | untagged | F_d |
-| q96_obs_batch16_n17_20 | N17 0.045 / 0.045, N20 0.099 / 0.096 | 관측 Q, BATCHONLY / TUNED (N > 16) | docs/research/TASK96.md (TASK96 commit) | exploratory | untagged | F_d, P11 |
+| q96_obs_base | N6 0.013, N8 0.018, N10 0.044, N12 0.280, N13 0.420, N14 0.761, N16 1.802, N17 3.528, N20 6.820 | 관측 대기 Q 평균(client in-flight − `[BUCKET]` request_nums, decode step 가중), BASE | docs/research/TASK96.md @ f6ffd8f, `queue_depth_obs.py` | exploratory | untagged | F_d, P11 |
+| q96_obs_floor | N ≤ 8 전 구성 0.013–0.018; batch 16 N10–16 0.022–0.040 | 관측 Q, 구조적 대기 0 cell — 전송·응답 종료 시간의 바닥값(요청률과 함께 증가) | docs/research/TASK96.md @ f6ffd8f | exploratory | untagged | F_d |
+| q96_obs_batch16_n17_20 | N17 0.045 / 0.045, N20 0.099 / 0.096 | 관측 Q, BATCHONLY / TUNED (N > 16) | docs/research/TASK96.md @ f6ffd8f | exploratory | untagged | F_d, P11 |
 
 
 ## 16. 통합 시뮬레이터 blind cell N = 13·17·20과 운영 step 비용 (TASK92–95)
@@ -308,33 +308,186 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 
 | id | value | population/unit | source | kind | layer | data |
 |---|---|---|---|---|---|---|
-| t97_validity | 29/29 유효, 재실행 0; 재현성 +0.94 % / −0.55 % | lifecycle; TUNED n4 L1500 / n8 L3000 반복 | docs/research/TASK97.md (TASK97 commit) | exploratory | untagged | — |
-| t97_ctx_slope | c 0.145 (BASE) / 0.149 (TUNED) µs/token; β −0.005 / −0.017 ms | F1 `f(b) + βn + c·ΣL`, decode step | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
-| t97_fit_rms | F1 0.237 / 0.361 ms; F2 0.235 / 0.355; F3 0.240 / 0.396 | 형태별 RMS 잔차, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | untagged | — |
-| t97_ratio_L3000 | n8 1.249 / 1.249; n16 1.369 (TUNED) | L = 3,000 관측/통제, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
-| t97_ratio_L512 | 0.98–1.03 | L = 512 관측/통제 | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
-| t97_operational_check | TASK91 모집단 1.095 / 1.096 (관측 1.084 / 1.085); TASK92 op-prefill-mt 1.113 / 1.100 (관측 1.113 / 1.107) | context 비용/통제 비용, step 가중, BASE / TUNED | docs/research/TASK97.md (TASK97 commit) | exploratory | stack | — |
-| t98_finding4_bias | Σ 0.262 → sim_op 0.185, sim_ctx 0.174, sim_ctx_op 0.111; 평균 +0.044 → +0.018 | 비 오차, batch 16 N12·14·16 6 cell | docs/research/TASK98.md (TASK98 commit) | post_hoc | stack | — |
-| t98_task95_cells | 비 Σ 0.102 → sim_ctx 0.041; 재사용 MAE 0.0132 → 0.0066 | TASK95 cell 사후 재예측 (판정 불변) | docs/research/TASK98.md (TASK98 commit) | post_hoc | untagged | — |
-| t98_task87_cells | 비 Σ 0.189 → sim_ctx 0.109, sim_ctx_op 0.081 | TASK87 cell 사후 재예측 | docs/research/TASK98.md (TASK98 commit) | post_hoc | untagged | — |
-| t98_regression | TASK93 `PREDICTIONS_SIM.json` byte 동일 | `decode_cost_fn` hook 추가 후 회귀 | docs/research/TASK98.md (TASK98 commit) | code_check | untagged | — |
+| t97_validity | 29/29 유효, 재실행 0; 재현성 +0.94 % / −0.55 % | lifecycle; TUNED n4 L1500 / n8 L3000 반복 | docs/research/TASK97.md @ 8b54b5a | exploratory | untagged | — |
+| t97_ctx_slope | c 0.145 (BASE) / 0.149 (TUNED) µs/token; β −0.005 / −0.017 ms | F1 `f(b) + βn + c·ΣL`, decode step | docs/research/TASK97.md @ 8b54b5a | exploratory | stack | P12 |
+| t97_fit_rms | F1 0.237 / 0.361 ms; F2 0.235 / 0.355; F3 0.240 / 0.396 | 형태별 RMS 잔차, BASE / TUNED | docs/research/TASK97.md @ 8b54b5a | exploratory | untagged | — |
+| t97_ratio_L3000 | n8 1.249 / 1.249; n16 1.369 (TUNED) | L = 3,000 관측/통제, BASE / TUNED | docs/research/TASK97.md @ 8b54b5a | exploratory | stack | — |
+| t97_ratio_L512 | 0.98–1.03 | L = 512 관측/통제 | docs/research/TASK97.md @ 8b54b5a | exploratory | stack | — |
+| t97_operational_check | TASK91 모집단 1.095 / 1.096 (관측 1.084 / 1.085); TASK92 op-prefill-mt 1.113 / 1.100 (관측 1.113 / 1.107) | context 비용/통제 비용, step 가중, BASE / TUNED | docs/research/TASK97.md @ 8b54b5a | exploratory | stack | P12 |
+| t98_finding4_bias | Σ 0.262 → sim_op 0.185, sim_ctx 0.174, sim_ctx_op 0.111; 평균 +0.044 → +0.018 | 비 오차, batch 16 N12·14·16 6 cell | docs/research/TASK98.md @ 8b54b5a | post_hoc | stack | — |
+| t98_task95_cells | 비 Σ 0.102 → sim_ctx 0.041; 재사용 MAE 0.0132 → 0.0066 | TASK95 cell 사후 재예측 (판정 불변) | docs/research/TASK98.md @ 8b54b5a | post_hoc | untagged | — |
+| t98_task87_cells | 비 Σ 0.189 → sim_ctx 0.109, sim_ctx_op 0.081 | TASK87 cell 사후 재예측 | docs/research/TASK98.md @ 8b54b5a | post_hoc | untagged | — |
+| t98_regression | TASK93 `PREDICTIONS_SIM.json` byte 동일 | `decode_cost_fn` hook 추가 후 회귀 | docs/research/TASK98.md @ 8b54b5a | code_check | untagged | — |
 
 
 ## 18. BATCHONLY context 비용과 context 비용 시뮬레이터 blind cell N = 15·18 (TASK100–102)
 
 | id | value | population/unit | source | kind | layer | data |
 |---|---|---|---|---|---|---|
-| t100_batchonly_ctx | c 0.146 µs/token; β −0.069 ms; F1 RMS 0.461 ms; 재현성 +0.07 % | BATCHONLY decode step, F1 | docs/research/TASK100.md @ cb1eec4 | exploratory | stack | — |
+| t100_batchonly_ctx | c 0.146 µs/token; β −0.069 ms; F1 RMS 0.461 ms; 재현성 +0.07 % | BATCHONLY decode step, F1 | docs/research/TASK100.md @ cb1eec4 | exploratory | stack | P12 |
 | t100_rule_diff | ±0.15 ms (약 1 %) | TASK98 규칙값 − 실측, 대표 n·L step 시간 | docs/research/TASK100.md @ cb1eec4 | exploratory | untagged | — |
-| t102_validity | 30/30 유효, 재실행 0 | lifecycle | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_s51 | PASS; 6/6; MAE 0.0090 ≤ 0.5 × 0.2571 | 재사용률, sim_ctx_op(주), 6 cell | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_s52 | PASS; 기본 4/4, 강화 4/4; Σ 0.0491 ≤ 0.5 × 1.1086 | 비용 비, sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_s53 | PASS; 해소 5쌍 일치 (N18 BATCHONLY/TUNED 1.0286 [0.9978, 1.0608] 미해소) | 구성 순위 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_s56 | PASS; TVD 중앙 0.034, 최대 0.046 (sim 0.073); 영 0.588 | h(n), sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_main_vs_sim | PASS; 재사용 MAE 0.0090 < 0.0093; 비 Σ 0.0491 < 0.0542 | context 비용 sim 대 원래 비용 sim | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_sim_orig | §5.1 PASS (MAE 0.0093), §5.2 PASS (Σ 0.0542), §5.6 PASS (0.073) | 원래 비용 sim (2) | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
-| t102_base_reuse | N15 관측 0.128 vs (1) 0.110 / (2) 0.156; N18 0.026 vs 0.045 / 0.026 | BASE 재사용 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | — |
+| t102_validity | 30/30 유효, 재실행 0 | lifecycle | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13 |
+| t102_s51 | PASS; 6/6; MAE 0.0090 ≤ 0.5 × 0.2571 | 재사용률, sim_ctx_op(주), 6 cell | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13, F_b, F_c |
+| t102_s52 | PASS; 기본 4/4, 강화 4/4; Σ 0.0491 ≤ 0.5 × 1.1086 | 비용 비, sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13, F_b, F_c |
+| t102_s53 | PASS; 해소 5쌍 일치 (N18 BATCHONLY/TUNED 1.0286 [0.9978, 1.0608] 미해소) | 구성 순위 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13 |
+| t102_s56 | PASS; TVD 중앙 0.034, 최대 0.046 (sim 0.073); 영 0.588 | h(n), sim_ctx_op | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13 |
+| t102_main_vs_sim | PASS; 재사용 MAE 0.0090 < 0.0093; 비 Σ 0.0491 < 0.0542 | context 비용 sim 대 원래 비용 sim | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P12, P13 |
+| t102_sim_orig | §5.1 PASS (MAE 0.0093), §5.2 PASS (Σ 0.0542), §5.6 PASS (0.073) | 원래 비용 sim (2) | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P12, P13, F_c |
+| t102_base_reuse | N15 관측 0.128 vs (1) 0.110 / (2) 0.156; N18 0.026 vs 0.045 / 0.026 | BASE 재사용 | docs/research/TASK102.md @ 15742d7 | blind_confirm | untagged | P13, F_b |
 | t102_prior_prediction | §5.2 (2) 사전 예측 빗나감 (FAIL 예측 → PASS); 나머지 적중 | 사전 예측 대조 | docs/research/TASK102.md @ 15742d7 | blind_fail | untagged | — |
+
+## 19. GPU 결과 요약 병합 (GTASK01–20, docs/research/gpu/GPU_RESULTS_SUMMARY.md)
+
+### GTASK01 — inventory·source 감사
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g01_same_upstream | vllm 0.22.0 (CUDA 13.0 빌드); 인용 source 줄 위치 일치; model revision·byte 수 일치 | NPU `+cpu` 빌드 대비 source 감사 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_lookup_then_alloc | 조회 → hit `touch` → 할당; 같은 admission hit 축출 경로 없음 | `scheduler.py:594 → 721` | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_release_lru | release 시점 LRU, 요청 안 tail-first, 미사용 block 먼저 | block pool 회수 규칙 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | class (형태) / stack (세부) | — |
+| g01_hit_formula_shape | `floor(min(shared, query−1)/B)·B`, B = 16, shared ≤ prompt + output − 1 | hit 공식 (NPU B = 128, prefill token만) | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | class (형태) / stack (값) | — |
+| g01_preemption | recompute preemption 있음, 끌 수 없음, FCFS 최신 admission | preemption 경로 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_mixed_prefill | chunked prefill off에서도 decode와 같은 step | prefill 실행 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_grid_token_mapping | 격자 사상 = token 수; server 인자로 변경 | cudagraph capture size | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_runner_v2_metrics | Qwen3 기본 model runner v2; `--cudagraph-metrics` 없음 | 관측 수단 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+| g01_null_block | 비요청 KV 소비자 null block 1개 (상수) | KV 소비자 | origin/gpu-a6000:docs/research/gpu/GTASK01.md @ 7bb07f5 | code_check | stack | — |
+
+### GTASK02 — Stage 0
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g02_stage0 | PASS; C0–C5 전부 충족 | 선등록 Stage 0 조건 (L2) | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | blind_confirm | stack | — |
+| g02_pool_grid_args | override 16,034 → 2,048 block; 격자 [1,2,4,6,8] 반영; GPU 0 사용량 44,356 → 12,826 MiB | server 인자 고정·확인 | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | blind_confirm | stack | — |
+| g02_hit_formula | 5/5 (두 lifecycle) | hit 공식 사례 | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | blind_confirm | class (형태) / stack (값) | — |
+| g02_generated_token_cached | 1,024 hit (prompt만 캐시면 992) | H5: 1,000 prompt + 40 생성 재도착 | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | blind_confirm | stack | — |
+| g02_v1_runner_blocked | v1 runner 기동 실패 (FlashInfer sampler JIT, `nvcc` 부재) | L3 관측 경로 | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | exploratory | stack | — |
+| g02_no_double_blocks | `num_gpu_blocks` 2배 누적 없음 (2048) | frontend `cache_config_info` | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | exploratory | stack | — |
+| g02_budget_unlogged | `max_num_batched_tokens` 로그·metric에 없음 | resolved config dump | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | exploratory | stack | — |
+| g02_descriptor_fit_gaps | 11건 | `SubstrateDescriptor` 적합성 문제 | origin/gpu-a6000:docs/research/gpu/GTASK02.md @ 2c4e732 | code_check | untagged | — |
+
+### GTASK03 — 관측 수단·관문 G1–G3
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g03_g1_original | FAIL; (c)(d)(f) 실패 (warmup 2 step 미예상, endpoint 오류) | 관문 G1 의미론, 원 기준 | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | blind_fail | untagged | — |
+| g03_g1_amended | PASS; (a)–(f); hit 23/23, 사상 375/375 | 관문 G1, 개정 1 | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | blind_confirm | stack | — |
+| g03_g2_observer | PASS; 순차 15/15 동일, 시간 비 중앙 1.0018 (원 0.975); server CPU 차 0.01 s | 관문 G2 관찰자 효과 | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | blind_confirm | universal | — |
+| g03_g3_recovery | PASS | 관문 G3 복구 | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | blind_confirm | untagged | — |
+| g03_warmup_steps | non-dummy step 2개 (8 요청, 16·8 token), 첫 LOOKUP free 2,047 | server 기동 warmup | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | exploratory | stack | — |
+| g03_kv_events_content | seed prompt block 178/178 내용 복원 | KV events (ipc endpoint) | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | exploratory | stack | — |
+| g03_batch_nondeterminism | 재실행 5/8 동일 (첫 실행 8/8) | 동시 batch 생성 token | origin/gpu-a6000:docs/research/gpu/GTASK03.md @ a95c20a | exploratory | stack | — |
+
+### GTASK05 — step 비용 (FULL·PIECEWISE·eager)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g05_full_decode | 13.3–14.4 ms | FULL decode step, n = 1–16 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | silicon / stack | — |
+| g05_g_slope | 0.041 ms/요청 (n 1 → 16 약 7 %) | `F[b] + g·n` 적합 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | class (형태) / silicon (값) | — |
+| g05_padding_vs_eager | padding +0.46 ms (+3.4 %) vs 격자 밖 eager +5.7–5.9 ms (+42 %) | n = 9 → 16 padding; n > 8 eager | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | class (형태) / silicon·stack (값) | — |
+| g05_eager_dispatch_delay | 약 4 ms/step | eager dispatch 지연, prompt 길이 무관 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | stack | — |
+| g05_lag1 | L = 1 (p = 2048 첫 chunk elevation L0 3.2 / L1 138.9 / L2 3.3 ms) | async scheduling dispatch 귀속 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | universal | — |
+| g05_eager_increment | 12 → 138 ms | eager 증분, p = 256 → 2048 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | stack | — |
+| g05_piecewise | UNKNOWN (dispatch 채널 분해능 약 2 ms 아래) | PIECEWISE 증분 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | withheld | untagged | — |
+| g05_prereg_analysis | 선등록 분석 실패 (p = 2048 chunk 분할) → 개정 2 (수치 확인 전) | 분석 방법 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | blind_fail | untagged | — |
+| g05_card_change | 6/6 lifecycle 유효 (측정 카드 `4485e769…`, 개정 1) | host 다운 후 재측정 | origin/gpu-a6000:docs/research/gpu/GTASK05.md @ 3f5d930 | exploratory | untagged | — |
+
+### GTASK06 — descriptor 구조 요구사항
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g06_rule_fields | 규칙 field 5개 (축출 기준, 창 시작, 요청 내부 손실 순서, 조회·할당 순서, 캐시 대상) | 두 기판 생존 규칙 차이 | origin/gpu-a6000:docs/research/gpu/GTASK06.md @ a36bb67 | code_check | class | — |
+| g06_requirement_groups | 11개 묶음 (A–K) | descriptor 구조 요구사항 | origin/gpu-a6000:docs/research/gpu/GTASK06.md @ a36bb67 | code_check | untagged | — |
+| g06_runtime_flags | pool·격자 = runtime flag (`value_source` 필요) | GPU 구성 파라미터 | origin/gpu-a6000:docs/research/gpu/GTASK06.md @ a36bb67 | code_check | stack | — |
+
+### GTASK07 — multi-turn 설계·wrapper
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g07_token_id_streaming | 6/6 (생성 token까지 hit 식 일치) | streaming token id 재도착 prompt | origin/gpu-a6000:docs/research/gpu/GTASK07.md @ 9af6af9 | code_check | stack | — |
+| g07_sim_not_expressible | `continuum.sim` 전제 3개 불일치 → GPU wrapper | 시뮬레이터 표현 | origin/gpu-a6000:docs/research/gpu/GTASK07.md @ 9af6af9 | code_check | stack | — |
+| g07_lru_underflow | Poisson 평균 > 745에서 전부 손실; 수정 전 pool 무감응 (N12 1,900·2,600 모두 0.913) | neutral `lru_block_survival` | origin/gpu-a6000:docs/research/gpu/GTASK07.md @ 9af6af9 | code_check | stack | — |
+| g07_design_changes | 15개 항목 | NPU 설계 대비 변경 | origin/gpu-a6000:docs/research/gpu/GTASK07.md @ 9af6af9 | code_check | untagged | — |
+
+### GTASK08 — 구성 blind 선정
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g08_preemption_bound | pool ≥ 1,857 → BASE 1,900, 격자 (1,2,4,8,16) | preemption 불가 하한 (최악 요청 3,712 token) | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | stack | — |
+| g08_confirm_n | N = 20 · 22 · 24; POOL 2,300; POOL+GRID (1,5,7,8,16) | blind 구성 선정 (측정 없음) | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | stack | — |
+| g08_rule5_amendment | 규칙 5 (상한 0.85) 해 없음 → 개정 1 (0.90) | POOL 선정 규칙 | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | untagged | — |
+| g08_pressure_near_ceiling | BASE 재사용 < 0.85는 평균 running 7.1–7.7 (상한의 89–97 %) | 재사용 압력 조건 | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | class (형태) / stack (값) | — |
+| g08_collapse_pred | sim N24 0.78 → N26 0.37 (spread 0.07 → 0.31); 해석 N26 0.78 | BASE 재사용 붕괴 예측 | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | class | — |
+| g08_lru_fifo_gap | 0.13–0.17 | LRU − FIFO 재사용, BASE N = 20–24 | origin/gpu-a6000:docs/research/gpu/GTASK08.md @ cafbd95 | exploratory | stack | — |
+
+### GTASK09 — 본 실험 예측 선등록
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g09_prereg | plan 20 + 파일럿 3; 세 예측기 × 두 bound; `PREDICTIONS.json` SHA256 `1be9a991…` | 본 실험 선등록 | origin/gpu-a6000:docs/research/gpu/GTASK09.md @ 2bef619 | exploratory | untagged | — |
+| g09_lru_fifo_pred | 0.08–0.17 (9/9 cell); 부분 hit FIFO 10–14 % vs LRU 1–6 % | LRU − FIFO 예측 재사용 차 | origin/gpu-a6000:docs/research/gpu/GTASK09.md @ 2bef619 | exploratory | stack | — |
+| g09_piecewise_impact | ≤ 0.04 % | §2.1 PIECEWISE 구간의 turn당 비용 영향 | origin/gpu-a6000:docs/research/gpu/GTASK09.md @ 2bef619 | exploratory | stack | — |
+| g09_pool_ratio_pred | 0.96–0.99 | POOL/BASE 예측 비 | origin/gpu-a6000:docs/research/gpu/GTASK09.md @ 2bef619 | exploratory | untagged | — |
+| g09_id_join_fix | id join 오류 1건 수정 | 계기 점검 | origin/gpu-a6000:docs/research/gpu/GTASK09.md @ 2bef619 | code_check | untagged | — |
+
+### GTASK10 — 파일럿
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g10_validity | 12/12 유효, preemption 0 | 파일럿 lifecycle | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | blind_confirm | untagged | — |
+| g10_streaming_equiv | EQUIVALENT; 중앙 1.0066, CI [0.994, 1.009] | streaming / non-streaming turn당 device time | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | blind_confirm | stack | — |
+| g10_mode_agreement | 불일치 0 (12 lifecycle 전 step) | step mode 예측 대 `[GSTEP]` mode | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | blind_confirm | stack | — |
+| g10_direct_channel | +10–13 %; 구성 간 짝 ratio 차 ≤ 0.005 | 직접 dispatch / 가격 채널 | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | exploratory | stack | — |
+| g10_pair_spread | 0.025–0.038 | POOL/BASE 짝 ratio 산포 | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | exploratory | untagged | — |
+| g10_lifecycle_time | 3.2–4.0 분 | lifecycle 길이 | origin/gpu-a6000:docs/research/gpu/GTASK10.md @ 618cf27 | exploratory | untagged | — |
+
+### GTASK17 — 운영 조건 요인 분해
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g17_validity | 16/16 유효, 재실행 0; 반복 차 최대 0.019 ms (0.14 %) | 8 조건 × r2 lifecycle | origin/gpu-a6000:docs/research/gpu/GTASK17.md @ 1799357 | exploratory | untagged | — |
+| g17_observer_effect | 효과 없음; stream 0.9999, kv 0.9998, admlog 0.9999, 상호작용 0.9998–0.9999 | 2³ 요인 효과 비, FULL n = 1–8 평균 | origin/gpu-a6000:docs/research/gpu/GTASK17.md @ 1799357 | exploratory | stack | — |
+| g17_gtask11_condition | 1.001 → 1.009 (운영 1.034 → 1.219); 기울기 0.0615 ms/요청 | `s1k1a1` / 가격, n = 1 → 8 (context 64–320) | origin/gpu-a6000:docs/research/gpu/GTASK17.md @ 1799357 | exploratory | stack | — |
+| g17_prior_prediction | 사전 예측 빗나감 (streaming 최대 요인 예상) | 사전 예측 대조 | origin/gpu-a6000:docs/research/gpu/GTASK17.md @ 1799357 | blind_fail | stack | — |
+| g17_autocommit_failure | driver 자동 commit 미실행 (ignored `sequence.log`); 기록 `rc=0` 오보 | 자동 local commit | origin/gpu-a6000:docs/research/gpu/GTASK17.md @ 1799357 | code_check | untagged | — |
+
+### GTASK18 — context 길이 step 비용
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g18_control_context | GTASK05 64–192 (평균 128); GTASK17 64–320 (평균 192); 운영 plan 평균 1,810, p05 1,102, p95 2,551, 최대 3,273 | decode 중 요청당 context, decode step 가중 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | retro_check | untagged | P12 |
+| g18_validity | 2/2 유효, 재실행 0; 반복 차 최대 0.028 ms | lifecycle × 18 cell | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | untagged | — |
+| g18_ctx_slope | c = 0.212 µs/token; a = 13.432 / 13.285 / 13.265 / 13.414 ms; 잔차 최대 0.094 ms | F1 `t = a(n) + c·ΣL`, 균일 16 cell, n = 1 / 2 / 4 / 8 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | class (형태) / stack (값) | P12 |
+| g18_sum_not_max | n8mix 잔차 +0.002 ms (16.50 vs n·max L 18.57); n4mix +0.031 | 혼합 context cell | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | class | — |
+| g18_per_n_slope | 0.259 / 0.224 / 0.213 / 0.210 µs/token | n별 c, n = 1 / 2 / 4 / 8 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | stack | — |
+| g18_ratio_L3000 | n1 1.057; n4 1.188; n8 1.364 | L = 3,000 / 가격 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | stack | — |
+| g18_ratio_L64 | 1.001–1.002 | L = 64 / 가격 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | stack | — |
+| g18_gtask15_repro | F1 1.030 / 1.058 / 1.081 / 1.108 / 1.132 / 1.160 / 1.185 / 1.210 vs 운영 1.034 … 1.219; 설명 81–96 % | GTASK15 운영 비율 재현, d = 1–8, plan 평균 L만 입력 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | exploratory | stack | P12 |
+| g18_prior_prediction | 5개 중 c·L3000·혼합 적중; F1 ±0.03 7/8 (d = 7 −0.042); L64 n = 8 −0.74 % 빗나감 | 사전 예측 대조 | origin/gpu-a6000:docs/research/gpu/GTASK18.md @ f0d8000 | blind_fail | untagged | — |
+
+### GTASK19 — 정정 기록
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g19_n24_base_definition | `lo` 0.75318 (1,361/1,807) = 0.753; §5.5 bound 평균 0.75222 = 0.752; 판정 영향 없음 | GTASK11 N24 BASE sim LRU, 산출 파일 대조 | origin/gpu-a6000:docs/research/gpu/GTASK19.md @ a99f23c | retro_check | untagged | P04 |
+
+### GTASK20 — 붕괴 영역 blind N = 25·28
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g20_validity | 30/30 유효, 재실행 0 | lifecycle (2 N × 3 구성 × 5) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | untagged | P14 |
+| g20_s51_ctx | PASS; 6/6 ≤ 0.10; 평균 부호 +0.022 / +0.023; MAE 0.022 / 0.023 ≤ 0.5 × 0.233 | 재사용률, (1) ctx 주, 6 cell (lo / hi) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P14, F_b, F_c |
+| g20_s52_ctx | PASS; 기본 4/4, 강화 4/4; Σ 0.040 / 0.028 ≤ 0.5 × 0.392 / 0.406 | 비용 비, (1) ctx, 4 cell (lo / hi) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P14, F_b, F_c |
+| g20_s53_ranking | PASS N25·N28; BASE 포함 쌍 해소, POOL/POOL+GRID 1.002 · 1.000 미해소 | 구성 순위, (1) ctx | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | untagged | — |
+| g20_s56_h | PASS; TVD 중앙 0.049 / 0.048, 최대 0.052 / 0.051; 균등 0.763 | h decode-only, (1) ctx, 6 cell | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | untagged | P14 |
+| g20_ctx_vs_price | CONFIRMED; BASE 재사용 오차 0.075 / 0.084 vs 0.348 / 0.319; 비 Σ 0.040 / 0.028 vs 0.135 / 0.110 | 추가 확증 (1) ctx < (3) 가격 (lo / hi) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P12, P14 |
+| g20_price_fail | §5.1 FAIL (N25 BASE +0.22, MAE 0.108); §5.2 FAIL (기본 2/4) | (3) 가격 기준선 | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_fail | stack | P12, P14, F_c |
+| g20_calibrated | §5.1·5.2·5.6 PASS; BASE 재사용 오차 0.031 / 0.012 (×1.210), 0.027 / 0.035 (mode_dist); 비 Σ 0.042 / 0.029, 0.024 / 0.035 | (2) 보정 예측 (GTASK11 관측으로 맞춤), 보고 | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P14, F_c |
+| g20_base_collapse | 관측 0.475 / 0.366 vs ctx 0.514 / 0.403, ×1.210 0.494 / 0.353, 가격 0.696 / 0.494 | BASE 재사용, N25 / N28 (lo) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P14, F_b |
+| g20_config_effect | m 0.8933–0.9145 (lo); ctx 예측 0.8969–0.9047 | BASE 대비 비, 4 cell | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_confirm | stack | P14, F_b |
+| g20_reuse_overpred | +0.005 – +0.049 (6/6 같은 방향) | (1) ctx 재사용 계통 편향 (G-08 결정: 추가 측정 없음) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | exploratory | stack | — |
+| g20_replicate_spread | N28 BASE 0.03–0.59; N25 BASE 0.23–0.63 | replicate별 재사용 (G-08 결정: 반복 없음) | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | exploratory | stack | — |
+| g20_prior_prediction | §5.2 사전 예측 빗나감 (FAIL 예측 → PASS); 나머지 적중 | 사전 예측 대조 | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_fail | untagged | — |
+| g20_direct_channel | 중앙 1.049 (0.930–1.144) | 직접 dispatch / 가격, 30 lifecycle | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | exploratory | untagged | P14 |
 
 ## 15. 원고 수정 후보 ↔ id
 

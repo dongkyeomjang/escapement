@@ -135,7 +135,7 @@ env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_tables.py --all
 | P01 | 순차 생존: NPU 절벽(사후 재생)과 GPU 계단(blind) | `P01.md` / `P01.csv` | `make_paper_tables.py --table P01` | TASK14, TASK15, TASK72, GTASK04 | 4 | 0 |
 | P02 | NPU multi-turn 본 측정: 재사용·비용 비, 세 예측기와 영 | `P02.md` / `P02.csv` | `make_paper_tables.py --table P02` | TASK82 | 14 | 0 |
 | P03 | NPU 고부하 N = 14·16: v1.1·v1·sim | `P03.md` / `P03.csv` | `make_paper_tables.py --table P03` | TASK86, TASK87 | 11 | 0 |
-| P04 | GPU multi-turn: 해석 v1·sim LRU·sim FIFO | `P04.md` / `P04.csv` | `make_paper_tables.py --table P04` | GTASK11 | 63 | 1 |
+| P04 | GPU multi-turn: 해석 v1·sim LRU·sim FIFO | `P04.md` / `P04.csv` | `make_paper_tables.py --table P04` | GTASK11, GTASK19 | 65 | 1 |
 | P05 | 구성 순위 (§5.3), 두 기판 | `P05.md` / `P05.csv` | `make_paper_tables.py --table P05` | TASK82, TASK87, GTASK11 | 4 | 0 |
 | P06 | 사건 재생, 두 기판 | `P06.md` / `P06.csv` | `make_paper_tables.py --table P06` | TASK72, GTASK12 | 7 | 0 |
 | P07 | 운영 step 시간 척도 (개발 집합), 두 기판 | `P07.md` / `P07.csv` | `make_paper_tables.py --table P07` | GTASK13, TASK91 | 11 | 0 |
@@ -143,13 +143,16 @@ env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_tables.py --all
 | P09 | descriptor 규칙 field 7개와 두 기판 재현 | `P09.md` / `P09.csv` | `make_paper_tables.py --table P09` | TASK84, GTASK04 | 6 | 0 |
 | P10 | B2 진단 사다리와 v1.2 동결 전 점검 (개발 집합) | `P10.md` / `P10.csv` | `make_paper_tables.py --table P10` | TASK90 | 17 | 0 |
 | P11 | NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1 | `P11.md` / `P11.csv` | `make_paper_tables.py --table P11` | TASK93, TASK95 | 10 | 0 |
+| P12 | 두 장비 context 비용 비교 | `P12.md` / `P12.csv` | `make_paper_tables.py --table P12` | TASK92, TASK97, TASK100, TASK102, GTASK18, GTASK20 | 72 | 2 |
+| P13 | NPU context 비용 시뮬레이터 blind N = 15·18 | `P13.md` / `P13.csv` | `make_paper_tables.py --table P13` | TASK101, TASK102 | 81 | 0 |
+| P14 | GPU 붕괴 영역 blind N = 25·28: ctx·보정·가격 | `P14.md` / `P14.csv` | `make_paper_tables.py --table P14` | GTASK20 | 72 | 1 |
 
 | 그림 데이터 | 파일 | 행 | 생성 명령 |
 |---|---|---|---|
 | F_a_survival | `figures/F_a_survival.csv` | 133 | `make_paper_tables.py --all` |
-| F_b_reuse_ratio_vs_N | `figures/F_b_reuse_ratio_vs_N.csv` | 228 | `make_paper_tables.py --all` |
-| F_c_pred_vs_obs | `figures/F_c_pred_vs_obs.csv` | 282 | `make_paper_tables.py --all` |
-| F_d_applicability | `figures/F_d_applicability.csv` | 130 | `make_paper_tables.py --all` |
+| F_b_reuse_ratio_vs_N | `figures/F_b_reuse_ratio_vs_N.csv` | 300 | `make_paper_tables.py --all` |
+| F_c_pred_vs_obs | `figures/F_c_pred_vs_obs.csv` | 382 | `make_paper_tables.py --all` |
+| F_d_applicability | `figures/F_d_applicability.csv` | 178 | `make_paper_tables.py --all` |
 
 생성 시각·commit·미생성 사유는 `paper_manifest.json`.
 

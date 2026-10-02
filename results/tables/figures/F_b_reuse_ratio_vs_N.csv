@@ -152,6 +152,42 @@ NPU,20,TUNED,ratio_to_BASE,sim_opcost,0.6691,,,blind_confirm_cell,TASK95; result
 NPU,20,TUNED,ratio_to_BASE,sim_descriptor,0.6796,,,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
 NPU,20,TUNED,ratio_to_BASE,analytic_v1,0.8742,,,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
 NPU,20,TUNED,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,15,BASE,reuse,observed,0.1281,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BASE,reuse,sim_ctxcost,0.1100,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BASE,reuse,sim_descriptor,0.1564,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BASE,reuse,sim_ctxcost_origprefill,0.1368,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BASE,reuse,analytic_v1,0.3134,,,reference_out_of_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BASE,reuse,null,0.6764,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,observed,0.7605,0.7131,0.8097,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,sim_ctxcost,0.7486,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,sim_descriptor,0.7774,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,sim_ctxcost_origprefill,0.7561,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,analytic_v1,0.8430,,,reference_in_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,BATCHONLY,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,observed,0.7523,0.7004,0.7726,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,sim_ctxcost,0.7302,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,sim_descriptor,0.7576,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,sim_ctxcost_origprefill,0.7371,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,analytic_v1,0.8217,,,reference_in_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,15,TUNED,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,observed,0.0258,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,sim_ctxcost,0.0454,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,sim_descriptor,0.0264,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,sim_ctxcost_origprefill,0.0434,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,analytic_v1,0.2860,,,reference_out_of_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BASE,reuse,null,0.6764,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,observed,0.7075,0.6749,0.7449,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,sim_ctxcost,0.7011,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,sim_descriptor,0.7158,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,sim_ctxcost_origprefill,0.7054,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,analytic_v1,0.8791,,,reference_out_of_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,BATCHONLY,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,observed,0.6710,0.6506,0.7248,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,sim_ctxcost,0.6797,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,sim_descriptor,0.6949,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,sim_ctxcost_origprefill,0.6791,,,reported_only,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,analytic_v1,0.8140,,,reference_out_of_scope,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
+NPU,18,TUNED,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,TASK102; results/npu/stage3/20261002-ctxblind/ctxblind_verdict.json,TASK102
 GPU,20,BASE,reuse,observed,0.856,,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
 GPU,20,BASE,reuse,analytic_v1,0.8437,,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
 GPU,20,BASE,reuse,sim_lru,0.8575,,,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
@@ -207,6 +243,42 @@ GPU,26,POOL,ratio_to_BASE,analytic_v1,0.9838,,,blind_exploratory_cell,GTASK11; o
 GPU,26,POOL,ratio_to_BASE,sim_lru,0.9393,,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
 GPU,26,POOL,ratio_to_BASE,sim_fifo,0.9643,,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
 GPU,26,POOL,ratio_to_BASE,null,1.0000,,,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,25,BASE,reuse,observed,0.4755,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,BASE,reuse,sim_ctxcost,0.5136,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,BASE,reuse,sim_lru_x1.210,0.4938,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,BASE,reuse,sim_lru_mode_dist,0.4895,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,BASE,reuse,sim_lru_price,0.6955,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,BASE,reuse,null,0.8472,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,observed,0.8966,0.8516,0.9374,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,sim_ctxcost,0.9047,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,sim_lru_x1.210,0.9041,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,sim_lru_mode_dist,0.8966,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,sim_lru_price,0.9565,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,observed,0.8933,0.8535,0.9428,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,sim_ctxcost,0.9039,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,sim_lru_x1.210,0.9012,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,sim_lru_mode_dist,0.8981,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,sim_lru_price,0.9575,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,25,POOL+GRID,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,observed,0.3660,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,sim_ctxcost,0.4029,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,sim_lru_x1.210,0.3532,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,sim_lru_mode_dist,0.3795,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,sim_lru_price,0.4937,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,BASE,reuse,null,0.8472,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,observed,0.9040,0.8659,0.9345,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,sim_ctxcost,0.8969,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,sim_lru_x1.210,0.8955,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,sim_lru_mode_dist,0.9009,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,sim_lru_price,0.9077,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,observed,0.9145,0.8660,0.9411,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,sim_ctxcost,0.9005,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,sim_lru_x1.210,0.8968,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,sim_lru_mode_dist,0.8988,,,dev_calibrated,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,sim_lru_price,0.9073,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
+GPU,28,POOL+GRID,ratio_to_BASE,null,1.0000,,,blind_confirm_cell,GTASK20; origin/gpu-a6000:experiments/gpu/multiturn/blind_result/verdict.json @ bac3e63; pred origin/gpu-a6000:experiments/gpu/multiturn/plans/blind/PREDICTIONS_BLIND.json @ f0d8000,GTASK20
 GPU,20,BASE,reuse,sim_lru_orig,0.857,,,dev_set,GTASK13; origin/gpu-a6000:docs/research/gpu/GTASK13.md @ 02257ab,GTASK13
 GPU,20,BASE,reuse,sim_lru_x1.131,0.862,,,dev_set,GTASK13; origin/gpu-a6000:docs/research/gpu/GTASK13.md @ 02257ab,GTASK13
 GPU,20,BASE,reuse,sim_lru_x1.210,0.860,,,dev_set,GTASK13; origin/gpu-a6000:docs/research/gpu/GTASK13.md @ 02257ab,GTASK13
