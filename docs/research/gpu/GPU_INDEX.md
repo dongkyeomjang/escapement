@@ -15,7 +15,11 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
-**G-07 진행 중**: GTASK17 마무리 → main 반영(`5f69657`) → **context 길이 step 비용(GTASK18): 운영 초과의 81–96 %가 context 길이(ΣL, 0.212 µs/token)로 설명됨** → 정정 기록(GTASK19) → 붕괴 영역 blind N 25·28, 세 비용 입력(작업 C).
+**G-07 완료(GTASK17–20)**:
+- **관찰자 효과 없음**(GTASK17): streaming·KV events·admission log 비 0.9998–0.9999.
+- **context 길이 비용**(GTASK18): `t = a(n) + c·ΣL`, c = 0.212 µs/token. 짧은 context에서 a(n) = 가격. plan 평균 context만으로 GTASK15 운영 초과의 81–96 %를 재현한다.
+- **붕괴 영역 blind**(GTASK20, N = 25·28 새 seed): context 비용으로 시간을 진행한 sim LRU가 네 항목 모두 PASS, 가격 기준선은 FAIL, 추가 확증 `CONFIRMED`. **붕괴 과소 예측의 원인(시간 척도)이 통제 측정으로 blind 확인됐다.**
+- 정정(GTASK19): N24 BASE sim LRU는 `lo` 0.753, §5.5 문장의 0.752는 bound 평균.
 
 **G-06(GTASK17)**: **관측 수단에 의한 관찰자 효과 없음**(streaming·KV events·admission log 비 0.9998–0.9999). 통제 부하(context 64–320 token)에서 GTASK11 조건 step은 가격과 같다(n = 8에서 1.009 대 운영 1.219). 22 % 초과는 이 세 요인 밖에서 온다.
 
@@ -73,8 +77,12 @@
 | [GTASK17](GTASK17.md) | DONE | 운영 조건 step 비용 재측정, 요인 분해 (G-06 작업 A) | 설계 `b59287c` 측정 전 commit. 16/16 유효. streaming·KV events·admission log 효과 모두 비 0.9998–0.9999 → **관찰자 효과 없음**. GTASK11 조건 / 가격 n = 8에서 1.009(운영 1.219), 기울기 0.0615 ms/요청 → 22 % 초과는 세 요인에서 오지 않는다. 예상(streaming 최대)은 빗나감. driver 자동 commit 실패(ignored `sequence.log`) 경위 기록·수정 |
 | [GTASK18](GTASK18.md) | DONE | context 길이 step 비용 (G-07 작업 B) | merge `5f69657`. 설계 `b64eff3` 측정 전 commit → 2/2 유효, 결과 자동 commit `809a767`. 통제 부하 context GTASK05 64–192·GTASK17 64–320, 운영 plan 평균 1,810. **`t = a(n) + c·ΣL`, c = 0.212 µs/token**, 잔차 ≤ 0.7 %, 혼합 cell이 ΣL 형태(n·max L 아님)를 가름. n = 8, L = 3,000은 가격의 1.364배. plan 평균 L만으로 GTASK15 운영 비율의 81–96 % 재현(d = 8 1.210 대 1.219). 짧은 context에서 a(n) = 가격 |
 | [GTASK19](GTASK19.md) | DONE | 정정 기록: N24 BASE sim LRU 0.752 / 0.753 (G-07 작업 D) | 측정 0. 0.753 = `lo`(`PREDICTIONS.json` 1,361/1,807), 0.752 = §5.5 판정이 쓰는 `lo`·`hi` 평균. GTASK11 발견 4("0.849, 0.752, 0.657")가 두 정의를 섞었고 GTASK12가 옮겼다 → `lo` 기준 0.753으로 읽는다. 판정 영향 없음. 본문은 고치지 않음 |
-| [GTASK20](GTASK20.md) | IN_PROGRESS | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 [GPU_BLIND_COLLAPSE_PREREG.md](GPU_BLIND_COLLAPSE_PREREG.md): plan `gblind-n{25,28}-r0–4`(seed 20263000+), 3 구성 × 5 = 30 lifecycle. 예측 (1) ctx 주 / (2) ×1.210·mode_dist / (3) 가격. (1) BASE 재사용 N25 0.514, N28 0.403(가격 0.696, 0.494), 비 약 0.90. 판정 개정 1 §5.1·5.2·5.3·5.6 + 추가 확증 (1) < (3) |
+| [GTASK20](GTASK20.md) | DONE | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 `f0d8000` → 30/30 유효, 재실행 0, 판정 자동 commit `bac3e63`. **주 예측기 (1) ctx: §5.1·§5.2·§5.3·§5.6 모두 PASS**(재사용 MAE 0.022, 비 기본 4/4, h TVD 0.049). (3) 가격은 §5.1·§5.2 FAIL(N25 BASE +0.22). **추가 확증 (1) < (3) `CONFIRMED`**. 보고: 재사용은 보정 (2)가 더 가까움(BASE Σ 0.031 대 0.075), 비는 같음 |
 
 ## 다음 작업
 
-Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. G-05 결정 요청: (1) v1.1 + 시간 척도 변형의 blind 검증 cell(새 seed, N = 26·28 등)과 시간 척도 동결값(×1.210 / mode_dist), (2) FULL decode 22 % 초과의 원인 계측(GTASK15 제안 1–3, patch·측정은 승인 대상), (3) 붕괴 cell의 replicate 수(run 간 산포가 크다, GTASK16), (4) GTASK11 직접 채널(1.131) 기록의 정정 범위(시간 척도로는 1.21).
+Advisor 지시 없이 다음 GPU 작업을 시작하지 않는다. G-07 결정 요청:
+1. 주 예측기 (1)의 재사용 과대(+0.02, 6/6 cell 같은 방향)를 다룰지. 후보: 혼합·eager step과 prefill의 context 의존 측정(GTASK18 범위 밖)
+2. context 길이 비용 형태(`c·ΣL`)를 `SubstrateDescriptor`·NPU 비용 형태에 도입할지(`src/continuum/`은 이 branch에서 수정 금지)
+3. 붕괴 cell의 replicate 산포(같은 plan 반복 여부)
+4. 지난 결정 대기 항목(step 단위 격자 관측 수단, descriptor 확장, GPU 간섭 통제)은 그대로다
