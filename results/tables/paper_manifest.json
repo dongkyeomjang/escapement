@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-02T00:39:32.753380+09:00",
-  "git_head": "f8127058d6a06e312456fcd8f0a0e0f28cfedde0",
-  "git_dirty": "M experiments/npu/stage3/mt_check.py\n M experiments/npu/stage3/stepcost_op_analyze.py\n M results/tables/README.md\n?? .idea/\n?? experiments/npu/analysis/make_paper_tables.py\n?? experiments/npu/stage3/make_opcost.py\n?? experiments/npu/stage3/make_simblind_order.py\n?? experiments/npu/stage3/make_simblind_plans.py\n?? experiments/npu/stage3/null_predictors_sim.py\n?? experiments/npu/stage3/plans/main/INDEX_SIM.json\n?? experiments/npu/stage3/plans/main/NULL_PREDICTORS_SIM.json\n?? experiments/npu/stage3/plans/main/OPCOST_SIM.json\n?? experiments/npu/stage3/plans/main/ORDER_SIM.json\n?? experiments/npu/stage3/plans/main/main-n13-r0.json\n?? experiments/npu/stage3/plans/main/main-n13-r1.json\n?? experiments/npu/stage3/plans/main/main-n13-r2.json\n?? experiments/npu/stage3/plans/main/main-n13-r3.json\n?? experiments/npu/stage3/plans/main/main-n13-r4.json\n?? experiments/npu/stage3/plans/main/main-n17-r0.json\n?? experiments/npu/stage3/plans/main/main-n17-r1.json\n?? experiments/npu/stage3/plans/main/main-n17-r2.json\n?? experiments/npu/stage3/plans/main/main-n17-r3.json\n?? experiments/npu/stage3/plans/main/main-n17-r4.json\n?? experiments/npu/stage3/plans/main/main-n20-r0.json\n?? experiments/npu/stage3/plans/main/main-n20-r1.json\n?? experiments/npu/stage3/plans/main/main-n20-r2.json\n?? experiments/npu/stage3/plans/main/main-n20-r3.json\n?? experiments/npu/stage3/plans/main/main-n20-r4.json\n?? experiments/npu/stage3/predict_simblind.py\n?? experiments/npu/stage3/run_simblind.sh\n?? experiments/npu/stage3/simblind_analyze.py\n?? paper/RESULTS_INDEX.md\n?? results/tables/P01.csv\n?? results/tables/P01.md\n?? results/tables/P02.csv\n?? results/tables/P02.md\n?? results/tables/P03.csv\n?? results/tables/P03.md\n?? results/tables/P04.csv\n?? results/tables/P04.md\n?? results/tables/P05.csv\n?? results/tables/P05.md\n?? results/tables/P06.csv\n?? results/tables/P06.md\n?? results/tables/P07.csv\n?? results/tables/P07.md\n?? results/tables/P08.csv\n?? results/tables/P08.md\n?? results/tables/P09.csv\n?? results/tables/P09.md\n?? results/tables/P10.csv\n?? results/tables/P10.md\n?? results/tables/figures/\n?? results/tables/paper_manifest.json",
+  "generated_at": "2026-10-02T15:32:49.844884+09:00",
+  "git_head": "e3697b0f6746f78d9a4dc04b9292fe8efc339fce",
+  "git_dirty": "M docs/research/INDEX.md\n M docs/research/TASK90.md\n M experiments/npu/analysis/make_paper_tables.py\n M paper/RESULTS_INDEX.md\n M results/tables/P04.md\n M results/tables/P10.md\n M results/tables/README.md\n M results/tables/figures/F_b_reuse_ratio_vs_N.csv\n M results/tables/figures/F_c_pred_vs_obs.csv\n M results/tables/figures/F_d_applicability.csv\n M results/tables/paper_manifest.json\n?? .idea/\n?? experiments/npu/analysis/queue_depth_obs.py\n?? results/tables/P11.csv\n?? results/tables/P11.md",
   "gpu_branch": "origin/gpu-a6000",
   "gpu_branch_head": "e820f48",
   "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
@@ -61,7 +61,7 @@
           "기록": 0.752,
           "허용차": 0.0005,
           "일치": false,
-          "출처": "GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657»"
+          "출처": "GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» — GPU 쪽 정정 대기"
         }
       ],
       "built": true
@@ -146,16 +146,20 @@
       ],
       "rows": 9,
       "checks": 17,
-      "mismatches": [
-        {
-          "항목": "v11 재사용 MAE",
-          "재계산": 0.041,
-          "기록": 0.042,
-          "허용차": 0.0005,
-          "일치": false,
-          "출처": "TASK90 동결 전 점검 표"
-        }
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P11",
+      "title": "NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1",
+      "tasks": "TASK93, TASK95",
+      "inputs": [
+        "results/npu/stage3/20261002-simblind/simblind_verdict.json",
+        "results/npu/stage3/queue_obs/queue_obs.json"
       ],
+      "rows": 9,
+      "checks": 10,
+      "mismatches": [],
       "built": true
     }
   ],
@@ -181,7 +185,7 @@
     {
       "id": "F_b_reuse_ratio_vs_N",
       "built": true,
-      "rows": 183,
+      "rows": 228,
       "columns": [
         "substrate",
         "N",
@@ -192,13 +196,14 @@
         "ci_lo",
         "ci_hi",
         "population",
-        "source"
+        "source",
+        "cell_set"
       ]
     },
     {
       "id": "F_c_pred_vs_obs",
       "built": true,
-      "rows": 222,
+      "rows": 282,
       "columns": [
         "substrate",
         "cell",
@@ -210,13 +215,14 @@
         "observed",
         "error_pred_minus_obs",
         "population",
-        "source"
+        "source",
+        "cell_set"
       ]
     },
     {
       "id": "F_d_applicability",
       "built": true,
-      "rows": 103,
+      "rows": 130,
       "columns": [
         "substrate",
         "cell",
@@ -228,13 +234,16 @@
         "queue_E_wait_b2v1",
         "queue_depth_source",
         "queue_mean_obs",
+        "queue_p_gt0_obs",
+        "queue_obs_source",
         "ttft_median_obs_s",
         "mean_running_obs",
         "predictor",
         "reuse_error",
         "ratio_error",
         "population",
-        "source"
+        "source",
+        "cell_set"
       ]
     }
   ],

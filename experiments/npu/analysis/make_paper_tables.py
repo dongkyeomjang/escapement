@@ -41,6 +41,8 @@ from make_tables import Check, render_md  # noqa: E402
 S3 = REPO / "results/npu/stage3"
 MAIN_VERDICT = S3 / "20260930-main/main_verdict.json"
 HI_VERDICT = S3 / "20261001-hiload/hiload_verdict.json"
+SIM_VERDICT = S3 / "20261002-simblind/simblind_verdict.json"
+QUEUE_OBS = S3 / "queue_obs/queue_obs.json"
 STATIONARITY = S3 / "20260930-main/stationarity.json"
 R1 = S3 / "model_v0_retro/r1.json"
 R5P = S3 / "model_v0_retro/r5p.json"
@@ -212,7 +214,37 @@ def npu_cells():
             for p, lab in names.items():
                 row["pred"][lab]["ratio"] = r[p]["pred"]
         out.append(row)
+    sv = load(SIM_VERDICT)
+    for key, c in sv["cells"].items():
+        cfg, n = key.split(".n")
+        n = int(n)
+        row = {"substrate": "NPU", "cell": key, "N": n, "config": cfg,
+               "reuse_obs": c["reuse_obs"], "reuse_k": c["reuse"],
+               "ttft_s": c.get("ttft_turn_ge1_median_s"),
+               "mean_running_obs": c.get("mean_running_obs"),
+               "pred": {}, "population": "blind_confirm_cell", "source": "TASK95",
+               "src_file": rel(SIM_VERDICT)}
+        names = {"sim_op": "sim_opcost", "sim": "sim_descriptor", "v1": "analytic_v1"}
+        for p, lab in names.items():
+            row["pred"][lab] = {"reuse": c["pred"][p]["reuse"], "ratio": c["pred"][p]["ratio"]}
+        row["pred"]["analytic_v1"]["population"] = (
+            "reference_in_scope" if c["v1_in_scope"] else "reference_out_of_scope")
+        if key == "BASE.n20":           # user decision: excluded from §5.1 (no information)
+            row["population"] = "blind_no_information_cell"
+        if key in sv["5.2"]["cells"]:
+            r = sv["5.2"]["cells"][key]
+            row["ratio_obs"], row["ratio_ci"] = r["m"], r["ci"]
+            for p, lab in names.items():
+                row["pred"][lab]["ratio"] = r[p]["pred"]
+        out.append(row)
     return out
+
+
+def with_cell_set(header, rows):
+    """Append ``cell_set`` = the TASK/GTASK that owns the row (blind cell set
+    TASK82 / TASK87 / TASK95 on NPU, GTASK11 on GPU; GTASK13 rows are dev set)."""
+    i = header.index("source")
+    return header + ["cell_set"], [r + [str(r[i]).split(";")[0]] for r in rows]
 
 
 def gpu_cells():
@@ -461,7 +493,7 @@ def p04_gpu_multiturn():
               source="GTASK11 N = 26 탐색 문장")
     b24 = next(c for c in cells if c["cell"] == "BASE.n24")
     ck.eq("BASE.n24 sim LRU 재사용 (§5.5·발견 4 문장의 값)", round(b24["pred"]["sim_lru"]["reuse"], 3),
-          0.752, tol=5e-4, source="GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657»")
+          0.752, tol=5e-4, source="GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» — GPU 쪽 정정 대기")
     notes = ["관측은 GTASK11 문서 표(재사용 3자리, 비 4자리)에서 읽었다 — GPU raw는 이 host에 없다.",
              "예측은 PREDICTIONS.json `lo` bound. 영 = GPU 선등록 개정 1의 NPU 영 재사용 0.84718.",
              "N=26은 탐색 cell. N26 POOL 비 m·CI는 GTASK11 본문 문장에서 읽었다."]
@@ -697,7 +729,11 @@ def p10_b2_diagnosis():
     for p, cnt, mae, rs in (("v1", 8, 0.036, 0.450), ("v11", 7, 0.042, 0.187),
                             ("v12", 8, 0.054, 0.132), ("sim", 6, 0.012, 0.262)):
         ck.eq(f"{p} 초과 cell 수", len(s[p]["cells_over_half"]), cnt, source="TASK90 동결 전 점검 표")
-        ck.eq(f"{p} 재사용 MAE", round(s[p]["reuse_mae"], 3), mae, tol=5e-4, source="TASK90 동결 전 점검 표")
+        if p == "v11":   # TASK90 표 0.042는 반올림 오기; 산출 파일 값 0.0415로 정정 기록 (지시문 09 §2.7)
+            ck.eq("v11 재사용 MAE", round(s[p]["reuse_mae"], 4), 0.0415, tol=5e-5,
+                  source="TASK90 정정 기록 (지시문 09, 원 표 0.042)")
+        else:
+            ck.eq(f"{p} 재사용 MAE", round(s[p]["reuse_mae"], 3), mae, tol=5e-4, source="TASK90 동결 전 점검 표")
         ck.eq(f"{p} 비 Σ|편향|", round(s[p]["ratio_sum_abs"], 3), rs, tol=5e-4, source="TASK90 동결 전 점검 표")
     ck.eq("v1.2 동결", fc["freeze_v12"], False, source="TASK90 (동결하지 않음)")
     notes = ["개발 집합(N = 12·14·16), 판정 없음. 편향 = 예측 − 관측, 재사용 / 비. * = 허용치 절반(0.05 / 0.015) 초과.",
@@ -808,7 +844,7 @@ def fig_b_vs_n():
                           m.groups()[1:]):
             rows.append(["GPU", 26, "POOL", "ratio_to_BASE", lab, x, "", "", "dev_set",
                          f"GTASK13; {gpu_ref(G13)}"])
-    return header, rows
+    return with_cell_set(header, rows)
 
 
 def fig_c_pred_vs_obs():
@@ -828,17 +864,19 @@ def fig_c_pred_vs_obs():
                 rows.append([c["substrate"], c["cell"], c["N"], c["config"], "ratio_to_BASE", lab,
                              f"{v:.4f}", fmt(c["ratio_obs"], c.get("ratio_dp", 4)),
                              f"{v - c['ratio_obs']:+.4f}", pop, src])
-    return header, rows
+    return with_cell_set(header, rows)
 
 
 def fig_d_applicability():
     """(d) analytic-model applicability: queue depth vs prediction error per cell."""
     header = ["substrate", "cell", "N", "config", "max_running_M", "N_over_M",
               "queue_p_wait_gt0_b2v1", "queue_E_wait_b2v1", "queue_depth_source",
-              "queue_mean_obs", "ttft_median_obs_s", "mean_running_obs", "predictor",
+              "queue_mean_obs", "queue_p_gt0_obs", "queue_obs_source",
+              "ttft_median_obs_s", "mean_running_obs", "predictor",
               "reuse_error", "ratio_error", "population", "source"]
     rows = []
     gq = gpu_queue()
+    qo = load(QUEUE_OBS)["cells"]
     gpred = json.loads(gpu_show(G_MT_PRED))
     for c in npu_cells() + gpu_cells():
         if c["substrate"] == "NPU":
@@ -851,26 +889,32 @@ def fig_d_applicability():
                 qsrc = "HILOAD_PREREG.md §2 (batch 16, N ≤ 16: 대기 0)"
             else:
                 pw = ew = None
-                qsrc = "기록 없음"
-            qobs, ttft = "", c.get("ttft_s")
+                qsrc = "B2 v1 예측 기록 없음 (관측은 queue_mean_obs 열)"
+            q = qo[c["cell"]]
+            assert q["source"] == c["source"], (c["cell"], q["source"], c["source"])
+            qobs, qp, ttft = f"{q['mean_q']:.3f}", f"{q['p_q_gt0']:.3f}", c.get("ttft_s")
+            qosrc = (f"queue_depth_obs.py: client in-flight − [BUCKET] request_nums, 평가 구간 decode "
+                     f"step 가중 ({q['steps']} step, {c['source']} 로그)")
         else:
             M = gpred["cells"][str(c["N"])][c["config"]]["config"]["max_num_seqs"]
             pw = ew = None
             q = gq.get((c["N"], c["config"]))
             qsrc = f"GTASK14 관측 @ {gpu_commit(G14)}" if q else "기록 없음"
             qobs = q["queue_mean_obs"] if q else ""
+            qp = ""
+            qosrc = f"GTASK14 관측 @ {gpu_commit(G14)}" if q else "기록 없음"
             ttft = q["ttft_median_obs_s"] if q else None
         for lab, p in c["pred"].items():
             re_ = p["reuse"] - c["reuse_obs"]
             ra = (p["ratio"] - c["ratio_obs"]) if (c["config"] != "BASE" and "ratio_obs" in c
                                                    and p.get("ratio") is not None) else None
             rows.append([c["substrate"], c["cell"], c["N"], c["config"], M, f"{c['N'] / M:.3f}",
-                         "" if pw is None else pw, "" if ew is None else ew, qsrc, qobs,
+                         "" if pw is None else pw, "" if ew is None else ew, qsrc, qobs, qp, qosrc,
                          "" if ttft is None else f"{ttft:.3f}",
                          "" if c.get("mean_running_obs") is None else f"{c['mean_running_obs']:.3f}",
                          lab, f"{re_:+.4f}", "" if ra is None else f"{ra:+.4f}",
                          p.get("population", c["population"]), f"{c['source']}; {c['src_file']}"])
-    return header, rows
+    return with_cell_set(header, rows)
 
 
 FIGURES = {
@@ -882,6 +926,51 @@ FIGURES = {
 
 
 # -- writers --------------------------------------------------------------------
+
+def p11_npu_simblind():
+    """TASK95 cells: sim_op (main), sim, v1 (reference); ratio with CI; observed queue."""
+    sv = load(SIM_VERDICT)
+    qo = load(QUEUE_OBS)["cells"]
+    header = ["cell", "판정 종류", "재사용 관측", "sim_op", "sim", "v1", "영", "비 m", "95 % CI",
+              "비 sim_op", "비 sim", "비 v1", "v1 범위", "평균 running 관측", "관측 대기 Q 평균",
+              "TTFT 중앙 (s)"]
+    null = 0.6763527054108216
+    rows = []
+    for key, c in sv["cells"].items():
+        r = sv["5.2"]["cells"].get(key)
+        kind = "blind_confirm (§5.1 정보 없음)" if key == "BASE.n20" else "blind_confirm"
+        rows.append([key, kind, f3(c["reuse_obs"]), f3(c["pred"]["sim_op"]["reuse"]),
+                     f3(c["pred"]["sim"]["reuse"]), f3(c["pred"]["v1"]["reuse"]), f3(null),
+                     f4(r["m"]) if r else "", f"[{r['ci'][0]:.4f}, {r['ci'][1]:.4f}]" if r else "",
+                     f4(r["sim_op"]["pred"]) if r else "", f4(r["sim"]["pred"]) if r else "",
+                     f4(r["v1"]["pred"]) if r else "", "안" if c["v1_in_scope"] else "밖",
+                     f"{c['mean_running_obs']:.2f}", f"{qo[key]['mean_q']:.3f}",
+                     f3(c["ttft_turn_ge1_median_s"])])
+    ck = Check()
+    s51, s52, s56 = sv["5.1"], sv["5.2"], sv["5.6"]
+    ck.eq("재사용 MAE sim_op", round(s51["sim_op"]["MAE"], 3), 0.016, tol=5e-4, source="TASK95 판정 표")
+    ck.eq("재사용 MAE sim", round(s51["sim"]["MAE"], 3), 0.013, tol=5e-4, source="TASK95 판정 표")
+    ck.eq("영 MAE", round(s51["MAE_null"], 4), 0.1899, tol=5e-5, source="TASK95 판정 표")
+    ck.eq("Σ|오차| sim_op", round(s52["sim_op"]["sum_abs_err"], 4), 0.1086, tol=5e-5, source="TASK95 판정 표")
+    ck.eq("Σ|오차| sim", round(s52["sim"]["sum_abs_err"], 4), 0.1017, tol=5e-5, source="TASK95 판정 표")
+    ck.eq("Σ|1 − m|", round(s52["sum_abs_1_minus_m"], 4), 1.4400, tol=5e-5, source="TASK95 판정 표")
+    ck.eq("h TVD 중앙 sim_op", round(s56["sim_op"]["median"], 3), 0.060, tol=5e-4, source="TASK95 판정 표")
+    ck.eq("BASE N17 재사용 관측", round(sv["cells"]["BASE.n17"]["reuse_obs"], 3), 0.047, tol=5e-4,
+          source="TASK95 cell별 표")
+    ck.eq("TUNED N13 m", round(s52["cells"]["TUNED.n13"]["m"], 4), 0.8614, tol=5e-5,
+          source="TASK95 cell별 표")
+    ck.eq("(1) 대 (2)", sv["simop_vs_sim"]["verdict"], "FAIL", source="TASK95 판정 표")
+    notes = ["주 예측기 sim_op(SIMBLIND_PREREG.md: TASK92 운영 비용으로 시간 진행, 원래 비용으로 가격). "
+             "sim = 원래 비용. v1 = 참고(N > 동시 실행 상한이면 범위 밖).",
+             "BASE N20은 §5.1·skill에서 제외(정보 없음), 비용 비 분모로는 사용.",
+             "관측 대기 Q = `queue_depth_obs.py`(client in-flight − `[BUCKET]` request_nums, decode step 가중). "
+             "구조적으로 대기 0인 cell에서도 0이 아니다: N ≤ 8 전 구성 0.013–0.018, batch 16 N10–16 0.022–0.040 "
+             "(전송·응답 종료 시간의 바닥값, 요청률과 함께 증가)."]
+    return header, rows, notes, ck, [rel(SIM_VERDICT), rel(QUEUE_OBS)], "TASK93, TASK95"
+
+
+TABLES["P11"] = (p11_npu_simblind, "NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1")
+
 
 def write_csv(path: Path, header, rows) -> None:
     with path.open("w", newline="") as fh:

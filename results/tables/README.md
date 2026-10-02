@@ -141,14 +141,15 @@ env -u PYTHONPATH python3 experiments/npu/analysis/make_paper_tables.py --all
 | P07 | 운영 step 시간 척도 (개발 집합), 두 기판 | `P07.md` / `P07.csv` | `make_paper_tables.py --table P07` | GTASK13, TASK91 | 11 | 0 |
 | P08 | 같은 길이 정상성, 두 기판 | `P08.md` / `P08.csv` | `make_paper_tables.py --table P08` | TASK83, GTASK16 | 6 | 0 |
 | P09 | descriptor 규칙 field 7개와 두 기판 재현 | `P09.md` / `P09.csv` | `make_paper_tables.py --table P09` | TASK84, GTASK04 | 6 | 0 |
-| P10 | B2 진단 사다리와 v1.2 동결 전 점검 (개발 집합) | `P10.md` / `P10.csv` | `make_paper_tables.py --table P10` | TASK90 | 17 | 1 |
+| P10 | B2 진단 사다리와 v1.2 동결 전 점검 (개발 집합) | `P10.md` / `P10.csv` | `make_paper_tables.py --table P10` | TASK90 | 17 | 0 |
+| P11 | NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1 | `P11.md` / `P11.csv` | `make_paper_tables.py --table P11` | TASK93, TASK95 | 10 | 0 |
 
 | 그림 데이터 | 파일 | 행 | 생성 명령 |
 |---|---|---|---|
 | F_a_survival | `figures/F_a_survival.csv` | 133 | `make_paper_tables.py --all` |
-| F_b_reuse_ratio_vs_N | `figures/F_b_reuse_ratio_vs_N.csv` | 183 | `make_paper_tables.py --all` |
-| F_c_pred_vs_obs | `figures/F_c_pred_vs_obs.csv` | 222 | `make_paper_tables.py --all` |
-| F_d_applicability | `figures/F_d_applicability.csv` | 103 | `make_paper_tables.py --all` |
+| F_b_reuse_ratio_vs_N | `figures/F_b_reuse_ratio_vs_N.csv` | 228 | `make_paper_tables.py --all` |
+| F_c_pred_vs_obs | `figures/F_c_pred_vs_obs.csv` | 282 | `make_paper_tables.py --all` |
+| F_d_applicability | `figures/F_d_applicability.csv` | 130 | `make_paper_tables.py --all` |
 
 생성 시각·commit·미생성 사유는 `paper_manifest.json`.
 

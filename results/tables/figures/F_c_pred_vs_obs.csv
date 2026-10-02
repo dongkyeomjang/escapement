@@ -1,223 +1,283 @@
-substrate,cell,N,config,metric,predictor,predicted,observed,error_pred_minus_obs,population,source
-NPU,BASE.n6,6,BASE,reuse,analytic_v1,0.8251,0.8199,+0.0052,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n6,6,BASE,reuse,sim_default,0.8267,0.8199,+0.0068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n6,6,BASE,reuse,sim_observed,0.8267,0.8199,+0.0068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n6,6,BASE,reuse,v1.1,0.8331,0.8199,+0.0132,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n6,6,BASE,reuse,null,0.6764,0.8199,-0.1435,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,reuse,analytic_v1,0.9151,0.9225,-0.0074,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,reuse,sim_default,0.9161,0.9225,-0.0064,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,reuse,sim_observed,0.9161,0.9225,-0.0064,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,reuse,v1.1,0.9141,0.9225,-0.0084,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,reuse,null,0.6764,0.9225,-0.2462,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,analytic_v1,0.9834,0.9904,-0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,sim_default,0.9941,0.9904,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,sim_observed,0.9941,0.9904,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,v1.1,0.9850,0.9904,-0.0054,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,null,1.0000,0.9904,+0.0096,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,reuse,analytic_v1,0.9150,0.9208,-0.0058,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,reuse,sim_default,0.9183,0.9208,-0.0025,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,reuse,sim_observed,0.9183,0.9208,-0.0025,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,reuse,v1.1,0.9140,0.9208,-0.0068,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,reuse,null,0.6764,0.9208,-0.2445,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,ratio_to_BASE,analytic_v1,0.9876,0.9826,+0.0051,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,ratio_to_BASE,sim_default,0.9898,0.9826,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,ratio_to_BASE,sim_observed,0.9898,0.9826,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,ratio_to_BASE,v1.1,0.9890,0.9826,+0.0065,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n6,6,TUNED,ratio_to_BASE,null,1.0000,0.9826,+0.0174,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n8,8,BASE,reuse,analytic_v1,0.7358,0.7784,-0.0426,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n8,8,BASE,reuse,sim_default,0.7800,0.7784,+0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n8,8,BASE,reuse,sim_observed,0.7786,0.7784,+0.0001,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n8,8,BASE,reuse,v1.1,0.7700,0.7784,-0.0084,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n8,8,BASE,reuse,null,0.6764,0.7784,-0.1021,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,reuse,analytic_v1,0.8820,0.8807,+0.0013,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,reuse,sim_default,0.8788,0.8807,-0.0019,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,reuse,sim_observed,0.8788,0.8807,-0.0019,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,reuse,v1.1,0.8823,0.8807,+0.0016,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,reuse,null,0.6764,0.8807,-0.2043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,analytic_v1,0.9716,0.9796,-0.0080,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,sim_default,0.9825,0.9796,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,sim_observed,0.9825,0.9796,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,v1.1,0.9781,0.9796,-0.0015,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,null,1.0000,0.9796,+0.0204,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,reuse,analytic_v1,0.8816,0.8832,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,reuse,sim_default,0.8802,0.8832,-0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,reuse,sim_observed,0.8802,0.8832,-0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,reuse,v1.1,0.8821,0.8832,-0.0011,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,reuse,null,0.6764,0.8832,-0.2068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,ratio_to_BASE,analytic_v1,0.9687,0.9722,-0.0034,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,ratio_to_BASE,sim_default,0.9839,0.9722,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,ratio_to_BASE,sim_observed,0.9839,0.9722,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,ratio_to_BASE,v1.1,0.9751,0.9722,+0.0030,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n8,8,TUNED,ratio_to_BASE,null,1.0000,0.9722,+0.0278,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,reuse,analytic_v1,0.8816,0.8793,+0.0023,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,reuse,sim_default,0.8750,0.8793,-0.0043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,reuse,sim_observed,0.8750,0.8793,-0.0043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,reuse,v1.1,0.8820,0.8793,+0.0028,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,reuse,null,0.6764,0.8793,-0.2029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,ratio_to_BASE,analytic_v1,0.9649,0.9725,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,ratio_to_BASE,sim_default,0.9713,0.9725,-0.0012,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,ratio_to_BASE,sim_observed,0.9713,0.9725,-0.0011,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,ratio_to_BASE,v1.1,0.9713,0.9725,-0.0012,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,DP.n8,8,DP,ratio_to_BASE,null,1.0000,0.9725,+0.0275,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n10,10,BASE,reuse,analytic_v1,0.6342,0.6987,-0.0645,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n10,10,BASE,reuse,sim_default,0.6969,0.6987,-0.0018,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n10,10,BASE,reuse,sim_observed,0.6966,0.6987,-0.0021,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n10,10,BASE,reuse,v1.1,0.6975,0.6987,-0.0013,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n10,10,BASE,reuse,null,0.6764,0.6987,-0.0224,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,reuse,analytic_v1,0.8580,0.8638,-0.0058,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,reuse,sim_default,0.8561,0.8638,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,reuse,sim_observed,0.8561,0.8638,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,reuse,v1.1,0.8595,0.8638,-0.0043,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,reuse,null,0.6764,0.8638,-0.1874,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,analytic_v1,0.9534,0.9634,-0.0101,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,sim_default,0.9689,0.9634,+0.0055,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,sim_observed,0.9649,0.9634,+0.0015,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,v1.1,0.9660,0.9634,+0.0026,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,null,1.0000,0.9634,+0.0366,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,reuse,analytic_v1,0.8569,0.8628,-0.0059,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,reuse,sim_default,0.8612,0.8628,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,reuse,sim_observed,0.8612,0.8628,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,reuse,v1.1,0.8587,0.8628,-0.0041,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,reuse,null,0.6764,0.8628,-0.1864,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,ratio_to_BASE,analytic_v1,0.9451,0.9523,-0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,ratio_to_BASE,sim_default,0.9593,0.9523,+0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,ratio_to_BASE,sim_observed,0.9553,0.9523,+0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,ratio_to_BASE,v1.1,0.9576,0.9523,+0.0052,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n10,10,TUNED,ratio_to_BASE,null,1.0000,0.9523,+0.0477,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n12,12,BASE,reuse,analytic_v1,0.4039,0.4837,-0.0797,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n12,12,BASE,reuse,sim_default,0.4848,0.4837,+0.0012,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n12,12,BASE,reuse,sim_observed,0.5068,0.4837,+0.0231,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n12,12,BASE,reuse,v1.1,0.4358,0.4837,-0.0478,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n12,12,BASE,reuse,null,0.6764,0.4837,+0.1927,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,reuse,analytic_v1,0.8344,0.8552,-0.0208,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,reuse,sim_default,0.8613,0.8552,+0.0061,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,reuse,sim_observed,0.8613,0.8552,+0.0061,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,reuse,v1.1,0.8414,0.8552,-0.0138,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,reuse,null,0.6764,0.8552,-0.1788,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,analytic_v1,0.8905,0.8441,+0.0464,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,sim_default,0.8755,0.8441,+0.0314,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,sim_observed,0.8828,0.8441,+0.0387,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,v1.1,0.8944,0.8441,+0.0502,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,null,1.0000,0.8441,+0.1559,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,reuse,analytic_v1,0.8369,0.8586,-0.0218,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,reuse,sim_default,0.8642,0.8586,+0.0056,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,reuse,sim_observed,0.8642,0.8586,+0.0056,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,reuse,v1.1,0.8421,0.8586,-0.0165,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,reuse,null,0.6764,0.8586,-0.1823,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,ratio_to_BASE,analytic_v1,0.8751,0.8296,+0.0455,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,ratio_to_BASE,sim_default,0.8565,0.8296,+0.0269,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,ratio_to_BASE,sim_observed,0.8637,0.8296,+0.0341,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,ratio_to_BASE,v1.1,0.8793,0.8296,+0.0497,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,TUNED.n12,12,TUNED,ratio_to_BASE,null,1.0000,0.8296,+0.1704,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json
-NPU,BASE.n14,14,BASE,reuse,v1.1,0.1735,0.2981,-0.1246,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n14,14,BASE,reuse,analytic_v1,0.3292,0.2981,+0.0310,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n14,14,BASE,reuse,sim_descriptor,0.3299,0.2981,+0.0317,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n14,14,BASE,reuse,null,0.6764,0.2981,+0.3782,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,reuse,v1.1,0.8165,0.8040,+0.0125,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,reuse,analytic_v1,0.7995,0.8040,-0.0045,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,reuse,sim_descriptor,0.8050,0.8040,+0.0010,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,reuse,null,0.6764,0.8040,-0.1277,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,v1.1,0.8057,0.8000,+0.0057,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,analytic_v1,0.8569,0.8000,+0.0569,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,sim_descriptor,0.8321,0.8000,+0.0321,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,null,1.0000,0.8000,+0.2000,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,reuse,v1.1,0.8174,0.8046,+0.0128,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,reuse,analytic_v1,0.8040,0.8046,-0.0006,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,reuse,sim_descriptor,0.8066,0.8046,+0.0019,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,reuse,null,0.6764,0.8046,-0.1283,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,ratio_to_BASE,v1.1,0.7861,0.7593,+0.0268,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,ratio_to_BASE,analytic_v1,0.8350,0.7593,+0.0757,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,ratio_to_BASE,sim_descriptor,0.8108,0.7593,+0.0516,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n14,14,TUNED,ratio_to_BASE,null,1.0000,0.7593,+0.2407,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n16,16,BASE,reuse,v1.1,0.0682,0.1650,-0.0968,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n16,16,BASE,reuse,analytic_v1,0.3051,0.1650,+0.1401,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n16,16,BASE,reuse,sim_descriptor,0.1912,0.1650,+0.0262,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BASE.n16,16,BASE,reuse,null,0.6764,0.1650,+0.5113,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,reuse,v1.1,0.8035,0.7728,+0.0306,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,reuse,analytic_v1,0.7704,0.7728,-0.0024,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,reuse,sim_descriptor,0.7780,0.7728,+0.0052,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,reuse,null,0.6764,0.7728,-0.0965,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,v1.1,0.7525,0.7337,+0.0188,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,analytic_v1,0.8383,0.7337,+0.1046,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,sim_descriptor,0.7804,0.7337,+0.0468,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,null,1.0000,0.7337,+0.2663,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,reuse,v1.1,0.7995,0.7814,+0.0180,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,reuse,analytic_v1,0.7592,0.7814,-0.0222,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,reuse,sim_descriptor,0.7920,0.7814,+0.0106,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,reuse,null,0.6764,0.7814,-0.1051,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,ratio_to_BASE,v1.1,0.7316,0.6955,+0.0361,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,ratio_to_BASE,analytic_v1,0.8167,0.6955,+0.1212,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,ratio_to_BASE,sim_descriptor,0.7544,0.6955,+0.0589,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-NPU,TUNED.n16,16,TUNED,ratio_to_BASE,null,1.0000,0.6955,+0.3045,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json
-GPU,BASE.n20,20,BASE,reuse,analytic_v1,0.8437,0.856,-0.0123,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n20,20,BASE,reuse,sim_lru,0.8575,0.856,+0.0015,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n20,20,BASE,reuse,sim_fifo,0.7614,0.856,-0.0946,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n20,20,BASE,reuse,null,0.8472,0.856,-0.0088,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,reuse,analytic_v1,0.8774,0.905,-0.0276,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,reuse,sim_lru,0.9035,0.905,-0.0015,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,reuse,sim_fifo,0.8188,0.905,-0.0862,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,reuse,null,0.8472,0.905,-0.0578,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,ratio_to_BASE,analytic_v1,0.9928,0.9908,+0.0020,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,ratio_to_BASE,sim_lru,0.9886,0.9908,-0.0022,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,ratio_to_BASE,sim_fifo,0.9938,0.9908,+0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n20,20,POOL,ratio_to_BASE,null,1.0000,0.9908,+0.0092,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,reuse,analytic_v1,0.8773,0.909,-0.0317,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,reuse,sim_lru,0.9001,0.909,-0.0089,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,reuse,sim_fifo,0.8214,0.909,-0.0876,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,reuse,null,0.8472,0.909,-0.0618,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,analytic_v1,0.9919,0.9866,+0.0053,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,sim_lru,0.9836,0.9866,-0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,sim_fifo,0.9922,0.9866,+0.0056,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,null,1.0000,0.9866,+0.0134,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n22,22,BASE,reuse,analytic_v1,0.8283,0.817,+0.0113,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n22,22,BASE,reuse,sim_lru,0.8492,0.817,+0.0322,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n22,22,BASE,reuse,sim_fifo,0.7346,0.817,-0.0824,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n22,22,BASE,reuse,null,0.8472,0.817,+0.0302,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,reuse,analytic_v1,0.8625,0.900,-0.0375,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,reuse,sim_lru,0.8945,0.900,-0.0055,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,reuse,sim_fifo,0.7873,0.900,-0.1127,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,reuse,null,0.8472,0.900,-0.0528,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,ratio_to_BASE,analytic_v1,0.9909,0.9690,+0.0219,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,ratio_to_BASE,sim_lru,0.9839,0.9690,+0.0149,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,ratio_to_BASE,sim_fifo,0.9890,0.9690,+0.0200,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n22,22,POOL,ratio_to_BASE,null,1.0000,0.9690,+0.0310,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,reuse,analytic_v1,0.8624,0.898,-0.0356,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,reuse,sim_lru,0.8924,0.898,-0.0056,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,reuse,sim_fifo,0.7879,0.898,-0.1101,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,reuse,null,0.8472,0.898,-0.0508,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,analytic_v1,0.9903,0.9715,+0.0188,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,sim_lru,0.9835,0.9715,+0.0120,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,sim_fifo,0.9833,0.9715,+0.0118,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,null,1.0000,0.9715,+0.0285,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n24,24,BASE,reuse,analytic_v1,0.8068,0.669,+0.1378,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n24,24,BASE,reuse,sim_lru,0.7532,0.669,+0.0842,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n24,24,BASE,reuse,sim_fifo,0.6111,0.669,-0.0579,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n24,24,BASE,reuse,null,0.8472,0.669,+0.1782,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,reuse,analytic_v1,0.8502,0.852,-0.0018,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,reuse,sim_lru,0.8609,0.852,+0.0089,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,reuse,sim_fifo,0.7166,0.852,-0.1354,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,reuse,null,0.8472,0.852,-0.0048,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,ratio_to_BASE,analytic_v1,0.9858,0.9402,+0.0456,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,ratio_to_BASE,sim_lru,0.9583,0.9402,+0.0181,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,ratio_to_BASE,sim_fifo,0.9664,0.9402,+0.0262,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n24,24,POOL,ratio_to_BASE,null,1.0000,0.9402,+0.0598,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,reuse,analytic_v1,0.8502,0.854,-0.0038,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,reuse,sim_lru,0.8624,0.854,+0.0084,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,reuse,sim_fifo,0.7022,0.854,-0.1518,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,reuse,null,0.8472,0.854,-0.0068,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,analytic_v1,0.9855,0.9327,+0.0528,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,sim_lru,0.9568,0.9327,+0.0241,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,sim_fifo,0.9741,0.9327,+0.0414,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,null,1.0000,0.9327,+0.0673,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n26,26,BASE,reuse,analytic_v1,0.7859,0.450,+0.3359,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n26,26,BASE,reuse,sim_lru,0.6572,0.450,+0.2072,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n26,26,BASE,reuse,sim_fifo,0.5516,0.450,+0.1016,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,BASE.n26,26,BASE,reuse,null,0.8472,0.450,+0.3972,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,reuse,analytic_v1,0.8308,0.804,+0.0268,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,reuse,sim_lru,0.8332,0.804,+0.0292,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,reuse,sim_fifo,0.6736,0.804,-0.1304,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,reuse,null,0.8472,0.804,+0.0432,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,ratio_to_BASE,analytic_v1,0.9838,0.899,+0.0848,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,ratio_to_BASE,sim_lru,0.9393,0.899,+0.0403,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,ratio_to_BASE,sim_fifo,0.9643,0.899,+0.0653,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
-GPU,POOL.n26,26,POOL,ratio_to_BASE,null,1.0000,0.899,+0.1010,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4
+substrate,cell,N,config,metric,predictor,predicted,observed,error_pred_minus_obs,population,source,cell_set
+NPU,BASE.n6,6,BASE,reuse,analytic_v1,0.8251,0.8199,+0.0052,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n6,6,BASE,reuse,sim_default,0.8267,0.8199,+0.0068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n6,6,BASE,reuse,sim_observed,0.8267,0.8199,+0.0068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n6,6,BASE,reuse,v1.1,0.8331,0.8199,+0.0132,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n6,6,BASE,reuse,null,0.6764,0.8199,-0.1435,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,reuse,analytic_v1,0.9151,0.9225,-0.0074,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,reuse,sim_default,0.9161,0.9225,-0.0064,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,reuse,sim_observed,0.9161,0.9225,-0.0064,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,reuse,v1.1,0.9141,0.9225,-0.0084,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,reuse,null,0.6764,0.9225,-0.2462,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,analytic_v1,0.9834,0.9904,-0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,sim_default,0.9941,0.9904,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,sim_observed,0.9941,0.9904,+0.0037,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,v1.1,0.9850,0.9904,-0.0054,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n6,6,BATCHONLY,ratio_to_BASE,null,1.0000,0.9904,+0.0096,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,reuse,analytic_v1,0.9150,0.9208,-0.0058,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,reuse,sim_default,0.9183,0.9208,-0.0025,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,reuse,sim_observed,0.9183,0.9208,-0.0025,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,reuse,v1.1,0.9140,0.9208,-0.0068,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,reuse,null,0.6764,0.9208,-0.2445,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,ratio_to_BASE,analytic_v1,0.9876,0.9826,+0.0051,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,ratio_to_BASE,sim_default,0.9898,0.9826,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,ratio_to_BASE,sim_observed,0.9898,0.9826,+0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,ratio_to_BASE,v1.1,0.9890,0.9826,+0.0065,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n6,6,TUNED,ratio_to_BASE,null,1.0000,0.9826,+0.0174,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n8,8,BASE,reuse,analytic_v1,0.7358,0.7784,-0.0426,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n8,8,BASE,reuse,sim_default,0.7800,0.7784,+0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n8,8,BASE,reuse,sim_observed,0.7786,0.7784,+0.0001,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n8,8,BASE,reuse,v1.1,0.7700,0.7784,-0.0084,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n8,8,BASE,reuse,null,0.6764,0.7784,-0.1021,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,reuse,analytic_v1,0.8820,0.8807,+0.0013,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,reuse,sim_default,0.8788,0.8807,-0.0019,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,reuse,sim_observed,0.8788,0.8807,-0.0019,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,reuse,v1.1,0.8823,0.8807,+0.0016,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,reuse,null,0.6764,0.8807,-0.2043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,analytic_v1,0.9716,0.9796,-0.0080,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,sim_default,0.9825,0.9796,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,sim_observed,0.9825,0.9796,+0.0029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,v1.1,0.9781,0.9796,-0.0015,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n8,8,BATCHONLY,ratio_to_BASE,null,1.0000,0.9796,+0.0204,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,reuse,analytic_v1,0.8816,0.8832,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,reuse,sim_default,0.8802,0.8832,-0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,reuse,sim_observed,0.8802,0.8832,-0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,reuse,v1.1,0.8821,0.8832,-0.0011,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,reuse,null,0.6764,0.8832,-0.2068,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,ratio_to_BASE,analytic_v1,0.9687,0.9722,-0.0034,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,ratio_to_BASE,sim_default,0.9839,0.9722,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,ratio_to_BASE,sim_observed,0.9839,0.9722,+0.0118,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,ratio_to_BASE,v1.1,0.9751,0.9722,+0.0030,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n8,8,TUNED,ratio_to_BASE,null,1.0000,0.9722,+0.0278,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,reuse,analytic_v1,0.8816,0.8793,+0.0023,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,reuse,sim_default,0.8750,0.8793,-0.0043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,reuse,sim_observed,0.8750,0.8793,-0.0043,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,reuse,v1.1,0.8820,0.8793,+0.0028,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,reuse,null,0.6764,0.8793,-0.2029,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,ratio_to_BASE,analytic_v1,0.9649,0.9725,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,ratio_to_BASE,sim_default,0.9713,0.9725,-0.0012,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,ratio_to_BASE,sim_observed,0.9713,0.9725,-0.0011,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,ratio_to_BASE,v1.1,0.9713,0.9725,-0.0012,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,DP.n8,8,DP,ratio_to_BASE,null,1.0000,0.9725,+0.0275,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n10,10,BASE,reuse,analytic_v1,0.6342,0.6987,-0.0645,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n10,10,BASE,reuse,sim_default,0.6969,0.6987,-0.0018,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n10,10,BASE,reuse,sim_observed,0.6966,0.6987,-0.0021,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n10,10,BASE,reuse,v1.1,0.6975,0.6987,-0.0013,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n10,10,BASE,reuse,null,0.6764,0.6987,-0.0224,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,reuse,analytic_v1,0.8580,0.8638,-0.0058,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,reuse,sim_default,0.8561,0.8638,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,reuse,sim_observed,0.8561,0.8638,-0.0076,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,reuse,v1.1,0.8595,0.8638,-0.0043,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,reuse,null,0.6764,0.8638,-0.1874,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,analytic_v1,0.9534,0.9634,-0.0101,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,sim_default,0.9689,0.9634,+0.0055,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,sim_observed,0.9649,0.9634,+0.0015,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,v1.1,0.9660,0.9634,+0.0026,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n10,10,BATCHONLY,ratio_to_BASE,null,1.0000,0.9634,+0.0366,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,reuse,analytic_v1,0.8569,0.8628,-0.0059,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,reuse,sim_default,0.8612,0.8628,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,reuse,sim_observed,0.8612,0.8628,-0.0016,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,reuse,v1.1,0.8587,0.8628,-0.0041,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,reuse,null,0.6764,0.8628,-0.1864,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,ratio_to_BASE,analytic_v1,0.9451,0.9523,-0.0072,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,ratio_to_BASE,sim_default,0.9593,0.9523,+0.0070,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,ratio_to_BASE,sim_observed,0.9553,0.9523,+0.0030,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,ratio_to_BASE,v1.1,0.9576,0.9523,+0.0052,post_hoc,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n10,10,TUNED,ratio_to_BASE,null,1.0000,0.9523,+0.0477,blind_confirm_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n12,12,BASE,reuse,analytic_v1,0.4039,0.4837,-0.0797,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n12,12,BASE,reuse,sim_default,0.4848,0.4837,+0.0012,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n12,12,BASE,reuse,sim_observed,0.5068,0.4837,+0.0231,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n12,12,BASE,reuse,v1.1,0.4358,0.4837,-0.0478,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n12,12,BASE,reuse,null,0.6764,0.4837,+0.1927,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,reuse,analytic_v1,0.8344,0.8552,-0.0208,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,reuse,sim_default,0.8613,0.8552,+0.0061,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,reuse,sim_observed,0.8613,0.8552,+0.0061,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,reuse,v1.1,0.8414,0.8552,-0.0138,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,reuse,null,0.6764,0.8552,-0.1788,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,analytic_v1,0.8905,0.8441,+0.0464,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,sim_default,0.8755,0.8441,+0.0314,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,sim_observed,0.8828,0.8441,+0.0387,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,v1.1,0.8944,0.8441,+0.0502,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BATCHONLY.n12,12,BATCHONLY,ratio_to_BASE,null,1.0000,0.8441,+0.1559,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,reuse,analytic_v1,0.8369,0.8586,-0.0218,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,reuse,sim_default,0.8642,0.8586,+0.0056,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,reuse,sim_observed,0.8642,0.8586,+0.0056,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,reuse,v1.1,0.8421,0.8586,-0.0165,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,reuse,null,0.6764,0.8586,-0.1823,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,ratio_to_BASE,analytic_v1,0.8751,0.8296,+0.0455,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,ratio_to_BASE,sim_default,0.8565,0.8296,+0.0269,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,ratio_to_BASE,sim_observed,0.8637,0.8296,+0.0341,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,ratio_to_BASE,v1.1,0.8793,0.8296,+0.0497,dev_set,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,TUNED.n12,12,TUNED,ratio_to_BASE,null,1.0000,0.8296,+0.1704,blind_exploratory_cell,TASK82; results/npu/stage3/20260930-main/main_verdict.json,TASK82
+NPU,BASE.n14,14,BASE,reuse,v1.1,0.1735,0.2981,-0.1246,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n14,14,BASE,reuse,analytic_v1,0.3292,0.2981,+0.0310,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n14,14,BASE,reuse,sim_descriptor,0.3299,0.2981,+0.0317,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n14,14,BASE,reuse,null,0.6764,0.2981,+0.3782,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,reuse,v1.1,0.8165,0.8040,+0.0125,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,reuse,analytic_v1,0.7995,0.8040,-0.0045,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,reuse,sim_descriptor,0.8050,0.8040,+0.0010,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,reuse,null,0.6764,0.8040,-0.1277,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,v1.1,0.8057,0.8000,+0.0057,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,analytic_v1,0.8569,0.8000,+0.0569,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,sim_descriptor,0.8321,0.8000,+0.0321,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n14,14,BATCHONLY,ratio_to_BASE,null,1.0000,0.8000,+0.2000,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,reuse,v1.1,0.8174,0.8046,+0.0128,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,reuse,analytic_v1,0.8040,0.8046,-0.0006,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,reuse,sim_descriptor,0.8066,0.8046,+0.0019,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,reuse,null,0.6764,0.8046,-0.1283,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,ratio_to_BASE,v1.1,0.7861,0.7593,+0.0268,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,ratio_to_BASE,analytic_v1,0.8350,0.7593,+0.0757,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,ratio_to_BASE,sim_descriptor,0.8108,0.7593,+0.0516,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n14,14,TUNED,ratio_to_BASE,null,1.0000,0.7593,+0.2407,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n16,16,BASE,reuse,v1.1,0.0682,0.1650,-0.0968,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n16,16,BASE,reuse,analytic_v1,0.3051,0.1650,+0.1401,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n16,16,BASE,reuse,sim_descriptor,0.1912,0.1650,+0.0262,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n16,16,BASE,reuse,null,0.6764,0.1650,+0.5113,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,reuse,v1.1,0.8035,0.7728,+0.0306,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,reuse,analytic_v1,0.7704,0.7728,-0.0024,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,reuse,sim_descriptor,0.7780,0.7728,+0.0052,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,reuse,null,0.6764,0.7728,-0.0965,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,v1.1,0.7525,0.7337,+0.0188,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,analytic_v1,0.8383,0.7337,+0.1046,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,sim_descriptor,0.7804,0.7337,+0.0468,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BATCHONLY.n16,16,BATCHONLY,ratio_to_BASE,null,1.0000,0.7337,+0.2663,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,reuse,v1.1,0.7995,0.7814,+0.0180,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,reuse,analytic_v1,0.7592,0.7814,-0.0222,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,reuse,sim_descriptor,0.7920,0.7814,+0.0106,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,reuse,null,0.6764,0.7814,-0.1051,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,ratio_to_BASE,v1.1,0.7316,0.6955,+0.0361,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,ratio_to_BASE,analytic_v1,0.8167,0.6955,+0.1212,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,ratio_to_BASE,sim_descriptor,0.7544,0.6955,+0.0589,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,TUNED.n16,16,TUNED,ratio_to_BASE,null,1.0000,0.6955,+0.3045,blind_confirm_cell,TASK87; results/npu/stage3/20261001-hiload/hiload_verdict.json,TASK87
+NPU,BASE.n13,13,BASE,reuse,sim_opcost,0.4272,0.4186,+0.0086,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n13,13,BASE,reuse,sim_descriptor,0.4613,0.4186,+0.0427,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n13,13,BASE,reuse,analytic_v1,0.3692,0.4186,-0.0494,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n13,13,BASE,reuse,null,0.6764,0.4186,+0.2578,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,reuse,sim_opcost,0.8285,0.8300,-0.0015,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,reuse,sim_descriptor,0.8279,0.8300,-0.0020,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,reuse,analytic_v1,0.8111,0.8300,-0.0188,reference_in_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,reuse,null,0.6764,0.8300,-0.1536,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,ratio_to_BASE,sim_opcost,0.8901,0.8746,+0.0155,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,ratio_to_BASE,sim_descriptor,0.9029,0.8746,+0.0283,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,ratio_to_BASE,analytic_v1,0.8834,0.8746,+0.0088,reference_in_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n13,13,BATCHONLY,ratio_to_BASE,null,1.0000,0.8746,+0.1254,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,reuse,sim_opcost,0.8256,0.8285,-0.0029,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,reuse,sim_descriptor,0.8264,0.8285,-0.0021,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,reuse,analytic_v1,0.8141,0.8285,-0.0144,reference_in_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,reuse,null,0.6764,0.8285,-0.1522,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,ratio_to_BASE,sim_opcost,0.8825,0.8614,+0.0210,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,ratio_to_BASE,sim_descriptor,0.8942,0.8614,+0.0327,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,ratio_to_BASE,analytic_v1,0.8669,0.8614,+0.0054,reference_in_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n13,13,TUNED,ratio_to_BASE,null,1.0000,0.8614,+0.1386,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n17,17,BASE,reuse,sim_opcost,0.0677,0.0471,+0.0206,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n17,17,BASE,reuse,sim_descriptor,0.0532,0.0471,+0.0061,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n17,17,BASE,reuse,analytic_v1,0.2931,0.0471,+0.2459,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n17,17,BASE,reuse,null,0.6764,0.0471,+0.6292,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,reuse,sim_opcost,0.7392,0.7500,-0.0108,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,reuse,sim_descriptor,0.7512,0.7500,+0.0012,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,reuse,analytic_v1,0.5731,0.7500,-0.1769,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,reuse,null,0.6764,0.7500,-0.0736,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,ratio_to_BASE,sim_opcost,0.7451,0.7259,+0.0192,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,ratio_to_BASE,sim_descriptor,0.7376,0.7259,+0.0117,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,ratio_to_BASE,analytic_v1,0.8766,0.7259,+0.1507,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n17,17,BATCHONLY,ratio_to_BASE,null,1.0000,0.7259,+0.2741,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,reuse,sim_opcost,0.7483,0.7571,-0.0088,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,reuse,sim_descriptor,0.7574,0.7571,+0.0003,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,reuse,analytic_v1,0.7078,0.7571,-0.0493,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,reuse,null,0.6764,0.7571,-0.0808,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,ratio_to_BASE,sim_opcost,0.7175,0.7036,+0.0140,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,ratio_to_BASE,sim_descriptor,0.7121,0.7036,+0.0085,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,ratio_to_BASE,analytic_v1,0.7984,0.7036,+0.0948,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n17,17,TUNED,ratio_to_BASE,null,1.0000,0.7036,+0.2964,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n20,20,BASE,reuse,sim_opcost,0.0000,0.0000,+0.0000,blind_no_information_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n20,20,BASE,reuse,sim_descriptor,0.0011,0.0000,+0.0011,blind_no_information_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n20,20,BASE,reuse,analytic_v1,0.2826,0.0000,+0.2826,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BASE.n20,20,BASE,reuse,null,0.6764,0.0000,+0.6764,blind_no_information_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,reuse,sim_opcost,0.6242,0.5839,+0.0403,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,reuse,sim_descriptor,0.6131,0.5839,+0.0292,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,reuse,analytic_v1,0.4113,0.5839,-0.1726,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,reuse,null,0.6764,0.5839,+0.0924,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,ratio_to_BASE,sim_opcost,0.6865,0.6996,-0.0131,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,ratio_to_BASE,sim_descriptor,0.6945,0.6996,-0.0051,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,ratio_to_BASE,analytic_v1,0.8783,0.6996,+0.1787,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,BATCHONLY.n20,20,BATCHONLY,ratio_to_BASE,null,1.0000,0.6996,+0.3004,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,reuse,sim_opcost,0.6322,0.5969,+0.0354,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,reuse,sim_descriptor,0.6189,0.5969,+0.0220,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,reuse,analytic_v1,0.3884,0.5969,-0.2085,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,reuse,null,0.6764,0.5969,+0.0795,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,ratio_to_BASE,sim_opcost,0.6691,0.6949,-0.0258,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,ratio_to_BASE,sim_descriptor,0.6796,0.6949,-0.0153,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,ratio_to_BASE,analytic_v1,0.8742,0.6949,+0.1793,reference_out_of_scope,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+NPU,TUNED.n20,20,TUNED,ratio_to_BASE,null,1.0000,0.6949,+0.3051,blind_confirm_cell,TASK95; results/npu/stage3/20261002-simblind/simblind_verdict.json,TASK95
+GPU,BASE.n20,20,BASE,reuse,analytic_v1,0.8437,0.856,-0.0123,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n20,20,BASE,reuse,sim_lru,0.8575,0.856,+0.0015,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n20,20,BASE,reuse,sim_fifo,0.7614,0.856,-0.0946,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n20,20,BASE,reuse,null,0.8472,0.856,-0.0088,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,reuse,analytic_v1,0.8774,0.905,-0.0276,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,reuse,sim_lru,0.9035,0.905,-0.0015,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,reuse,sim_fifo,0.8188,0.905,-0.0862,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,reuse,null,0.8472,0.905,-0.0578,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,ratio_to_BASE,analytic_v1,0.9928,0.9908,+0.0020,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,ratio_to_BASE,sim_lru,0.9886,0.9908,-0.0022,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,ratio_to_BASE,sim_fifo,0.9938,0.9908,+0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n20,20,POOL,ratio_to_BASE,null,1.0000,0.9908,+0.0092,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,reuse,analytic_v1,0.8773,0.909,-0.0317,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,reuse,sim_lru,0.9001,0.909,-0.0089,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,reuse,sim_fifo,0.8214,0.909,-0.0876,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,reuse,null,0.8472,0.909,-0.0618,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,analytic_v1,0.9919,0.9866,+0.0053,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,sim_lru,0.9836,0.9866,-0.0030,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,sim_fifo,0.9922,0.9866,+0.0056,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n20,20,POOL+GRID,ratio_to_BASE,null,1.0000,0.9866,+0.0134,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n22,22,BASE,reuse,analytic_v1,0.8283,0.817,+0.0113,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n22,22,BASE,reuse,sim_lru,0.8492,0.817,+0.0322,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n22,22,BASE,reuse,sim_fifo,0.7346,0.817,-0.0824,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n22,22,BASE,reuse,null,0.8472,0.817,+0.0302,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,reuse,analytic_v1,0.8625,0.900,-0.0375,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,reuse,sim_lru,0.8945,0.900,-0.0055,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,reuse,sim_fifo,0.7873,0.900,-0.1127,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,reuse,null,0.8472,0.900,-0.0528,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,ratio_to_BASE,analytic_v1,0.9909,0.9690,+0.0219,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,ratio_to_BASE,sim_lru,0.9839,0.9690,+0.0149,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,ratio_to_BASE,sim_fifo,0.9890,0.9690,+0.0200,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n22,22,POOL,ratio_to_BASE,null,1.0000,0.9690,+0.0310,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,reuse,analytic_v1,0.8624,0.898,-0.0356,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,reuse,sim_lru,0.8924,0.898,-0.0056,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,reuse,sim_fifo,0.7879,0.898,-0.1101,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,reuse,null,0.8472,0.898,-0.0508,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,analytic_v1,0.9903,0.9715,+0.0188,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,sim_lru,0.9835,0.9715,+0.0120,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,sim_fifo,0.9833,0.9715,+0.0118,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n22,22,POOL+GRID,ratio_to_BASE,null,1.0000,0.9715,+0.0285,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n24,24,BASE,reuse,analytic_v1,0.8068,0.669,+0.1378,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n24,24,BASE,reuse,sim_lru,0.7532,0.669,+0.0842,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n24,24,BASE,reuse,sim_fifo,0.6111,0.669,-0.0579,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n24,24,BASE,reuse,null,0.8472,0.669,+0.1782,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,reuse,analytic_v1,0.8502,0.852,-0.0018,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,reuse,sim_lru,0.8609,0.852,+0.0089,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,reuse,sim_fifo,0.7166,0.852,-0.1354,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,reuse,null,0.8472,0.852,-0.0048,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,ratio_to_BASE,analytic_v1,0.9858,0.9402,+0.0456,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,ratio_to_BASE,sim_lru,0.9583,0.9402,+0.0181,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,ratio_to_BASE,sim_fifo,0.9664,0.9402,+0.0262,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n24,24,POOL,ratio_to_BASE,null,1.0000,0.9402,+0.0598,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,reuse,analytic_v1,0.8502,0.854,-0.0038,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,reuse,sim_lru,0.8624,0.854,+0.0084,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,reuse,sim_fifo,0.7022,0.854,-0.1518,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,reuse,null,0.8472,0.854,-0.0068,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,analytic_v1,0.9855,0.9327,+0.0528,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,sim_lru,0.9568,0.9327,+0.0241,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,sim_fifo,0.9741,0.9327,+0.0414,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL+GRID.n24,24,POOL+GRID,ratio_to_BASE,null,1.0000,0.9327,+0.0673,blind_confirm_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n26,26,BASE,reuse,analytic_v1,0.7859,0.450,+0.3359,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n26,26,BASE,reuse,sim_lru,0.6572,0.450,+0.2072,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n26,26,BASE,reuse,sim_fifo,0.5516,0.450,+0.1016,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,BASE.n26,26,BASE,reuse,null,0.8472,0.450,+0.3972,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,reuse,analytic_v1,0.8308,0.804,+0.0268,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,reuse,sim_lru,0.8332,0.804,+0.0292,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,reuse,sim_fifo,0.6736,0.804,-0.1304,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,reuse,null,0.8472,0.804,+0.0432,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,ratio_to_BASE,analytic_v1,0.9838,0.899,+0.0848,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,ratio_to_BASE,sim_lru,0.9393,0.899,+0.0403,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,ratio_to_BASE,sim_fifo,0.9643,0.899,+0.0653,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11
+GPU,POOL.n26,26,POOL,ratio_to_BASE,null,1.0000,0.899,+0.1010,blind_exploratory_cell,GTASK11; origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4,GTASK11

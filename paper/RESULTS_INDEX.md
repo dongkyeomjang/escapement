@@ -1,6 +1,6 @@
 # RESULTS_INDEX
 
-kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro_check · code_check / layer: universal · class · stack · silicon · untagged (태그는 원 TASK/GTASK 문서의 태그만) / source: NPU `<path> @ <git log -1 commit>`, GPU `origin/gpu-a6000:<path> @ <git log origin/gpu-a6000 -1 commit>` / data: `results/tables/` 표·그림 데이터 (`make_paper_tables.py`, `make_tables.py`)
+kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으로 판정하지 않음) · post_hoc · dev_set · exploratory · retro_check · code_check / layer: universal · class · stack · silicon · untagged (태그는 원 TASK/GTASK 문서의 태그만) / source: NPU `<path> @ <git log -1 commit>`, GPU `origin/gpu-a6000:<path> @ <git log origin/gpu-a6000 -1 commit>` / data: `results/tables/` 표·그림 데이터 (`make_paper_tables.py`, `make_tables.py`)
 
 ## 1. arXiv 세 기전
 
@@ -16,7 +16,7 @@ kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro
 | t13_boundary_effect_verdict | +5.7~17.8 %; 같은 bucket 내 최대 +1.2 % | ITL, 판정 절 | docs/research/TASK13.md @ 7e7859b | post_hoc | untagged | — |
 | t13_transition_4to5 | +17.8 %; 2.06 ms | step 시간, 동시성 4 → 5 (bucket 4 → 8) | docs/research/TASK13.md @ 7e7859b | post_hoc | untagged | — |
 | t20_prereg_pred_a_c | 사전 예측 (a)·(c) 빗나감 | 선등록 예측 | docs/research/TASK20.md @ a6861cf | blind_fail | untagged | — |
-| t20_degradation_n10_12 | 저하 존재; pooled 0.9103 / 0.9192 | util(AGENTIC)/util(CONVENTIONAL), N = 10 / 12, 선등록 판정 규칙 | docs/research/TASK20.md @ a6861cf | blind_confirm | stack | — |
+| t20_degradation_n10_12 | 저하 존재; pooled 0.9103 / 0.9192 | util(AGENTIC)/util(CONVENTIONAL), N = 10 / 12, 선등록 판정 규칙 (선등록 `f9cc106` 16:51:16 < 측정 시작 16:51:32, "저하 존재" 기준은 NSLOTS_SWEEP_PREREG.md에 고정) | docs/research/TASK20.md @ a6861cf | blind_confirm | stack | — |
 | t20_sign_flip_n6 | pooled 1.1504 (INCONCLUSIVE) | util 비, N = 6 | docs/research/TASK20.md @ a6861cf | post_hoc | class | — |
 | t20_v1_cost_transfer | 0.86 → 0.57; 최대 43 % 과소 | TASK13 비용 모형 예측/실측 비, N 증가 | docs/research/TASK20.md @ a6861cf | post_hoc | stack | — |
 | t20_reuse_zero_n_ge12 | 0 | 층 2 재사용, N ≥ 12, 두 arm | docs/research/TASK20.md @ a6861cf | post_hoc | stack | — |
@@ -56,14 +56,14 @@ kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro
 
 | id | value | population/unit | source | kind | layer | data |
 |---|---|---|---|---|---|---|
-| t34_channel_agreement | 0.0221 / 0.0908 / 0.0700 (요건 ≤ 0.02 초과, 판정 보류) | \|A−B\|, N = 6 / 8 / 10 | docs/research/TASK34.md @ e24cf76 | blind_fail | universal | — |
+| t34_channel_agreement | 0.0221 / 0.0908 / 0.0700 (요건 ≤ 0.02 초과, 판정 보류) | \|A−B\|, N = 6 / 8 / 10 | docs/research/TASK34.md @ e24cf76 | withheld | universal | — |
 | t34_posthoc_channel | \|A′−B\| 0.0014–0.0045 | 측정 후 정의 채널, N = 6 / 8 / 10 | docs/research/TASK34.md @ e24cf76 | post_hoc | untagged | — |
 | t34_X_observed | +7.38 % (N ∈ {6,8}); N10 +12.61 % | X, 채널 B, 판정 보류 | docs/research/TASK34.md @ e24cf76 | exploratory | stack | — |
 | t34_sim_attribution | batch +7.21 %; bucket +0.71 % | sim 귀속 | docs/research/TASK34.md @ e24cf76 | exploratory | stack | — |
 | t35_X_n8_tuned | +9.72 % / +10.07 % | X, N = 8 TUNED, 채널 A′ / B | docs/research/TASK35.md @ 3f8308e | blind_confirm | stack | T09 |
 | t35_X_n8_batchonly | +8.25 % / +8.17 % | X, N = 8 BATCHONLY, 채널 A′ / B | docs/research/TASK35.md @ 3f8308e | blind_confirm | stack | T09 |
 | t35_pred_error_n8 | +0.0074 / +0.0058 (≤ 0.03) | sim 예측 오차, N = 8 ② / ③ | docs/research/TASK35.md @ 3f8308e | blind_confirm | stack | T07 |
-| t35_n6_held | PARTIAL (2 PASS / 2 보류); N = 6 오차 +0.0183 / +0.0194, 채널 0.0205 / 0.0236 > 0.02 | N = 6 ② / ③ | docs/research/TASK35.md @ 3f8308e | blind_fail | untagged | — |
+| t35_n6_held | PARTIAL (2 PASS / 2 보류); N = 6 오차 +0.0183 / +0.0194, 채널 0.0205 / 0.0236 > 0.02 | N = 6 ② / ③ | docs/research/TASK35.md @ 3f8308e | withheld | untagged | — |
 | t35_ablation | ③−② +1.34 / +1.47 %p vs 예측 +1.45 / +1.30 %p; PASS 2/2 | N = 6 / 8 | docs/research/TASK35.md @ 3f8308e | blind_confirm | stack | — |
 | t35_prefill_ratio_equal | 0.898/0.898, 0.678/0.678 | prefill비, ② / ③ | docs/research/TASK35.md @ 3f8308e | exploratory | stack | — |
 | t36_n6_reconfirm | PASS 2/2; 오차 +0.0067 / +0.0076; 채널 0.0001 / 0.0063 | N = 6 신규 seed, ② / ③ | docs/research/TASK36.md @ 3f8308e | blind_confirm | stack | T05 |
@@ -144,7 +144,7 @@ kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro
 | g11_h | PASS; TVD 중앙 0.081, 최대 0.184; 영 0.645 | h(n) decode-only (lo) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | blind_confirm | untagged | — |
 | g11_h_reqs | FAIL (최대 0.212) | h(n) `reqs` 정의 (병기) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | blind_fail | untagged | — |
 | g11_hsim_sign | lo 4/6, hi 6/6 음; 중앙 \|e\| 0.0135 | sim LRU 비 오차, H-sim 지표 (보고) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | exploratory | stack | — |
-| g11_collapse_curve | 관측 0.817 / 0.669 / 0.450 vs sim LRU 0.849 / 0.752 / 0.657 | BASE 재사용, N22 / 24 / 26 (발견 4 문장) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | exploratory | class | P04, F_b |
+| g11_collapse_curve | 관측 0.817 / 0.669 / 0.450 vs sim LRU 0.849 / 0.752 / 0.657 (0.752: GPU 쪽 정정 대기 — §5.1 표·`PREDICTIONS.json` `lo` 0.753) | BASE 재사용, N22 / 24 / 26 (발견 4 문장) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | exploratory | class | P04, F_b |
 | g11_n26 | BASE 0.450 vs 해석 0.786, sim LRU 0.657, sim FIFO 0.552; m 0.899 [0.806, 0.907] | N = 26 재사용, POOL/BASE 비 (탐색) | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | exploratory | class | P04, F_b |
 | g11_direct_channel | 1.131 (0.973–1.156) | 직접 dispatch / 가격, 55 lifecycle 중앙 | origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4 | exploratory | untagged | — |
 
@@ -181,6 +181,7 @@ kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro
 | t85_known_cells | 재사용 MAE 0.0142 → 0.0052; 비 Σ\|예측 − m\| 0.0483 → 0.0254 | N = 6·8·10 사후 대조 (blind 아님) | docs/research/TASK85.md @ ffd716f | post_hoc | untagged | F_c |
 | t90_v12_not_frozen | 초과 cell v1.2 후보 8 (v1 8, v1.1 7, sim 6) | 동결 전 점검, 9 cell | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
 | t90_v12_metrics | 재사용 MAE 0.054; 비 Σ\|편향\| 0.132 | v1.2 후보 | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
+| t90_v11_freeze_mae | 0.0415 (원 표 0.042는 반올림 오기, 정정 기록) | 재사용 MAE v1.1, 동결 전 점검 9 cell | docs/research/TASK90.md 정정 절 (TASK96 commit), `freeze_check.json` | dev_set | untagged | P10 |
 | t90_v12_base_bias | −0.130 / −0.162 / −0.109 | BASE 재사용 편향 v1.2 후보, N12 / 14 / 16 | docs/research/TASK90.md @ 338d3de | dev_set | stack | P10 |
 | t90_rho | 0.733–0.743 | 완료 순서 ρ | docs/research/TASK90.md @ 338d3de | dev_set | stack | — |
 | t90_sim_dev_mae | 0.012 | 재사용 MAE, sim, 9 cell | docs/research/TASK90.md @ 338d3de | dev_set | untagged | P10 |
@@ -274,6 +275,33 @@ kind: blind_confirm · blind_fail · post_hoc · dev_set · exploratory · retro
 | h86_batch16_no_queue | 대기 0 (N ≤ 16) | batch 16 구성 | docs/research/HILOAD_PREREG.md @ f75c8e7 | exploratory | untagged | F_d |
 | t82_n12_ttft | 0.286 s (다른 cell 0.068–0.084 s) | BASE N = 12 turn ≥ 1 TTFT 중앙 | docs/research/TASK82.md @ 074aedc | exploratory | untagged | F_d |
 | t87_base_n16_ttft | 1.589 s | BASE N16 turn ≥ 1 TTFT 중앙 | docs/research/TASK87.md @ a210be2 | exploratory | untagged | F_d |
+| q96_obs_base | N6 0.013, N8 0.018, N10 0.044, N12 0.280, N13 0.420, N14 0.761, N16 1.802, N17 3.528, N20 6.820 | 관측 대기 Q 평균(client in-flight − `[BUCKET]` request_nums, decode step 가중), BASE | docs/research/TASK96.md (TASK96 commit), `queue_depth_obs.py` | exploratory | untagged | F_d, P11 |
+| q96_obs_floor | N ≤ 8 전 구성 0.013–0.018; batch 16 N10–16 0.022–0.040 | 관측 Q, 구조적 대기 0 cell — 전송·응답 종료 시간의 바닥값(요청률과 함께 증가) | docs/research/TASK96.md (TASK96 commit) | exploratory | untagged | F_d |
+| q96_obs_batch16_n17_20 | N17 0.045 / 0.045, N20 0.099 / 0.096 | 관측 Q, BATCHONLY / TUNED (N > 16) | docs/research/TASK96.md (TASK96 commit) | exploratory | untagged | F_d, P11 |
+
+
+## 16. 통합 시뮬레이터 blind cell N = 13·17·20과 운영 step 비용 (TASK92–95)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| t92_short_ctx_decode | 관측/통제 artifact 중앙 1.009 / 1.000 / 1.002 / 0.994; n별 0.972–1.084 | 짧은 context 통제 부하 decode, BASE / BATCHONLY / TUNED / DP | docs/research/TASK92.md @ cc29e76 | exploratory | stack | — |
+| t92_long_ctx_decode | 1.03–1.15 (n = 4: 1.110–1.146) | 긴 context(multi-turn형) 깨끗한 decode step 관측/통제 | docs/research/TASK92.md @ cc29e76 | exploratory | stack | — |
+| t92_small_prefill | 통제 대비 1.23–1.48; 적합 대비 1.14–1.35 | ≤ 512 token 배타 prefill, 운영 경로 통제 부하 | docs/research/TASK92.md @ cc29e76 | exploratory | stack | — |
+| t92_opcost_prefill_a | 22.70 / 23.39 / 22.93 / 23.06 ms (통제 21.2) | prefill chunk 비용 a, 운영 적합 | docs/research/TASK92.md @ cc29e76 | exploratory | stack | — |
+| t92_reproducibility | n4 +0.7 %; n8 +2.4 % | 반복 lifecycle 중앙값 차, TUNED | docs/research/TASK92.md @ cc29e76 | exploratory | stack | — |
+| t95_validity | 45/45 유효, 재실행 0 | lifecycle | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11 |
+| t95_s51_simop | PASS; 8/8 ≤ 0.10; MAE 0.0161 ≤ 0.5 × 0.1899 | 재사용률, sim_op(주), 8 cell (BASE N20 정보 없음) | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11, F_b, F_c |
+| t95_s51_sim | PASS; MAE 0.0132 | 재사용률, sim(원래 비용) | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11, F_c |
+| t95_s52_simop | PASS; 기본 6/6, 강화 6/6; Σ 0.1086 ≤ 0.5 × 1.4400 | 비용 비, sim_op | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11, F_b, F_c |
+| t95_s52_sim | FAIL; 기본 5/6 (TUNED N13 \|0.8942 − 0.8614\| = 0.0328 > 0.03) | 비용 비, sim | docs/research/TASK95.md @ e3697b0 | blind_fail | untagged | P11, F_c |
+| t95_s53_ranking | PASS; 해소 8쌍 일치 (N20 BATCHONLY/TUNED 1.0244 [0.9945, 1.0411] 미해소) | 구성 순위 | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11 |
+| t95_s56_h | PASS; TVD 중앙 0.060, 최대 0.119; 영 0.586 | h(n), sim_op, 9 cell (BASE N20 포함) | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | — |
+| t95_simop_vs_sim | FAIL; 재사용 MAE 0.0161 > 0.0132, 비 Σ 0.1086 > 0.1017 | 운영 비용 sim 대 원래 비용 sim | docs/research/TASK95.md @ e3697b0 | blind_fail | untagged | P11 |
+| t95_base_collapse | 관측 0.419 / 0.047 / 0.000 vs sim_op 0.427 / 0.068 / 0.000 | BASE 재사용, N13 / 17 / 20 | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11, F_b |
+| t95_batch16_over_ceiling | 관측 0.750 / 0.757 / 0.584 / 0.597; \|오차\| ≤ 0.040 | batch 16 재사용, BATCHONLY / TUNED N17, N20 (N > 동시 실행 상한) | docs/research/TASK95.md @ e3697b0 | blind_confirm | untagged | P11, F_c |
+| t95_config_effect | 평균 \|1 − m\| 0.240; m 0.6949–0.8746 | BASE 대비 비, 6 cell | docs/research/TASK95.md @ e3697b0 | blind_confirm | stack | P11, F_b |
+| t95_v1_out_of_scope | 재사용 −0.05 – −0.21, 비 +0.09 – +0.18 | v1 오차, batch 16 N17·20 (범위 밖, 참고) | docs/research/TASK95.md @ e3697b0 | exploratory | untagged | P11, F_d |
+| t95_prior_prediction | §5.2 사전 예측 빗나감 (FAIL 예측 → (1) PASS); 나머지 4항목 적중 | 사전 예측 대조 | docs/research/TASK95.md @ e3697b0 | blind_fail | untagged | — |
 
 ## 15. 원고 수정 후보 ↔ id
 
