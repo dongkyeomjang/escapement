@@ -35,3 +35,12 @@
 ## 4. 쓰는 곳
 
 작업 B(사후 재예측, `post_hoc`): 이 비용으로 시뮬레이터의 시간을 진행해 TASK87·95 cell을 다시 예측한다. 관측을 이미 본 cell이므로 판정하지 않는다.
+
+## 개정 1 — BATCHONLY 추가 (2026-10-02, 지시문 11 작업 A, [TASK100](TASK100.md), 측정 전 commit)
+
+[TASK98](TASK98.md)은 BATCHONLY 비용을 측정하지 않고 규칙(f(b): b ∈ {1, 4, 8, 16} TUNED, b = 2 BASE; β·c = BASE·TUNED 평균)으로 정했다. blind 검증 입력에 규칙 추정이 섞이지 않도록 BATCHONLY(`…-b16-s8192-d4-batchonly`, grid 1,2,4,8,16)를 같은 설계로 잰다.
+
+- plan: TASK97의 `ctx-n{n}-L{L}` 그대로(n ∈ {1, 2, 4, 8, 16} × L ∈ {512, 1,500, 3,000}, 15 lifecycle). 소진 검사·같은 박자 방침도 같다.
+- 순서(`run_ctxcost_bo.sh`): seed 20262199로 섞고 재현 반복 1개(n8 L3000, `.rep2`). 실패는 1회 재실행. 약 40분.
+- 분석: `ctxcost_analyze.py`에 BATCHONLY를 추가해 같은 F1–F3 적합(TASK92 BATCHONLY `op-decode` 짧은 context 점 포함)과 운영 비율 재현 검사. 보고: F1 f(b)·β·c와 TASK98 규칙값의 차이, 그 차이가 TASK98 재예측의 BATCHONLY 시간 진행에 주는 step 시간 차(대표 n·ΣL에서 ms). 판정 없음.
+- **측정 중에는 다른 작업(저장소 scan, export, 분석, 시뮬레이션)을 돌리지 않는다**(지시문 11 §1).
