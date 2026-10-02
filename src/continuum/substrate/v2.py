@@ -296,6 +296,36 @@ class EagerStepCost:
 
 
 @dataclass(frozen=True)
+class ContextCost:
+    """Context-length term of a step that carries decoding requests:
+
+        step += per_token * (sum_ctx - decodes * reference_tokens_per_decode)
+
+    ``sum_ctx`` sums, over the step's decoding requests, the tokens already in
+    each request's context (prompt plus tokens generated so far). The decode
+    cost the term is added to was measured at ``reference_tokens_per_decode``
+    tokens per request (0 when it was fitted jointly with this term, as the
+    NPU F1 fit ``f(b) + beta n + c sum_ctx`` was). ``unit`` is the step-cost
+    unit of the descriptor's engine (``s`` for an exclusive-prefill engine,
+    ``ms`` for the paged engine), so the arithmetic matches the channel the
+    values came from bit for bit. ``None`` on a descriptor = no context term
+    (every judged prediction before TASK103)."""
+
+    per_token: float
+    unit: str
+    reference_tokens_per_decode: float = 0
+
+    def __post_init__(self) -> None:
+        if self.unit not in ("s", "ms"):
+            raise ValueError("ContextCost unit must be 's' or 'ms'")
+        if self.per_token < 0 or self.reference_tokens_per_decode < 0:
+            raise ValueError("ContextCost values must be non-negative")
+
+    def term(self, sum_ctx: int, decodes: int) -> float:
+        return self.per_token * (sum_ctx - decodes * self.reference_tokens_per_decode)
+
+
+@dataclass(frozen=True)
 class Pipeline:
     in_flight_batches: int | None = None
     startup_nonrequest_steps: int | None = None
@@ -316,6 +346,9 @@ class SubstrateDescriptorV2:
     step_cost_measurement: str | None
     prefill: PrefillSpec
     pipeline: Pipeline = Pipeline()
+    context_cost: ContextCost | None = None
+    """Optional context-length step-cost term (TASK103). ``None`` = none, not
+    "unknown": it is not listed by ``unknown_paths``."""
     provenance: Mapping[str, Provenance] = field(default_factory=dict)
     notes: tuple[str, ...] = ()
 
@@ -376,7 +409,8 @@ class SubstrateDescriptorV2:
                 v = getattr(obj, f.name)
                 path = f"{prefix}{f.name}"
                 if v is None:
-                    out.append(path)
+                    if path != "context_cost":
+                        out.append(path)
                 elif isinstance(v, tuple) and v and is_dataclass(v[0]):
                     for i, item in enumerate(v):
                         walk(item, f"{path}[{i}].")

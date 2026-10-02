@@ -11,6 +11,7 @@ from .descriptor import (
 from .v2 import (
     NA,
     Admission,
+    ContextCost,
     EagerStepCost,
     FullGraphDecodeCost,
     PiecewiseMixedCost,
@@ -33,6 +34,7 @@ __all__ = [
     "Admission",
     "EagerStepCost",
     "FullGraphDecodeCost",
+    "ContextCost",
     "PiecewiseMixedCost",
     "Grid",
     "Pipeline",

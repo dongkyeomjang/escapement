@@ -69,11 +69,10 @@ class SimConfig:
     """Latency budget the policy is bounded by. Ignored when no policy is set."""
 
     decode_cost_fn: object | None = None
-    """``(bucket, running, sum_ctx) -> seconds`` for a decode step, where
-    ``sum_ctx`` sums each running request's prompt plus generated tokens.
-    ``None`` -- the default and the setting of every judged prediction -- uses
-    ``descriptor.step_time_s(running)``. A post-hoc probe of a context-length
-    cost (TASK97); not read by the paged engine."""
+    """Deprecated (kept so the committed TASK98/TASK101 scripts reproduce):
+    ``(bucket, running, sum_ctx) -> seconds`` for a decode step. The supported
+    form is ``SubstrateDescriptorV2.context_cost`` (TASK103). Setting both is
+    an error. Not read by the paged engine."""
 
     cache_granularity: str = "outer"
     """``outer`` reproduces the measured pool: one block per sequence, whole
@@ -216,11 +215,17 @@ class SimConfig:
                     raise ValueError(f"fixed arrival {at} is negative")
 
 
-def _decode_s(descriptor, config: "SimConfig", running: list, actual: int) -> float:
-    if config.decode_cost_fn is None:
+def _decode_s(descriptor, config: "SimConfig", running: list, actual: int, context_cost=None) -> float:
+    """Decode step time. ``context_cost`` (``SubstrateDescriptorV2.context_cost``,
+    unit ``s``) adds ``per_token * (sum_ctx - n * reference)``; ``sum_ctx`` sums
+    each running request's prompt plus generated tokens."""
+    if config.decode_cost_fn is not None:
+        ctx = sum(r["prompt_tokens"] + r["generation_tokens"] - r["remaining"] for r in running)
+        return config.decode_cost_fn(descriptor.bucket_for(actual), actual, ctx)
+    if context_cost is None:
         return descriptor.step_time_s(actual)
     ctx = sum(r["prompt_tokens"] + r["generation_tokens"] - r["remaining"] for r in running)
-    return config.decode_cost_fn(descriptor.bucket_for(actual), actual, ctx)
+    return descriptor.step_time_s(actual) + context_cost.term(ctx, actual)
 
 
 @dataclass
@@ -420,6 +425,12 @@ def simulate(
         return simulate_paged(descriptor, sessions, config)
     if config.window_rule is not None:
         raise ValueError("window_rule is read by the paged engine only")
+    context_cost = descriptor.context_cost if isinstance(descriptor, SubstrateDescriptorV2) else None
+    if context_cost is not None:
+        if config.decode_cost_fn is not None:
+            raise ValueError("set either descriptor.context_cost or SimConfig.decode_cost_fn, not both")
+        if context_cost.unit != "s":
+            raise ValueError("this engine prices steps in seconds; context_cost.unit must be 's'")
     descriptor, release_rule, dummy_mode, policy_name = _descriptor_rules(descriptor, config)
     if descriptor.prefill_cost_model is None:
         raise ValueError(
@@ -664,7 +675,7 @@ def simulate(
                 actual = len(running)
                 _padding_step(actual)
                 bucket = descriptor.bucket_for(actual)
-                dur = _decode_s(descriptor, config, running, actual)
+                dur = _decode_s(descriptor, config, running, actual, context_cost)
                 steps.append(StepRecord(kind="decode", start_s=t, duration_s=dur,
                                         running=actual, bucket=bucket))
                 t += dur
@@ -719,7 +730,7 @@ def simulate(
             actual = len(running)
             _padding_step(actual)
             bucket = descriptor.bucket_for(actual)
-            dur = _decode_s(descriptor, config, running, actual)
+            dur = _decode_s(descriptor, config, running, actual, context_cost)
             steps.append(StepRecord(
                 kind="decode", start_s=t, duration_s=dur, running=actual, bucket=bucket,
             ))

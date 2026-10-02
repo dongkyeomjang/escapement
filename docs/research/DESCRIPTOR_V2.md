@@ -31,6 +31,7 @@ SubstrateDescriptorV2
 ├─ hit_formula: HitFormula
 ├─ step_cost: {"decode"|"mixed"|"eager": StepCostModel | None}
 ├─ step_cost_measurement: str
+├─ context_cost: ContextCost | None   (TASK103; None = context 항 없음, unknown 아님)
 ├─ prefill: PrefillSpec          execution, cost(PrefillCostModel, exclusive only), chunk_tokens
 ├─ pipeline: Pipeline            in_flight_batches, startup_nonrequest_steps
 ├─ provenance: {path: Provenance}
@@ -164,3 +165,38 @@ d.unknown_paths()   # 아직 확정되지 않은 field
 `SimConfig`의 `window_rule`·`slot_of`·`n_slots`를 주면 `mixed` 엔진은 평가 구간 끝 이후 새 요청을 내지 않는다(runner 규칙). `exclusive` 엔진은 이 field를 거부한다(기존 산출 재현).
 
 **GPU 대조**([TASK89](TASK89.md)): 테스트 전용 GPU descriptor + `mixed` 엔진으로 GTASK09의 `sim_lru`·`sim_fifo` × `lo`·`hi` 예측 44 항목을 다시 계산해 wrapper 산출과 **모든 field 정확히 일치**(재사용, h, padding, turn당 비용, 간섭, mode 수, replicate별 값, BASE 대비 비, 순위). GPU 에이전트는 실제 인스턴스로 `tests/gpu_sim_parity.py`의 `descriptor()`를 바꿔 같은 회귀를 다시 확인할 수 있다 — 주의: wrapper 산출은 Python 3.12의 보정 합(`sum`)으로 계산됐으므로 다른 Python에서는 합 함수를 맞춰야 bit 단위로 같다.
+
+## 8. context 길이 비용 `context_cost` ([TASK103](TASK103.md), 지시문 12 작업 A)
+
+decode 요청을 실은 step에 context 길이 항을 더한다.
+
+```
+step += per_token · (Σ_ctx − decodes · reference_tokens_per_decode)
+```
+
+- `Σ_ctx` = 그 step의 decode 요청마다 이미 context에 있는 token 수의 합(prompt + 지금까지 생성한 token; paged 엔진은 `computed`).
+- `reference_tokens_per_decode` = 기본 decode 비용을 잰 부하의 요청당 context. context 항과 함께 적합했다면 0.
+- `unit`은 그 엔진의 step 비용 단위와 같아야 한다 — `exclusive` 엔진(NPU) `"s"`, `mixed` 엔진(GPU) `"ms"`. 다르면 엔진이 거부한다. 단위를 바꾸지 않으므로 출처 채널과 bit 단위로 같은 값이 나온다.
+- `None`(기본)이면 기존 동작 그대로이고 `unknown_paths()`에 나오지 않는다. 값이 있으면 provenance key `"context_cost"`가 필요하다.
+- 형태는 `class`(KV attention 길이에 비례하는 decode 비용), 값은 `stack`.
+
+| 기판 | 기본 decode 비용 | `context_cost` | 출처 |
+|---|---|---|---|
+| NPU (RBLN CA25) | `step_cost["decode"]` = F1 `f(b) + β·n`(`StepCostModel`, 초; β는 음수일 수 있다 — 모든 bucket에서 step 시간이 양수인지 검사) | `ContextCost(per_token=c, unit="s")`, c = 1.453e-7 (BASE) / 1.460e-7 (BATCHONLY) / 1.490e-7 (TUNED) s/token, reference 0 | [TASK97](TASK97.md)·[TASK100](TASK100.md), `CTXCOST_BLIND.json` |
+| GPU (A6000) | 기존 가격(`FullGraphDecodeCost`·`PiecewiseMixedCost`·`EagerStepCost`, ms) | `ContextCost(per_token=2.120e-4, unit="ms", reference_tokens_per_decode=128)` — decode 요청이 있는 모든 mode의 step에 더함 | GTASK18 F1, GTASK05 가격 부하(prompt 64 + 평균 생성 위치 64) |
+
+사용 예(NPU):
+
+```python
+from dataclasses import replace
+from continuum.substrate import ContextCost, Provenance, StepCostModel
+d = replace(d, step_cost={**d.step_cost, "decode": StepCostModel(fixed_s_by_bucket=f, marginal_s_per_request=beta, intercept_s=0.0)},
+            context_cost=ContextCost(per_token=c, unit="s"),
+            provenance={**d.provenance, "context_cost": Provenance("class", "TASK97", "measured", "...")})
+```
+
+**권장 비용 입력**([결정 13](INDEX.md#결정-13--지시문-12-결정-시뮬레이터-위치와-통합)): 예측 대상과 같은 context 길이에서 잰 decode 비용. 원래 비용으로 한 이전 blind 결과(TASK82·87·95)는 그 시점의 선등록대로 보고하며 다시 계산한 값으로 바꾸지 않는다. 운영 prefill 비용은 미해결(채택하지 않음).
+
+**회귀(TASK103)**: `context_cost` 없는 설정에서 TASK84·89 회귀 72 파일 차이 0, TASK93·101 예측 파일 byte 동일, TASK86 예측은 v1·sim byte 동일(v1.1은 알려진 `onenormest` 마지막 자리 차, 결정 10-3), GTASK09 parity 44 cell 차이 0, `tests/test_descriptor_v2.py` 통과. descriptor 경로 재계산: NPU TASK101 주 예측기(`tests/ctx_descriptor_npu.py`) 6 cell 정확 일치, GPU GTASK20 주 예측기 N = 25·28 × lo·hi(`tests/gpu_ctx_parity.py`) 12 cell 정확 일치.
+
+`SimConfig.decode_cost_fn`(TASK98 hook)은 TASK98·101 commit된 script의 재현을 위해 남겨 두되 사용하지 않는다. `context_cost`와 함께 쓰면 오류다.

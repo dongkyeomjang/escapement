@@ -35,7 +35,10 @@ One step at a time (the rules and the descriptor fields that set them):
 The step is priced from ``step_cost`` by mode: decode-only on the grid
 (``decode``), mixed within the grid (``mixed``), anything above the top
 (``eager``); the grid maps scheduled tokens (``grid.unit = tokens``). Prices
-are in milliseconds as measured and are converted once.
+are in milliseconds as measured and are converted once. With
+``context_cost`` set, a step carrying ``decodes`` decoding requests adds
+``per_token * (sum_ctx - decodes * reference)`` ms before the conversion,
+``sum_ctx`` being the decoders' computed tokens (TASK103, GTASK18).
 
 Preemption is not simulated: an allocation that would need it raises
 ``PreemptionNeeded`` -- a configuration that preempts is outside what the
@@ -265,6 +268,9 @@ def simulate_paged(d: SubstrateDescriptorV2, sessions, config) -> PagedResult:
         raise ValueError("config.max_running_requests differs from the descriptor's")
     block = d.reuse_pool.unit_tokens
     budget0 = d.admission.step_token_budget
+    ctx_cost = d.context_cost
+    if ctx_cost is not None and ctx_cost.unit != "ms":
+        raise ValueError("the paged engine prices steps in ms; context_cost.unit must be 'ms'")
     max_running = d.admission.max_running
     prompt_only = d.semantics.cacheable_tokens == "prefill_only"
     pool = BlockPool(d.reuse_pool.reserved_units, d.reuse_pool.capacity_units,
@@ -318,6 +324,7 @@ def simulate_paged(d: SubstrateDescriptorV2, sessions, config) -> PagedResult:
         budget = budget0
         decodes = 0
         pre_tok = 0
+        dctx = 0                # summed context of this step's decoders (context_cost only)
         sched: list[tuple[PagedRequest, int]] = []
         for r in running:
             if budget <= 0:
@@ -328,6 +335,7 @@ def simulate_paged(d: SubstrateDescriptorV2, sessions, config) -> PagedResult:
             else:
                 n = 1
                 decodes += 1
+                dctx += r.computed
             budget -= n
             sched.append((r, n))
         waiting.sort(key=lambda r: (r.arrival_s, r.idx))
@@ -359,7 +367,10 @@ def simulate_paged(d: SubstrateDescriptorV2, sessions, config) -> PagedResult:
             for j in range(upto // block):
                 pool.register(r.blocks[j], (r.session, j))
         reqs = len(sched)
-        dur = step_ms(d, decodes=decodes, prefill_tokens=pre_tok) / 1e3
+        if ctx_cost is not None and decodes:
+            dur = (step_ms(d, decodes=decodes, prefill_tokens=pre_tok) + ctx_cost.term(dctx, decodes)) / 1e3
+        else:
+            dur = step_ms(d, decodes=decodes, prefill_tokens=pre_tok) / 1e3
         steps.append(PagedStep(start_s=now, duration_s=dur, decodes=decodes, prefill_tokens=pre_tok,
                                reqs=reqs, mode=step_mode(d, decodes, pre_tok),
                                padded=_padded(d.grid.sizes, decodes + pre_tok)))

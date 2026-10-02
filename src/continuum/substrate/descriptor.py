@@ -74,8 +74,15 @@ class StepCostModel:
                 raise ValueError(f"bucket must be positive, got {bucket}")
             if cost <= 0:
                 raise ValueError(f"fixed cost must be positive, got {cost} for bucket {bucket}")
-        if self.marginal_s_per_request < 0 or self.intercept_s < 0:
-            raise ValueError("marginal and intercept costs must be non-negative")
+        if self.intercept_s < 0:
+            raise ValueError("intercept cost must be non-negative")
+        if self.marginal_s_per_request < 0:
+            # A fitted per-request slope can be slightly negative once a
+            # context term carries the per-request cost (TASK97 F1); the step
+            # must still cost something at every width it can run at.
+            for bucket, cost in self.fixed_s_by_bucket.items():
+                if cost + self.intercept_s + self.marginal_s_per_request * bucket <= 0:
+                    raise ValueError(f"step time at bucket {bucket} would not be positive")
 
     def step_time_s(self, *, bucket: int, actual: int) -> float:
         if bucket not in self.fixed_s_by_bucket:
