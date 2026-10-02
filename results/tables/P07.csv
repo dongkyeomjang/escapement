@@ -1,0 +1,22 @@
+기판,항목,cell,관측,orig,변형 1,변형 2,변형 3,판정 종류,출처
+GPU,BASE 재사용 (관측 / orig / x1.131 / x1.210 / mode_dist),BASE.n20,0.856,0.857,0.862,0.860,0.850,dev_set,GTASK13
+GPU,BASE 재사용 (관측 / orig / x1.131 / x1.210 / mode_dist),BASE.n22,0.817,0.849,0.843,0.825,0.834,dev_set,GTASK13
+GPU,BASE 재사용 (관측 / orig / x1.131 / x1.210 / mode_dist),BASE.n24,0.669,0.753,0.724,0.683,0.695,dev_set,GTASK13
+GPU,BASE 재사용 (관측 / orig / x1.131 / x1.210 / mode_dist),BASE.n26,0.450,0.657,0.521,0.459,0.483,dev_set,GTASK13
+GPU,확증 9 cell 재사용 MAE · 비 Σ|오차| (6 cell),orig,,0.0173,0.0745,,,dev_set,GTASK13 요약 지표
+GPU,확증 9 cell 재사용 MAE · 비 Σ|오차| (6 cell),x1.131,,0.0111,0.0127,,,dev_set,GTASK13 요약 지표
+GPU,확증 9 cell 재사용 MAE · 비 Σ|오차| (6 cell),x1.210,,0.0047,0.0741,,,dev_set,GTASK13 요약 지표
+GPU,확증 9 cell 재사용 MAE · 비 Σ|오차| (6 cell),mode_dist,,0.0071,0.0561,,,dev_set,GTASK13 요약 지표
+NPU,BASE 재사용 편향 (원래 / 시간 척도 적용),BASE.n12,,+0.023,-0.005,,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),BATCHONLY.n12,,+0.0387,+0.0226,0.42,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),TUNED.n12,,+0.0341,+0.0176,0.48,,dev_set,TASK91
+NPU,BASE 재사용 편향 (원래 / 시간 척도 적용),BASE.n14,,+0.032,-0.021,,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),BATCHONLY.n14,,+0.0321,+0.0138,0.57,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),TUNED.n14,,+0.0516,+0.0285,0.45,,dev_set,TASK91
+NPU,BASE 재사용 편향 (원래 / 시간 척도 적용),BASE.n16,,+0.026,+0.007,,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),BATCHONLY.n16,,+0.0468,+0.0229,0.51,,dev_set,TASK91
+NPU,sim 비 편향 (원래 / 시간 척도 적용 / 설명 비율),TUNED.n16,,+0.0589,+0.0297,0.49,,dev_set,TASK91
+NPU,decode step 관측/예측 (step 가중),BASE,1.084,,,,,dev_set,TASK91
+NPU,decode step 관측/예측 (step 가중),BATCHONLY,1.076,,,,,dev_set,TASK91
+NPU,decode step 관측/예측 (step 가중),TUNED,1.085,,,,,dev_set,TASK91
+NPU,decode step 관측/예측 (step 가중),DP,1.069,,,,,dev_set,TASK91

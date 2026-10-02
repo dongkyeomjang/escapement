@@ -1,0 +1,8 @@
+field,RBLN CA25 (v2 인스턴스),A6000 (테스트 전용 descriptor)
+reuse layer eviction_order,allocation_fifo,release_lru
+semantics.initial_free_order,not_applicable,never_used_first
+semantics.intra_request_loss,all_or_nothing,tail_first
+semantics.resume_allocates_first,True,False
+semantics.hit_protection,not_applicable,touch_before_alloc
+semantics.kv_tokens_held,computed,computed
+semantics.cacheable_tokens,prefill_only,computed

@@ -37,6 +37,7 @@ Nothing here names an accelerator.
 
 from __future__ import annotations
 
+from bisect import bisect_left
 from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass, replace
 import math
@@ -246,6 +247,52 @@ class PrefillSpec:
         _check(self.execution, _PREFILL_EXEC, "prefill execution")
         if self.cost is not None and self.execution != "exclusive":
             raise ValueError("PrefillCostModel prices exclusive prefill only")
+
+
+@dataclass(frozen=True)
+class FullGraphDecodeCost:
+    """``step_cost["decode"]`` of an engine whose grid is keyed by scheduled
+    tokens: a decode-only step padded to capture width ``b`` costs
+    ``F[b] + g * n``. Values in milliseconds, as measured; callers price in ms
+    and convert once, so results match the channel the values came from bit
+    for bit."""
+
+    fixed_ms_by_width: Mapping[int, float]
+    marginal_ms_per_request: float
+    max_measured_requests: int
+    """Decode widths above this were never measured; pricing them is refused."""
+
+
+@dataclass(frozen=True)
+class PiecewiseMixedCost:
+    """``step_cost["mixed"]``: a step carrying prefill tokens whose total fits
+    the grid (a piecewise graph) costs the decode baseline plus this constant."""
+
+    increment_ms: float
+
+
+@dataclass(frozen=True)
+class EagerStepCost:
+    """``step_cost["eager"]``: steps above the grid top run without a graph.
+
+    * decode-only: ``decode_ms_by_n[n]`` (measured medians);
+    * with ``p`` prefill tokens: the decode baseline plus ``increment(p)``,
+      linear between measured ``(p, ms)`` points, through the origin below the
+      first one and proportional to ``p`` above the last one."""
+
+    decode_ms_by_n: Mapping[int, float]
+    increment_points: tuple[tuple[int, float], ...]
+
+    def increment_ms(self, p: int) -> float:
+        xs = [x for x, _ in self.increment_points]
+        ys = [y for _, y in self.increment_points]
+        if p <= xs[0]:
+            return ys[0] * p / xs[0]
+        if p >= xs[-1]:
+            return ys[-1] * p / xs[-1]
+        i = bisect_left(xs, p)
+        x0, x1 = xs[i - 1], xs[i]
+        return ys[i - 1] + (p - x0) / (x1 - x0) * (ys[i] - ys[i - 1])
 
 
 @dataclass(frozen=True)

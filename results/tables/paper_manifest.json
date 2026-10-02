@@ -1,0 +1,260 @@
+{
+  "generated_at": "2026-10-02T15:32:49.844884+09:00",
+  "git_head": "e3697b0f6746f78d9a4dc04b9292fe8efc339fce",
+  "git_dirty": "M docs/research/INDEX.md\n M docs/research/TASK90.md\n M experiments/npu/analysis/make_paper_tables.py\n M paper/RESULTS_INDEX.md\n M results/tables/P04.md\n M results/tables/P10.md\n M results/tables/README.md\n M results/tables/figures/F_b_reuse_ratio_vs_N.csv\n M results/tables/figures/F_c_pred_vs_obs.csv\n M results/tables/figures/F_d_applicability.csv\n M results/tables/paper_manifest.json\n?? .idea/\n?? experiments/npu/analysis/queue_depth_obs.py\n?? results/tables/P11.csv\n?? results/tables/P11.md",
+  "gpu_branch": "origin/gpu-a6000",
+  "gpu_branch_head": "e820f48",
+  "python": "3.10.12 (main, Jun 22 2026, 18:55:27) [GCC 11.4.0]",
+  "tables": [
+    {
+      "id": "P01",
+      "title": "순차 생존: NPU 절벽(사후 재생)과 GPU 계단(blind)",
+      "tasks": "TASK14, TASK15, TASK72, GTASK04",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r1.json",
+        "origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json @ 87731c5",
+        "origin/gpu-a6000:docs/research/gpu/GTASK04.md @ c7875fb"
+      ],
+      "rows": 73,
+      "checks": 4,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P02",
+      "title": "NPU multi-turn 본 측정: 재사용·비용 비, 세 예측기와 영",
+      "tasks": "TASK82",
+      "inputs": [
+        "results/npu/stage3/20260930-main/main_verdict.json"
+      ],
+      "rows": 13,
+      "checks": 14,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P03",
+      "title": "NPU 고부하 N = 14·16: v1.1·v1·sim",
+      "tasks": "TASK86, TASK87",
+      "inputs": [
+        "results/npu/stage3/20261001-hiload/hiload_verdict.json"
+      ],
+      "rows": 6,
+      "checks": 11,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P04",
+      "title": "GPU multi-turn: 해석 v1·sim LRU·sim FIFO",
+      "tasks": "GTASK11",
+      "inputs": [
+        "origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4",
+        "origin/gpu-a6000:experiments/gpu/multiturn/plans/PREDICTIONS.json @ 2bef619"
+      ],
+      "rows": 11,
+      "checks": 63,
+      "mismatches": [
+        {
+          "항목": "BASE.n24 sim LRU 재사용 (§5.5·발견 4 문장의 값)",
+          "재계산": 0.753,
+          "기록": 0.752,
+          "허용차": 0.0005,
+          "일치": false,
+          "출처": "GTASK11 §5.5 «LRU 0.752», 발견 4 «0.849, 0.752, 0.657» — GPU 쪽 정정 대기"
+        }
+      ],
+      "built": true
+    },
+    {
+      "id": "P05",
+      "title": "구성 순위 (§5.3), 두 기판",
+      "tasks": "TASK82, TASK87, GTASK11",
+      "inputs": [
+        "results/npu/stage3/20260930-main/main_verdict.json",
+        "results/npu/stage3/20261001-hiload/hiload_verdict.json",
+        "origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4"
+      ],
+      "rows": 27,
+      "checks": 4,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P06",
+      "title": "사건 재생, 두 기판",
+      "tasks": "TASK72, GTASK12",
+      "inputs": [
+        "results/npu/stage3/model_v0_retro/r5p.json",
+        "origin/gpu-a6000:docs/research/gpu/GTASK12.md @ 3ddbba8"
+      ],
+      "rows": 18,
+      "checks": 7,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P07",
+      "title": "운영 step 시간 척도 (개발 집합), 두 기판",
+      "tasks": "GTASK13, TASK91",
+      "inputs": [
+        "origin/gpu-a6000:docs/research/gpu/GTASK13.md @ 02257ab",
+        "origin/gpu-a6000:docs/research/gpu/GTASK11.md @ 22b50f4",
+        "origin/gpu-a6000:experiments/gpu/multiturn/plans/PREDICTIONS.json @ 2bef619",
+        "results/npu/stage3/step_audit/explain.json",
+        "results/npu/stage3/step_audit/audit.json"
+      ],
+      "rows": 21,
+      "checks": 11,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P08",
+      "title": "같은 길이 정상성, 두 기판",
+      "tasks": "TASK83, GTASK16",
+      "inputs": [
+        "results/npu/stage3/20260930-main/stationarity.json",
+        "origin/gpu-a6000:docs/research/gpu/GTASK16.md @ e820f48"
+      ],
+      "rows": 24,
+      "checks": 6,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P09",
+      "title": "descriptor 규칙 field 7개와 두 기판 재현",
+      "tasks": "TASK84, GTASK04",
+      "inputs": [
+        "experiments/npu/substrate/rbln_ca25_vllm_rbln_0111.py",
+        "tests/test_descriptor_v2.py",
+        "origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json @ 87731c5"
+      ],
+      "rows": 7,
+      "checks": 6,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P10",
+      "title": "B2 진단 사다리와 v1.2 동결 전 점검 (개발 집합)",
+      "tasks": "TASK90",
+      "inputs": [
+        "results/npu/stage3/v12_dev/b2_diag.json",
+        "results/npu/stage3/v12_dev/freeze_check.json"
+      ],
+      "rows": 9,
+      "checks": 17,
+      "mismatches": [],
+      "built": true
+    },
+    {
+      "id": "P11",
+      "title": "NPU 통합 시뮬레이터 blind N = 13·17·20: sim_op·sim·v1",
+      "tasks": "TASK93, TASK95",
+      "inputs": [
+        "results/npu/stage3/20261002-simblind/simblind_verdict.json",
+        "results/npu/stage3/queue_obs/queue_obs.json"
+      ],
+      "rows": 9,
+      "checks": 10,
+      "mismatches": [],
+      "built": true
+    }
+  ],
+  "figures": [
+    {
+      "id": "F_a_survival",
+      "built": true,
+      "rows": 133,
+      "columns": [
+        "substrate",
+        "population",
+        "condition",
+        "bg_tokens",
+        "m_background",
+        "bg_units_cum",
+        "pred_hit_tokens",
+        "obs_hit_tokens",
+        "pred_survive_frac",
+        "obs_survive_frac",
+        "source"
+      ]
+    },
+    {
+      "id": "F_b_reuse_ratio_vs_N",
+      "built": true,
+      "rows": 228,
+      "columns": [
+        "substrate",
+        "N",
+        "config",
+        "metric",
+        "predictor",
+        "value",
+        "ci_lo",
+        "ci_hi",
+        "population",
+        "source",
+        "cell_set"
+      ]
+    },
+    {
+      "id": "F_c_pred_vs_obs",
+      "built": true,
+      "rows": 282,
+      "columns": [
+        "substrate",
+        "cell",
+        "N",
+        "config",
+        "metric",
+        "predictor",
+        "predicted",
+        "observed",
+        "error_pred_minus_obs",
+        "population",
+        "source",
+        "cell_set"
+      ]
+    },
+    {
+      "id": "F_d_applicability",
+      "built": true,
+      "rows": 130,
+      "columns": [
+        "substrate",
+        "cell",
+        "N",
+        "config",
+        "max_running_M",
+        "N_over_M",
+        "queue_p_wait_gt0_b2v1",
+        "queue_E_wait_b2v1",
+        "queue_depth_source",
+        "queue_mean_obs",
+        "queue_p_gt0_obs",
+        "queue_obs_source",
+        "ttft_median_obs_s",
+        "mean_running_obs",
+        "predictor",
+        "reuse_error",
+        "ratio_error",
+        "population",
+        "source",
+        "cell_set"
+      ]
+    }
+  ],
+  "not_built_here": [
+    {
+      "id": "arXiv 세 기전 (padding·격자, prefill 직렬화, 재사용 절벽)",
+      "reason": "기존 make_tables.py 표 T01–T14·A01·S02–S08이 이미 담는다; P 계열로 중복 생성하지 않음"
+    },
+    {
+      "id": "R1–R5′ 판정 요약",
+      "reason": "기존 M01–M05가 담는다"
+    }
+  ]
+}

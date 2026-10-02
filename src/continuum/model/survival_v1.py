@@ -245,6 +245,11 @@ def steady_state_survival(*, capacity: int, running_others_pmf: dict[int, float]
 
 # -- LRU / block pool ----------------------------------------------------------------
 
+#: Poisson means at or above this are evaluated in log space (the GPU wrapper's
+#: threshold, GTASK07); below it the original recursion runs unchanged.
+_LOG_SPACE_MEAN = 600.0
+
+
 def lru_block_survival(*, target_blocks: int, d0_blocks: int, lam_blocks: float,
                        s_idle: float, upto: int | None = None) -> list[float]:
     """P(k leading target blocks survive), k = 0..target_blocks.
@@ -257,9 +262,18 @@ def lru_block_survival(*, target_blocks: int, d0_blocks: int, lam_blocks: float,
     """
     mean = lam_blocks * s_idle
     top = upto if upto is not None else d0_blocks + target_blocks + 1
-    pmf = [math.exp(-mean)]
-    for n in range(1, top + 1):
-        pmf.append(pmf[-1] * mean / n)
+    if mean < _LOG_SPACE_MEAN:
+        pmf = [math.exp(-mean)]
+        for n in range(1, top + 1):
+            pmf.append(pmf[-1] * mean / n)
+    else:
+        # exp(-mean) underflows to 0 near mean ~ 745 and the recursion above
+        # would then put every mass on the last entry ("all lost") whatever
+        # d0 is (GTASK07 finding 3). Evaluate each term in log space instead;
+        # terms far from the mode underflow to 0 individually, which is exact
+        # to double precision.
+        lm = math.log(mean)
+        pmf = [math.exp(-mean + n * lm - math.lgamma(n + 1)) for n in range(top + 1)]
     pmf[-1] += max(0.0, 1.0 - sum(pmf))
     out = [0.0] * (target_blocks + 1)
     for n, p in enumerate(pmf):

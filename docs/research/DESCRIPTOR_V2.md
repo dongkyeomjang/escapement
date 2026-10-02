@@ -132,3 +132,35 @@ d.unknown_paths()   # 아직 확정되지 않은 field
 ## 6. 회귀 ([TASK84](TASK84.md))
 
 `descriptor_v2_regression.sh`(변경 전·후) + `descriptor_v2_compare.py`: 표 29개 + manifest, `PREDICTIONS.json`·`PREDICTIONS_EXT.json` 재계산, R1–R5′·R4·R5, A4, self-check, TASK74 sim 의미론 산출 — 72 파일 중 **63 byte 동일**(표 59·예측 2·A4·sim 의미론). 나머지 9개(R1–R5′ JSON 6, `run_meta`, self-check, 표 manifest)는 실행 시각·소요 시간·HEAD를 파일 안에 적는 파일이라 byte 동일이 원리상 불가능하고, 그 key를 뺀 내용은 **전부 같다**. `semantics="descriptor"` = 명시적 관측 의미론 스위치 75/75 run 동일. `tests/test_descriptor_v2.py` PASS(GTASK04 60/60 포함).
+
+## 7. 통합 시뮬레이터가 읽는 field ([TASK89](TASK89.md), 지시문 07 작업 B)
+
+`continuum.sim.simulate(descriptor, sessions, SimConfig(semantics="descriptor", ...))`는 **`prefill.execution`** 으로 엔진을 고른다. 기판 이름으로 분기하지 않는다.
+
+| field | `exclusive` 엔진 (`sim/engine.py`, NPU 계열) | `mixed` 엔진 (`sim/paged.py`, paged block pool 계열) |
+|---|---|---|
+| `prefill.execution` | `exclusive` — prefill이 step을 독점, decoder 정지 | `mixed` — chunk가 decode step에 섞임 |
+| `prefill.cost` | 배타 prefill 시간 | 읽지 않음(비용은 step_cost의 증분) |
+| `layers[reuse].capacity_units` | slot 수 | block 수(handed out) |
+| `layers[reuse].reserved_units` | — | 앞쪽 block id 예약(null block) |
+| `layers[reuse].unit_tokens` | slot 크기(slot 수 계산) | block 크기(조회·할당·등록 단위) |
+| `layers[reuse].eviction_order` | `allocation_fifo`만(다르면 거부) | `release_lru` 또는 `allocation_fifo`(block 단위, admission stamp 순, 한 요청 안 tail 먼저) |
+| `semantics.evictable_when` | `immediate`/`deferred` | `immediate`만(요청 종료 시 반납) |
+| `semantics.intra_request_loss` | `all_or_nothing`만 | `tail_first`만 |
+| `semantics.initial_free_order` | — | `never_used_first`만(block id 순) |
+| `semantics.resume_allocates_first` / `hit_protection` | `True`만(할당 후 조회) | `False` + `touch_before_alloc`만(조회 → hit block touch → 할당) |
+| `semantics.cacheable_tokens` | `prefill_only`만 | `computed`(prompt + output − 1) 또는 `prefill_only` |
+| `semantics.kv_tokens_held` | — | `computed`만 |
+| `semantics.dummy_mode` | `none`/`pre_evict`/`reserved` | `none`만 |
+| `semantics.dummy_ceiling` | 미확정이면 최상위 격자 = `max_running`일 때만 | — |
+| `semantics.preemption` | `none`만 | 시뮬레이션하지 않음 — 필요해지는 순간 `PreemptionNeeded` |
+| `admission.max_running` | `SimConfig.max_running_requests`와 같아야 함 | 같아야 함 |
+| `admission.step_token_budget` | — | step당 token 예산(필수) |
+| `grid.sizes` / `grid.unit` | 요청 수 사상 | **token 수** 사상(`unit = tokens` 필수), 최상위 초과는 eager |
+| `step_cost["decode"]` | `StepCostModel`(초) | `FullGraphDecodeCost`(ms, `F[b] + g·n`) |
+| `step_cost["mixed"]` | — | `PiecewiseMixedCost`(격자 안 혼합 step 증분, ms) |
+| `step_cost["eager"]` | — | `EagerStepCost`(격자 밖 decode 표, prefill 증분 곡선, ms) |
+
+`SimConfig`의 `window_rule`·`slot_of`·`n_slots`를 주면 `mixed` 엔진은 평가 구간 끝 이후 새 요청을 내지 않는다(runner 규칙). `exclusive` 엔진은 이 field를 거부한다(기존 산출 재현).
+
+**GPU 대조**([TASK89](TASK89.md)): 테스트 전용 GPU descriptor + `mixed` 엔진으로 GTASK09의 `sim_lru`·`sim_fifo` × `lo`·`hi` 예측 44 항목을 다시 계산해 wrapper 산출과 **모든 field 정확히 일치**(재사용, h, padding, turn당 비용, 간섭, mode 수, replicate별 값, BASE 대비 비, 순위). GPU 에이전트는 실제 인스턴스로 `tests/gpu_sim_parity.py`의 `descriptor()`를 바꿔 같은 회귀를 다시 확인할 수 있다 — 주의: wrapper 산출은 Python 3.12의 보정 합(`sum`)으로 계산됐으므로 다른 Python에서는 합 함수를 맞춰야 bit 단위로 같다.

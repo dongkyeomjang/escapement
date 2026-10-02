@@ -1,0 +1,74 @@
+기판,판정 종류,조건,배경 크기 (token),배경 요청 수 m,trial,예측 hit/생존,관측 hit/생존,일치,출처
+NPU,retro_check,outer FIFO 8,"2,000",0,1,True,True,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",3,1,True,True,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",5,3,True,True,3/3,TASK15; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,,5,2,True,True,2/2,TASK63; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",6,1,True,True,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",6,3,True,True,3/3,TASK15; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,,6,2,True,True,2/2,TASK63; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",7,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",7,3,False,False,3/3,TASK15; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,,7,2,False,False,2/2,TASK63; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",8,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",8,3,False,False,3/3,TASK15; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,,8,2,False,False,2/2,TASK63; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",9,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",16,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",33,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+NPU,retro_check,outer FIFO 8,"2,000",49,1,False,False,1/1,TASK14; results/npu/stage3/model_v0_retro/r1.json
+GPU,blind_confirm,(i),0,0,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,10,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,20,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,21,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,22,1,"1,536","1,536",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,23,3,"1,024","1,024",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,24,1,512,512,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,25,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,26,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,30,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),500,40,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",5,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",10,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",11,1,"1,712","1,712",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",12,1,704,704,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",13,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",14,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"1,000",20,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",3,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",5,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",6,3,704,704,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",7,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",8,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"2,000",10,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"4,000",2,1,"2,000","2,000",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"4,000",3,1,752,752,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"4,000",4,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(i),"4,000",5,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),0,0,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,10,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,20,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,21,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,22,1,"1,536","1,536",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,23,1,"1,024","1,024",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,24,1,512,512,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,25,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,26,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,30,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),500,40,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",5,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",10,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",11,1,"1,712","1,712",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",12,1,704,704,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",13,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",14,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"1,000",20,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",3,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",5,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",6,1,704,704,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",7,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",8,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"2,000",10,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"4,000",2,1,"2,016","2,016",1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"4,000",3,1,752,752,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"4,000",4,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json
+GPU,blind_confirm,(ii),"4,000",5,1,0,0,1,GTASK04; origin/gpu-a6000:experiments/gpu/survival/prediction/predictions.json

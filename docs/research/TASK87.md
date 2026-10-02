@@ -135,3 +135,7 @@ TASK87 종료 보고 참조(v1.1 개정 여부, GPU 선등록에 v1.1을 넣을�
 
 - run `results/npu/stage3/20261001-hiload/`(비추적): `run.log`, `checks.jsonl`, `check.*.json`, `server-*.log`, `probe/<tag>/`, `hiload_verdict.json`(SHA256 `7370c378253931d09bfe865a735909e708dd10cd7892983f3802bc3a977e34d5`).
 - **선등록 commit `f75c8e7`(2026-10-01 01:49:49) → 기록 commit `fa1a23d`(01:50:24) → 첫 lifecycle 01:50:32 → 마지막 종료 03:55:55 → 판정 계산 03:56:00.** 측정 중 HEAD 불변.
+
+## 정정 (2026-10-01, [TASK90](TASK90.md) 발견 5, Advisor 지시문 08)
+
+이 TASK의 "B2가 BASE 평균 running 과대(6.95 대 6.28, 7.55 대 6.87)"는 v1.1 예측의 **시간 가중** 평균과 관측의 **step 가중** 평균(`[BUCKET]`)을 섞은 비교였다. 같은 step 가중으로 다시 재면 v1 B2는 N14 6.68 대 6.28, N16 7.31 대 6.87(과대 +0.40, +0.43)이다. 방향은 같고 크기가 약 0.27 작다. 위 원문은 고치지 않는다.

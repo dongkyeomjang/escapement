@@ -150,7 +150,20 @@ class SimConfig:
     must then stay at their defaults. New predictions use ``descriptor``
     (directive 06 decision 4)."""
 
+    window_rule: object | None = None
+    """A ``WindowRule``: once the warm-up end is known, nothing new is issued
+    after the evaluation window (the runner's rule). Read by the paged engine
+    only (``paged.simulate_paged``); ``None`` issues the whole plan."""
+
+    slot_of: tuple[int, ...] | None = None
+    """Slot of each session, for ``window_rule``."""
+
+    n_slots: int | None = None
+    """Number of slots, for ``window_rule``."""
+
     def __post_init__(self) -> None:
+        if self.window_rule is not None and (self.slot_of is None or self.n_slots is None):
+            raise ValueError("window_rule needs slot_of and n_slots")
         if self.semantics not in ("legacy", "descriptor"):
             raise ValueError(f"unknown semantics {self.semantics!r}")
         if self.semantics == "descriptor" and (
@@ -380,7 +393,19 @@ def simulate(
     sessions: list[Session],
     config: SimConfig,
 ) -> SimResult:
-    """Run ``sessions`` against ``descriptor`` and return the step trace."""
+    """Run ``sessions`` against ``descriptor`` and return the step trace.
+
+    With a v2 descriptor and ``semantics='descriptor'``, a descriptor whose
+    prefill is ``mixed`` (chunked into decode steps) is simulated by the paged
+    engine (``paged.simulate_paged``), which returns a ``PagedResult``; every
+    other descriptor runs here. The choice reads a descriptor field, never a
+    substrate name."""
+    if (isinstance(descriptor, SubstrateDescriptorV2) and config.semantics == "descriptor"
+            and descriptor.prefill.execution == "mixed"):
+        from .paged import simulate_paged
+        return simulate_paged(descriptor, sessions, config)
+    if config.window_rule is not None:
+        raise ValueError("window_rule is read by the paged engine only")
     descriptor, release_rule, dummy_mode, policy_name = _descriptor_rules(descriptor, config)
     if descriptor.prefill_cost_model is None:
         raise ValueError(

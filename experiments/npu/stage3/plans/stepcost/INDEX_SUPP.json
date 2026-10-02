@@ -1,0 +1,24 @@
+[
+  {
+    "plan_id": "op-decode-n1-s30",
+    "n": 1,
+    "seed": 20261821,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 30,
+    "content_sha256": "606535a4f69108ddceaa625470be01e874f77edc2a4e328c83bd9f7968e08781",
+    "file_sha256": "a1f15b3825a86642c43648e77b8746993ac30c66c1ba1c995a569ad691271c59",
+    "max_context": 640
+  },
+  {
+    "plan_id": "op-decode-n2-s30",
+    "n": 2,
+    "seed": 20261822,
+    "first": "fixed:128",
+    "generation": "fixed:512",
+    "sessions_per_slot": 30,
+    "content_sha256": "cbdfac0ff9f1cf2467e9831320a97530e7b0dce022891480c45655ac917c5f03",
+    "file_sha256": "947350f04caf973e4e1f67ccc69081f4fd5afc72afa47606ece20a9cfaa0c91f",
+    "max_context": 640
+  }
+]
