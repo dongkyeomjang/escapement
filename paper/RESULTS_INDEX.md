@@ -499,6 +499,17 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | q109_underpred | BASE N ≥ 12 예측/관측 중앙: 주 sim 0.876, 원래 비용 sim 0.830, 해석 0.656; GPU 원래 sim LRU 0.608 | 대기열 과소 예측 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | exploratory | untagged | — |
 | q109_confusion | 문턱 Q = 0.1: 주 sim 33/33 같은 쪽(8 있음·25 없음); 해석 모형 32/33 (N12 BASE 관측 0.280, 예측 0.079) | 대기열 유무 분류 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | post_hoc | untagged | — |
 
+
+## 21. 비용 모형 없는 관측 활동 시간 비 (TASK110, 지시문 16 작업 B)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| a110_exc_vs_aprime | `exc` 관측 비 − 재구성 A′ 비(중앙): 20/20 cell |차| ≤ 0.024; 예) TASK102 N18 TUNED 0.672 [0.650–0.718] 대 A′ 0.671 | 비용 모형 없는 활동 시간/turn의 구성/BASE replicate 쌍 비, k = 5, decode = TASK91 귀속 step 간격, prefill = 겹친 구간 배타 추정 + 나머지 run 평균 | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
+| a110_srv_vs_aprime | `srv` 관측 비 − A′: N ≥ 13 14 cell 중 12개 +0.018–+0.058, N13 −0.007·−0.002; 저부하 TASK82 −0.006–+0.014; 예) TASK102 N18 TUNED 0.721 [0.701–0.769] | 같은 비, prefill = run 종료 `PREFILL METRICS` 평균 × 평가 구간 요청 수 | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
+| a110_unattributable | 귀속 불가 step 비율 cell별 0.015–0.063(30 cell, 860,584 step); 실행 요청 귀속 전무 step ≤ 0.0026; 채움 fallback 3 step | A′ step 모집단, step 수 비 | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
+| a110_decode_only | decode만의 비 중앙 0.876–1.114(N20 0.876·0.886, 그 밖 0.969–1.114) | decode 시간/turn 구성/BASE | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
+| a110_prefill_proxy | prefill 평균 `exc` 대 `srv`: 고부하 BASE `exc` > `srv`(TASK102 N18 291–308 대 286 ms), BATCHONLY·TUNED `exc` < `srv`(116–117 대 138 ms); 원인 몫 분해 안 됨(UNKNOWN) | ms/prefill, cell 평균 | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |

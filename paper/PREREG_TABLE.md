@@ -56,3 +56,93 @@ git log --format='%h %cI' -- experiments/npu/stage3/plans/main/PREDICTIONS*.json
 
 - 모든 예측 파일(`PREDICTIONS.json`, `PREDICTIONS_EXT.json`, `PREDICTIONS_HI.json`, `PREDICTIONS_SIM.json`, `PREDICTIONS_CTX.json`, GPU `predictions.json`, `PREDICTIONS.json`, `PREDICTIONS_BLIND.json`)의 git 이력은 위 예측 commit 1개뿐이다(commit 뒤 변경 없음).
 - 이 host에 `results/gpu/`가 없다. GPU 행의 측정 시작 시각과 `start_commit.txt`는 GTASK 문서 값이다.
+
+## 5. 판정 기준 대조표 (Advisor 지시문 16 작업 D-1)
+
+작성 기준 HEAD `ea674be`(2026-10-05). 기준은 각 선등록 문서, 결과는 NPU verdict JSON(`results/npu/stage3/{20260930-main/main_verdict.json, 20261001-hiload/hiload_verdict.json, 20261002-simblind/simblind_verdict.json, 20261002-ctxblind/ctxblind_verdict.json}`), GPU GTASK20 `experiments/gpu/multiturn/blind_result/verdict.json`, GTASK04·GTASK11 문서에서 옮겼다. 기존 판정을 바꾸지 않는다.
+
+**오차 계산식 기호**
+
+- **E1**(재사용): `e_c = 예측_c − 관측_c`. 관측 = cell의 r0–r4 합산 `Σ hit / Σ (turn ≥ 1)`(요청 단위). `MAE = mean_c |e_c|`, 평균 부호 오차 = `mean_c e_c`.
+- **E2**(비용 비): `m`, `[l, u]` = replicate 짝 비(구성/BASE)의 중앙값과 95 % bootstrap CI. 기본 = `|p − m| ≤ 0.03 ∧ sign(1 − p) = sign(1 − m)`(CI가 1을 포함하면 방향 대신 `|p − 1| ≤ 0.03`). 강화 = `p ∈ [l − 0.01, u + 0.01]`. `S = Σ_c |p_c − m_c|`.
+- **E3**(순위): 쌍 X/Y의 짝 비 m·CI. 해소 ⇔ `1 ∉ [l, u]`. 일치 ⇔ 예측 싼 쪽 = 관측 싼 쪽(STATISTICS.md 2.1).
+- **E4**(점유 분포): `TVD_c = ½ Σ_n |h_pred,c(n) − h_obs,c(n)|`. NPU h = `[BUCKET] request_nums` step 가중, GPU h = decode-only step 가중(GPU 개정 1 §7.4).
+- 최종 표기(전 실험 공통): 기존 기준 FAIL → `FAIL`; 기존 PASS ∧ skill PASS → `PASS`; skill `NOT_INFORMATIVE` → `PASS (skill NOT_INFORMATIVE)`; skill FAIL → `NOT_CONFIRMED (base PASS, skill FAIL)`.
+- GPU는 `lo`·`hi` bound마다 판정하고 **PASS는 두 bound 모두**에서 성립해야 한다.
+
+| 실험 | 지표 | 판정 예측기 (그 밖) | 오차 계산식 | 통과 문턱 | 무정보 예측(영) 정의 | 적용 cell | 판정 결과 |
+|---|---|---|---|---|---|---|---|
+| TASK82 | §5.1 재사용 | 해석 v1 (sim_default, sim_observed 같은 계산) | E1 | `\|e_c\| ≤ 0.10` ≥ 9/10 cell ∧ `\|mean e\| ≤ 0.05` ∧ `MAE ≤ 0.5 × MAE(영)` | 상수 0.67635 = 675/998(TASK73 A4 개발 집합). 관측 범위 < 0.10이면 skill `NOT_INFORMATIVE` | 확증 10(N 6·8·10 × 3 구성 + DP N8) | **PASS**: 10/10, mean −0.012, MAE 0.0142 / 영 0.1746(비 0.08). sim 둘 PASS(MAE 0.0037·0.0036) |
+| TASK82 | §5.2 비용 비 | 해석 v1 (sim 둘) | E2 | 기본 7/7 ∧ 강화 ≥ 6/7 ∧ `S ≤ 0.5 × Σ\|1 − m\|` | 모든 cell 1.0. `mean\|1 − m\| < 0.01`이면 `NOT_INFORMATIVE` | 7(BATCHONLY·TUNED × 3 N + DP N8) | **PASS**: 7/7, 7/7, S 0.048 / Σ\|1 − m\| 0.187(0.26). sim_default 0.21, sim_observed 0.17 PASS |
+| TASK82 | §5.3 순위 | 해석 v1 (sim 둘 보고) | E3 | 해소된 모든 쌍 일치. 해소 0이면 N은 `UNRESOLVED` | 없음(skill 미적용) | N 6·8·10, 12쌍(N8 4구성 6쌍) | **PASS**: N6 `UNRESOLVED`, N8 4/4, N10 3/3 |
+| TASK82 | §5.6 점유 h(n) | 해석 B2 (sim 둘) | E4 | TVD 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 < 영 중앙 | 원고 Table I 같은 N 행의 관측 h(N8 합산 정정은 HILOAD_PREREG §4.1) | 확증 10 | **PASS**: 0.061 / 0.074, 영 중앙 0.296 |
+| TASK82 | 추가 §5.4 DP 대 TUNED | — | 짝 비 DP/TUNED, k = 10(r0–r9) | PASS ⇔ u < 1, FAIL ⇔ l > 1 | — | N8 | **INCONCLUSIVE** 0.9920 [0.9857, 1.0050](사전 예측과 같음) |
+| TASK82 | 추가 §5.5 H-sim | sim_default | `e = m − 예측`(비) | (a) 양수 개수 양측 이항 p ≥ 0.05 ∧ (b) median\|e\| < 0.0130 | — | 7 비 cell | **SUPPORTED**: 양 1/7(p 0.125), median 0.0055 |
+| TASK87 | §5.1 | v1.1 (v1, sim) | E1 | 6/6 ∧ `\|mean e\| ≤ 0.05` ∧ skill 0.5× | 0.67635 | 6(N 14·16 × 3) | **FAIL**: v1.1 5/6(N14 BASE −0.125), MAE 0.049(skill 0.22 PASS). v1 FAIL 5/6, sim PASS(MAE 0.013) |
+| TASK87 | §5.2 | v1.1 (v1, sim) | E2 | 기본 4/4 ∧ 강화 4/4 ∧ skill 0.5× | 1.0 | 4 | **FAIL**: v1.1 기본 3/4, 강화 4/4, S 0.087 / 1.012. v1 기본 0/4, sim 기본 0/4 |
+| TASK87 | §5.3 | v1.1 (v1, sim) | E3 | 같음 | 없음 | 6쌍 | **PASS**: 6/6 해소, 6/6 일치 |
+| TASK87 | §5.6 | v1.1 (v1, sim) | E4 | 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 < 영 | Table I(N14 = 12·16 행 합산, N16 행) | 6 | **PASS**: 0.099 / 0.171, 영 0.541 |
+| TASK87 | 추가 v1.1 대 v1 | v1.1 | 재사용 MAE, 비 S | 둘 다 v1.1 < v1 | — | 6 / 4 | **FAIL**: 재사용 0.049 > 0.033, 비 0.087 < 0.358 |
+| TASK95 | §5.1 | sim_op (sim; v1 참고) | E1 | 8/8 ∧ `\|mean e\| ≤ 0.05` ∧ skill 0.5× | 0.67635 | 8(9 cell − N20 BASE, 사용자 결정 "정보 없음") | **PASS**: 8/8, mean +0.010, MAE 0.016(0.08). sim PASS, v1(범위 밖 포함, 참고) FAIL |
+| TASK95 | §5.2 | sim_op (sim; v1 참고) | E2 | 기본 6/6 ∧ 강화 ≥ 5/6 ∧ skill 0.5× | 1.0 | 6(분모 BASE는 N20 포함) | **PASS**: 6/6, 6/6, S 0.109 / 1.440. sim FAIL(기본 5/6) |
+| TASK95 | §5.3 | sim_op (sim, v1) | E3 | 같음 | 없음 | 9쌍 | **PASS**: N13 3/3, N17 3/3, N20 2/2(+ 미해소 1) |
+| TASK95 | §5.6 | sim_op (sim, v1) | E4 | 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 < 영 | Table I(N13 = 12·16 합산, N17·20 = 16 행) | 9(N20 BASE 포함) | **PASS**: 0.060 / 0.119, 영 0.586 |
+| TASK95 | 추가 sim_op 대 sim | sim_op | 재사용 MAE(8 cell), 비 S(6 cell) | 둘 다 sim_op < sim | — | 8 / 6 | **FAIL**: 0.0161 > 0.0132, 0.1086 > 0.1017 |
+| TASK102 | §5.1 | sim_ctx_op (sim; sim_ctx 보고; v1 참고) | E1 | 6/6 ∧ `\|mean e\| ≤ 0.05` ∧ skill 0.5× | 0.67635 | 6(N 15·18 × 3) | **PASS**: 6/6, mean −0.0015, MAE 0.0090(0.035) |
+| TASK102 | §5.2 | sim_ctx_op | E2 | 기본 4/4 ∧ 강화 4/4 ∧ skill 0.5× | 1.0 | 4 | **PASS**: 4/4, 4/4, S 0.049 / 1.109 |
+| TASK102 | §5.3 | sim_ctx_op | E3 | 같음 | 없음 | 6쌍 | **PASS**: N15 3/3, N18 2/2(+ 미해소 1) |
+| TASK102 | §5.6 | sim_ctx_op | E4 | 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 < 영 | Table I(N15 = 12·16 합산, N18 = 16 행) | 6 | **PASS**: 0.034 / 0.046, 영 0.588 |
+| TASK102 | 추가 sim_ctx_op 대 sim | sim_ctx_op | 재사용 MAE(6), 비 S(4) | 둘 다 sim_ctx_op < sim | — | 6 / 4 | **PASS**: 0.0090 < 0.0093, 0.049 < 0.054 |
+| GTASK04 | 순차 생존(resume hit token) — §5.x 구조 없음 | 모형 코드 순차 경로(= block-exact replay) | trial마다 `ch1 − 예측`(정수 token), 채널 일치 ch1 = ch2 = ch3, ch4 = 예측 T 축출 block | **60/60 유효 ∧ 채널 일치 ∧ ch1 = 예측(허용 오차 0)** | 정의 없음 | 60 trial | **CONFIRMED** 60/60 |
+| GTASK11 | §5.1 | 해석 v1 (sim LRU 병기, sim FIFO 반사실) | E1, bound별 | (a) 9/9 `\|e_c\| ≤ 0.10` ∧ (b) `\|mean e\| ≤ 0.05` ∧ (c) `MAE ≤ 0.5 × MAE(영)` | 상수 0.84718 = 5,771/6,812(TASK82 확증 10 cell). `MAE(영) < 0.05`이면 skill `NOT_INFORMATIVE` | 확증 9(N 20·22·24 × 3) | **해석 FAIL**((a) N24 BASE +0.138, skill 0.66). **sim LRU PASS**(MAE 0.0173, skill 0.35·0.31). sim FIFO FAIL(mean −0.102). MAE(영) 0.0502 |
+| GTASK11 | §5.2 | 해석 v1 (sim LRU, sim FIFO) | E2, bound별 | 기본 6/6 ∧ 강화 ≥ 5/6 ∧ skill 0.5× | 1.0. `Σ\|1 − m\|/6 < 0.01`이면 `NOT_INFORMATIVE` | 6 | **해석 FAIL**(N24 두 cell 기본·강화 불통, S 0.146 / 0.209). **sim LRU PASS**(6/6, 6/6, skill 0.36·0.37). sim FIFO FAIL(S 0.108, 0.52) |
+| GTASK11 | §5.3 | 해석 v1 | E3, bound별 | 같음 | 없음 | 9쌍(N 20·22·24) | **PASS** ×3(lo; hi 같음) |
+| GTASK11 | 추가 §5.4 POOL+GRID 대 POOL | — | 짝 비 m·CI | PASS ⇔ u < 1, FAIL ⇔ l > 1 | — | N 20·22·24 | **INCONCLUSIVE** ×3(사전 예측과 같음) |
+| GTASK11 | 추가 §5.5 LRU 대 FIFO | sim LRU 대 sim FIFO | `d_L`, `d_F`(예측 = lo·hi 평균, DEFINITIONS.md §8) | d_L < d_F ≥ 7/9 분리 cell ∧ Σd_L < Σd_F | — | 분리 9(\|L − F\| ≥ 0.07 두 bound) | **LRU_SUPPORTED**: 8/9, 0.148 대 0.937 |
+| GTASK11 | §5.6 | 해석 B2 (sim LRU 보고) | E4(decode-only h), bound별 | 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 ≤ 0.5 × 영 중앙 | 균등 {1..8} | 9 | **PASS**: lo 0.081 / 0.184(영 0.645), hi 0.077 / 0.179. 병기 `reqs` 정의 FAIL(최대 0.212) |
+| GTASK20 | §5.1 | ctx (x1.210, mode_dist, price 보고) | E1, bound별 | 6/6 ∧ `\|mean e\| ≤ 0.05` ∧ skill 0.5× | 0.84718. `MAE(영) < 0.05`이면 `NOT_INFORMATIVE` | 6(N 25·28 × 3) | **PASS**: MAE lo 0.022 / hi 0.023, 영 0.233. x1.210·mode_dist PASS, price FAIL(mean +0.108) |
+| GTASK20 | §5.2 | ctx | E2, bound별 | 기본 4/4 ∧ 강화 ≥ 3/4 ∧ skill 0.5× | 1.0. `Σ\|1 − m\|/4 < 0.01`이면 `NOT_INFORMATIVE` | 4 | **PASS**: 4/4, 4/4, S lo 0.040 / 0.392, hi 0.028 / 0.406. price FAIL(기본 2/4) |
+| GTASK20 | §5.3 | ctx | E3, bound별 | 같음 | 없음 | 6쌍 | **PASS**(N25·28, 두 bound) |
+| GTASK20 | §5.6 | ctx | E4(decode-only h), bound별 | 중앙 ≤ 0.10 ∧ 최대 ≤ 0.20 ∧ 중앙 ≤ 0.5 × 영 중앙 | 균등 {1..8} | 6 | **PASS**: lo 0.049 / 0.052(영 0.763), hi 0.048 / 0.051. 네 예측기 모두 PASS |
+| GTASK20 | 추가 ctx 대 price | ctx | BASE 재사용 Σ\|e\|(2 cell), 비 S(4 cell) | 두 지표 모두 ctx < price, 두 bound | — | 2 / 4 | **CONFIRMED**: lo 0.075 < 0.348, 0.040 < 0.135; hi 0.084 < 0.319, 0.028 < 0.110 |
+
+- NPU와 GPU의 §5.6 skill 식이 다르다: NPU는 `중앙 < 영 중앙`(영 = Table I 관측 h), GPU는 `중앙 ≤ 0.5 × 영 중앙`(영 = 균등).
+- §5.1 영 예측기: NPU는 개발 집합 상수 0.67635, GPU는 NPU 본 측정 상수 0.84718(기판 무관 예측). GPU 초판 §5의 "같은 예측기의 같은 N BASE 값"은 개정 1 §7.2에서 판정에서 빠졌다(구성 차이 설명력 보고로만 남음).
+- GTASK11 §5.1·5.2·5.3의 수치는 GTASK11 문서 값이다(verdict는 GPU host에만 있다).
+
+## 6. 순위(§5.3) 쌍 집계표 (Advisor 지시문 16 작업 D-2)
+
+- **전체 쌍**: N마다 구성 쌍 전부(3구성 3쌍, TASK82 N8은 DP 포함 4구성 6쌍). 탐색 N(TASK82 N12, GTASK11 N26)은 §5.3 대상이 아니라 세지 않는다.
+- **방향 일관 쌍**: replicate 짝 비 5개가 모두 1의 같은 쪽 ⇔ 해소 쌍. k = 5에서 CI = [최솟값, 최댓값]이므로 두 정의가 같다(STATISTICS.md 1.1 [파생]). GTASK20은 verdict의 `ratios` 5개로 직접 확인했다.
+- **판정 제외 쌍** = 미해소 쌍(일치·불일치 어느 쪽으로도 세지 않음).
+- 출처: NPU `5.3.per_n.<N>.pairs[*].{resolved, <예측기>_agrees}`, GTASK20 `5.3.<bound>.<N>.pairs.*.{resolved, observed_cheaper, predicted_cheaper}`, GTASK11 §5.3 표(해소 여부)와 `PREDICTIONS.json` `device_per_turn_s`(예측 싼 쪽).
+
+| 실험 | 예측기 (역할) | bound | 전체 쌍 | 방향 일관(해소) 쌍 | 그중 예측과 일치 | 판정 제외(미해소) 쌍 |
+|---|---|---|---|---|---|---|
+| TASK82 | 해석 v1 (판정) | — | 12 | 7 | 7 | 5 (N6 3쌍, N8 BATCHONLY/TUNED·TUNED/DP) |
+| TASK82 | sim_default (보고) | — | 12 | 7 | 7 | 5 |
+| TASK82 | sim_observed (보고) | — | 12 | 7 | 7 | 5 |
+| TASK87 | v1.1 (판정) | — | 6 | 6 | 6 | 0 |
+| TASK87 | v1 (보고) | — | 6 | 6 | 6 | 0 |
+| TASK87 | sim (보고) | — | 6 | 6 | 6 | 0 |
+| TASK95 | sim_op (판정) | — | 9 | 8 | 8 | 1 (N20 BATCHONLY/TUNED) |
+| TASK95 | sim (보고) | — | 9 | 8 | 8 | 1 |
+| TASK95 | v1 (참고, 범위 밖 cell 포함) | — | 9 | 8 | 8 | 1 |
+| TASK102 | sim_ctx_op (판정) | — | 6 | 5 | 5 | 1 (N18 BATCHONLY/TUNED) |
+| TASK102 | sim (보고) | — | 6 | 5 | 5 | 1 |
+| TASK102 | sim_ctx (보고) | — | 6 | 5 | 5 | 1 |
+| TASK102 | v1 (참고) | — | 6 | 5 | 5 | 1 |
+| **NPU 판정 예측기 합** | | | **33** | **26** | **26** | **7** |
+| GTASK11 | 해석 v1 (판정) | lo | 9 | 6 | 6 | 3 (POOL/POOL+GRID × N 20·22·24) |
+| GTASK11 | 해석 v1 (판정) | hi | 9 | 6 | 6 | 3 (문서 "hi 같음") |
+| GTASK11 | sim LRU [사후] | lo / hi | 9 | 6 | 6 | 3 |
+| GTASK11 | sim FIFO [사후] | lo / hi | 9 | 6 | 6 | 3 |
+| GTASK20 | ctx (판정) | lo | 6 | 4 | 4 | 2 (POOL/POOL+GRID × N 25·28) |
+| GTASK20 | ctx (판정) | hi | 6 | 4 | 4 | 2 |
+| GTASK20 | x1.210 / mode_dist / price (보고) | lo, hi 각각 | 6 | 4 | 4 | 2 |
+| **GPU 판정 예측기 합 (lo)** | | | **15** | **10** | **10** | **5** |
+
+- 위 합은 STATISTICS.md 2.3의 "NPU 해소 26 / 일치 26 / 미해소 7, GPU(lo) 해소 10 / 일치 10 / 미해소 5"와 같다. 판정·보고 예측기 모두 해소 쌍에서 불일치 0이다.
+- 해소 쌍은 모두 BASE가 들어간 쌍이거나(NPU·GPU) batch 16 구성 사이 쌍(NPU TASK82 N8 BATCHONLY/DP, N10 BATCHONLY/TUNED, TASK87 N14·16, TASK95 N13·17, TASK102 N15의 BATCHONLY/TUNED)이다. GPU의 POOL/POOL+GRID 쌍은 5개 N 모두 미해소다.
+- **[사후]** GTASK11 sim LRU·FIFO의 예측 싼 쪽은 이번에 `PREDICTIONS.json`의 bound별 `device_per_turn_s`를 비교해 정했다(`main_judge.py`는 해석만 판정한다). 해소 6쌍은 모두 BASE 포함 쌍이고 세 예측기 모두 두 bound에서 BASE를 가장 비싸게 예측한다.
+- 미해소 쌍에서는 예측기끼리 순서가 갈린다(판정 무관): TASK82 N6 BATCHONLY/TUNED(해석 BATCHONLY, sim 둘 TUNED), N8 BATCHONLY/TUNED(해석 TUNED, sim 둘 BATCHONLY). GTASK20 POOL/POOL+GRID: N25 lo ctx·x1.210 POOL+GRID, mode_dist·price POOL; N28 lo ctx·x1.210 POOL, mode_dist·price POOL+GRID; hi에서는 N25 ctx만 POOL, N28 mode_dist만 POOL+GRID.
