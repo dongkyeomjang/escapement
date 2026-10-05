@@ -489,6 +489,16 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | g20_prior_prediction | §5.2 사전 예측 빗나감 (FAIL 예측 → PASS); 나머지 적중 | 사전 예측 대조 | docs/research/gpu/GTASK20.md @ 517cff8 | blind_fail | untagged | — |
 | g20_direct_channel | 중앙 1.049 (0.930–1.144) | 직접 dispatch / 가격, 30 lifecycle | docs/research/gpu/GTASK20.md @ 517cff8 | exploratory | untagged | P14 |
 
+
+## 20. 예측 대기열 대 관측 대기열 (TASK109, 지시문 15 작업 E)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| q109_reproduced | 33/33 cell 재계산 재사용률 = 선등록 예측 파일 값 | 같은 입력·코드로 대기열 재계산의 동일성 확인 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | code_check | untagged | — |
+| q109_corr_sim | Pearson 0.999, Spearman 0.820, MAE 0.058 (주 sim); 해석 모형 0.999 / 0.911 / 0.220 | 예측 대 관측 대기열, NPU 33 cell, decode step 가중 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | exploratory | untagged | — |
+| q109_underpred | BASE N ≥ 12 예측/관측 중앙: 주 sim 0.876, 원래 비용 sim 0.830, 해석 0.656; GPU 원래 sim LRU 0.608 | 대기열 과소 예측 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | exploratory | untagged | — |
+| q109_confusion | 문턱 Q = 0.1: 주 sim 33/33 같은 쪽(8 있음·25 없음); 해석 모형 32/33 (N12 BASE 관측 0.280, 예측 0.079) | 대기열 유무 분류 | paper/QUEUE_PRED_VS_OBS.md (TASK109 commit) | post_hoc | untagged | — |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |
