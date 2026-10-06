@@ -15,6 +15,8 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
+**G-09 완료(GTASK22, 2026-10-06)**: 측정 0. 경계 효과 민감도 [GPU_BOUNDARY_SENSITIVITY.md](GPU_BOUNDARY_SENSITIVITY.md), GPU host 전용 재사용 값 [GPU_REUSE_SUPPLEMENT.md](GPU_REUSE_SUPPLEMENT.md). `gpu-a6000`은 `origin/main` `167c4dd`로 fast-forward 후 작업했다.
+
 **GPU 실험 종료 (G-08, 2026-10-02)**: GPU 실험은 G-07로 끝났다. 이후 새 측정은 하지 않는다. 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md)(GTASK01–20, 130행).
 
 **G-08 결정 (G-07 결정 요청에 대한 답)**:
@@ -104,7 +106,8 @@
 | [GTASK19](GTASK19.md) | DONE | 정정 기록: N24 BASE sim LRU 0.752 / 0.753 (G-07 작업 D) | 측정 0. 0.753 = `lo`(`PREDICTIONS.json` 1,361/1,807), 0.752 = §5.5 판정이 쓰는 `lo`·`hi` 평균. GTASK11 발견 4("0.849, 0.752, 0.657")가 두 정의를 섞었고 GTASK12가 옮겼다 → `lo` 기준 0.753으로 읽는다. 판정 영향 없음. 본문은 고치지 않음 |
 | [GTASK20](GTASK20.md) | DONE | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 `f0d8000` → 30/30 유효, 재실행 0, 판정 자동 commit `bac3e63`. **주 예측기 (1) ctx: §5.1·§5.2·§5.3·§5.6 모두 PASS**(재사용 MAE 0.022, 비 기본 4/4, h TVD 0.049). (3) 가격은 §5.1·§5.2 FAIL(N25 BASE +0.22). **추가 확증 (1) < (3) `CONFIRMED`**. 보고: 재사용은 보정 (2)가 더 가까움(BASE Σ 0.031 대 0.075), 비는 같음 |
 | [GTASK21](GTASK21.md) | DONE | GPU 작업 마무리 기록 (G-08) | 측정 0. GPU 실험 종료, G-08 결정 3건, 통합 확인용 입력(SHA256), 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md) 130행(blind_confirm 32, blind_fail 10, dev_set 5, retro_check 12, exploratory 51, code_check 19, withheld 1). merge 준비: GPU 쪽 141 파일 모두 GPU 영역 안, main 쪽 36 파일은 GPU 영역 밖, 충돌 0(merge 안 함) |
+| [GTASK22](GTASK22.md) | DONE | 경계 효과 민감도와 GPU host 전용 재사용 값 (G-09) | 측정 0. NPU TASK111 분석을 GTASK11·20에 적용: 창 60·90·120 s 재집계(120 s 관측·예측 22/22 정확 재현, Python 3.12 필요), 창 폭 관측 0.0014–0.0378·예측 0.0023–0.0373, POOL·POOL+GRID 순서만 창에 따라 바뀜(차 ≤ 0.011, BASE 항상 최대), 끝 잔여 2.17–2.96 % > 시작 잔여 0.79–1.27 %, 보정 비 차 > 0.01은 N22 POOL(+0.011)뿐. 재사용 보조표 [GPU_REUSE_SUPPLEMENT.md](GPU_REUSE_SUPPLEMENT.md)(token 비율 17 cell, replicate별 분모, 부분 재사용) |
 
 ## 다음 작업
 
-GPU 실험은 종료됐다(G-08). 새 GPU 측정·예측은 하지 않는다. 남은 일은 NPU 에이전트의 통합 단계(context 비용 descriptor 도입과 GPU 예측 재현 확인)와 `gpu-a6000` → `main` merge(Advisor 지시 시)다. merge 준비 확인은 [GTASK21](GTASK21.md)에 있다.
+GPU 실험은 종료됐다(G-08). 새 GPU 측정·예측은 하지 않는다. G-09(기존 로그 계산)는 [GTASK22](GTASK22.md)로 끝났다. 남은 일은 NPU 에이전트의 통합 단계(context 비용 descriptor 도입과 GPU 예측 재현 확인)와 `gpu-a6000` → `main` merge(Advisor 지시 시)다. merge 준비 확인은 [GTASK21](GTASK21.md)에 있다.
