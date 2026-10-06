@@ -49,6 +49,7 @@ tar --sort=name --owner=0 --group=0 --numeric-owner --mtime='2026-10-06 00:00:00
 - 사본: 내보낸 파일 7,363(tracked 788 + results 6,575) + `ANONYMIZATION/`, 797 MB. `artifact.tar.gz` 135 MB, 7,924 항목, SHA256 `551f637407dc38e2273534beaa8743c1d4becd1ad73d35bd956ac28558d7c3d2`.
 - 치환 267,238건(path 222,313, device_id 42,916, other 1,591, hostname 394, username 18, real_name 3, url 2, affiliation 1). 지난 사본 대비 path +7, other +2(새 GTASK22·TASK110–111 문서).
 - **최종 검사(gzip 296개 내부 포함) 남은 식별 문자열 0건, generic 0건, `CHECK PASS`.** 유지 결정 장비명 10건. 수동 검색(저자 이름·e-mail local part·사용자·host·home 경로·원 저장소 이름) 0건; 남은 일치는 지난 사본과 같다(vendor·compiler 이름, 공개 upstream 이름, 소문자 patch 파일 이름).
+- **정정([TASK113](TASK113.md))**: 이 사본의 `tar.gz`(SHA256 `551f6374…`)에는 사본 안 동작 점검으로 생긴 `.pyc` 37개가 들어갔고 모두 절대 경로를 담고 있다. 위 "남은 0건"은 tar가 아니라 빌드 직후 디렉터리 기준이다. 이 tar는 사용하지 않는다.
 - 사본 안: plan 검증 127/127, runner + fake server exit 0(window 종료, 196 요청), `ctx_descriptor_npu` PASS, `gpu_ctx_parity` PASS, `PREDICTIONS_CTX.json` byte 동일.
 
 ## 핵심 발견
