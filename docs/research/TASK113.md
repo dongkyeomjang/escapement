@@ -47,7 +47,7 @@ tar -xzf artifact.tar.gz -C <export>/check # 동작 확인은 여기서만, PYTH
 
 - `artifact.tar.gz` 129 MB, 7,837 항목, **SHA256 `09148c28a4ba6eda45ea410b5e7aaacc8d9fcb266caa64211b003bd78b60b698`**. 사본 7,328 파일(tracked 753 + results 6,575) + `ANONYMIZATION/`.
 - 치환 267,218건(path 222,305, device_id 42,916, other 1,583, hostname 394, username 18, url 2; real_name·affiliation 0 — README 문장 삭제로).
-- **재추출 검사**: `.pyc`/`__pycache__` 0, 홈 디렉터리 경로 0, 사본 디렉터리 이름 0, 사용자명 0, 적용 대상 0, 제외 경로 0. generic 검사는 텍스트·gzip 내부에서 허용된 `noreply@anthropic.com` 3건뿐; 압축 byte 열(PDF 그림 3, `.gz` 7)에 우연히 e-mail 모양인 byte 열이 있으나 풀면 없다(오탐). "rebel"은 vendor SDK·compiler 이름으로만 남음.
+- **재추출 검사**: `.pyc`/`__pycache__` 0, 홈 디렉터리 경로 0, 사본 디렉터리 이름 0, 사용자명 0, 적용 대상 0, 제외 경로 0. generic 검사는 텍스트·gzip 내부에서 허용된 `noreply@anthropic.com` 3건뿐; 압축 byte 열(PDF 그림 3, `.gz` 7)에 우연히 e-mail 모양인 byte 열이 있으나 풀면 없다(오탐). NPU 로그인 이름과 같은 문자열은 vendor SDK·compiler 이름 안에만 남음.
 - **동작(별도 복제본)**: plan 검증 127/127, runner + fake server exit 0(window 종료, 196 요청), `ctx_descriptor_npu` PASS, `gpu_ctx_parity` PASS, `PREDICTIONS_CTX.json` byte 동일.
 
 ## 핵심 발견
