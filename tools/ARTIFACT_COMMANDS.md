@@ -217,6 +217,8 @@ Per-table: `env -u PYTHONPATH python3 experiments/npu/analysis/make_tables.py --
 
 Present in an export only with `--gpu-ref`.
 
+**Python version (bit-exact predictions).** Reproducing the GPU prediction files (`experiments/gpu/multiturn/plans/PREDICTIONS*.json`, e.g. `ratio_to_base`) bit for bit requires **Python 3.12** (`<GPU_VENV>`, 3.12.13, the interpreter that produced them). Python 3.12 changed the built-in float `sum()` to compensated summation, so Python 3.10 reproduces the same values only to a relative difference of about 1e-14 (GTASK22: 22/22 prediction rows mismatched under 3.10.12, 22/22 exact under 3.12.13). Observed-side aggregates that accumulate with `+=` are identical under both. The NPU prediction files are reproduced exactly with the system Python 3.10.12 (TASK111: 22/22 rows); they do not record the interpreter version.
+
 | source | command | input paths | output paths |
 |---|---|---|---|
 | GTASK02 | `env -u PYTHONPATH <GPU_VENV>/bin/python experiments/gpu/substrate/a6000_vllm_0220_draft.py` |  |  |
