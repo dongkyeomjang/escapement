@@ -510,6 +510,17 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | a110_decode_only | decode만의 비 중앙 0.876–1.114(N20 0.876·0.886, 그 밖 0.969–1.114) | decode 시간/turn 구성/BASE | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
 | a110_prefill_proxy | prefill 평균 `exc` 대 `srv`: 고부하 BASE `exc` > `srv`(TASK102 N18 291–308 대 286 ms), BATCHONLY·TUNED `exc` < `srv`(116–117 대 138 ms); 원인 몫 분해 안 됨(UNKNOWN) | ms/prefill, cell 평균 | paper/ACTIVITY_TIME_RATIO.md (TASK110 commit) | post_hoc | untagged | results/npu/stage3/activity_time/activity_time.json |
 
+
+## 22. 비용 집계의 경계 효과 민감도 (TASK111, 지시문 17)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| b111_repro | L = 120 재집계: 관측 쌍 비 22/22 cell = verdict `per_rep`, 예측 비 22/22 = 예측 파일 `ratio_to_base` | 재현 점검 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | code_check | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
+| b111_window_span | 창 60·90·120 s 비 폭(max − min): 관측 0.0038–0.0512(N12 탐색 0.088·0.099 제외), 중앙 0.0218; 예측 0.0037–0.0338, 중앙 0.0197 | NPU 22 cell, 관측 = replicate 쌍 비 중앙, 예측 = plan 5개 합산 비 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
+| b111_order_change | BATCHONLY·TUNED 순서가 창에 따라 바뀌는 N: 관측 3/11(TASK82 N6·8·10), 예측 1/11(TASK82 N8); BASE는 항상 최대 | N 단위, 3 창 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
+| b111_boundary_resid | L = 120 시작 잔여 S 0.24–1.31 %, 끝 잔여 E 1.64–2.73 %, E − S 전 cell 양수 +0.69–+1.64 % | A′ 비용 총합 대비, cell 합산, step 비용 균등 분배 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
+| b111_corrected_ratio | 경계 보정 비 − 원래 비(L = 120): 쌍별 차 중앙 ≤ 0.0076(22 cell); 중앙값끼리 > 0.01 4 cell(TASK82 N6 B −0.0188, N10 T +0.0156, N12 B −0.0185, TASK102 N18 T +0.0119: 0.6710 → 0.6830); replicate 110쌍 중 > 0.01 8쌍, 최대 0.0234 | 구성/BASE 비, 무차원 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |
