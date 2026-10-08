@@ -15,9 +15,15 @@
 
 **GPU Stage 0 `PASS`** ([GTASK02](GTASK02.md), 선등록 [GPU_STAGE0_PREREG.md](GPU_STAGE0_PREREG.md) `7bb07f5` → 측정 08:52:18 UTC). [GTASK01](GTASK01.md)에서 환경 inventory, `vllm 0.22.0`(CUDA 13.0 빌드, NPU upstream과 같은 버전) 설치, `Qwen/Qwen3-4B@1cfa9a72…`(NPU와 같은 revision·byte 수) download, source 감사 9항목을 마쳤다. GTASK02에서 KV pool(`--num-gpu-blocks-override`)과 decode 격자(`cudagraph_capture_sizes`)가 server 인자로 고정·확인됐고, hit 공식 `floor(min(shared, query−1)/16)·16`이 5/5로 맞았으며, **decode 생성 token도 캐시됨**(H5 1,024)을 확인했다. Qwen3-4B는 기본으로 model runner v2에서 돌며 v2에서는 `--cudagraph-metrics`가 비어 있다. v1 runner(L3)는 FlashInfer sampler의 JIT build가 `nvcc`를 요구해 기동하지 못했다. descriptor 초안은 [`a6000_vllm_0220_draft.py`](../../../experiments/gpu/substrate/a6000_vllm_0220_draft.py)이며 `SubstrateDescriptor`와의 적합성 문제 11건을 보고했다.
 
+**G-10 (GTASK23–25, 2026-10-08)**: G-08의 실험 종료 뒤 Advisor 지시로 추가 측정을 했다(SIGMETRICS 본문 마감 전).
+- **A**(GTASK23): CUDA event 실행 구간 계측(DIRECT_EXEC). ON/OFF 영향 |중앙| ≤ 0.12 %로 `OK`. 포화 FULL decode에서 DIRECT = dispatch 주기(비 0.998–1.001). exec 층은 site-packages에 **적용된 채로** 있다(`apply_exec.sh revert`로 되돌림).
+- **B**(GTASK24): 선등록 판정 **`NA`**. 80/80 lifecycle이 겹침 검사(0.01 ms)에 걸렸고, 원인은 float32 시각 간격(s ≥ 2¹⁷ ms에서 0.0156 ms)이다. 사후 보정 판정에서는 N28 R_DIRECT 0.896, N25 0.875, RECON·PRED 차 ≤ 0.021, 감소 `CONFIRMED`로 모든 기준을 통과했다(선등록 판정 아님).
+- **C**(GTASK25): N24, SHORT 8 / LONG 512 token 도구 출력. C1 lo PASS / hi FAIL(0.052), C2 lo FAIL(0.054) / hi PASS, C3 PASS, C4·C5 `NA`(같은 결함, 사후 PASS). 사건 재현 5,307/5,307 일치 → LONG 재사용 과대 예측은 시간 입력 오차다(긴 문맥 mixed step이 가격보다 31–37 % 비쌈, 추정).
+- **Advisor 결정 대기**: (1) float32 보정 판정을 B·C DIRECT 결과로 쓸지, 아니면 고친 계측으로 재선등록·재측정할지. (2) C LONG_TOOL 재사용 FAIL(근소 초과)의 반영. (3) prefill context 비용을 후속 연구로 둘지.
+
 **G-09 완료(GTASK22, 2026-10-06)**: 측정 0. 경계 효과 민감도 [GPU_BOUNDARY_SENSITIVITY.md](GPU_BOUNDARY_SENSITIVITY.md), GPU host 전용 재사용 값 [GPU_REUSE_SUPPLEMENT.md](GPU_REUSE_SUPPLEMENT.md). `gpu-a6000`은 `origin/main` `167c4dd`로 fast-forward 후 작업했다.
 
-**GPU 실험 종료 (G-08, 2026-10-02)**: GPU 실험은 G-07로 끝났다. 이후 새 측정은 하지 않는다. 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md)(GTASK01–20, 130행).
+**GPU 실험 종료 (G-08, 2026-10-02)**: GPU 실험은 G-07로 끝났다. 이후 새 측정은 하지 않는다(예외: Advisor 지시 G-10, GTASK23–25). 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md)(GTASK01–20 130행, G-10에서 GTASK23–25 행 추가).
 
 **G-08 결정 (G-07 결정 요청에 대한 답)**:
 1. (1) ctx의 재사용 과대 예측(+0.005–0.049, 6 cell 같은 방향)은 추가 측정하지 않는다. 남은 계통 편향으로 기록한다. 원인 후보(혼합·eager step과 prefill의 context 의존)는 후속 연구로만 둔다.
@@ -107,7 +113,10 @@
 | [GTASK20](GTASK20.md) | DONE | 붕괴 영역 blind N = 25·28, 세 비용 입력 (G-07 작업 C) | 선등록 `f0d8000` → 30/30 유효, 재실행 0, 판정 자동 commit `bac3e63`. **주 예측기 (1) ctx: §5.1·§5.2·§5.3·§5.6 모두 PASS**(재사용 MAE 0.022, 비 기본 4/4, h TVD 0.049). (3) 가격은 §5.1·§5.2 FAIL(N25 BASE +0.22). **추가 확증 (1) < (3) `CONFIRMED`**. 보고: 재사용은 보정 (2)가 더 가까움(BASE Σ 0.031 대 0.075), 비는 같음 |
 | [GTASK21](GTASK21.md) | DONE | GPU 작업 마무리 기록 (G-08) | 측정 0. GPU 실험 종료, G-08 결정 3건, 통합 확인용 입력(SHA256), 결과 요약표 [GPU_RESULTS_SUMMARY.md](GPU_RESULTS_SUMMARY.md) 130행(blind_confirm 32, blind_fail 10, dev_set 5, retro_check 12, exploratory 51, code_check 19, withheld 1). merge 준비: GPU 쪽 141 파일 모두 GPU 영역 안, main 쪽 36 파일은 GPU 영역 밖, 충돌 0(merge 안 함) |
 | [GTASK22](GTASK22.md) | DONE | 경계 효과 민감도와 GPU host 전용 재사용 값 (G-09) | 측정 0. NPU TASK111 분석을 GTASK11·20에 적용: 창 60·90·120 s 재집계(120 s 관측·예측 22/22 정확 재현, Python 3.12 필요), 창 폭 관측 0.0014–0.0378·예측 0.0023–0.0373, POOL·POOL+GRID 순서만 창에 따라 바뀜(차 ≤ 0.011, BASE 항상 최대), 끝 잔여 2.17–2.96 % > 시작 잔여 0.79–1.27 %, 보정 비 차 > 0.01은 N22 POOL(+0.011)뿐. 재사용 보조표 [GPU_REUSE_SUPPLEMENT.md](GPU_REUSE_SUPPLEMENT.md)(token 비율 17 cell, replicate별 분모, 부분 재사용) |
+| [GTASK23](GTASK23.md) | DONE | 실행 구간 직접 계측과 계측 영향 점검 (G-10 A) | 선등록 `c4cf5d2` → 40/40 유효. CUDA event 층(e0 `[GSTEP]`·e1 forward·e2 sample 끝, 동기화 없음, 사용자 승인 후 적용). ON/OFF 처리율·decode 간격 \|중앙\| ≤ 0.12 % → `OK`. 누락·겹침 0. FULL decode DIRECT = dispatch 주기(0.998–1.001; 예측 0.85–0.98 빗나감). HW_ACTIVE `NA` |
+| [GTASK24](GTASK24.md) | PARTIAL | 포화 비용 비 독립 시간 검증 N28·25 (G-10 B) | 선등록 `8bfeee8` → 40/40 유효(+재측정 40), preemption 0. **선등록 판정 `NA`**: 겹침 허용 0.01 ms < float32 간격 0.0156 ms(s ≥ 2¹⁷ ms), 80/80 결함. 사후 보정: N28 R_DIRECT 0.896(RECON −0.014/−0.018, PRED −0.009/−0.016), N25 0.875, 감소 CI 상한 < 1, sign 10/0. DIRECT 절대 = RECON의 1.19–1.21배. 사건 재현 11,194/11,194 |
+| [GTASK25](GTASK25.md) | PARTIAL | 긴 도구 출력 재사용·비용 (G-10 C) | microbenchmark c_long 2.108e-4(L ≤ 7,000). 선등록 `c2f37d3` → N24, pool 3,617/4,379, 20/20 유효, preemption 0. C1 lo PASS·hi FAIL(LONG/BASE 0.052), C2 lo FAIL(0.054·0.050)·hi PASS, C3 PASS, C4·C5 `NA`(사후 PASS, LONG 차 −0.011/−0.015). 사건 재현 5,307/5,307 → 오차는 시간 입력(LONG wall 1.12배, mixed DIRECT 142 대 가격 108 ms) |
 
 ## 다음 작업
 
-GPU 실험은 종료됐다(G-08). 새 GPU 측정·예측은 하지 않는다. G-09(기존 로그 계산)는 [GTASK22](GTASK22.md)로 끝났다. 남은 일은 NPU 에이전트의 통합 단계(context 비용 descriptor 도입과 GPU 예측 재현 확인)와 `gpu-a6000` → `main` merge(Advisor 지시 시)다. merge 준비 확인은 [GTASK21](GTASK21.md)에 있다.
+GPU 실험은 종료됐다(G-08). G-09(기존 로그 계산)는 [GTASK22](GTASK22.md)로, G-10(Advisor 지시 추가 측정)은 [GTASK23](GTASK23.md)–[GTASK25](GTASK25.md)로 끝났다. G-10 결정 3건(위 "Advisor 결정 대기")에 대한 답 없이 새 GPU 측정은 하지 않는다. exec 층 되돌림 여부도 Advisor 결정에 따른다. 남은 일은 NPU 에이전트의 통합 단계(context 비용 descriptor 도입과 GPU 예측 재현 확인)와 `gpu-a6000` → `main` merge(Advisor 지시 시)다. merge 준비 확인은 [GTASK21](GTASK21.md)에 있다.

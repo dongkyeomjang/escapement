@@ -234,15 +234,42 @@ kind: blind_confirm · blind_fail · withheld · post_hoc · dev_set · explorat
 | g20_prior_prediction | §5.2 사전 예측 빗나감 (FAIL 예측 → PASS); 나머지 적중 | 사전 예측 대조 | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | blind_fail | untagged | — |
 | g20_direct_channel | 중앙 1.049 (0.930–1.144) | 직접 dispatch / 가격, 30 lifecycle | origin/gpu-a6000:docs/research/gpu/GTASK20.md @ 517cff8 | exploratory | untagged | — |
 
+## G-10 — GTASK23–25 (2026-10-08)
+
+상태 표기(G-10 지시): `[선등록 검증]` 측정 전 commit된 기준의 판정, `[사후 진단]` 측정·판정 뒤 계산(판정 아님), `[보고]` 판정 없는 측정값. 문서는 `docs/research/gpu/GTASK23.md`–`GTASK25.md`.
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| g23_exec_overhead | [선등록 검증] `OK`; 처리율·w* 간격 \|중앙 ON/OFF − 1\| ≤ 0.12 % (low/BASE −0.06·+0.07, low/KV 0.00·+0.02, sat/BASE −0.01·−0.02, sat/KV +0.12·−0.01 %) | 계측 영향, 2 부하 × 2 구성 × 5 pair (개발 점검) | origin/gpu-a6000:experiments/gpu/g10/exec_check_result/summary.json @ fc10373 | dev_set | stack | — |
+| g23_exec_checks | [선등록 검증] 누락 0, 겹침 0, 비양수 0, DIRECT 합/device 범위 ≤ 0.99978, OFF `[GEXEC]` 0 | ON run 20개 window step | origin/gpu-a6000:experiments/gpu/g10/exec_check_result/summary.json @ fc10373 | code_check | stack | — |
+| g23_direct_vs_dispatch | [보고] FULL decode DIRECT / dispatch 0.998–1.001 (low 14.2, sat 16.9 ms); 사전 예측 0.85–0.98 빗나감 | DIRECT 대 host dispatch 주기 | origin/gpu-a6000:experiments/gpu/g10/exec_check_result/summary.json @ fc10373 | exploratory | stack | — |
+| g24_prereg_na | [선등록 검증] `NA` (판정 replicate 0); 80/80 lifecycle 겹침 > 0.01 ms; 유효 80/80, preemption 0, 누락 0 | B DIRECT 판정 1–4, N28·N25 | origin/gpu-a6000:experiments/gpu/g10/b_result/verdict.json @ 935d9d6 | withheld | untagged | — |
+| g24_recon_pred | [보고] R_RECON lo/hi N28 0.8819/0.8779, N25 0.8590/0.8545; R_PRED lo/hi N28 0.8866/0.8795, N25 0.8698/0.8672 | 호출당 비용 비 KV/BASE, replicate 10 중앙 | origin/gpu-a6000:experiments/gpu/g10/b_result/verdict.json @ 935d9d6 | exploratory | stack | — |
+| g24_f32_cause | [사후 진단] 첫 겹침 s ≥ 131,095 ms (2¹⁷), 최대 0.0146 ms ≤ float32 간격 0.0156; 보정 허용치로 80/80 겹침 0 | `[GEXEC]` s 양자화 | origin/gpu-a6000:experiments/gpu/g10/b_result/posthoc_f32.json @ 0b2fa48 | post_hoc | stack | — |
+| g24_direct_ratio | [사후 진단] R_DIRECT N28 0.8957 (CI 0.856–0.929), N25 0.8751 (0.836–0.947), sign 10/0; RECON−DIRECT −0.014/−0.018, −0.016/−0.021; PRED−DIRECT −0.009/−0.016, −0.005/−0.008; skill PASS | 보정 규칙 아래 B 기준 1–4 | origin/gpu-a6000:experiments/gpu/g10/b_result/posthoc_f32.json @ 0b2fa48 | post_hoc | stack | — |
+| g24_direct_abs | [보고] DIRECT/RECON lo 1.187–1.211 (N28 BASE 0.415 대 0.350 s/호출); decode 16.5 대 가격 13.62 ms | 절대 호출당 시간 | origin/gpu-a6000:experiments/gpu/g10/b_result/posthoc_f32.json @ 0b2fa48 | exploratory | stack | — |
+| g24_reuse_report | [보고] 관측/예측 lo: N28 BASE 0.215/0.243, KV 0.608/0.628; N25 BASE 0.425/0.466, KV 0.788/0.799; h TVD 0.047–0.052 | 요청 재사용 (판정 아님) | origin/gpu-a6000:experiments/gpu/g10/b_result/verdict.json @ 935d9d6 | exploratory | stack | — |
+| g24_replay | [사후 진단] 11,194/11,194 일치, KV 축출 1,202,315 일치 | 사건 재현, B 40 lifecycle | origin/gpu-a6000:experiments/gpu/g10/b_result/posthoc_replay.json @ fc10373 | retro_check | stack | — |
+| g25_ctx_long | [보고] c_long 2.1078e-4 ms/token (GTASK18 2.120e-4), \|잔차\| ≤ 0.103 ms, L ≤ 7,000 | decode step, n {1,2,4,8} × 6 L | origin/gpu-a6000:experiments/gpu/g10/ctx_long_result/summary.json @ 228ce77 | exploratory | stack | — |
+| g25_reuse_req | [선등록 검증] C1 lo PASS (최대 0.0493), hi FAIL (LONG/BASE 0.0521) | 요청 재사용, 4 cell | origin/gpu-a6000:experiments/gpu/g10/c_result/verdict.json @ 089c7f4 | blind_fail | stack | — |
+| g25_reuse_tok | [선등록 검증] C2 lo FAIL (LONG/BASE 0.0542, LONG/KV 0.0502), hi PASS (0.0392) | token 재사용, 4 cell (G-10 추가 기준) | origin/gpu-a6000:experiments/gpu/g10/c_result/verdict.json @ 089c7f4 | blind_fail | stack | — |
+| g25_reuse_skill | [선등록 검증] C3 PASS lo Σ 0.083 / hi 0.079 ≤ 0.5 × 0.750 | 재사용 skill (기준선 0.84718) | origin/gpu-a6000:experiments/gpu/g10/c_result/verdict.json @ 089c7f4 | blind_confirm | stack | — |
+| g25_short_reuse | [선등록 검증] SHORT \|오차\| ≤ 0.003 (BASE 0.952, KV 0.973) | SHORT_TOOL 재사용 | origin/gpu-a6000:experiments/gpu/g10/c_result/verdict.json @ 089c7f4 | blind_confirm | stack | — |
+| g25_cost_na | [선등록 검증] C4·C5 `NA` (DIRECT 판정 replicate 0, 40/40 겹침 결함) | 비용 비, 참조 DIRECT | origin/gpu-a6000:experiments/gpu/g10/c_result/verdict.json @ 089c7f4 | withheld | untagged | — |
+| g25_cost_posthoc | [사후 진단] R_DIRECT SHORT 0.9927, LONG 0.8770; PRED lo/hi − DIRECT SHORT +0.001/+0.006, LONG −0.011/−0.015; C5 Σ 0.012/0.021 ≤ 0.5 × 0.130 | 보정 규칙 아래 C4·C5 | origin/gpu-a6000:experiments/gpu/g10/c_result/posthoc_f32.json @ fc10373 | post_hoc | stack | — |
+| g25_replay | [사후 진단] 5,307/5,307 일치, KV 축출 429,653 일치 | 사건 재현, C 20 lifecycle | origin/gpu-a6000:experiments/gpu/g10/c_result/posthoc_replay.json @ fc10373 | retro_check | stack | — |
+| g25_timing_input | [사후 진단] 관측 wall/sim wall LONG 1.125·1.115, SHORT 1.019·1.021; LONG mixed DIRECT 142.0/120.2 대 가격 108.5/87.7 ms, decode 19.4 ≈ ctx 모형 | 재사용 오차의 원인 분해 (prefill context 의존은 추정) | origin/gpu-a6000:experiments/gpu/g10/c_result/posthoc_timing.json @ fc10373 | post_hoc | stack | — |
+
 ## 집계
 
 | kind | 행 |
 |---|---|
-| exploratory | 51 |
-| blind_confirm | 32 |
-| code_check | 19 |
-| retro_check | 12 |
-| blind_fail | 10 |
-| dev_set | 5 |
-| withheld | 1 |
-| 합계 | 130 |
+| exploratory | 56 |
+| blind_confirm | 34 |
+| code_check | 20 |
+| retro_check | 14 |
+| blind_fail | 12 |
+| dev_set | 6 |
+| withheld | 3 |
+| post_hoc | 4 |
+| 합계 | 149 |
