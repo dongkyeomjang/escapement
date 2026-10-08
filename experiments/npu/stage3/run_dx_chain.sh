@@ -17,7 +17,7 @@ allowed() {  # n_lifecycles
 }
 log "chain start"
 bash "$S3/run_dx.sh" "$BASE/20261008-dx-b" "$PL/ORDER_DXB.json" > "$BASE/20261008-dx-b.run.log" 2>&1; log "B done"
-bash "$S3/run_dx.sh" "$BASE/20261008-dx-c" "$PL/ORDER_DXC.json" > "$BASE/20261008-dx-c.run.log" 2>&1; log "C done"
+bash "$S3/run_dx.sh" "$BASE/20261008-dx-c" "$PL/ORDER_DXC_OBSOFF.json" > "$BASE/20261008-dx-c.run.log" 2>&1; log "C done"
 if allowed 20; then
   log "B8 allowed by time rule"; bash "$S3/run_dx.sh" "$BASE/20261008-dx-b8" "$PL/ORDER_DXB8.json" > "$BASE/20261008-dx-b8.run.log" 2>&1; log "B8 done"
 else log "B8 NOT started: time rule"; fi

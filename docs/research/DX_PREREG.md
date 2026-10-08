@@ -173,3 +173,10 @@ replicate 단위만 쓴다(요청을 표본으로 bootstrap하지 않음). 비�
 - `plans/dx/`: `INDEX_DX.json`, plan 50개, `ORDER_DX*.json` 5개, `PREDICTIONS_DX.json`, `GAPSTATS_DXC.json`, `SELECTION_DXE.json`.
 - 코드: `make_dx_plans.py`, `make_dx_order.py`, `dx_predict.py`, `dx_steps.py`, `dx_check.py`, `dx_analyze.py`, `run_dx.sh`, `run_dx_lifecycle.sh`, `dx_manifest.py`; patch `steptime_observe.patch`·`apply_steptime.sh`·`STEPTIME.md`.
 - run: `results/npu/stage3/20261008-dx-{a,b,c,b8,e}/`(비추적), 판정 `dx_verdict_{a,b,c,e}.json`.
+
+## 11. 개정 1 (2026-10-08, 작업 A 판정 뒤·C 측정 전)
+
+- 작업 A 판정(`results/npu/stage3/20261008-dx-a/dx_verdict_a.json`, 40/40 유효): **`PERTURBATION`** — TUNED N6 처리율 paired median −0.0152, TUNED N18 MODEL DECODE 평균 −0.0133(|·| > 0.01). 다른 두 조건은 1 % 이내. 부호는 계측 on 쪽이 더 빠른 방향이 4조건 중 다수이고 쌍별 표준편차 0.006–0.03이다(해석은 TASK117). 기준은 바꾸지 않는다.
+- §4에 따라: (i) 계측을 경량화한 patch v2(step마다 로그 쓰기 대신 메모리 buffer, 1 s마다 1줄로 flush, decode는 요청 id 생략)를 사용자 승인 후 적용해 **같은 `ORDER_DXA` 설계로 점검을 반복**한다(새 run 디렉터리). (ii) 해소되기 전까지 B의 직접 판정은 보류하고, **C를 먼저** 잰다.
+- **C는 계측 끔(OBS=0)으로 잰다**(`ORDER_DXC_OBSOFF.json` — 순서·plan·판정 기준은 `ORDER_DXC.json`과 같고 `obs`만 0). §6 판정 3이 DIRECT_EXEC 열을 A `WITHIN_1PCT`일 때만 보고하므로, 계측을 켤 이유가 없고 끄면 C의 RECON 판정에서 계측 영향 의심이 사라진다. 이전 모든 run과 같은 상태(steptime patch 적용, flag 꺼짐)다.
+- `run_dx_chain.sh`의 C 순서표를 `ORDER_DXC_OBSOFF.json`으로 바꾼다. B·B 확장·E는 반복 점검 결과에 따라 개정 2로 정한다.
