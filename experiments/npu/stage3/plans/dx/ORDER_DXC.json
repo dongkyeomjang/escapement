@@ -1,0 +1,165 @@
+{
+ "seed": 20268004,
+ "order": [
+  {
+   "tag": "C.TUNED.n14.cap120.r0",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap120-r0",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 0
+  },
+  {
+   "tag": "C.BASE.n14.cap120.r0",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap120-r0",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 1
+  },
+  {
+   "tag": "C.TUNED.n14.cap60.r0",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap60-r0",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 2
+  },
+  {
+   "tag": "C.BASE.n14.cap60.r0",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap60-r0",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 3
+  },
+  {
+   "tag": "C.TUNED.n14.cap60.r1",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap60-r1",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 4
+  },
+  {
+   "tag": "C.BASE.n14.cap120.r1",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap120-r1",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 5
+  },
+  {
+   "tag": "C.TUNED.n14.cap120.r1",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap120-r1",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 6
+  },
+  {
+   "tag": "C.BASE.n14.cap60.r1",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap60-r1",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 7
+  },
+  {
+   "tag": "C.TUNED.n14.cap60.r2",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap60-r2",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 8
+  },
+  {
+   "tag": "C.BASE.n14.cap60.r2",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap60-r2",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 9
+  },
+  {
+   "tag": "C.TUNED.n14.cap120.r2",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap120-r2",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 10
+  },
+  {
+   "tag": "C.BASE.n14.cap120.r2",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap120-r2",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 11
+  },
+  {
+   "tag": "C.BASE.n14.cap120.r3",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap120-r3",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 12
+  },
+  {
+   "tag": "C.BASE.n14.cap60.r3",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap60-r3",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 13
+  },
+  {
+   "tag": "C.TUNED.n14.cap60.r3",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap60-r3",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 14
+  },
+  {
+   "tag": "C.TUNED.n14.cap120.r3",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap120-r3",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 15
+  },
+  {
+   "tag": "C.BASE.n14.cap60.r4",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap60-r4",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 16
+  },
+  {
+   "tag": "C.TUNED.n14.cap60.r4",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap60-r4",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 17
+  },
+  {
+   "tag": "C.TUNED.n14.cap120.r4",
+   "config": "TUNED",
+   "plan_id": "dx-c-n14-cap120-r4",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 18
+  },
+  {
+   "tag": "C.BASE.n14.cap120.r4",
+   "config": "BASE",
+   "plan_id": "dx-c-n14-cap120-r4",
+   "obs": 1,
+   "eval_s": 120,
+   "seq": 19
+  }
+ ]
+}

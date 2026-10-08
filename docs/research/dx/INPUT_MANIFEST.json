@@ -1,0 +1,231 @@
+{
+ "head": "40d2c75f31760f4b9689863878368a75b434c4e8",
+ "items": [
+  {
+   "role": "integrated simulator (engine, exclusive prefill)",
+   "path": "src/continuum/sim/engine.py",
+   "sha256": "d0e311c020b7fd7c2e29466c4d2a2628781c1e4bcc4affebcf0d853e89266fe1",
+   "last_commit": "a953e03 2026-10-02T21:24:04+09:00"
+  },
+  {
+   "role": "simulator config / entry",
+   "path": "src/continuum/sim/__init__.py",
+   "sha256": "89aa2f1fa337aecbfb2fbf4733b01113823944f5bbbceabcb739f4def984ba60",
+   "last_commit": "0f6f302 2026-08-22T16:02:36+09:00"
+  },
+  {
+   "role": "descriptor v2 (ContextCost, SubstrateDescriptorV2)",
+   "path": "src/continuum/substrate/v2.py",
+   "sha256": "c77f4f833f19df4642a9b0d1e7edf9421d92599e0657112756f1f647edc7320b",
+   "last_commit": "a953e03 2026-10-02T21:24:04+09:00"
+  },
+  {
+   "role": "descriptor step-cost model",
+   "path": "src/continuum/substrate/descriptor.py",
+   "sha256": "4d942792a425f6655b6d2304ac348405369d5b57dd1c461c5eacbb0bdcd90bee",
+   "last_commit": "a953e03 2026-10-02T21:24:04+09:00"
+  },
+  {
+   "role": "NPU descriptor instance (TASK13 decode, TASK22 prefill)",
+   "path": "experiments/npu/substrate/rbln_ca25_vllm_rbln_0111.py",
+   "sha256": "881bd822398e763b04f2501f489cae2eb7786accc7e7b384210446361550b0ee",
+   "last_commit": "c58daaf 2026-09-30T22:55:12+09:00"
+  },
+  {
+   "role": "descriptor v2 builder (descriptor_v2)",
+   "path": "experiments/npu/stage3/mt_predict_v11.py",
+   "sha256": "e25be31b973a50736a12356c444357f5e2232a3f5eeed16f1db2f0dcb05fbaff",
+   "last_commit": "338d3de 2026-10-01T16:48:37+09:00"
+  },
+  {
+   "role": "interpolated-grid descriptor (descriptor_for)",
+   "path": "experiments/npu/analysis/config_search.py",
+   "sha256": "63237b4717025ab8f2c99cd201fff94c2e31c2d7d5f07a5e0fed49db8de66320",
+   "last_commit": "3e195aa 2026-09-22T18:28:54+09:00"
+  },
+  {
+   "role": "analytic model v1 (cycle rule)",
+   "path": "experiments/npu/stage3/mt_predict.py",
+   "sha256": "9bb90f39145e8af40702425120d6b514f47a886eb6d141a4ee13d6f1a91f67ff",
+   "last_commit": "0a94406 2026-09-29T18:26:26+09:00"
+  },
+  {
+   "role": "context-length time input (TASK97/100)",
+   "path": "experiments/npu/stage3/plans/main/CTXCOST_BLIND.json",
+   "sha256": "a6a3a614ecc6dd667bb8c58dbc7d19539a28d4c39d5854a67e75a59e283e3a5d",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "cost reconstruction A' (RECON)",
+   "path": "experiments/npu/stage3/mt_measure.py",
+   "sha256": "cb455a7b5137a5f59c5ec2e531c3ad3839b48e24f3ce41d82d9c9bc34b242961",
+   "last_commit": "0a94406 2026-09-29T18:26:26+09:00"
+  },
+  {
+   "role": "steady-state workload generator",
+   "path": "src/continuum/workload/multiturn.py",
+   "sha256": "5fe883145326e1b697702bf41a5ce8553a707c19eba1ccf18c0421fed4c458f7",
+   "last_commit": "4dfb20d 2026-09-29T18:19:20+09:00"
+  },
+  {
+   "role": "tool-wait mix (TraceLab quantiles)",
+   "path": "src/continuum/workload/tools.py",
+   "sha256": "a032e46fffdfbcea65784a5b852552d688cd2cd885a3f23445b3581de9248471",
+   "last_commit": "f61bafe 2026-08-22T22:22:15+09:00"
+  },
+  {
+   "role": "plan builder",
+   "path": "experiments/npu/stage3/make_plan.py",
+   "sha256": "8ee3b595a4307d761c4a30c6b83848eed229178439290fc32da21d2474bd6143",
+   "last_commit": "4dfb20d 2026-09-29T18:19:20+09:00"
+  },
+  {
+   "role": "multi-turn runner",
+   "path": "experiments/npu/stage3/multiturn_runner.py",
+   "sha256": "44d4fe3f12642c6f1528e9f3d4bbc7152cac87cff9baa668a8c6eaf1900625e8",
+   "last_commit": "4dfb20d 2026-09-29T18:19:20+09:00"
+  },
+  {
+   "role": "lifecycle script (reference)",
+   "path": "experiments/npu/stage3/run_multiturn.sh",
+   "sha256": "581345662c9d18439e90622533fa3a348d3b9ea5b3bee329101f763b32ed4d8f",
+   "last_commit": "6f0195a 2026-10-01T16:58:28+09:00"
+  },
+  {
+   "role": "valid-run decision (reference)",
+   "path": "experiments/npu/stage3/mt_check.py",
+   "sha256": "cf1297cdb05584b04f361ffb43368d43b54c3f21293d16bb590e134be0dc0ef4",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "latest preregistered evaluation script (TASK101/102)",
+   "path": "experiments/npu/stage3/ctxblind_analyze.py",
+   "sha256": "87b8b10a5b9656aaea09508d1deed4e18ae7b699a606bc0a0463339aaad4d77d",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "latest preregistered predictor (TASK101)",
+   "path": "experiments/npu/stage3/predict_ctxblind.py",
+   "sha256": "b1d1817a28c35f8f002086ec26f7f8699c0a5ae071ad27b8a5dfd4777a56e55a",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "latest preregistration",
+   "path": "docs/research/CTXBLIND_PREREG.md",
+   "sha256": "8fde7892b874949c264d1f2eda9a74182c4c921002f837a5d95581aa9f2911b4",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "reuse null of latest independent validation",
+   "path": "experiments/npu/stage3/plans/main/NULL_PREDICTORS_CTX.json",
+   "sha256": "6c5b96768716e2e8d5cd7b981ea09ae8aa450b690ecde319bff3cf0eeea325e6",
+   "last_commit": "cb1eec4 2026-10-02T18:02:44+09:00"
+  },
+  {
+   "role": "Appendix E equivalent: independent activity-time check (TASK110)",
+   "path": "experiments/npu/analysis/activity_time_ratio.py",
+   "sha256": "28e605e1f3032185a6af288b4c3021ec72bb9cca23a36e158d29bc0cb041b693",
+   "last_commit": "0ffe15c 2026-10-06T04:28:21+09:00"
+  },
+  {
+   "role": "Appendix E equivalent: report",
+   "path": "paper/ACTIVITY_TIME_RATIO.md",
+   "sha256": "dce3b4b18f834777267215408495a86ac3f29496c054ccb37b65498f50f9fd57",
+   "last_commit": "0ffe15c 2026-10-06T04:28:21+09:00"
+  },
+  {
+   "role": "Appendix G equivalent: boundary correction (TASK111)",
+   "path": "experiments/npu/analysis/boundary_sensitivity.py",
+   "sha256": "86a0c856fc6aa96e499975f553bda28158b55d7c6272fe9448aa936587752093",
+   "last_commit": "167c4dd 2026-10-06T16:09:41+09:00"
+  },
+  {
+   "role": "Appendix G equivalent: report",
+   "path": "paper/BOUNDARY_SENSITIVITY.md",
+   "sha256": "91a3e23f080dd9a0d42fb2a91839c73a929fb11e251c9eb1d6b39cd03fe86af7",
+   "last_commit": "167c4dd 2026-10-06T16:09:41+09:00"
+  },
+  {
+   "role": "bucket observation patch",
+   "path": "patches/vllm_rbln-0.11.1/decoder_bucket_observe.patch",
+   "sha256": "034b2492bb6623a5b63fad79f0c61c8dd690e946390feda4668e57db6fdd224d",
+   "last_commit": "1ca902c 2026-08-19T18:26:04+09:00"
+  },
+  {
+   "role": "steptime observation patch (this directive)",
+   "path": "patches/vllm_rbln-0.11.1/steptime_observe.patch",
+   "sha256": "ea456a305eac11271269e53c5b46d29bf40550f7e2175d151d1c5220e106494d",
+   "last_commit": "uncommitted"
+  }
+ ],
+ "artifacts": {
+  "BASE": {
+   "path": "models/Qwen3-4B-rbln-b8-s8192-d4-mb",
+   "rbln_config_sha256": "e855e9b26798b5842d7df9eb513cd53fc6ea61754d62c9ced408d465b89ab898",
+   "batch_size": 8,
+   "decoder_batch_sizes": [
+    1,
+    2,
+    4,
+    8
+   ],
+   "kvcache_num_blocks": 8,
+   "max_seq_len": 8192
+  },
+  "BATCHONLY": {
+   "path": "models/Qwen3-4B-rbln-b16-s8192-d4-batchonly",
+   "rbln_config_sha256": "0d76fc35effaffbcea1cdd045d635f644c88605717f6d00514ef07be7d98d929",
+   "batch_size": 16,
+   "decoder_batch_sizes": [
+    1,
+    2,
+    4,
+    8,
+    16
+   ],
+   "kvcache_num_blocks": 16,
+   "max_seq_len": 8192
+  },
+  "TUNED": {
+   "path": "models/Qwen3-4B-rbln-b16-s8192-d4-mb16",
+   "rbln_config_sha256": "e5fc6acd3e44ec29829efb80f251f46eea1bd366ed92f297ef33783eb4545be4",
+   "batch_size": 16,
+   "decoder_batch_sizes": [
+    1,
+    4,
+    6,
+    8,
+    10,
+    16
+   ],
+   "kvcache_num_blocks": 16,
+   "max_seq_len": 8192
+  },
+  "DP_N8": {
+   "path": "models/Qwen3-4B-rbln-b16-s8192-d4-dp8",
+   "rbln_config_sha256": "fc4f90174866aa512ef7ee3020b6449f68f1e7b58e6b9ae00cb55cd708d94f28",
+   "batch_size": 16,
+   "decoder_batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    16
+   ],
+   "kvcache_num_blocks": 16,
+   "max_seq_len": 8192
+  }
+ },
+ "site_packages": {
+  "vllm_rbln/v1/worker/optimum_model_runner.py": "bd93cc04528461d1e0fcb9f48d002422f57593bf7b717ee87c8d54147e009f73",
+  "vllm_rbln/model_executor/models/optimum/model_base.py": "70942d16d561d92a8aaf153ea5ce91109863b6d765862c9bcd7e71594301cc01",
+  "vllm_rbln/v1/worker/metrics.py": "2adc8efddc0570979e0f73cfe3d7b6ca56a874f82028639bf630ce9c978d8350",
+  "rebel/sync_runtime.py": "d2f4973bc6e90f0ea834225ee5cb12bc0d542b95f10a2ca10a825f7e469743ca"
+ },
+ "remote_refs": {
+  "origin/main": "40d2c75f31760f4b9689863878368a75b434c4e8 2026-10-06T22:05:30+09:00",
+  "origin/gpu-a6000": "954dd03a511c009e9bad1fa9534f4ec30123592a 2026-10-06T07:22:11+00:00"
+ },
+ "remote_note": "refs as last fetched; not refetched for this manifest"
+}

@@ -1,0 +1,16 @@
+{
+ "selected": "TUNED",
+ "pred_R": {
+  "BATCHONLY": 1.0,
+  "TUNED": 0.9696316446788505,
+  "DP_N8": 1.022478017722794
+ },
+ "objective": "min paired median cost ratio to BATCHONLY (PRED, 10 plans)",
+ "tie_rule": "|R - min R| <= 1e-6 counts as a tie; priority BATCHONLY > TUNED > DP_N8",
+ "tied": [
+  "TUNED"
+ ],
+ "low_discriminability_pred": false,
+ "pred_spread": 0.05450149377235558,
+ "primary_channel_rule": "DIRECT_EXEC if work A verdict WITHIN_1PCT and E lifecycles have complete attribution; otherwise RECON"
+}

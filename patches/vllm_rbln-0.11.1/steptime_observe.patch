@@ -1,0 +1,72 @@
+--- a/vllm_rbln/v1/worker/optimum_model_runner.py
++++ b/vllm_rbln/v1/worker/optimum_model_runner.py
+@@ -100,6 +100,9 @@
+     xgr = LazyLoader("xgr", globals(), "xgrammar")
+
+ logger = init_logger(__name__)
++# [continuum-npu observation patch: steptime] Off unless CONTINUUM_OBS_STEPTIME=1;
++# when off every added statement is a constant-false branch or a 0.0 assignment.
++_OBS_STEPTIME = __import__("os").environ.get("CONTINUUM_OBS_STEPTIME", "") == "1"
+
+
+ class ExecuteModelState(NamedTuple):
+@@ -314,6 +317,7 @@
+         scheduler_output: "SchedulerOutput",
+         intermediate_tensors: IntermediateTensors | None = None,
+     ) -> Union[ModelRunnerOutput, IntermediateTensors]:
++        _obs_t_exec = time.perf_counter() if _OBS_STEPTIME else 0.0  # [continuum-npu obs]
+         if self.execute_model_state is not None:
+             raise RuntimeError(
+                 "State error: sample_tokens() must be called "
+@@ -381,6 +385,7 @@
+                         model_input = self._build_forward_inputs(model_input)
+                         self.reuse_prefix_cached_kv(model_input, scheduler_output)
+                         hidden_states = self.model(model_input)
++                _obs_t_model1 = time.perf_counter() if _OBS_STEPTIME else 0.0  # [continuum-npu obs]
+                 if (
+                     envs.VLLM_RBLN_METRICS
+                     and self.model_performance_tracker is not None
+@@ -405,6 +410,13 @@
+                 hidden_states = hidden_states.squeeze(1)
+                 logits = self.model.compute_logits(hidden_states, None)
+
++        if _OBS_STEPTIME:  # [continuum-npu observation patch: steptime]
++            self._obs_steptime = (
++                _obs_t_exec, model_start_time, _obs_t_model1,
++                bool(model_input.is_prompt), num_scheduled_tokens,
++                tuple(scheduler_output.num_scheduled_tokens),
++                getattr(scheduler_output, "cached_length", None),
++            )
+         self.execute_model_state = ExecuteModelState(
+             scheduler_output=scheduler_output,
+             logits=logits,
+@@ -1531,6 +1543,7 @@
+                 capture_ctx = contextlib.nullcontext()
+             with capture_ctx as sampler_reports:
+                 sampler_output = self._sample(padded_logits, spec_decode_metadata=None)
++            _obs_t_samp1 = time.perf_counter() if _OBS_STEPTIME else 0.0  # [continuum-npu obs]
+             if envs.VLLM_RBLN_METRICS and self.sampler_performance_tracker is not None:
+                 collect_metrics(
+                     self.sampler_performance_tracker,
+@@ -1578,4 +1591,21 @@
+             )
+         # FIXME: enable async scheduling
++        # [continuum-npu observation patch: steptime] One line per executed
++        # step: host perf_counter stamps around the synchronous runtime calls
++        # (model forward, sampler) and the step boundaries, phase, sizes and
++        # request ids. Read-only; no control flow, scheduling, batch or KV change.
++        _obs = self.__dict__.pop("_obs_steptime", None)
++        if _obs is not None:
++            _obs_t_end = time.perf_counter()
++            _obs_same = _obs[5] == self.__dict__.get("_obs_prev_ids")
++            self._obs_prev_ids = _obs[5]
++            logger.debug(
++                "[STEPTIME] prefill=%d t_exec=%.6f t_model0=%.6f t_model1=%.6f "
++                "t_samp0=%.6f t_samp1=%.6f t_end=%.6f n_reqs=%d n_tokens=%d "
++                "cached=%s req_ids=%s",
++                int(_obs[3]), _obs[0], _obs[1], _obs[2], sampler_start_time,
++                _obs_t_samp1, _obs_t_end, len(_obs[5]), _obs[4], _obs[6],
++                "=" if _obs_same else ",".join(_obs[5]),
++            )
+         assert not self.use_async_scheduling
+         return output

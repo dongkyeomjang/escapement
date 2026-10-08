@@ -1,0 +1,325 @@
+{
+ "seed": 20268002,
+ "order": [
+  {
+   "tag": "A.TUNED.n18.r0.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r0",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 0
+  },
+  {
+   "tag": "A.TUNED.n18.r0.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r0",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 1
+  },
+  {
+   "tag": "A.BASE.n18.r0.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r0",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 2
+  },
+  {
+   "tag": "A.BASE.n18.r0.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r0",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 3
+  },
+  {
+   "tag": "A.BASE.n6.r0.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r0",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 4
+  },
+  {
+   "tag": "A.BASE.n6.r0.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r0",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 5
+  },
+  {
+   "tag": "A.TUNED.n6.r0.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r0",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 6
+  },
+  {
+   "tag": "A.TUNED.n6.r0.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r0",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 7
+  },
+  {
+   "tag": "A.BASE.n18.r1.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r1",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 8
+  },
+  {
+   "tag": "A.BASE.n18.r1.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r1",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 9
+  },
+  {
+   "tag": "A.TUNED.n6.r1.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r1",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 10
+  },
+  {
+   "tag": "A.TUNED.n6.r1.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r1",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 11
+  },
+  {
+   "tag": "A.BASE.n6.r1.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r1",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 12
+  },
+  {
+   "tag": "A.BASE.n6.r1.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r1",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 13
+  },
+  {
+   "tag": "A.TUNED.n18.r1.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r1",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 14
+  },
+  {
+   "tag": "A.TUNED.n18.r1.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r1",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 15
+  },
+  {
+   "tag": "A.TUNED.n18.r2.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r2",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 16
+  },
+  {
+   "tag": "A.TUNED.n18.r2.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r2",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 17
+  },
+  {
+   "tag": "A.BASE.n6.r2.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r2",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 18
+  },
+  {
+   "tag": "A.BASE.n6.r2.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r2",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 19
+  },
+  {
+   "tag": "A.BASE.n18.r2.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r2",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 20
+  },
+  {
+   "tag": "A.BASE.n18.r2.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r2",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 21
+  },
+  {
+   "tag": "A.TUNED.n6.r2.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r2",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 22
+  },
+  {
+   "tag": "A.TUNED.n6.r2.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r2",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 23
+  },
+  {
+   "tag": "A.BASE.n18.r3.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r3",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 24
+  },
+  {
+   "tag": "A.BASE.n18.r3.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r3",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 25
+  },
+  {
+   "tag": "A.TUNED.n6.r3.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r3",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 26
+  },
+  {
+   "tag": "A.TUNED.n6.r3.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r3",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 27
+  },
+  {
+   "tag": "A.TUNED.n18.r3.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r3",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 28
+  },
+  {
+   "tag": "A.TUNED.n18.r3.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r3",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 29
+  },
+  {
+   "tag": "A.BASE.n6.r3.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r3",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 30
+  },
+  {
+   "tag": "A.BASE.n6.r3.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r3",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 31
+  },
+  {
+   "tag": "A.BASE.n18.r4.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r4",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 32
+  },
+  {
+   "tag": "A.BASE.n18.r4.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n18-r4",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 33
+  },
+  {
+   "tag": "A.TUNED.n6.r4.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r4",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 34
+  },
+  {
+   "tag": "A.TUNED.n6.r4.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n6-r4",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 35
+  },
+  {
+   "tag": "A.BASE.n6.r4.on",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r4",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 36
+  },
+  {
+   "tag": "A.BASE.n6.r4.off",
+   "config": "BASE",
+   "plan_id": "dx-dev-n6-r4",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 37
+  },
+  {
+   "tag": "A.TUNED.n18.r4.off",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r4",
+   "obs": 0,
+   "eval_s": 60,
+   "seq": 38
+  },
+  {
+   "tag": "A.TUNED.n18.r4.on",
+   "config": "TUNED",
+   "plan_id": "dx-dev-n18-r4",
+   "obs": 1,
+   "eval_s": 60,
+   "seq": 39
+  }
+ ]
+}
