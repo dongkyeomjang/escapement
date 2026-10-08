@@ -61,3 +61,19 @@ sudo bash patches/vllm_rbln-0.11.1/apply_steptime.sh revert
 ## 7. Patch 적용 여부를 run metadata에 남기는 방법
 
 `bash patches/vllm_rbln-0.11.1/apply_steptime.sh status > <RUN>/patch-steptime.txt`와, lifecycle별 `CONTINUUM_OBS_STEPTIME` 값을 `lifecycle.txt`에 기록한다.
+
+## v2 — 경량화 (작업 A `PERTURBATION` 뒤, DX_PREREG §11)
+
+| 항목 | 값 |
+|---|---|
+| patch | `steptime_v2_observe.patch`, 적용 `apply_steptime_v2.sh` |
+| 적용 전 SHA256 | `365ba136eb79d0ffb226e65670118ed825156b39ebcff96d6bada4989f3e0dc6`(pristine — v1을 먼저 `revert`) |
+| 적용 후 SHA256 | `a95faf27d74d6d07b26c162c07d5440b72ee515e8535f248986d455275a7b7d1` |
+
+v1과 같은 시각(`t_exec`, `t_model0/1`, `t_samp0/1`, `t_end`)을 재고 같은 flag(`CONTINUUM_OBS_STEPTIME=1`)로 켠다. 달라진 점:
+
+- step마다 `logger.debug`를 부르지 않고 module 수준 list에 문자열 record 1개를 추가하며, 직전 flush 뒤 1 s 이상 지난 step에서만 `[STEPTIME2] rec;rec;…` 1줄로 쓴다(약 70 step당 1회). process 종료 시 `atexit`로 남은 record를 쓴다.
+- decode step에는 요청 id·`cached`를 만들지 않는다(tuple 생성 없음, 요청 수만 `len()`). prefill만 `id|cached_length`를 붙인다.
+- record: `prefill,t_exec,t_model0,t_model1,t_samp0,t_samp1,t_end,n_reqs,n_tokens,ext`.
+- 로그 순서로 `[BUCKET]`과 짝짓던 v1과 달리, k번째 decode record를 k번째 `[BUCKET]` 줄과 짝짓는다(둘 다 decode step마다 정확히 1번). 짝마다 `n_reqs = request_nums`를 검사하고, 개수가 다르거나 범위 안 bucket에 record가 없으면 귀속 불완전이다.
+- flush가 일어나는 step은 `t_end` 뒤에 쓰므로 그 비용은 step 사이 시간에 들어간다.
