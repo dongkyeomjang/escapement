@@ -1,0 +1,162 @@
+[
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r4-short.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 4
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_KV.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r4-long.json",
+  "config": "GPU_LONG_KV",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 4
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r4-long.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 4
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_KV.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r4-short.json",
+  "config": "GPU_LONG_KV",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 4
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_KV.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r3-long.json",
+  "config": "GPU_LONG_KV",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 3
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r3-long.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 3
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r3-short.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 3
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_KV.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r3-short.json",
+  "config": "GPU_LONG_KV",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 3
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_KV.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r1-long.json",
+  "config": "GPU_LONG_KV",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 1
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_KV.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r1-short.json",
+  "config": "GPU_LONG_KV",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 1
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r1-long.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 1
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r1-short.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 1
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_KV.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r2-short.json",
+  "config": "GPU_LONG_KV",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 2
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r2-long.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 2
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r2-short.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 2
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_KV.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r2-long.json",
+  "config": "GPU_LONG_KV",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 2
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r0-long.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 0
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_KV.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r0-short.json",
+  "config": "GPU_LONG_KV",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 0
+ },
+ {
+  "tag": "n24.SHORT_TOOL.GPU_LONG_BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r0-short.json",
+  "config": "GPU_LONG_BASE",
+  "tool": "SHORT_TOOL",
+  "n": 24,
+  "rep": 0
+ },
+ {
+  "tag": "n24.LONG_TOOL.GPU_LONG_KV.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_c/g10c-n24-r0-long.json",
+  "config": "GPU_LONG_KV",
+  "tool": "LONG_TOOL",
+  "n": 24,
+  "rep": 0
+ }
+]

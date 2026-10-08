@@ -1,0 +1,26 @@
+{
+ "GPU_LONG_BASE": {
+  "num_gpu_blocks": 3617,
+  "max_num_seqs": 8,
+  "capture_sizes": [
+   1,
+   2,
+   4,
+   8,
+   16
+  ],
+  "budget": 2048
+ },
+ "GPU_LONG_KV": {
+  "num_gpu_blocks": 4379,
+  "max_num_seqs": 8,
+  "capture_sizes": [
+   1,
+   2,
+   4,
+   8,
+   16
+  ],
+  "budget": 2048
+ }
+}
