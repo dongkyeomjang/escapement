@@ -1,0 +1,282 @@
+[
+ {
+  "tag": "sat.GPU_BASE.p1.exec0",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 1,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_BASE.p1.exec1",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 1,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_BASE.p2.exec0",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 2,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p2.exec1",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 2,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_BASE.p3.exec1",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 3,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_BASE.p3.exec0",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 3,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_BASE.p2.exec1",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 2,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_BASE.p2.exec0",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 2,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p1.exec1",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 1,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_KV.p1.exec0",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 1,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p2.exec0",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 2,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p2.exec1",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 2,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_BASE.p4.exec0",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 4,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_BASE.p4.exec1",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 4,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p3.exec1",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 3,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p3.exec0",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 3,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p4.exec0",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 4,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p4.exec1",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 4,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p1.exec1",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 1,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p1.exec0",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 1,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p0.exec0",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 0,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p0.exec1",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 0,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p4.exec0",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 4,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_KV.p4.exec1",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 4,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_KV.p4.exec1",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 4,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_KV.p4.exec0",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 4,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_BASE.p0.exec1",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 0,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_BASE.p0.exec0",
+  "load": "sat",
+  "config": "GPU_BASE",
+  "pair": 0,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p3.exec0",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 3,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p3.exec1",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 3,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_BASE.p3.exec1",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 3,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_BASE.p3.exec0",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 3,
+  "exec": 0
+ },
+ {
+  "tag": "sat.GPU_KV.p0.exec1",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 0,
+  "exec": 1
+ },
+ {
+  "tag": "sat.GPU_KV.p0.exec0",
+  "load": "sat",
+  "config": "GPU_KV",
+  "pair": 0,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_BASE.p1.exec1",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 1,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_BASE.p1.exec0",
+  "load": "low",
+  "config": "GPU_BASE",
+  "pair": 1,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_KV.p2.exec1",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 2,
+  "exec": 1
+ },
+ {
+  "tag": "low.GPU_KV.p2.exec0",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 2,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_KV.p0.exec0",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 0,
+  "exec": 0
+ },
+ {
+  "tag": "low.GPU_KV.p0.exec1",
+  "load": "low",
+  "config": "GPU_KV",
+  "pair": 0,
+  "exec": 1
+ }
+]

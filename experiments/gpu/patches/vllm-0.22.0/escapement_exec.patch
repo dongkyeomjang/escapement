@@ -1,0 +1,78 @@
+--- a/vllm/v1/worker/gpu/model_runner.py
++++ b/vllm/v1/worker/gpu/model_runner.py
+@@ -107,6 +107,22 @@
+ logger = init_logger(__name__)
+ # ESCAPEMENT observation-only patch (GTASK03): log lines only, gated by env.
+ _ESC_OBS = __import__("os").environ.get("ESCAPEMENT_OBS") == "1"
++# ESCAPEMENT exec-timing layer (GTASK23): CUDA events on the issuing stream at
++# step start / before forward / after sampling+postprocess. Read back only when
++# the end event has completed (no synchronisation); one [GEXEC] line per step.
++_ESC_EXEC = _ESC_OBS and __import__("os").environ.get("ESCAPEMENT_EXEC") == "1"
++_esc_pending: list = []
++_esc_state: dict = {"seq": 0, "ref": None}
++
++
++def _esc_exec_drain() -> None:
++    while _esc_pending and _esc_pending[0][3].query():
++        t, e0, e1, e2, seq = _esc_pending.pop(0)
++        logger.info(
++            "[GEXEC] seq=%d t=%.6f s=%.4f prep=%.4f run=%.4f",
++            seq, t, _esc_state["ref"].elapsed_time(e0), e0.elapsed_time(e1),
++            e1.elapsed_time(e2),
++        )
+ 
+ 
+ class GPUModelRunner(LoRAModelRunnerMixin):
+@@ -1057,13 +1073,26 @@
+             return empty_output
+ 
+         if _ESC_OBS and not dummy_run:
++            _esc_t = time.perf_counter()
+             logger.info(
+                 "[GSTEP] t=%.6f wall=%.6f reqs=%d toks=%d maxq=%d uniform=%s "
+                 "padded=%d mode=%s",
+-                time.perf_counter(), time.time(), num_reqs, num_toks,
++                _esc_t, time.time(), num_reqs, num_toks,
+                 max_query_len, uniform_tok_count, batch_desc.num_tokens,
+                 batch_desc.cg_mode.name,
+             )
++        if _ESC_EXEC:
++            self._esc_cur = None
++        if _ESC_EXEC and not dummy_run:
++            _esc_exec_drain()
++            _esc_s = torch.cuda.current_stream()
++            if _esc_state["ref"] is None:
++                _esc_state["ref"] = torch.cuda.Event(enable_timing=True)
++                _esc_state["ref"].record(_esc_s)
++            _esc_e0 = torch.cuda.Event(enable_timing=True)
++            _esc_e0.record(_esc_s)
++            self._esc_cur = [_esc_t, _esc_e0, None, None, _esc_state["seq"]]
++            _esc_state["seq"] += 1
+ 
+         if not dummy_run:
+             # Common case.
+@@ -1175,6 +1204,10 @@
+             )
+             del intermediate_tensors
+ 
++        if _ESC_EXEC and getattr(self, "_esc_cur", None) is not None:
++            self._esc_cur[2] = torch.cuda.Event(enable_timing=True)
++            self._esc_cur[2].record(torch.cuda.current_stream())
++
+         # Run model.
+         if batch_desc.cg_mode == CUDAGraphMode.FULL:
+             # Use explicit cudagraph replay for FULL mode.
+@@ -1360,6 +1393,13 @@
+         kv_connector_output = self.kv_connector.post_forward(finished_req_ids)
+         model_runner_output.kv_connector_output = kv_connector_output
+ 
++        if _ESC_EXEC and getattr(self, "_esc_cur", None) is not None:
++            _esc_c, self._esc_cur = self._esc_cur, None
++            _esc_c[3] = torch.cuda.Event(enable_timing=True)
++            _esc_c[3].record(torch.cuda.current_stream())
++            if _esc_c[2] is not None:
++                _esc_pending.append(_esc_c)
++
+         if self.use_async_scheduling:
+             return async_output
+         return async_output.get_output()

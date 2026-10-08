@@ -18,6 +18,8 @@ SELECTION = Path(__file__).resolve().parent / "selection" / "selection.json"
 # G-07 C blind cells: POOL+GRID grids for N outside the GTASK08 selection,
 # chosen by the same rule 6 on the blind plans (predict_blind.py)
 BLIND_GRIDS = Path(__file__).resolve().parent / "selection" / "blind_grids.json"
+# G-10 C: GPU_LONG_BASE / GPU_LONG_KV (capacity rule in experiments/gpu/g10/predict_c.py)
+G10_C = Path(__file__).resolve().parents[1] / "g10" / "plans_c" / "CONFIGS.json"
 
 
 def config_by_name(name: str, n: int) -> GpuConfig:
@@ -34,4 +36,7 @@ def config_by_name(name: str, n: int) -> GpuConfig:
         if g is None:
             raise SystemExit(f"no POOL+GRID grid selected for N={n}")
         return GpuConfig("POOL+GRID", sel["pool_pool"], sel["max_num_seqs"], tuple(g["grid"]))
+    if name in ("GPU_LONG_BASE", "GPU_LONG_KV") and G10_C.exists():
+        c = json.loads(G10_C.read_text())[name]
+        return GpuConfig(name, c["num_gpu_blocks"], c["max_num_seqs"], tuple(c["capture_sizes"]))
     raise SystemExit(f"unknown configuration {name!r}")

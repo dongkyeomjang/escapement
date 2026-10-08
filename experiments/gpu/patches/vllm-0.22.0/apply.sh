@@ -23,6 +23,9 @@ T1_PATCHED="6054015f6170e60e6f0d42cf06f1fc86d87dd9bcacaa797f15dfb523580723a1"
 T2="vllm/v1/worker/gpu/model_runner.py"
 T2_PRISTINE="c5332aad7701ef66ec75747adb62b34fd542835a834808a29b7dcd6c9f688a16"
 T2_PATCHED="dc6221e92730b11538786374ce6dd8af5f75574f8d7abfcd88b07ee9ddbdcf83"
+# G-10 A (GTASK23): observation patch + exec-timing layer (apply_exec.sh) counts
+# as patched; apply/revert of this script refuse it (revert the layer first).
+T2_EXEC="60bcc2a50aaeef0d0c96956cef5827fce501caa9ad7ee1b6f5ccff1620e3646e"
 
 die() { echo "patch guard: $*" >&2; exit 1; }
 sha() { sha256sum "$SP/$1" | cut -d' ' -f1; }
@@ -38,6 +41,7 @@ state() {
     local a b
     a="$(one_state "$T1" "$T1_PRISTINE" "$T1_PATCHED")"
     b="$(one_state "$T2" "$T2_PRISTINE" "$T2_PATCHED")"
+    [[ "$b" == "drift:$T2_EXEC" && "${STATE_STRICT:-0}" != 1 ]] && b=patched
     if [[ "$a" == "$b" ]]; then echo "$a"; else echo "mixed:$T1=$a,$T2=$b"; fi
 }
 
@@ -57,10 +61,11 @@ case "${1:-}" in
         echo "$T2 $(sha "$T2")"
         echo "patch_file_sha256 $(sha256sum "$PATCH_FILE" | cut -d' ' -f1)"
         echo "state: $(state)"
+        if [[ "$(sha "$T2")" == "$T2_EXEC" ]]; then echo "exec_layer: present"; else echo "exec_layer: absent"; fi
         ;;
     apply)
         check_version
-        s="$(state)"
+        s="$(STATE_STRICT=1 state)"
         [[ "$s" != "patched" ]] || die "already patched; nothing to do"
         [[ "$s" == "pristine" ]] || die "refusing to patch, unexpected content ($s)"
         patch --forward --strip=1 --directory="$SP" --input="$PATCH_FILE" >/dev/null \
@@ -72,7 +77,7 @@ case "${1:-}" in
         ;;
     revert)
         check_version
-        s="$(state)"
+        s="$(STATE_STRICT=1 state)"
         [[ "$s" != "pristine" ]] || die "already pristine; nothing to do"
         [[ "$s" == "patched" ]] || die "refusing to revert, unexpected content ($s)"
         patch --reverse --strip=1 --directory="$SP" --input="$PATCH_FILE" >/dev/null \

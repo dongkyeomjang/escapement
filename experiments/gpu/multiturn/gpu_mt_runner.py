@@ -110,12 +110,17 @@ def main() -> int:
     ap.add_argument("--stream", action="store_true")
     ap.add_argument("--eval-s", type=float, default=120.0)
     ap.add_argument("--max-run-s", type=float, default=900.0)
+    ap.add_argument("--exec-timing", action="store_true",
+                    help="G-10: ESCAPEMENT_EXEC=1 (exec-timing layer must be applied)")
     a = ap.parse_args()
     for p in (a.plan, a.out_dir):
         if not p.is_absolute():
             raise SystemExit(f"path must be absolute (KNOWN_PITFALLS 1): {p}")
-    if "state: patched" not in patch_state():
+    ps = patch_state()
+    if "state: patched" not in ps:
         raise SystemExit("observation patch must be applied")
+    if a.exec_timing and "exec_layer: present" not in ps:
+        raise SystemExit("--exec-timing needs the exec-timing layer (apply_exec.sh)")
     out = a.out_dir
     out.mkdir(parents=True, exist_ok=True)
     plan_bytes = a.plan.read_bytes()
@@ -134,7 +139,7 @@ def main() -> int:
             "argv": sys.argv, "config": cfg.__dict__ | {"capture_sizes": list(cfg.capture_sizes)},
             "plan_file_sha256": hashlib.sha256(plan_bytes).hexdigest(),
             "plan_content_sha256": plan.sha256(), "plan_id": plan.plan_id,
-            "stream": a.stream, "expected_card_uuid": CARD_UUID,
+            "stream": a.stream, "exec_timing": a.exec_timing, "expected_card_uuid": CARD_UUID,
             "started_at_utc": datetime.now(timezone.utc).isoformat()}
     (out / "provenance.json").write_text(json.dumps(prov, indent=2) + "\n")
 
@@ -146,7 +151,8 @@ def main() -> int:
     state = {"warmup_end": None, "stop_at": None, "stopped_by": None, "exhausted": []}
     stop_evt = threading.Event()
 
-    with Lifecycle(out, args, obs=True, kv_events=True) as lc:
+    xenv = {"ESCAPEMENT_EXEC": "1"} if a.exec_timing else {}
+    with Lifecycle(out, args, obs=True, kv_events=True, extra_env=xenv) as lc:
         base = lc.base
         m_pre = scrape(base)
         origin = time.perf_counter()
