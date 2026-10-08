@@ -1,0 +1,166 @@
+{
+ "seed": 20268003,
+ "order": [
+  {
+   "tag": "B.BASE.n18.r0",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r0",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 0
+  },
+  {
+   "tag": "B.TUNED.n18.r0",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r0",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 1
+  },
+  {
+   "tag": "B.TUNED.n18.r1",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r1",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 2
+  },
+  {
+   "tag": "B.BASE.n18.r1",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r1",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 3
+  },
+  {
+   "tag": "B.TUNED.n18.r2",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r2",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 4
+  },
+  {
+   "tag": "B.BASE.n18.r2",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r2",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 5
+  },
+  {
+   "tag": "B.TUNED.n18.r3",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r3",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 6
+  },
+  {
+   "tag": "B.BASE.n18.r3",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r3",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 7
+  },
+  {
+   "tag": "B.BASE.n18.r4",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r4",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 8
+  },
+  {
+   "tag": "B.TUNED.n18.r4",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r4",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 9
+  },
+  {
+   "tag": "B.BASE.n18.r5",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r5",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 10
+  },
+  {
+   "tag": "B.TUNED.n18.r5",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r5",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 11
+  },
+  {
+   "tag": "B.TUNED.n18.r6",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r6",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 12
+  },
+  {
+   "tag": "B.BASE.n18.r6",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r6",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 13
+  },
+  {
+   "tag": "B.BASE.n18.r7",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r7",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 14
+  },
+  {
+   "tag": "B.TUNED.n18.r7",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r7",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 15
+  },
+  {
+   "tag": "B.TUNED.n18.r8",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r8",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 16
+  },
+  {
+   "tag": "B.BASE.n18.r8",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r8",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 17
+  },
+  {
+   "tag": "B.BASE.n18.r9",
+   "config": "BASE",
+   "plan_id": "dx-b-n18-r9",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 18
+  },
+  {
+   "tag": "B.TUNED.n18.r9",
+   "config": "TUNED",
+   "plan_id": "dx-b-n18-r9",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 19
+  }
+ ],
+ "amendment": "DX_PREREG \u00a712: used only if the repeated work A check (v2) is PERTURBATION; order and plans unchanged, obs 0"
+}

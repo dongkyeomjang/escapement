@@ -39,6 +39,7 @@ if [ -n "$EVAL_S" ]; then EXTRA="$EXTRA --eval-s $EVAL_S"; fi
   echo "started=$(date -Is)"
   bash patches/vllm_rbln-0.11.1/apply.sh status 2>&1 | sed 's/^/patch: /'
   bash patches/vllm_rbln-0.11.1/apply_steptime.sh status 2>&1 | sed 's/^/patch-steptime: /'
+  bash patches/vllm_rbln-0.11.1/apply_steptime_v2.sh status 2>&1 | sed 's/^/patch-steptime-v2: /'
   echo "obs_steptime=$OBS"
 } > "$RUN/probe/$TAG/lifecycle.txt"
 

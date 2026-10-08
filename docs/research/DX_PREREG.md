@@ -180,3 +180,10 @@ replicate 단위만 쓴다(요청을 표본으로 bootstrap하지 않음). 비�
 - §4에 따라: (i) 계측을 경량화한 patch v2(step마다 로그 쓰기 대신 메모리 buffer, 1 s마다 1줄로 flush, decode는 요청 id 생략)를 사용자 승인 후 적용해 **같은 `ORDER_DXA` 설계로 점검을 반복**한다(새 run 디렉터리). (ii) 해소되기 전까지 B의 직접 판정은 보류하고, **C를 먼저** 잰다.
 - **C는 계측 끔(OBS=0)으로 잰다**(`ORDER_DXC_OBSOFF.json` — 순서·plan·판정 기준은 `ORDER_DXC.json`과 같고 `obs`만 0). §6 판정 3이 DIRECT_EXEC 열을 A `WITHIN_1PCT`일 때만 보고하므로, 계측을 켤 이유가 없고 끄면 C의 RECON 판정에서 계측 영향 의심이 사라진다. 이전 모든 run과 같은 상태(steptime patch 적용, flag 꺼짐)다.
 - `run_dx_chain.sh`의 C 순서표를 `ORDER_DXC_OBSOFF.json`으로 바꾼다. B·B 확장·E는 반복 점검 결과에 따라 개정 2로 정한다.
+
+## 12. 개정 2 (2026-10-09, C 측정 뒤·A 반복 점검과 B 측정 전)
+
+- **A 반복 점검**: patch v2(`STEPTIME.md` v2 절) 적용 뒤 같은 `ORDER_DXA.json`(plan·순서·60 s·신호·1 % 기준 그대로)을 새 디렉터리 `results/npu/stage3/20261009-dx-a2`에서 다시 잰다. 판정은 `dx_analyze.py a`.
+- **분기(측정 전 고정)**: 반복 점검이 `WITHIN_1PCT`면 `run_dx_chain2.sh <base> on`(B·B 확장·E 계측 켬, E 주 채널 DIRECT_EXEC). `PERTURBATION`이면 B의 직접 판정은 `BLOCKED: instrumentation perturbation`, `run_dx_chain2.sh <base> off`(`*_OBSOFF` 순서표 — 순서·plan 같고 obs 0)로 B·E를 계측 끔으로 재며 B는 PRED 대 RECON만 보고(판정 1·2·3·4는 DIRECT_EXEC 기준이라 판정하지 않음), E 주 채널 RECON. 확장 시간 규칙(§3.3)은 그대로.
+- **v2 집계**: k번째 decode record ↔ k번째 `[BUCKET]` 짝(`n_reqs` 검사), decode record 수 > bucket 수면 귀속 불완전. 변환 시험: smoke v1 로그를 v2 형식으로 바꿔 넣으면 DIRECT·경계 보정·step 사이 간격이 v1 집계와 같다. `dx_check`는 v1·v2 어느 쪽이든 `patched` 기록을 요구한다.
+- **기계적 수정(판정 기준 무변경)**: `dx_steps.lifecycle(obs=False)`가 `recon_per_turn_s`를 반환하지 않아 C 집계가 처음 실행에서 `KeyError`로 멈췄다 — 값(`mt_measure` A′)을 그대로 넘기도록 고친 뒤 C를 집계했다. step 사이 간격 진단은 로그 위치가 아니라 시각으로 고른다(v1 smoke에서 합 1.034 → 1.016 s, 중앙값 동일 0.492 ms; 판정 대상 아님).

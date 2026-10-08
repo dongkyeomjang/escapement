@@ -60,6 +60,24 @@ def parse(path: Path) -> list[tuple]:
     prev_ids: tuple = ()
     with path.open(errors="replace") as fh:
         for line in fh:
+            if "[STEPTIME2]" in line:   # v2: one line holds many step records
+                body = line.split("[STEPTIME2] ", 1)[1].strip()
+                for rec in body.split(";"):
+                    f = rec.split(",", 9)
+                    try:
+                        t = [float(x) for x in f[1:7]]
+                        ext = f[9]
+                        ids, cached = (), ""
+                        if ext:
+                            a, cached = ext.rsplit("|", 1)
+                            ids = tuple(a.split(","))
+                        ev.append(("step2", {"prefill": f[0] == "1", "t_exec": t[0], "t_model0": t[1],
+                                             "t_model1": t[2], "t_samp0": t[3], "t_samp1": t[4], "t_end": t[5],
+                                             "n_reqs": int(f[7]), "n_tokens": int(f[8]), "cached": cached,
+                                             "ids": ids}))
+                    except (IndexError, ValueError):
+                        ev.append(("badstep",))
+                continue
             if "[STEPTIME]" in line:
                 m = _STEP.search(line)
                 if not m:
@@ -154,9 +172,23 @@ def lifecycle(run: Path, tag: str, cfg: str, obs: bool = True) -> dict:
                 orphan_bucket += 1
                 pending = None
 
+    # v2 records are buffered: the k-th decode record is the k-th [BUCKET] step
+    v2 = any(e[0] == "step2" for e in ev)
+    count_mismatch = 0
+    if v2:
+        pair, unpaired_dec, orphan_bucket = {}, 0, 0
+        all_b = [i for i, e in enumerate(ev) if e[0] == "bucket"]
+        dec2 = [i for i, e in enumerate(ev) if e[0] == "step2" and not e[1]["prefill"]]
+        n_steps = sum(1 for e in ev if e[0] == "step2")
+        count_mismatch = len(dec2) - len(all_b)
+        for b, j in zip(all_b, dec2):
+            pair[b] = j
+        ev = [("step", e[1]) if e[0] == "step2" else e for e in ev]
+
     buckets = [i for i in range(lo, hi + 1) if ev[i][0] == "bucket"]
     out = {"tag": tag, "config": cfg, "recon": recon, "w0": w0, "w1": w1,
-           "eval_requests": len(ev_rows), "decode_steps_counted": len(buckets)}
+           "eval_requests": len(ev_rows), "decode_steps_counted": len(buckets),
+           "recon_per_turn_s": recon["a_prime_per_turn_s"]}
     if not obs:
         return out
 
@@ -196,12 +228,14 @@ def lifecycle(run: Path, tag: str, cfg: str, obs: bool = True) -> dict:
     n = len(ev_rows)
 
     # inter-step host time inside the counted range (diagnostic)
-    st_idx = [i for i in range(lo, len(ev)) if ev[i][0] == "step"]
+    # (by time, so it holds for v1 interleaved and v2 buffered records alike)
+    cnt = [ev[pair[i]][1] for i in buckets if i in pair]
     gaps = []
-    for a, b in zip(st_idx, st_idx[1:]):
-        if b > hi + 1 and a > hi:
-            break
-        gaps.append(ev[b][1]["t_exec"] - ev[a][1]["t_end"])
+    if cnt:
+        t_lo, t_hi = min(s["t_exec"] for s in cnt), max(s["t_exec"] for s in cnt)
+        steps_t = sorted((e[1] for e in ev if e[0] == "step" and t_lo <= e[1]["t_exec"] <= t_hi),
+                         key=lambda s: s["t_exec"])
+        gaps = [b["t_exec"] - a["t_end"] for a, b in zip(steps_t, steps_t[1:])]
 
     # boundary correction, same rule for both channels
     members = defaultdict(list)
@@ -248,8 +282,11 @@ def lifecycle(run: Path, tag: str, cfg: str, obs: bool = True) -> dict:
                         "decode_size_mismatch": size_mismatch,
                         "unpaired_decode_steptime_total": unpaired_dec,
                         "orphan_bucket_total": orphan_bucket,
+                        "format": "v2" if v2 else "v1",
+                        "v2_decode_record_minus_bucket_count": count_mismatch,
                         "missing_share": (len(missing_dec) + len(missing_pre)) / (len(buckets) + n)},
-        "complete": not missing_dec and not missing_pre and n_bad == 0 and size_mismatch == 0,
+        "complete": (not missing_dec and not missing_pre and n_bad == 0 and size_mismatch == 0
+                     and count_mismatch <= 0),
         "direct": {"decode_s": comp["total"], "prefill_s": pcomp["total"],
                    "per_turn_s": dt / n, "decode_components_s": comp, "prefill_components_s": pcomp,
                    "model_plus_sampler_per_turn_s": (comp["model"] + comp["sampler"] + pcomp["model"]

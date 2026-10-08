@@ -7,7 +7,7 @@ VALID <=> the mt_check conditions (runner exit 0, stopped by the window, no
 exhausted slot, online window = offline recomputation, nothing sent after the
 evaluation end, no HTTP error, plan file and content SHA256 equal to
 ``plans/dx/INDEX_DX.json``, every evaluation request joined to a server id with
-``prompt_tokens``), the steptime patch state ``patched`` recorded in the
+``prompt_tokens``), the steptime patch (v1 or v2) state ``patched`` recorded in the
 lifecycle, and, when the lifecycle ran with OBS=1, a complete DIRECT_EXEC
 attribution (every counted ``[BUCKET]`` step has its ``[STEPTIME]`` line with
 the same request count, every evaluation request has a prefill step, no
@@ -46,8 +46,11 @@ def check(run: Path, tag: str, config: str, plan_id: str) -> dict:
         reasons.append(f"runner_exit={lc.get('runner_exit')}")
     if not res["plan_file_sha_ok"]:
         reasons.append("plan file sha")
-    if "patch-steptime: state:   patched" not in raw:
-        reasons.append("steptime patch not recorded as patched")
+    v1 = "patch-steptime: state:   patched" in raw
+    v2 = "patch-steptime-v2: state:   patched" in raw
+    res["steptime_patch"] = "v1" if v1 else "v2" if v2 else None
+    if not (v1 or v2):
+        reasons.append("steptime patch (v1 or v2) not recorded as patched")
     try:
         x = X.lifecycle(run, tag, config, obs=obs)
     except Exception as e:  # missing or unreadable outputs

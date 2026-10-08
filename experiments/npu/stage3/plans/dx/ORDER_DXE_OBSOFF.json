@@ -1,0 +1,246 @@
+{
+ "seed": 20268006,
+ "order": [
+  {
+   "tag": "E.TUNED.n19.r0",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r0",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 0
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r0",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r0",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 1
+  },
+  {
+   "tag": "E.DP_N8.n19.r0",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r0",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 2
+  },
+  {
+   "tag": "E.DP_N8.n19.r1",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r1",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 3
+  },
+  {
+   "tag": "E.TUNED.n19.r1",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r1",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 4
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r1",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r1",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 5
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r2",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r2",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 6
+  },
+  {
+   "tag": "E.DP_N8.n19.r2",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r2",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 7
+  },
+  {
+   "tag": "E.TUNED.n19.r2",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r2",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 8
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r3",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r3",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 9
+  },
+  {
+   "tag": "E.DP_N8.n19.r3",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r3",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 10
+  },
+  {
+   "tag": "E.TUNED.n19.r3",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r3",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 11
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r4",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r4",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 12
+  },
+  {
+   "tag": "E.TUNED.n19.r4",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r4",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 13
+  },
+  {
+   "tag": "E.DP_N8.n19.r4",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r4",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 14
+  },
+  {
+   "tag": "E.TUNED.n19.r5",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r5",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 15
+  },
+  {
+   "tag": "E.DP_N8.n19.r5",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r5",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 16
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r5",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r5",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 17
+  },
+  {
+   "tag": "E.TUNED.n19.r6",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r6",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 18
+  },
+  {
+   "tag": "E.DP_N8.n19.r6",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r6",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 19
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r6",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r6",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 20
+  },
+  {
+   "tag": "E.DP_N8.n19.r7",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r7",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 21
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r7",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r7",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 22
+  },
+  {
+   "tag": "E.TUNED.n19.r7",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r7",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 23
+  },
+  {
+   "tag": "E.TUNED.n19.r8",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r8",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 24
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r8",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r8",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 25
+  },
+  {
+   "tag": "E.DP_N8.n19.r8",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r8",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 26
+  },
+  {
+   "tag": "E.BATCHONLY.n19.r9",
+   "config": "BATCHONLY",
+   "plan_id": "dx-e-n19-r9",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 27
+  },
+  {
+   "tag": "E.TUNED.n19.r9",
+   "config": "TUNED",
+   "plan_id": "dx-e-n19-r9",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 28
+  },
+  {
+   "tag": "E.DP_N8.n19.r9",
+   "config": "DP_N8",
+   "plan_id": "dx-e-n19-r9",
+   "obs": 0,
+   "eval_s": 120,
+   "seq": 29
+  }
+ ],
+ "amendment": "DX_PREREG \u00a712: used only if the repeated work A check (v2) is PERTURBATION; order and plans unchanged, obs 0"
+}

@@ -33,6 +33,7 @@ sha256sum "$ORDER" >> "$RUN/order-sha256.txt"
 rbln-stat > "$RUN/rbln-stat-before.$(date +%s).txt" 2>&1
 bash "$REPO/patches/vllm_rbln-0.11.1/apply.sh" status > "$RUN/patch-before.$(date +%s).txt" 2>&1
 bash "$REPO/patches/vllm_rbln-0.11.1/apply_steptime.sh" status > "$RUN/patch-steptime-before.$(date +%s).txt" 2>&1
+bash "$REPO/patches/vllm_rbln-0.11.1/apply_steptime_v2.sh" status > "$RUN/patch-steptime-v2-before.$(date +%s).txt" 2>&1
 
 mapfile -t ITEMS < <(python3 -c "
 import json
@@ -71,4 +72,5 @@ date -Is > "$RUN/measurement-end.txt"
 rbln-stat > "$RUN/rbln-stat-after.txt" 2>&1
 bash "$REPO/patches/vllm_rbln-0.11.1/apply.sh" status > "$RUN/patch-after.txt" 2>&1
 bash "$REPO/patches/vllm_rbln-0.11.1/apply_steptime.sh" status > "$RUN/patch-steptime-after.txt" 2>&1
+bash "$REPO/patches/vllm_rbln-0.11.1/apply_steptime_v2.sh" status > "$RUN/patch-steptime-v2-after.txt" 2>&1
 echo "DX DONE"
