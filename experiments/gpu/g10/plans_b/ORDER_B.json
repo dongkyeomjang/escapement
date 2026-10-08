@@ -1,0 +1,362 @@
+[
+ {
+  "tag": "n28.GPU_KV.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r3.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 3,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r3.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 3,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r6",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r6.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 6,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r6",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r6.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 6,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r5",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r5.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 5,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r5",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r5.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 5,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r9",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r9.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 9,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r9",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r9.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 9,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r0.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 0,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r0.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 0,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r7",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r7.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 7,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r7",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r7.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 7,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r2.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 2,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r2.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 2,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r1.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 1,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r1.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 1,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r4.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 4,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r4.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 4,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_BASE.r8",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r8.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 28,
+  "rep": 8,
+  "block": "required"
+ },
+ {
+  "tag": "n28.GPU_KV.r8",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n28-r8.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 28,
+  "rep": 8,
+  "block": "required"
+ },
+ {
+  "tag": "n25.GPU_KV.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r1.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 1,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r1",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r1.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 1,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r9",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r9.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 9,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r9",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r9.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 9,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r5",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r5.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 5,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r5",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r5.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 5,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r2.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 2,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r2",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r2.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 2,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r3.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 3,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r3",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r3.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 3,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r6",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r6.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 6,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r6",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r6.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 6,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r4.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 4,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r4",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r4.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 4,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r0.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 0,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r0",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r0.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 0,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r8",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r8.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 8,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r8",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r8.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 8,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_KV.r7",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r7.json",
+  "config": "POOL",
+  "role": "GPU_KV",
+  "n": 25,
+  "rep": 7,
+  "block": "extension"
+ },
+ {
+  "tag": "n25.GPU_BASE.r7",
+  "plan": "/home/csdc/kyeom/Project/escapement/experiments/gpu/g10/plans_b/g10b-n25-r7.json",
+  "config": "BASE",
+  "role": "GPU_BASE",
+  "n": 25,
+  "rep": 7,
+  "block": "extension"
+ }
+]
