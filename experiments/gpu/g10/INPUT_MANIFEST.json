@@ -1,0 +1,161 @@
+{
+ "head": "0812f85c0dfb203fb71ccf652df38531d9924f5b",
+ "branch": "gpu-a6000",
+ "dirty": [],
+ "items": [
+  {
+   "role": "context-aware integrated simulator (engine, LRU pool)",
+   "path": "experiments/gpu/multiturn/gpu_mt_sim.py",
+   "exists": true,
+   "sha256": "31c237ac5c6a99c06ce7cdb818c943f47996f836bd3a7a18a8025b1f7cd4a781",
+   "last_commit": "f0d8000 2026-10-02T06:55:28+00:00"
+  },
+  {
+   "role": "context-aware step time (GTASK20 predictor (1) ctx, StepCost)",
+   "path": "experiments/gpu/multiturn/predict_blind.py",
+   "exists": true,
+   "sha256": "6e2f6c71418e643c06a9d68e5c5c8c24124bf9006a4c6e0aa9d3d368bb8079d1",
+   "last_commit": "f0d8000 2026-10-02T06:55:28+00:00"
+  },
+  {
+   "role": "GTASK18 context slope c (F1)",
+   "path": "experiments/gpu/stepcost/ctx_result/summary.json",
+   "exists": true,
+   "sha256": "bac058bfba4bb256b0652faa977c4058e81eeb914f3ee5568d738b8d2ff86912",
+   "last_commit": "809a767 2026-10-02T06:45:57+00:00"
+  },
+  {
+   "role": "two prefill-cost settings lo/hi and price channel",
+   "path": "experiments/gpu/multiturn/gpu_cost.py",
+   "exists": true,
+   "sha256": "1bbfcd6f560aca4f43c803ef527c996802d77184366c2044dad2dfc108e58e5e",
+   "last_commit": "9af6af9 2026-09-29T17:17:19+00:00"
+  },
+  {
+   "role": "GPU descriptor draft",
+   "path": "experiments/gpu/substrate/a6000_vllm_0220_draft.py",
+   "exists": true,
+   "sha256": "27c5eb1fd5dedc543c1c129225e710f96031996ad64e3c44b442431cbcd04a37",
+   "last_commit": "2c4e732 2026-09-29T09:00:58+00:00"
+  },
+  {
+   "role": "structural zero-preemption bound and BASE/POOL pools, default grid",
+   "path": "experiments/gpu/multiturn/selection/selection.json",
+   "exists": true,
+   "sha256": "11eecd582d250c865fdcd4da87507e9401b7402fa47255550b2ab846cdc7065c",
+   "last_commit": "cafbd95 2026-09-29T17:30:30+00:00"
+  },
+  {
+   "role": "configuration names -> server arguments",
+   "path": "experiments/gpu/multiturn/configs.py",
+   "exists": true,
+   "sha256": "b06b5747417eb8ac3f1a2e1a8fa70f4beccf31b9af8e8c1bae7a148d96452d87",
+   "last_commit": "c4cf5d2 2026-10-08T12:27:39+00:00"
+  },
+  {
+   "role": "server arguments (lifecycle, fixed flags)",
+   "path": "experiments/gpu/launch/lifecycle.py",
+   "exists": true,
+   "sha256": "5d9a70c3c1ba44de81194310333801b0ff90e3d7e3a077118b68b9cfe6717408",
+   "last_commit": "b936da8 2026-09-29T09:30:51+00:00"
+  },
+  {
+   "role": "runner (token-id prompts, streaming, window rule)",
+   "path": "experiments/gpu/multiturn/gpu_mt_runner.py",
+   "exists": true,
+   "sha256": "ce5ce17cfb8d57e3029b84a994de07ad4b06a3fd52198069dbea6be5da1e25f7",
+   "last_commit": "c4cf5d2 2026-10-08T12:27:39+00:00"
+  },
+  {
+   "role": "plan law",
+   "path": "experiments/npu/stage3/make_plan.py",
+   "exists": true,
+   "sha256": "8ee3b595a4307d761c4a30c6b83848eed229178439290fc32da21d2474bd6143",
+   "last_commit": "4dfb20d 2026-09-29T18:19:20+09:00"
+  },
+  {
+   "role": "plan / window rule (WindowRule)",
+   "path": "src/continuum/workload/multiturn.py",
+   "exists": true,
+   "sha256": "5fe883145326e1b697702bf41a5ce8553a707c19eba1ccf18c0421fed4c458f7",
+   "last_commit": "4dfb20d 2026-09-29T18:19:20+09:00"
+  },
+  {
+   "role": "KV event replay (GTASK12)",
+   "path": "experiments/gpu/multiturn/replay.py",
+   "exists": true,
+   "sha256": "b39315022a7993173105345cc6477776e992c7248c008c4d710970cfb55af7e9",
+   "last_commit": "3ddbba8 2026-10-01T07:15:22+00:00"
+  },
+  {
+   "role": "observed metrics, A'-GPU (RECON), reusable-token rule",
+   "path": "experiments/gpu/multiturn/gpu_mt_measure.py",
+   "exists": true,
+   "sha256": "cf3bcd1db3507ca2ba5695964c71efe4d7be013c9af5d0f914ff265f45c89397",
+   "last_commit": "2bef619 2026-09-29T17:54:17+00:00"
+  },
+  {
+   "role": "observation log parser",
+   "path": "experiments/gpu/obs/parse_obs.py",
+   "exists": true,
+   "sha256": "a91203ae7ce99489e372d8bac6bece8b577b73c1fd1f58d1642295ee2644fdc7",
+   "last_commit": "3eebb02 2026-09-29T09:26:42+00:00"
+  },
+  {
+   "role": "observation patch (GSTEP / GPFX)",
+   "path": "experiments/gpu/patches/vllm-0.22.0/escapement_obs.patch",
+   "exists": true,
+   "sha256": "d75d04d8952bb1c500500777d5d3ffa739069a720b17213db217513fb03a427f",
+   "last_commit": "3eebb02 2026-09-29T09:26:42+00:00"
+  },
+  {
+   "role": "observation patch guard",
+   "path": "experiments/gpu/patches/vllm-0.22.0/apply.sh",
+   "exists": true,
+   "sha256": "f358c746cd78f9211d233c5a47b22fc0980c49b814ea449adaec719405646614",
+   "last_commit": "c4cf5d2 2026-10-08T12:27:39+00:00"
+  },
+  {
+   "role": "exec-timing layer (G-10 A)",
+   "path": "experiments/gpu/patches/vllm-0.22.0/escapement_exec.patch",
+   "exists": true,
+   "sha256": "e2892b8ebf969d480daf7c626d72e34f20dd85ddb93602f45f11c633e6345442",
+   "last_commit": "c4cf5d2 2026-10-08T12:27:39+00:00"
+  },
+  {
+   "role": "exec-timing layer guard",
+   "path": "experiments/gpu/patches/vllm-0.22.0/apply_exec.sh",
+   "exists": true,
+   "sha256": "8f3b73c07ab201476531b1ab2f54695771fcc167ef4ea5c74ea0bcc78cc58567",
+   "last_commit": "c4cf5d2 2026-10-08T12:27:39+00:00"
+  },
+  {
+   "role": "previous criteria (GTASK20 prereg)",
+   "path": "docs/research/gpu/GPU_BLIND_COLLAPSE_PREREG.md",
+   "exists": true,
+   "sha256": "7778b116cd0308c7103e81cfe466f83aa4d5a71862ecbaffdea7308e6c9a2e06",
+   "last_commit": "f0d8000 2026-10-02T06:55:28+00:00"
+  },
+  {
+   "role": "previous judge (bootstrap, h, window lines)",
+   "path": "experiments/gpu/multiturn/main_judge.py",
+   "exists": true,
+   "sha256": "72f3543f1c446bc266ef06ea3455cd8c8b1f375d0e02c0a7b3e6513b6856a8ca",
+   "last_commit": "721e4d0 2026-09-30T14:11:43+00:00"
+  },
+  {
+   "role": "evaluation window / boundary correction (GTASK22)",
+   "path": "experiments/gpu/multiturn/boundary_sensitivity.py",
+   "exists": true,
+   "sha256": "2fff4a7d443bca6e21587205776642d4229230d471cbfc58c194b8fe7c12cfad",
+   "last_commit": "954dd03 2026-10-06T07:22:11+00:00"
+  },
+  {
+   "role": "analytic model (cycle_s for plans)",
+   "path": "experiments/gpu/multiturn/gpu_mt_model.py",
+   "exists": true,
+   "sha256": "41c3418e36771f306b8bc1f42c991144928aafcd633b612c29d50342178d2b08",
+   "last_commit": "9af6af9 2026-09-29T17:17:19+00:00"
+  }
+ ]
+}

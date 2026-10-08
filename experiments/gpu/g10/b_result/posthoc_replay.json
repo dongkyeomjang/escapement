@@ -1,0 +1,1044 @@
+{
+ "lifecycles": [
+  {
+   "run": "n25.GPU_BASE.r0",
+   "main_integrity": {
+    "step": 10825,
+    "lookup": 592,
+    "lookup_free_eq": 592,
+    "alloc": 592,
+    "alloc_eq": 592,
+    "step_eq": 10823
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 25374,
+    "replay_evicted": 25374,
+    "same_position": 25374,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 307
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.6970684039087948,
+   "window_replay_hit_rate": 0.6970684039087948,
+   "decided": 307
+  },
+  {
+   "run": "n25.GPU_BASE.r1",
+   "main_integrity": {
+    "step": 7763,
+    "lookup": 420,
+    "lookup_free_eq": 420,
+    "alloc": 420,
+    "alloc_eq": 420,
+    "step_eq": 7761
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 38940,
+    "replay_evicted": 38940,
+    "same_position": 38940,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 249
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.22088353413654618,
+   "window_replay_hit_rate": 0.22088353413654618,
+   "decided": 249
+  },
+  {
+   "run": "n25.GPU_BASE.r2",
+   "main_integrity": {
+    "step": 6981,
+    "lookup": 369,
+    "lookup_free_eq": 369,
+    "alloc": 369,
+    "alloc_eq": 369,
+    "step_eq": 6979
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 36068,
+    "replay_evicted": 36068,
+    "same_position": 36068,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 240
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.041666666666666664,
+   "window_replay_hit_rate": 0.041666666666666664,
+   "decided": 240
+  },
+  {
+   "run": "n25.GPU_BASE.r3",
+   "main_integrity": {
+    "step": 9762,
+    "lookup": 543,
+    "lookup_free_eq": 543,
+    "alloc": 543,
+    "alloc_eq": 543,
+    "step_eq": 9760
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 36300,
+    "replay_evicted": 36300,
+    "same_position": 36300,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 294
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.5578231292517006,
+   "window_replay_hit_rate": 0.5578231292517006,
+   "decided": 294
+  },
+  {
+   "run": "n25.GPU_BASE.r4",
+   "main_integrity": {
+    "step": 10015,
+    "lookup": 546,
+    "lookup_free_eq": 546,
+    "alloc": 546,
+    "alloc_eq": 546,
+    "step_eq": 10013
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 26713,
+    "replay_evicted": 26713,
+    "same_position": 26713,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 297
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.7272727272727273,
+   "window_replay_hit_rate": 0.7272727272727273,
+   "decided": 297
+  },
+  {
+   "run": "n25.GPU_BASE.r5",
+   "main_integrity": {
+    "step": 8576,
+    "lookup": 466,
+    "lookup_free_eq": 466,
+    "alloc": 466,
+    "alloc_eq": 466,
+    "step_eq": 8574
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 33062,
+    "replay_evicted": 33062,
+    "same_position": 33062,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 259
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.2857142857142857,
+   "window_replay_hit_rate": 0.2857142857142857,
+   "decided": 259
+  },
+  {
+   "run": "n25.GPU_BASE.r6",
+   "main_integrity": {
+    "step": 10839,
+    "lookup": 575,
+    "lookup_free_eq": 575,
+    "alloc": 575,
+    "alloc_eq": 575,
+    "step_eq": 10837
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 20057,
+    "replay_evicted": 20057,
+    "same_position": 20057,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 309
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8252427184466019,
+   "window_replay_hit_rate": 0.8252427184466019,
+   "decided": 309
+  },
+  {
+   "run": "n25.GPU_BASE.r7",
+   "main_integrity": {
+    "step": 7358,
+    "lookup": 409,
+    "lookup_free_eq": 409,
+    "alloc": 409,
+    "alloc_eq": 409,
+    "step_eq": 7356
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 30583,
+    "replay_evicted": 30583,
+    "same_position": 30583,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 266
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.3157894736842105,
+   "window_replay_hit_rate": 0.3157894736842105,
+   "decided": 266
+  },
+  {
+   "run": "n25.GPU_BASE.r8",
+   "main_integrity": {
+    "step": 7166,
+    "lookup": 387,
+    "lookup_free_eq": 387,
+    "alloc": 387,
+    "alloc_eq": 387,
+    "step_eq": 7164
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 38090,
+    "replay_evicted": 38090,
+    "same_position": 38090,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 246
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.14634146341463414,
+   "window_replay_hit_rate": 0.14634146341463414,
+   "decided": 246
+  },
+  {
+   "run": "n25.GPU_BASE.r9",
+   "main_integrity": {
+    "step": 7280,
+    "lookup": 397,
+    "lookup_free_eq": 397,
+    "alloc": 397,
+    "alloc_eq": 397,
+    "step_eq": 7278
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 36294,
+    "replay_evicted": 36294,
+    "same_position": 36294,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 258
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.18992248062015504,
+   "window_replay_hit_rate": 0.18992248062015504,
+   "decided": 258
+  },
+  {
+   "run": "n25.GPU_KV.r0",
+   "main_integrity": {
+    "step": 11059,
+    "lookup": 607,
+    "lookup_free_eq": 607,
+    "alloc": 607,
+    "alloc_eq": 607,
+    "step_eq": 11057
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 20220,
+    "replay_evicted": 20220,
+    "same_position": 20220,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 312
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8237179487179487,
+   "window_replay_hit_rate": 0.8237179487179487,
+   "decided": 312
+  },
+  {
+   "run": "n25.GPU_KV.r1",
+   "main_integrity": {
+    "step": 9404,
+    "lookup": 505,
+    "lookup_free_eq": 505,
+    "alloc": 505,
+    "alloc_eq": 505,
+    "step_eq": 9402
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 16031,
+    "replay_evicted": 16031,
+    "same_position": 16031,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 313
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8306709265175719,
+   "window_replay_hit_rate": 0.8306709265175719,
+   "decided": 313
+  },
+  {
+   "run": "n25.GPU_KV.r2",
+   "main_integrity": {
+    "step": 7654,
+    "lookup": 407,
+    "lookup_free_eq": 407,
+    "alloc": 407,
+    "alloc_eq": 407,
+    "step_eq": 7652
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 24423,
+    "replay_evicted": 24423,
+    "same_position": 24423,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 268
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.4962686567164179,
+   "window_replay_hit_rate": 0.4962686567164179,
+   "decided": 268
+  },
+  {
+   "run": "n25.GPU_KV.r3",
+   "main_integrity": {
+    "step": 10920,
+    "lookup": 607,
+    "lookup_free_eq": 607,
+    "alloc": 607,
+    "alloc_eq": 607,
+    "step_eq": 10918
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 19336,
+    "replay_evicted": 19336,
+    "same_position": 19336,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 328
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8201219512195121,
+   "window_replay_hit_rate": 0.8201219512195121,
+   "decided": 328
+  },
+  {
+   "run": "n25.GPU_KV.r4",
+   "main_integrity": {
+    "step": 10651,
+    "lookup": 578,
+    "lookup_free_eq": 578,
+    "alloc": 578,
+    "alloc_eq": 578,
+    "step_eq": 10649
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 18256,
+    "replay_evicted": 18256,
+    "same_position": 18256,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 310
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8516129032258064,
+   "window_replay_hit_rate": 0.8516129032258064,
+   "decided": 310
+  },
+  {
+   "run": "n25.GPU_KV.r5",
+   "main_integrity": {
+    "step": 9341,
+    "lookup": 511,
+    "lookup_free_eq": 511,
+    "alloc": 511,
+    "alloc_eq": 511,
+    "step_eq": 9339
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 19727,
+    "replay_evicted": 19727,
+    "same_position": 19727,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 296
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.7837837837837838,
+   "window_replay_hit_rate": 0.7837837837837838,
+   "decided": 296
+  },
+  {
+   "run": "n25.GPU_KV.r6",
+   "main_integrity": {
+    "step": 11006,
+    "lookup": 585,
+    "lookup_free_eq": 585,
+    "alloc": 585,
+    "alloc_eq": 585,
+    "step_eq": 11004
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 17378,
+    "replay_evicted": 17378,
+    "same_position": 17378,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 315
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8539682539682539,
+   "window_replay_hit_rate": 0.8539682539682539,
+   "decided": 315
+  },
+  {
+   "run": "n25.GPU_KV.r7",
+   "main_integrity": {
+    "step": 8490,
+    "lookup": 466,
+    "lookup_free_eq": 466,
+    "alloc": 466,
+    "alloc_eq": 466,
+    "step_eq": 8488
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 16406,
+    "replay_evicted": 16406,
+    "same_position": 16406,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 319
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8119122257053292,
+   "window_replay_hit_rate": 0.8119122257053292,
+   "decided": 319
+  },
+  {
+   "run": "n25.GPU_KV.r8",
+   "main_integrity": {
+    "step": 8545,
+    "lookup": 465,
+    "lookup_free_eq": 465,
+    "alloc": 465,
+    "alloc_eq": 465,
+    "step_eq": 8543
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 15212,
+    "replay_evicted": 15212,
+    "same_position": 15212,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 312
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8461538461538461,
+   "window_replay_hit_rate": 0.8461538461538461,
+   "decided": 312
+  },
+  {
+   "run": "n25.GPU_KV.r9",
+   "main_integrity": {
+    "step": 8335,
+    "lookup": 457,
+    "lookup_free_eq": 457,
+    "alloc": 457,
+    "alloc_eq": 457,
+    "step_eq": 8333
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 18965,
+    "replay_evicted": 18965,
+    "same_position": 18965,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 304
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.7138157894736842,
+   "window_replay_hit_rate": 0.7138157894736842,
+   "decided": 304
+  },
+  {
+   "run": "n28.GPU_BASE.r0",
+   "main_integrity": {
+    "step": 7250,
+    "lookup": 393,
+    "lookup_free_eq": 393,
+    "alloc": 393,
+    "alloc_eq": 393,
+    "step_eq": 7248
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 33261,
+    "replay_evicted": 33261,
+    "same_position": 33261,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 257
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.28793774319066145,
+   "window_replay_hit_rate": 0.28793774319066145,
+   "decided": 257
+  },
+  {
+   "run": "n28.GPU_BASE.r1",
+   "main_integrity": {
+    "step": 9005,
+    "lookup": 484,
+    "lookup_free_eq": 484,
+    "alloc": 484,
+    "alloc_eq": 484,
+    "step_eq": 9003
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 45560,
+    "replay_evicted": 45560,
+    "same_position": 45560,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 254
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.01968503937007874,
+   "window_replay_hit_rate": 0.01968503937007874,
+   "decided": 254
+  },
+  {
+   "run": "n28.GPU_BASE.r2",
+   "main_integrity": {
+    "step": 9712,
+    "lookup": 527,
+    "lookup_free_eq": 527,
+    "alloc": 527,
+    "alloc_eq": 527,
+    "step_eq": 9710
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 36562,
+    "replay_evicted": 36562,
+    "same_position": 36562,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 295
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.6271186440677966,
+   "window_replay_hit_rate": 0.6271186440677966,
+   "decided": 295
+  },
+  {
+   "run": "n28.GPU_BASE.r3",
+   "main_integrity": {
+    "step": 7204,
+    "lookup": 385,
+    "lookup_free_eq": 385,
+    "alloc": 385,
+    "alloc_eq": 385,
+    "step_eq": 7202
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 34816,
+    "replay_evicted": 34816,
+    "same_position": 34816,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 249
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.20481927710843373,
+   "window_replay_hit_rate": 0.20481927710843373,
+   "decided": 249
+  },
+  {
+   "run": "n28.GPU_BASE.r4",
+   "main_integrity": {
+    "step": 9392,
+    "lookup": 498,
+    "lookup_free_eq": 498,
+    "alloc": 498,
+    "alloc_eq": 498,
+    "step_eq": 9390
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 52620,
+    "replay_evicted": 52620,
+    "same_position": 52620,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 237
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.0379746835443038,
+   "window_replay_hit_rate": 0.0379746835443038,
+   "decided": 237
+  },
+  {
+   "run": "n28.GPU_BASE.r5",
+   "main_integrity": {
+    "step": 8693,
+    "lookup": 452,
+    "lookup_free_eq": 452,
+    "alloc": 452,
+    "alloc_eq": 452,
+    "step_eq": 8691
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 49472,
+    "replay_evicted": 49472,
+    "same_position": 49472,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 235
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.00425531914893617,
+   "window_replay_hit_rate": 0.00425531914893617,
+   "decided": 235
+  },
+  {
+   "run": "n28.GPU_BASE.r6",
+   "main_integrity": {
+    "step": 8985,
+    "lookup": 477,
+    "lookup_free_eq": 477,
+    "alloc": 477,
+    "alloc_eq": 477,
+    "step_eq": 8983
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 47775,
+    "replay_evicted": 47775,
+    "same_position": 47775,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 246
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.04065040650406504,
+   "window_replay_hit_rate": 0.04065040650406504,
+   "decided": 246
+  },
+  {
+   "run": "n28.GPU_BASE.r7",
+   "main_integrity": {
+    "step": 9333,
+    "lookup": 499,
+    "lookup_free_eq": 499,
+    "alloc": 499,
+    "alloc_eq": 499,
+    "step_eq": 9331
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 44933,
+    "replay_evicted": 44933,
+    "same_position": 44933,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 248
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.2217741935483871,
+   "window_replay_hit_rate": 0.2217741935483871,
+   "decided": 248
+  },
+  {
+   "run": "n28.GPU_BASE.r8",
+   "main_integrity": {
+    "step": 9228,
+    "lookup": 501,
+    "lookup_free_eq": 501,
+    "alloc": 501,
+    "alloc_eq": 501,
+    "step_eq": 9226
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 40520,
+    "replay_evicted": 40520,
+    "same_position": 40520,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 257
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.1867704280155642,
+   "window_replay_hit_rate": 0.1867704280155642,
+   "decided": 257
+  },
+  {
+   "run": "n28.GPU_BASE.r9",
+   "main_integrity": {
+    "step": 7780,
+    "lookup": 407,
+    "lookup_free_eq": 407,
+    "alloc": 407,
+    "alloc_eq": 407,
+    "step_eq": 7778
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 31572,
+    "replay_evicted": 31572,
+    "same_position": 31572,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 264
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.4128787878787879,
+   "window_replay_hit_rate": 0.4128787878787879,
+   "decided": 264
+  },
+  {
+   "run": "n28.GPU_KV.r0",
+   "main_integrity": {
+    "step": 7861,
+    "lookup": 426,
+    "lookup_free_eq": 426,
+    "alloc": 426,
+    "alloc_eq": 426,
+    "step_eq": 7859
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 23266,
+    "replay_evicted": 23266,
+    "same_position": 23266,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 288
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.6493055555555556,
+   "window_replay_hit_rate": 0.6493055555555556,
+   "decided": 288
+  },
+  {
+   "run": "n28.GPU_KV.r1",
+   "main_integrity": {
+    "step": 9990,
+    "lookup": 538,
+    "lookup_free_eq": 538,
+    "alloc": 538,
+    "alloc_eq": 538,
+    "step_eq": 9988
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 27473,
+    "replay_evicted": 27473,
+    "same_position": 27473,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 290
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.5448275862068965,
+   "window_replay_hit_rate": 0.5448275862068965,
+   "decided": 290
+  },
+  {
+   "run": "n28.GPU_KV.r2",
+   "main_integrity": {
+    "step": 10337,
+    "lookup": 564,
+    "lookup_free_eq": 564,
+    "alloc": 564,
+    "alloc_eq": 564,
+    "step_eq": 10335
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 23408,
+    "replay_evicted": 23408,
+    "same_position": 23408,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 316
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.7563291139240507,
+   "window_replay_hit_rate": 0.7563291139240507,
+   "decided": 316
+  },
+  {
+   "run": "n28.GPU_KV.r3",
+   "main_integrity": {
+    "step": 8197,
+    "lookup": 444,
+    "lookup_free_eq": 444,
+    "alloc": 444,
+    "alloc_eq": 444,
+    "step_eq": 8195
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 19516,
+    "replay_evicted": 19516,
+    "same_position": 19516,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 303
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.8085808580858086,
+   "window_replay_hit_rate": 0.8085808580858086,
+   "decided": 303
+  },
+  {
+   "run": "n28.GPU_KV.r4",
+   "main_integrity": {
+    "step": 10144,
+    "lookup": 535,
+    "lookup_free_eq": 535,
+    "alloc": 535,
+    "alloc_eq": 535,
+    "step_eq": 10142
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 38389,
+    "replay_evicted": 38389,
+    "same_position": 38389,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 256
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.3671875,
+   "window_replay_hit_rate": 0.3671875,
+   "decided": 256
+  },
+  {
+   "run": "n28.GPU_KV.r5",
+   "main_integrity": {
+    "step": 9197,
+    "lookup": 484,
+    "lookup_free_eq": 484,
+    "alloc": 484,
+    "alloc_eq": 484,
+    "step_eq": 9195
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 41227,
+    "replay_evicted": 41227,
+    "same_position": 41227,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 241
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.23236514522821577,
+   "window_replay_hit_rate": 0.23236514522821577,
+   "decided": 241
+  },
+  {
+   "run": "n28.GPU_KV.r6",
+   "main_integrity": {
+    "step": 10132,
+    "lookup": 534,
+    "lookup_free_eq": 534,
+    "alloc": 534,
+    "alloc_eq": 534,
+    "step_eq": 10130
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 27011,
+    "replay_evicted": 27011,
+    "same_position": 27011,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 283
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.5795053003533569,
+   "window_replay_hit_rate": 0.5795053003533569,
+   "decided": 283
+  },
+  {
+   "run": "n28.GPU_KV.r7",
+   "main_integrity": {
+    "step": 10256,
+    "lookup": 556,
+    "lookup_free_eq": 556,
+    "alloc": 556,
+    "alloc_eq": 556,
+    "step_eq": 10254
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 29861,
+    "replay_evicted": 29861,
+    "same_position": 29861,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 285
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.6666666666666666,
+   "window_replay_hit_rate": 0.6666666666666666,
+   "decided": 285
+  },
+  {
+   "run": "n28.GPU_KV.r8",
+   "main_integrity": {
+    "step": 10170,
+    "lookup": 555,
+    "lookup_free_eq": 555,
+    "alloc": 555,
+    "alloc_eq": 555,
+    "step_eq": 10168
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 24900,
+    "replay_evicted": 24900,
+    "same_position": 24900,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 304
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.7138157894736842,
+   "window_replay_hit_rate": 0.7138157894736842,
+   "decided": 304
+  },
+  {
+   "run": "n28.GPU_KV.r9",
+   "main_integrity": {
+    "step": 8365,
+    "lookup": 437,
+    "lookup_free_eq": 437,
+    "alloc": 437,
+    "alloc_eq": 437,
+    "step_eq": 8363
+   },
+   "main_error": null,
+   "first_free_divergence_line": null,
+   "kv": {
+    "observed_removed": 22738,
+    "replay_evicted": 22738,
+    "same_position": 22738,
+    "unmapped_observed": 0
+   },
+   "window_status": {
+    "MATCH": 284
+   },
+   "mismatch_category": {},
+   "window_obs_hit_rate": 0.647887323943662,
+   "window_replay_hit_rate": 0.647887323943662,
+   "decided": 284
+  }
+ ]
+}

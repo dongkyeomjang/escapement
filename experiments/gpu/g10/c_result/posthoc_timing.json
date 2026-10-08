@@ -1,0 +1,569 @@
+{
+ "status": "POST-HOC DIAGNOSIS (not preregistered)",
+ "cells": {
+  "SHORT_TOOL/GPU_LONG_BASE": {
+   "rows": [
+    {
+     "rep": 0,
+     "eval_requests": 373,
+     "pred_requests": [
+      389,
+      389
+     ],
+     "wall_per_call_s": 0.31633873190325074,
+     "sim_wall_per_call_s": [
+      0.30848548725640446,
+      0.3084863947781554
+     ],
+     "wall_ratio_lo": 1.025457420109747,
+     "reuse_obs": 0.9663608562691132,
+     "reuse_pred": [
+      0.9706744868035191,
+      0.9707602339181286
+     ],
+     "admission_delay_obs_s": 1.651761182831056,
+     "queue_wait_pred_s": [
+      1.4906153073568773,
+      1.478319432216028
+     ]
+    },
+    {
+     "rep": 1,
+     "eval_requests": 359,
+     "pred_requests": [
+      367,
+      366
+     ],
+     "wall_per_call_s": 0.3359207242340093,
+     "sim_wall_per_call_s": [
+      0.32700072547126907,
+      0.3278904244249728
+     ],
+     "wall_ratio_lo": 1.0272782231595508,
+     "reuse_obs": 0.9428571428571428,
+     "reuse_pred": [
+      0.9470404984423676,
+      0.9467084639498433
+     ],
+     "admission_delay_obs_s": 1.83152721851317,
+     "queue_wait_pred_s": [
+      1.7059151771765244,
+      1.710686508520306
+     ]
+    },
+    {
+     "rep": 2,
+     "eval_requests": 364,
+     "pred_requests": [
+      376,
+      378
+     ],
+     "wall_per_call_s": 0.3225134807692554,
+     "sim_wall_per_call_s": [
+      0.31916547802893064,
+      0.3174626710536425
+     ],
+     "wall_ratio_lo": 1.010489864884514,
+     "reuse_obs": 0.95,
+     "reuse_pred": [
+      0.9516616314199395,
+      0.9486404833836858
+     ],
+     "admission_delay_obs_s": 0.987348599748297,
+     "queue_wait_pred_s": [
+      0.8673188850930099,
+      0.8834017615416953
+     ]
+    },
+    {
+     "rep": 3,
+     "eval_requests": 373,
+     "pred_requests": [
+      386,
+      381
+     ],
+     "wall_per_call_s": 0.3167996300270796,
+     "sim_wall_per_call_s": [
+      0.3109218260772848,
+      0.31498888472186365
+     ],
+     "wall_ratio_lo": 1.0189044430362177,
+     "reuse_obs": 0.9484848484848485,
+     "reuse_pred": [
+      0.9558823529411765,
+      0.9523809523809523
+     ],
+     "admission_delay_obs_s": 2.003156606377609,
+     "queue_wait_pred_s": [
+      1.8405986336490867,
+      1.9358245169754176
+     ]
+    },
+    {
+     "rep": 4,
+     "eval_requests": 355,
+     "pred_requests": [
+      367,
+      365
+     ],
+     "wall_per_call_s": 0.332118538028272,
+     "sim_wall_per_call_s": [
+      0.327003275398456,
+      0.3288088218518214
+     ],
+     "wall_ratio_lo": 1.0156428482974156,
+     "reuse_obs": 0.952076677316294,
+     "reuse_pred": [
+      0.9475308641975309,
+      0.9440993788819876
+     ],
+     "admission_delay_obs_s": 2.414561900958209,
+     "queue_wait_pred_s": [
+      2.24729490584549,
+      2.259381275493094
+     ]
+    }
+   ],
+   "wall_ratio_lo_median": 1.0189044430362177,
+   "by_type": {
+    "mixed": {
+     "steps": 1779,
+     "direct_s": 67.8469504,
+     "recon_lo_s": 53.06799051362353,
+     "direct_ms_per_step": 38.13768993816751,
+     "price_lo_ms_per_step": 29.830236376404457
+    },
+    "decode": {
+     "steps": 31745,
+     "direct_s": 524.2010473000012,
+     "recon_lo_s": 432.1335760802146,
+     "direct_ms_per_step": 16.512869658213926,
+     "price_lo_ms_per_step": 13.612650057653633
+    }
+   }
+  },
+  "SHORT_TOOL/GPU_LONG_KV": {
+   "rows": [
+    {
+     "rep": 0,
+     "eval_requests": 374,
+     "pred_requests": [
+      388,
+      389
+     ],
+     "wall_per_call_s": 0.31599907753995327,
+     "sim_wall_per_call_s": [
+      0.30928544114033685,
+      0.308511989167309
+     ],
+     "wall_ratio_lo": 1.0217069266980794,
+     "reuse_obs": 0.9725609756097561,
+     "reuse_pred": [
+      0.9764705882352941,
+      0.9736842105263158
+     ],
+     "admission_delay_obs_s": 1.6601642574218505,
+     "queue_wait_pred_s": [
+      1.4988636549850314,
+      1.4644585985801228
+     ]
+    },
+    {
+     "rep": 1,
+     "eval_requests": 361,
+     "pred_requests": [
+      369,
+      366
+     ],
+     "wall_per_call_s": 0.33347245152340554,
+     "sim_wall_per_call_s": [
+      0.3252268605941715,
+      0.327870616081502
+     ],
+     "wall_ratio_lo": 1.0253533515471933,
+     "reuse_obs": 0.9684542586750788,
+     "reuse_pred": [
+      0.9721362229102167,
+      0.96875
+     ],
+     "admission_delay_obs_s": 1.7818787639491116,
+     "queue_wait_pred_s": [
+      1.685193452254253,
+      1.6803657637143006
+     ]
+    },
+    {
+     "rep": 2,
+     "eval_requests": 368,
+     "pred_requests": [
+      381,
+      378
+     ],
+     "wall_per_call_s": 0.31952377173919283,
+     "sim_wall_per_call_s": [
+      0.3149712128480527,
+      0.3174708247483461
+     ],
+     "wall_ratio_lo": 1.01445388881725,
+     "reuse_obs": 0.9721362229102167,
+     "reuse_pred": [
+      0.9731343283582089,
+      0.9697885196374623
+     ],
+     "admission_delay_obs_s": 0.9717540915893472,
+     "queue_wait_pred_s": [
+      0.8502104218860583,
+      0.8859874178244941
+     ]
+    },
+    {
+     "rep": 3,
+     "eval_requests": 376,
+     "pred_requests": [
+      387,
+      384
+     ],
+     "wall_per_call_s": 0.3165836914893279,
+     "sim_wall_per_call_s": [
+      0.31008902149855777,
+      0.3125076702109056
+     ],
+     "wall_ratio_lo": 1.0209445337967258,
+     "reuse_obs": 0.9700598802395209,
+     "reuse_pred": [
+      0.9705882352941176,
+      0.9705014749262537
+     ],
+     "admission_delay_obs_s": 1.9697045893111127,
+     "queue_wait_pred_s": [
+      1.8252779911237413,
+      1.891179583414307
+     ]
+    },
+    {
+     "rep": 4,
+     "eval_requests": 364,
+     "pred_requests": [
+      373,
+      367
+     ],
+     "wall_per_call_s": 0.327679249999794,
+     "sim_wall_per_call_s": [
+      0.3217411535438263,
+      0.3270163009137312
+     ],
+     "wall_ratio_lo": 1.0184561296886094,
+     "reuse_obs": 0.9813084112149533,
+     "reuse_pred": [
+      0.9817629179331308,
+      0.978328173374613
+     ],
+     "admission_delay_obs_s": 2.346701952782306,
+     "queue_wait_pred_s": [
+      2.135135094860998,
+      2.175959204577652
+     ]
+    }
+   ],
+   "wall_ratio_lo_median": 1.0209445337967258,
+   "by_type": {
+    "mixed": {
+     "steps": 1804,
+     "direct_s": 63.96080299999997,
+     "recon_lo_s": 49.26108793170625,
+     "direct_ms_per_step": 35.454990576496655,
+     "price_lo_ms_per_step": 27.306589762586615
+    },
+    "decode": {
+     "steps": 32120,
+     "direct_s": 530.4067348000001,
+     "recon_lo_s": 437.24342337456955,
+     "direct_ms_per_step": 16.513285641344957,
+     "price_lo_ms_per_step": 13.612808946904407
+    }
+   }
+  },
+  "LONG_TOOL/GPU_LONG_BASE": {
+   "rows": [
+    {
+     "rep": 0,
+     "eval_requests": 237,
+     "pred_requests": [
+      257,
+      253
+     ],
+     "wall_per_call_s": 0.520888793248809,
+     "sim_wall_per_call_s": [
+      0.46696389979834635,
+      0.47483508738041885
+     ],
+     "wall_ratio_lo": 1.1154797907798646,
+     "reuse_obs": 0.5190476190476191,
+     "reuse_pred": [
+      0.5733333333333334,
+      0.5746606334841629
+     ],
+     "admission_delay_obs_s": 4.700991371009923,
+     "queue_wait_pred_s": [
+      3.9369525624553736,
+      4.064730408554937
+     ]
+    },
+    {
+     "rep": 1,
+     "eval_requests": 229,
+     "pred_requests": [
+      248,
+      242
+     ],
+     "wall_per_call_s": 0.5326220698687187,
+     "sim_wall_per_call_s": [
+      0.48402564645747015,
+      0.4961087880301228
+     ],
+     "wall_ratio_lo": 1.1004005134168415,
+     "reuse_obs": 0.526829268292683,
+     "reuse_pred": [
+      0.5272727272727272,
+      0.48847926267281105
+     ],
+     "admission_delay_obs_s": 3.7010646834644167,
+     "queue_wait_pred_s": [
+      3.0881508212014537,
+      3.3089354725312514
+     ]
+    },
+    {
+     "rep": 2,
+     "eval_requests": 254,
+     "pred_requests": [
+      279,
+      277
+     ],
+     "wall_per_call_s": 0.4842235275588226,
+     "sim_wall_per_call_s": [
+      0.4302773489639747,
+      0.4334368459582133
+     ],
+     "wall_ratio_lo": 1.1253753624836165,
+     "reuse_obs": 0.6785714285714286,
+     "reuse_pred": [
+      0.7551020408163265,
+      0.7851239669421488
+     ],
+     "admission_delay_obs_s": 3.513866551279083,
+     "queue_wait_pred_s": [
+      2.7447824936566843,
+      2.833632748854273
+     ]
+    },
+    {
+     "rep": 3,
+     "eval_requests": 195,
+     "pred_requests": [
+      227,
+      225
+     ],
+     "wall_per_call_s": 0.6207823487177778,
+     "sim_wall_per_call_s": [
+      0.5287177735632063,
+      0.5333448039350546
+     ],
+     "wall_ratio_lo": 1.174128012633503,
+     "reuse_obs": 0.13529411764705881,
+     "reuse_pred": [
+      0.2222222222222222,
+      0.2893401015228426
+     ],
+     "admission_delay_obs_s": 6.603174770795382,
+     "queue_wait_pred_s": [
+      5.45313725424805,
+      5.564471919668969
+     ]
+    },
+    {
+     "rep": 4,
+     "eval_requests": 185,
+     "pred_requests": [
+      216,
+      208
+     ],
+     "wall_per_call_s": 0.637230686486598,
+     "sim_wall_per_call_s": [
+      0.5559383159218056,
+      0.5771187696633808
+     ],
+     "wall_ratio_lo": 1.1462255222146378,
+     "reuse_obs": 0.12345679012345678,
+     "reuse_pred": [
+      0.193717277486911,
+      0.1366120218579235
+     ],
+     "admission_delay_obs_s": 7.809466466388187,
+     "queue_wait_pred_s": [
+      6.441298271511699,
+      6.9156361971992775
+     ]
+    }
+   ],
+   "wall_ratio_lo_median": 1.1253753624836165,
+   "by_type": {
+    "mixed": {
+     "steps": 1827,
+     "direct_s": 259.39189229999994,
+     "recon_lo_s": 198.19977513468888,
+     "direct_ms_per_step": 141.97695254515597,
+     "price_lo_ms_per_step": 108.48373023245149
+    },
+    "decode": {
+     "steps": 17941,
+     "direct_s": 347.9474651999998,
+     "recon_lo_s": 244.28804813392696,
+     "direct_ms_per_step": 19.393983902792474,
+     "price_lo_ms_per_step": 13.616189071619583
+    }
+   }
+  },
+  "LONG_TOOL/GPU_LONG_KV": {
+   "rows": [
+    {
+     "rep": 0,
+     "eval_requests": 261,
+     "pred_requests": [
+      289,
+      283
+     ],
+     "wall_per_call_s": 0.44930293869719595,
+     "sim_wall_per_call_s": [
+      0.4154336888144076,
+      0.4240544077177488
+     ],
+     "wall_ratio_lo": 1.081527451419375,
+     "reuse_obs": 0.8296943231441049,
+     "reuse_pred": [
+      0.8267716535433071,
+      0.8467741935483871
+     ],
+     "admission_delay_obs_s": 3.7775132701771468,
+     "queue_wait_pred_s": [
+      3.108349166223169,
+      3.2387985755773054
+     ]
+    },
+    {
+     "rep": 1,
+     "eval_requests": 249,
+     "pred_requests": [
+      277,
+      271
+     ],
+     "wall_per_call_s": 0.498741048192755,
+     "sim_wall_per_call_s": [
+      0.43331343346035833,
+      0.4428437462898286
+     ],
+     "wall_ratio_lo": 1.1509937372813583,
+     "reuse_obs": 0.7375565610859729,
+     "reuse_pred": [
+      0.7510204081632653,
+      0.7364016736401674
+     ],
+     "admission_delay_obs_s": 3.2031545552862695,
+     "queue_wait_pred_s": [
+      2.8191470999490478,
+      2.8543661256966546
+     ]
+    },
+    {
+     "rep": 2,
+     "eval_requests": 280,
+     "pred_requests": [
+      294,
+      292
+     ],
+     "wall_per_call_s": 0.4246793285714895,
+     "sim_wall_per_call_s": [
+      0.4082168032419254,
+      0.41097765845178197
+     ],
+     "wall_ratio_lo": 1.0403278973301051,
+     "reuse_obs": 0.8816326530612245,
+     "reuse_pred": [
+      0.8988326848249028,
+      0.8984375
+     ],
+     "admission_delay_obs_s": 2.771160440785544,
+     "queue_wait_pred_s": [
+      2.3048090423971113,
+      2.4031163700351414
+     ]
+    },
+    {
+     "rep": 3,
+     "eval_requests": 253,
+     "pred_requests": [
+      284,
+      270
+     ],
+     "wall_per_call_s": 0.4713502332016921,
+     "sim_wall_per_call_s": [
+      0.4225787106465427,
+      0.4444937667915414
+     ],
+     "wall_ratio_lo": 1.115414055006532,
+     "reuse_obs": 0.7488789237668162,
+     "reuse_pred": [
+      0.82,
+      0.7949790794979079
+     ],
+     "admission_delay_obs_s": 4.600202794131554,
+     "queue_wait_pred_s": [
+      3.5091498007909303,
+      3.7602513988720085
+     ]
+    },
+    {
+     "rep": 4,
+     "eval_requests": 215,
+     "pred_requests": [
+      240,
+      235
+     ],
+     "wall_per_call_s": 0.5603208837213082,
+     "sim_wall_per_call_s": [
+      0.500040928190704,
+      0.5106541171027671
+     ],
+     "wall_ratio_lo": 1.1205500432708877,
+     "reuse_obs": 0.5052631578947369,
+     "reuse_pred": [
+      0.5619047619047619,
+      0.5652173913043478
+     ],
+     "admission_delay_obs_s": 6.402455043792725,
+     "queue_wait_pred_s": [
+      5.306869177390468,
+      5.5801436363290575
+     ]
+    }
+   ],
+   "wall_ratio_lo_median": 1.115414055006532,
+   "by_type": {
+    "mixed": {
+     "steps": 1627,
+     "direct_s": 195.60355329999996,
+     "recon_lo_s": 142.75407918410366,
+     "direct_ms_per_step": 120.2234500921942,
+     "price_lo_ms_per_step": 87.74067558949211
+    },
+    "decode": {
+     "steps": 20904,
+     "direct_s": 404.4608479999998,
+     "recon_lo_s": 284.6404990180614,
+     "direct_ms_per_step": 19.34849062380405,
+     "price_lo_ms_per_step": 13.616556592903818
+    }
+   }
+  }
+ }
+}
