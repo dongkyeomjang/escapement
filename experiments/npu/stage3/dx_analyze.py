@@ -259,6 +259,42 @@ def work_b_cell(run: Path, n: int, pred: dict) -> dict:
     return cell
 
 
+def work_b_off(run: Path, n: int) -> dict:
+    """DX_PREREG §12 'off' branch: B measured with OBS off. DIRECT_EXEC does not
+    exist, so criteria 1-4 are not judged; PRED vs RECON is reported only."""
+    pred = preds()
+    reps = range(10)
+    lc, sel = {}, {}
+    for cfg in ("BASE", "TUNED"):
+        for r in reps:
+            tag, tried = chosen(run, f"B.{cfg}.n{n}.r{r}")
+            sel[f"{cfg}.r{r}"] = {"used": tag, "tried": tried}
+            if tag:
+                lc[(cfg, r)] = X.lifecycle(run, tag, cfg, obs=False)
+    common = [r for r in reps if ("BASE", r) in lc and ("TUNED", r) in lc]
+    pc = pred["cells"][f"B.n{n}"]["configs"]
+    rec = [lc[("TUNED", r)]["recon_per_turn_s"] / lc[("BASE", r)]["recon_per_turn_s"] for r in common]
+    prd = [pc["TUNED"]["per_rep_ratio_to_ref"][r] for r in common]
+    d = [a - b for a, b in zip(prd, rec)]
+    reuse = {}
+    for cfg in ("BASE", "TUNED"):
+        h = sum(lc[(cfg, r)]["recon"]["reuse"][0] for r in common)
+        t = sum(lc[(cfg, r)]["recon"]["reuse"][1] for r in common)
+        reuse[cfg] = {"obs": h / t, "pred": pc[cfg]["reuse_pooled"], "obs_counts": [h, t]}
+    m, lo, hi = boot_median(rec)
+    return {"status": "B direct BLOCKED: instrumentation perturbation (DX_PREREG §12); report only",
+            "replicates": common, "selection": sel,
+            "R_RECON": {"per_rep": dict(zip(common, rec)), "median": m, "ci": [lo, hi], "sign_test": sign_test(rec)},
+            "R_PRED": {"per_rep": dict(zip(common, prd)), "median": statistics.median(prd)},
+            "pred_minus_recon": {"per_rep": d, "median_ci": list(boot_median(d)),
+                                 "abs_diff_of_medians": abs(statistics.median(prd) - m)},
+            "reuse": reuse,
+            "absolute_median_s": {cfg: {"PRED": statistics.median(pc[cfg]["per_rep_device_per_turn_s"][r] for r in common),
+                                        "RECON": statistics.median(lc[(cfg, r)]["recon_per_turn_s"] for r in common)}
+                                  for cfg in ("BASE", "TUNED")},
+            "lifecycles": {f"{c}.r{r}": x for (c, r), x in lc.items()}}
+
+
 def work_b(run: Path, run8: Path | None) -> dict:
     pred = preds()
     out = {"cells": {"n18": work_b_cell(run, 18, pred)}}
@@ -415,14 +451,15 @@ def work_e(run: Path, channel: str) -> dict:
             tag, tried = chosen(run, f"E.{cfg}.n19.r{r}")
             sel[f"{cfg}.r{r}"] = {"used": tag, "tried": tried}
             if tag:
-                lc[(cfg, r)] = X.lifecycle(run, tag, cfg)
+                lc[(cfg, r)] = X.lifecycle(run, tag, cfg, obs=channel == "DIRECT_EXEC")
     common = [r for r in reps if all((c, r) in lc for c in ("BATCHONLY", "TUNED", "DP_N8"))]
+    chans = ("DIRECT_EXEC", "RECON") if channel == "DIRECT_EXEC" else ("RECON",)
 
     def cost(x, ch):
         return x["direct"]["per_turn_s"] if ch == "DIRECT_EXEC" else x["recon_per_turn_s"]
 
     res = {}
-    for ch in ("DIRECT_EXEC", "RECON"):
+    for ch in chans:
         rows = {c: [cost(lc[(c, r)], ch) / cost(lc[("BATCHONLY", r)], ch) for r in common]
                 for c in ("BATCHONLY", "TUNED", "DP_N8")}
         Rc = {c: statistics.median(v) for c, v in rows.items()}
@@ -446,13 +483,14 @@ def work_e(run: Path, channel: str) -> dict:
                    "verdict": "PASS" if loss <= 0.01 else "FAIL",
                    "low_discriminability": within, "advantage_vs_BATCHONLY": adv}
     return {"selected": sel_cfg, "primary_channel": channel, "replicates": common, "selection": sel,
-            "primary": res[channel], "secondary": res["RECON" if channel == "DIRECT_EXEC" else "DIRECT_EXEC"],
+            "primary": res[channel], "secondary": res.get("RECON") if channel == "DIRECT_EXEC" else None,
             "pred": {c: pred["cells"]["E.n19"]["configs"][c]["ratio_median"] for c in ("BATCHONLY", "TUNED", "DP_N8")}}
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("work", choices=("a", "b", "c", "e"))
+    ap.add_argument("work", choices=("a", "b", "b_off", "c", "e"))
+    ap.add_argument("--n", type=int, default=18)
     ap.add_argument("--run", type=Path, required=True)
     ap.add_argument("--run8", type=Path)
     ap.add_argument("--direct-ok", action="store_true")
@@ -463,6 +501,8 @@ def main() -> int:
         out = work_a(a.run)
     elif a.work == "b":
         out = work_b(a.run, a.run8)
+    elif a.work == "b_off":
+        out = work_b_off(a.run, a.n)
     elif a.work == "c":
         out = work_c(a.run, a.direct_ok)
     else:

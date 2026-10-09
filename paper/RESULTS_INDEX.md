@@ -521,6 +521,26 @@ kind: blind_confirm · blind_fail · withheld (판정 전제 조건 불충족으
 | b111_boundary_resid | L = 120 시작 잔여 S 0.24–1.31 %, 끝 잔여 E 1.64–2.73 %, E − S 전 cell 양수 +0.69–+1.64 % | A′ 비용 총합 대비, cell 합산, step 비용 균등 분배 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
 | b111_corrected_ratio | 경계 보정 비 − 원래 비(L = 120): 쌍별 차 중앙 ≤ 0.0076(22 cell); 중앙값끼리 > 0.01 4 cell(TASK82 N6 B −0.0188, N10 T +0.0156, N12 B −0.0185, TASK102 N18 T +0.0119: 0.6710 → 0.6830); replicate 110쌍 중 > 0.01 8쌍, 최대 0.0234 | 구성/BASE 비, 무차원 | paper/BOUNDARY_SENSITIVITY.md (TASK111 commit) | post_hoc | untagged | results/npu/stage3/boundary/boundary_sensitivity.json |
 
+## 23. 독립 시간 계측·대기 상한·동일 자원 선택 (TASK116–117, 지시문 2026-10-08)
+
+| id | value | population/unit | source | kind | layer | data |
+|---|---|---|---|---|---|---|
+| t117_a1_perturbation | PERTURBATION; TUNED N6 처리율 −0.0152, TUNED N18 DECODE 평균 −0.0133, 나머지 ≤ 0.01 | on/off − 1 paired median, 5쌍 × 4조건, 60 s 창, v1 계측 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | dev_set | stack | dx/DX_A_PERTURBATION.csv |
+| t117_a2_perturbation | PERTURBATION; BASE N6 처리율 +0.0132, 나머지 ≤ 0.01 | 같은 설계, v2 계측 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | dev_set | stack | dx/DX_A_PERTURBATION.csv |
+| t117_b_direct | BLOCKED: instrumentation perturbation | B 판정 1–4(DIRECT_EXEC 기준), N18·N8 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | withheld | — | — |
+| t117_b_n18_recon | 0.6725 [0.6666, 0.6998]; 10/10 < 1 | TUNED/BASE 호출당 A′(RECON) paired median, 새 seed 10쌍, 독립 반복(이미 알려진 조건) | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | exploratory | stack | dx/DX_B_PER_REP.csv |
+| t117_b_n18_pred | 0.6774; \|PRED − RECON\| 0.0049 | 같은 쌍의 시뮬레이터 예측 median(공통 비용 함수) | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | exploratory | stack | dx/DX_B_PER_REP.csv |
+| t117_b_n8_recon | 0.9795 [0.9555, 0.9950]; 9/10 < 1; PRED 0.9838 | N8, 같은 방식 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | exploratory | stack | dx/DX_B_PER_REP.csv |
+| t117_c_reuse | PASS; 오차 +0.022 / +0.038 / +0.007 / +0.006 (BASE60 / BASE120 / TUNED60 / TUNED120), MAE 0.018 | 재도착 요청 pooled 재사용률, N14, 5 replicate, 허용 0.05 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | stack | dx/DX_C_CELLS.csv |
+| t117_c_skill | PASS; Σ 0.072 ≤ 0.5 × 0.977 | 기준선 0.6764(TASK101) | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | stack | dx/DX_C_CELLS.csv |
+| t117_c_cost | PASS; cap60 0.7869 대 0.7834, cap120 0.8275 대 0.8182 | TUNED/BASE 비 PRED 대 RECON, 공통 비용 모형 아래 검증, 허용 0.03 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | stack | dx/DX_C_COST_PER_REP.csv |
+| t117_c_sensitivity | BASE 재사용 +0.091(PRED +0.106); TUNED 비용 cap120/cap60 1.073 [1.022, 1.118] | 같은 replicate 상한 120 대 60 s | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | class (형태) / stack (값) | dx/DX_C_CELLS.csv |
+| t117_c_gap_clip | 60 s: 대기 2.63 %·대기 합 37.8 %; 120 s: 1.42 %·21.1 % | C plan 7,594 대기(계획값) | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | code_check | stack | dx/DX_C_GAPS.csv |
+| t117_e_selection | PASS; 선택 TUNED = 관측 최저, 손실 0 [0, 0] | N19, R vs BATCHONLY (RECON), 10쌍, 미사용 N | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | stack | dx/DX_E_PER_REP.csv |
+| t117_e_advantage | 이점 확인; TUNED/BATCHONLY 0.9708 [0.9642, 0.9852], 10/10; DP_N8 1.016 | 같은 run | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | blind_confirm | stack | dx/DX_E_PER_REP.csv |
+| t117_d_gap_count | 일치 0.748; 실패 5,705 전부 과대 생존; 전체 규칙 22,612/22,612 | 도구 대기 중 할당 수 근사, TASK95·102 재도착 | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | post_hoc | stack | dx/D_SIMPLE_APPROX.csv |
+| t117_d_poisson | 재사용 MAE 0.0088, Brier 0.0295 (v1 요청별 0.0278 / 0.0312, 선등록 v1 MAE 0.0152) | 저부하 4 cell(N ≤ batch) | docs/research/TASK117.md (선등록 983f7e6·개정 0726acd·1a0f015) | post_hoc | stack | dx/D_SIMPLE_APPROX.csv |
+
 ## 15. 원고 수정 후보 ↔ id
 
 | M id | source | result ids |
